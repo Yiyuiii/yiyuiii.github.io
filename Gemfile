@@ -1,13 +1,7 @@
-# frozen_string_literal: true
-
 source "https://rubygems.org"
 
-gem 'jekyll-paginate'
-gem "jekyll"
-
-group :test do
-  gem "html-proofer", "~> 3.18"
-end
+# Sync packages on local. 'bundle exec jekyll' may be needed.
+gem 'github-pages', :install_if => Gem.win_platform?
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 # and associated library.
@@ -18,3 +12,6 @@ end
 
 # Performance-booster for watching directories on Windows
 gem "wdm", "~> 0.1.1", :install_if => Gem.win_platform?
+
+# show locally.
+gem "webrick", :install_if => Gem.win_platform?
