@@ -9,6 +9,8 @@ excerpt: This article is about my experience of how to successfully start a Pers
 
 This article is about my experience of how to successfully start a Personal GitHub website. 
 
+# Building a Personal GitHub Page
+
 **Attention:** since there are variety of detailed tutorials available online, here we just focus on some key points. You may frequently open other websites.
 
 ## Background
@@ -51,7 +53,7 @@ Notice that
 
 - Page files generated is not visible on GitHub.
 
-- GitHub Pages supports Jekyll, as well as pure HTML documents. The theme in 'Repository - Setting - Pages' is exactly Jekyll themes.
+- GitHub Pages supports Jekyll, as well as pure HTML documents. The themes in 'Repository - Setting - Pages' are exactly Jekyll themes.
 
 Upon getting the website, the next step is to enrich it. Commonly on GitHub Pages we use Jekyll.
 
@@ -103,7 +105,7 @@ With the information above, in fact we have multiple choices to build a GitHub P
 
 Up to now my blog matches Option 2, and Option 1 is a final goal.
 
-## Theme
+### Theme
 
  [Chirpy](https://github.com/cotes2020/jekyll-theme-chirpy) is the theme I currently use, it's so close to the perfection in my mind. We have three ways to apply a theme:
 
@@ -111,11 +113,11 @@ Up to now my blog matches Option 2, and Option 1 is a final goal.
 2. Fork the project, then remote import the copy in '_config.yml'
 3. Copy all, with theme & site integrated, and disable external theme in '_config.yml'
 
-I chose Option 3, as there was code incompatibility between Chirpy & Github-Pages Gem, and it's unstable to use external theme.
+I chose Option 3, as there was code incompatibility between Chirpy & Github-Pages Gem, so it'll be unstable with external theme.
 
 Chirpy also provides a [tutorial](https://github.com/cotes2020/jekyll-theme-chirpy#readme).
 
-## Debug
+### Debug
 
 As long as a BUG occurs during GitHub Page building, you will receive an e-mail.
 
