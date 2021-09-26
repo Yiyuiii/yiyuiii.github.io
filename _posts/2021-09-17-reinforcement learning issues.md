@@ -111,6 +111,7 @@ Reinforcement Learning methods are more complicated than supervised ones. When B
 
 - PyCharm profiler
 - memory_profiler, line_profiler
+- Pytorch.autograd: profiler,grad_check, anomaly_detection 
 - Breakpoints
 - Print()
 
