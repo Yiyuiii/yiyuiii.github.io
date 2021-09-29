@@ -77,6 +77,12 @@ and sometimes needs
 - Orthogonal normalization at the output layer for deep layers
 - Low Learning Rate or freezing parameters for increasing number of parameters
 
+### Reward
+
+#### Design
+
+There's no standard for Reward designing. In principle, learning is faster with denser Reward, and convergence performance depends on the guidance of the Reward.   
+
 ### Replay Buffer
 
 Replay Buffer should be as large as possible to **describe the Environment and Policy**.
