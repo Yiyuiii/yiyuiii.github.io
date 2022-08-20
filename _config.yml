@@ -98,6 +98,7 @@ paginate: 10
 # markdown: GFM
 markdown: kramdown
 kramdown:
+  header_offset: 2
   syntax_highlighter: rouge
   syntax_highlighter_opts:   # Rouge Options › https://github.com/jneen/rouge#full-options
     css_class: highlight
