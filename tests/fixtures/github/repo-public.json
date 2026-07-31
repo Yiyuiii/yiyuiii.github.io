@@ -1,0 +1,16 @@
+{
+  "name": "example",
+  "full_name": "Yiyuiii/example",
+  "html_url": "https://github.com/Yiyuiii/example",
+  "private": false,
+  "visibility": "public",
+  "disabled": false,
+  "archived": true,
+  "language": "Python",
+  "stargazers_count": 7,
+  "forks_count": 2,
+  "updated_at": "2026-01-02T03:04:05Z",
+  "license": {
+    "spdx_id": "MIT"
+  }
+}

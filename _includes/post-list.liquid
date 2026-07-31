@@ -1,0 +1,36 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign text = site.data.site_text[lang_key] %}
+{% assign date_format = text.date_format %}
+{% assign posts = site.posts | where: 'lang', page.lang %}
+<section class="writing-list" aria-label="{{ text.nav.writing }}" data-filter-list>
+  {% for post in posts %}
+    <article class="writing-entry" data-filter-entry data-tags="{{ post.tags | join: '|' | escape }}">
+      <div class="entry-meta">
+        <div class="entry-tags">
+          {% assign display_tags = post.sorted_tags | default: post.tags %}
+          {% for tag in display_tags %}
+            {% assign encoded_tag = tag | url_encode %}
+            <a href="{{ text.urls.writing | append: '?tag=' | append: encoded_tag | relative_url }}" data-tag="{{ tag | escape }}">{{ tag }}</a>
+          {% endfor %}
+        </div>
+        <span class="entry-rule" aria-hidden="true"></span>
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: date_format }}</time>
+      </div>
+
+      <div class="entry-grid{% unless post.thumbnail %} entry-grid--text-only{% endunless %}">
+        <a class="entry-main" href="{{ post.url | relative_url }}">
+          <h2>{{ post.title }}</h2>
+          {% assign summary = post.description | default: post.excerpt %}
+          {% if summary %}<p>{{ summary | strip_html | strip }}</p>{% endif %}
+        </a>
+        {% if post.thumbnail %}
+          <a class="entry-thumbnail" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
+            <img src="{{ post.thumbnail | relative_url }}" alt="" loading="lazy">
+          </a>
+        {% endif %}
+      </div>
+    </article>
+  {% endfor %}
+  <p class="empty-state" data-filter-empty hidden>{{ text.taxonomy.empty }}</p>
+</section>

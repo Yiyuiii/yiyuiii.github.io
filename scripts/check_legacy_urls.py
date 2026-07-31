@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""Verify retained and intentionally changed public URLs in a built site."""
+
+from __future__ import annotations
+
+import argparse
+import re
+from pathlib import Path
+from urllib.parse import urlparse
+
+import yaml
+from bs4 import BeautifulSoup
+
+
+ROOT = Path(__file__).resolve().parents[1]
+INVENTORY_PATH = ROOT / "_data" / "legacy_urls.yml"
+
+
+class LegacyUrlError(RuntimeError):
+    """A legacy public URL does not satisfy its declared policy."""
+
+
+def route_path(site: Path, route: str) -> Path:
+    parsed = urlparse(route)
+    path = parsed.path
+    if path == "/":
+        return site / "index.html"
+    relative = path.lstrip("/")
+    if path.endswith("/"):
+        return site / relative / "index.html"
+    return site / relative
+
+
+def _redirect_target(path: Path) -> str | None:
+    soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
+    meta = soup.find("meta", attrs={"http-equiv": re.compile("^refresh$", re.I)})
+    if not meta:
+        return None
+    match = re.search(r"url\s*=\s*([^;]+)", meta.get("content", ""), re.I)
+    if not match:
+        return None
+    target = match.group(1).strip().strip("\"'")
+    parsed = urlparse(target)
+    if parsed.scheme or parsed.netloc:
+        return parsed.path or "/"
+    return parsed.path or "/"
+
+
+def verify_inventory(site: Path, inventory: list[dict]) -> None:
+    site = site.resolve()
+    seen: set[str] = set()
+    errors: list[str] = []
+
+    for item in inventory:
+        route = item["path"]
+        policy = item["policy"]
+        if route in seen:
+            errors.append(f"{route}: duplicate inventory record")
+            continue
+        seen.add(route)
+        output = route_path(site, route)
+
+        if policy in {"retained", "asset"}:
+            if not output.is_file():
+                errors.append(f"{route}: retained output missing at {output}")
+        elif policy == "redirected":
+            if not output.is_file():
+                errors.append(f"{route}: redirect output missing at {output}")
+                continue
+            actual = _redirect_target(output)
+            expected = item["target"]
+            if actual != expected:
+                errors.append(
+                    f"{route}: redirect target {actual!r}, expected {expected}"
+                )
+        elif policy == "retirement":
+            if not output.is_file():
+                errors.append(f"{route}: retirement worker missing")
+                continue
+            source = output.read_text(encoding="utf-8")
+            if "caches.delete" not in source or "registration.unregister" not in source:
+                errors.append(
+                    f"{route}: retirement worker must clear caches and unregister"
+                )
+        elif policy == "retired":
+            if output.exists():
+                errors.append(f"{route}: retired route was unexpectedly built")
+        else:
+            errors.append(f"{route}: unknown policy {policy!r}")
+
+    if errors:
+        raise LegacyUrlError("\n".join(errors))
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--site", type=Path, required=True)
+    parser.add_argument("--inventory", type=Path, default=INVENTORY_PATH)
+    args = parser.parse_args(argv)
+
+    inventory = yaml.safe_load(args.inventory.read_text(encoding="utf-8")) or []
+    verify_inventory(args.site, inventory)
+    print(f"Verified {len(inventory)} legacy URL policies.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

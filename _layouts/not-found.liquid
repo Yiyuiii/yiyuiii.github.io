@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh" data-not-found-language="zh">
+  <head>
+    {% include head.liquid %}
+    <script>
+      (function () {
+        const path = window.location.pathname;
+        const language = path === '/en' || path.startsWith('/en/') ? 'en' : 'zh';
+        document.documentElement.lang = language;
+        document.documentElement.dataset.notFoundLanguage = language;
+        document.title = language === 'en' ? 'Page not found | yiyuiii' : '页面不存在 | yiyuiii';
+      })();
+    </script>
+  </head>
+  <body class="not-found-page">
+    <a class="skip-link" data-language="zh" href="#main-content">{{ site.data.site_text.zh.skip_to_content }}</a>
+    <a class="skip-link" data-language="en" href="#main-content">{{ site.data.site_text.en.skip_to_content }}</a>
+
+    <header class="not-found-header">
+      <a class="site-brand" data-language="zh" href="{{ '/' | relative_url }}">
+        <img
+          class="site-brand__avatar"
+          src="{{ '/assets/img/favicons/android-chrome-256x256.png' | relative_url }}"
+          alt=""
+          width="34"
+          height="34"
+        >
+        <span>yiyuiii</span>
+      </a>
+      <a class="site-brand" data-language="en" href="{{ '/en/' | relative_url }}">
+        <img
+          class="site-brand__avatar"
+          src="{{ '/assets/img/favicons/android-chrome-256x256.png' | relative_url }}"
+          alt=""
+          width="34"
+          height="34"
+        >
+        <span>yiyuiii</span>
+      </a>
+    </header>
+
+    <main id="main-content" class="not-found-shell" tabindex="-1">
+      <section data-language="zh" aria-labelledby="not-found-title-zh">
+        <p class="not-found-code" aria-hidden="true">404</p>
+        <h1 id="not-found-title-zh">{{ site.data.site_text.zh.not_found.title }}</h1>
+        <p>{{ site.data.site_text.zh.not_found.description }}</p>
+        <a class="not-found-back" href="{{ '/' | relative_url }}">{{ site.data.site_text.zh.not_found.back }}</a>
+      </section>
+
+      <section data-language="en" aria-labelledby="not-found-title-en">
+        <p class="not-found-code" aria-hidden="true">404</p>
+        <h1 id="not-found-title-en">{{ site.data.site_text.en.not_found.title }}</h1>
+        <p>{{ site.data.site_text.en.not_found.description }}</p>
+        <a class="not-found-back" href="{{ '/en/' | relative_url }}">{{ site.data.site_text.en.not_found.back }}</a>
+      </section>
+    </main>
+  </body>
+</html>

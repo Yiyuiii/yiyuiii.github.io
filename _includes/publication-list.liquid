@@ -1,0 +1,55 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign text = site.data.site_text[lang_key] %}
+<section class="publication-list" aria-label="{{ text.nav.papers }}">
+  {% assign publications = site.data.publications | sort: 'order' %}
+  {% for publication in publications %}
+    <article class="publication-entry" id="{{ publication.key }}">
+      <div class="entry-meta index-meta">
+        <div class="index-meta__lead">
+          <span class="index-kicker">{{ publication.venue[page.lang] }}</span>
+          {% if publication.recognition %}
+            <a
+              class="publication-recognition"
+              href="{{ publication.recognition.url }}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{- publication.recognition.label[page.lang] -}}
+            </a>
+          {% endif %}
+        </div>
+        <span class="entry-rule" aria-hidden="true"></span>
+        <div class="index-meta__tail">
+          <time datetime="{{ publication.year }}">{{ publication.year }}</time>
+        </div>
+      </div>
+      <h2>{{ publication.title[page.lang] }}</h2>
+      <p class="publication-authors">
+        {% for author in publication.authors[page.lang] %}
+          {% assign is_self = false %}
+          {% if author == 'Yiyu Chen' or author == '陈奕宇' %}
+            {% assign is_self = true %}
+          {% endif %}
+          {% unless forloop.first %}, {% endunless %}
+          {% if is_self %}
+            <span class="publication-self-entry">
+              <strong class="publication-self">{{ author }}</strong>
+              {%- if publication.self_contribution -%}
+                <span class="publication-contribution">{{ publication.self_contribution[page.lang] }}</span>
+              {%- endif -%}
+            </span>
+          {% else %}
+            {{ author }}
+          {% endif %}
+        {% endfor %}
+      </p>
+      <p class="publication-links">
+        {% for link in publication.links %}
+          {% assign link_label = text.publication.links[link.kind] | default: link.kind %}
+          <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link_label }}</a>
+        {% endfor %}
+      </p>
+    </article>
+  {% endfor %}
+</section>

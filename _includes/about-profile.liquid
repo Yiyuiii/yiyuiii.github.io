@@ -1,0 +1,87 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign profile = site.data.about[lang_key] %}
+{% assign hidden_blocks = site.data.about.display.hidden_blocks %}
+
+<div class="about-profile">
+  {% for block in profile.blocks %}
+    {% unless hidden_blocks contains block.id %}
+    {% case block.type %}
+      {% when 'greeting' %}
+        <h1 id="about-{{ block.id }}" class="about-greeting" aria-label="{{ block.aria_label | escape }}">{{ block.text | escape }}</h1>
+
+      {% when 'prose' %}
+        {% if block.heading %}
+          <section id="about-{{ block.id }}" class="about-section about-prose" aria-labelledby="about-{{ block.id }}-heading">
+            <h2 id="about-{{ block.id }}-heading">{{ block.heading | escape }}</h2>
+            <div class="about-prose__body">
+              {% for paragraph in block.paragraphs %}
+                <div id="about-{{ block.id }}-{{ paragraph.id }}" class="about-prose__paragraph about-prose__paragraph--{{ paragraph.style }}">{{ paragraph.inline_markdown | escape | markdownify }}</div>
+              {% endfor %}
+            </div>
+          </section>
+        {% else %}
+          <div id="about-{{ block.id }}" class="about-intro">
+            {% for paragraph in block.paragraphs %}
+              <div id="about-{{ block.id }}-{{ paragraph.id }}" class="about-intro__paragraph about-intro__paragraph--{{ paragraph.style }}">{{ paragraph.inline_markdown | escape | markdownify }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+      {% when 'education' %}
+        <section id="about-{{ block.id }}" class="about-section" aria-labelledby="about-{{ block.id }}-heading">
+          <h2 id="about-{{ block.id }}-heading">{{ block.heading | escape }}</h2>
+          <dl class="about-education">
+            {% for item in block.items %}
+              {% assign time = item.fields | where: 'id', 'time' | first %}
+              <div id="about-{{ block.id }}-{{ item.id }}" class="about-education__row">
+                <dt class="about-education__time">
+                  <span class="sr-only">{{ time.label | escape }}：</span>
+                  <span>{{ time.value | escape }}</span>
+                </dt>
+                <dd class="about-education__details">
+                  {% for field in item.fields offset: 1 %}
+                    <span class="about-education__field about-education__field--{{ field.id }}">
+                      <span class="sr-only">{{ field.label | escape }}：</span>
+                      <span>{{ field.value | escape }}</span>
+                    </span>
+                  {% endfor %}
+                </dd>
+              </div>
+            {% endfor %}
+          </dl>
+        </section>
+
+      {% when 'details' %}
+        <section id="about-{{ block.id }}" class="about-section" aria-labelledby="about-{{ block.id }}-heading">
+          <h2 id="about-{{ block.id }}-heading">{{ block.heading | escape }}</h2>
+          <dl class="about-detail-list">
+            {% for item in block.items %}
+              <div id="about-{{ block.id }}-{{ item.id }}" class="about-detail-list__row">
+                <dt>{{ item.name | escape }}</dt>
+                <dd>{{ item.description | escape | markdownify }}</dd>
+              </div>
+            {% endfor %}
+          </dl>
+        </section>
+
+      {% when 'links' %}
+        <section id="about-{{ block.id }}" class="about-section about-links" aria-labelledby="about-{{ block.id }}-heading">
+          <h2 id="about-{{ block.id }}-heading">{{ block.heading | escape }}</h2>
+          <ul>
+            {% for item in block.items %}
+              {% assign item_href = item.url %}
+              {% if item.relative %}{% assign item_href = item.url | relative_url %}{% endif %}
+              <li id="about-{{ block.id }}-{{ item.id }}">
+                <a href="{{ item_href | escape }}"{% if item.new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
+                  {% include about-icon.liquid icon=item.icon %}
+                  <span>{{ item.label | escape }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+    {% endcase %}
+    {% endunless %}
+  {% endfor %}
+</div>

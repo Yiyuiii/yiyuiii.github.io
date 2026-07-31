@@ -1,0 +1,22 @@
+---
+layout: page
+title: 随笔分类
+permalink: /categories/
+description: 按分类浏览随笔。
+lang: zh
+translation_url: /en/categories/
+---
+
+<div class="taxonomy-grid">
+  {% assign sorted_categories = site.categories | sort %}
+  {% for category in sorted_categories %}
+    {% assign lang_items = category[1] | where: "lang", page.lang %}
+    {% assign lang_count = lang_items | size %}
+    {% if lang_count > 0 %}
+      <a class="taxonomy-item" href="{{ category[0] | slugify | prepend: '/categories/' | relative_url }}">
+        <span>{{ category[0] }}</span>
+        <small>{{ lang_count }}</small>
+      </a>
+    {% endif %}
+  {% endfor %}
+</div>

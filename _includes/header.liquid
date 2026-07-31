@@ -1,0 +1,44 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign text = site.data.site_text[lang_key] %}
+{% if page.translation_url %}
+  {% assign translation_target = page.translation_url %}
+{% elsif lang_key == 'en' %}
+  {% assign translation_target = '/?missing_translation=1' %}
+{% else %}
+  {% assign translation_target = '/en/?missing_translation=1' %}
+{% endif %}
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-brand" href="{{ text.urls.writing | relative_url }}" aria-label="yiyuiii">
+      <img
+        class="site-brand__avatar"
+        src="{{ '/assets/img/favicons/android-chrome-256x256.png' | relative_url }}"
+        alt=""
+        width="40"
+        height="40"
+      >
+      <span>yiyuiii</span>
+    </a>
+
+    <nav class="site-nav" aria-label="{{ text.primary_navigation }}">
+      <a href="{{ text.urls.writing | relative_url }}"{% if page.nav_key == 'writing' %} aria-current="page"{% endif %}>{{ text.nav.writing }}</a>
+      <a href="{{ text.urls.github | relative_url }}"{% if page.nav_key == 'github' %} aria-current="page"{% endif %}>{{ text.nav.github }}</a>
+      <a href="{{ text.urls.papers | relative_url }}"{% if page.nav_key == 'papers' %} aria-current="page"{% endif %}>{{ text.nav.papers }}</a>
+      <a href="{{ text.urls.about | relative_url }}"{% if page.nav_key == 'about' %} aria-current="page"{% endif %}>{{ text.nav.about }}</a>
+    </nav>
+
+    <div class="site-actions">
+      <button id="search-toggle" class="icon-button" type="button" aria-label="{{ text.search.open }}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5"></circle>
+          <path d="m16 16 4 4"></path>
+        </svg>
+      </button>
+      <a class="language-switch" href="{{ translation_target | relative_url }}" aria-label="{{ text.switch_language }}">
+        {% if lang_key == 'en' %}中{% else %}EN{% endif %}
+      </a>
+    </div>
+  </div>
+</header>

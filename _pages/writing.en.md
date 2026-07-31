@@ -1,0 +1,15 @@
+---
+layout: page
+title: Writing
+permalink: /en/
+lang: en
+nav_key: writing
+hide_title: true
+translation_url: /
+translation_key: writing-index
+translation_source: _pages/writing.md
+translation_status: current
+source_hash: 71bb64d5a5f80be927bbbc95933501c6b4e3e70b949f4c33bdfdb27428e9eaa2
+---
+
+{% include post-list.liquid %}

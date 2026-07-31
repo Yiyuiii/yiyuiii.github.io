@@ -1,0 +1,76 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign text = site.data.site_text[lang_key] %}
+<dialog
+  id="site-search"
+  class="search-dialog"
+  aria-labelledby="search-title"
+  data-empty="{{ text.search.empty }}"
+  data-no-results="{{ text.search.no_results }}"
+  data-missing-translation="{{ text.missing_translation }}"
+>
+  <div class="search-dialog__header">
+    <h2 id="search-title">{{ text.search.label }}</h2>
+    <button id="search-close" class="icon-button" type="button" aria-label="{{ text.search.close }}">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6l12 12M18 6 6 18"></path>
+      </svg>
+    </button>
+  </div>
+  <label class="sr-only" for="site-search-input">{{ text.search.label }}</label>
+  <input
+    id="site-search-input"
+    type="search"
+    inputmode="search"
+    autocomplete="off"
+    placeholder="{{ text.search.placeholder }}"
+  >
+  <p id="search-status" class="search-status" aria-live="polite">{{ text.search.empty }}</p>
+  <ol id="search-results" class="search-results"></ol>
+</dialog>
+
+<script id="site-search-data" type="application/json">
+[
+  {% assign search_first = true %}
+  {% for post in site.posts %}
+    {% if post.lang == lang_key %}
+      {% unless search_first %},{% endunless %}
+      {
+        "title": {{ post.title | jsonify }},
+        "description": {{ post.description | default: post.excerpt | strip_html | strip_newlines | jsonify }},
+        "tags": {{ post.tags | jsonify }},
+        "url": {{ post.url | relative_url | jsonify }},
+        "kind": {{ text.nav.writing | jsonify }}
+      }
+      {% assign search_first = false %}
+    {% endif %}
+  {% endfor %}
+  {% for project in site.data.project_runtime %}
+    {% unless search_first %},{% endunless %}
+    {
+      "title": {{ project.name | jsonify }},
+      "description": {{ project.descriptions[lang_key] | jsonify }},
+      "tags": [{{ project.language | jsonify }}],
+      "url": {{ project.url | jsonify }},
+      "kind": "GitHub",
+      "external": true
+    }
+    {% assign search_first = false %}
+  {% endfor %}
+  {% for publication in site.data.publications %}
+    {% unless search_first %},{% endunless %}
+    {% assign publication_description = publication.authors[lang_key] | join: ', ' | append: ' · ' | append: publication.venue[lang_key] %}
+    {% if publication.recognition %}
+      {% assign publication_description = publication_description | append: ' · ' | append: publication.recognition.label[lang_key] %}
+    {% endif %}
+    {
+      "title": {{ publication.title[lang_key] | jsonify }},
+      "description": {{ publication_description | jsonify }},
+      "tags": [{{ publication.year | jsonify }}],
+      "url": {{ text.urls.papers | relative_url | append: '#' | append: publication.key | jsonify }},
+      "kind": {{ text.nav.papers | jsonify }}
+    }
+    {% assign search_first = false %}
+  {% endfor %}
+]
+</script>

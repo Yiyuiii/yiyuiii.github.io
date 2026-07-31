@@ -1,0 +1,18 @@
+- repository: Yiyuiii/codex-cc-tools
+  primary_locale: en
+  readmes: {en: README.md}
+- repository: Yiyuiii/HDBO-B
+  primary_locale: en
+  readmes: {en: README.md}
+- repository: Yiyuiii/nonebot-plugin-moegoe
+  primary_locale: zh
+  readmes: {zh: README.md}
+- repository: Yiyuiii/simple_asr_llm_tts
+  primary_locale: en
+  readmes: {en: README.md}
+- repository: Yiyuiii/solver4turingmachine
+  primary_locale: en
+  readmes: {en: README.md}
+- repository: Yiyuiii/taco
+  primary_locale: en
+  readmes: {en: README.md}
