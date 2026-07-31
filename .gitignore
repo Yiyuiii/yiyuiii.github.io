@@ -9,6 +9,7 @@
 _site
 vendor
 Gemfile.lock
+_data/project_runtime.yml
 
 _drafts
 
@@ -17,4 +18,7 @@ _drafts
 
 # npm dependencies
 node_modules
-package-lock.json
+test-results
+playwright-report
+__pycache__/
+*.py[cod]

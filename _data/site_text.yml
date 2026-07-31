@@ -1,0 +1,111 @@
+zh:
+  nav:
+    writing: 随笔
+    github: GitHub
+    papers: 论文
+    about: 关于yiyuiii
+  urls:
+    writing: /
+    github: /projects/
+    papers: /publications/
+    about: /about/
+  primary_navigation: 主导航
+  skip_to_content: 跳到正文
+  switch_language: 切换为英文
+  missing_translation: 这篇内容目前没有中文版本，已回到中文随笔索引。
+  search:
+    open: 搜索
+    close: 关闭搜索
+    label: 搜索本站
+    placeholder: 搜索随笔、项目或论文
+    empty: 输入关键词开始搜索。
+    no_results: 没有找到匹配内容。
+  project:
+    stars: Star
+    forks: Fork
+    license: 许可证
+    open_repository: 在 GitHub 打开仓库
+  publication:
+    links:
+      journal: 期刊页面
+      doi: DOI
+      pdf: PDF
+      arxiv: arXiv
+  toc: 目录
+  revision:
+    first: 初稿
+    last: 最近修订
+    history: 修订历史
+    date_format: "%Y.%m.%d"
+  sections:
+    trigger: 章节
+    label: 文章章节
+    close: 关闭章节导航
+  archive:
+    title: 随笔归档
+    description: 按年份浏览随笔。
+  taxonomy:
+    tags: 随笔标签
+    categories: 随笔分类
+    empty: 暂无内容。
+  not_found:
+    title: 页面不存在
+    description: 没有找到这个页面。
+    back: 返回随笔
+  date_format: "%Y年%-m月%-d日"
+
+en:
+  nav:
+    writing: Writing
+    github: GitHub
+    papers: Papers
+    about: About yiyuiii
+  urls:
+    writing: /en/
+    github: /en/projects/
+    papers: /en/publications/
+    about: /en/about/
+  primary_navigation: Primary navigation
+  skip_to_content: Skip to content
+  switch_language: Switch to Chinese
+  missing_translation: This item has no English version yet. You are viewing the English writing index.
+  search:
+    open: Search
+    close: Close search
+    label: Search this site
+    placeholder: Search writing, projects, or papers
+    empty: Enter a term to start searching.
+    no_results: No matching content found.
+  project:
+    stars: Stars
+    forks: Forks
+    license: License
+    open_repository: Open repository on GitHub
+  publication:
+    links:
+      journal: Journal page
+      doi: DOI
+      pdf: PDF
+      arxiv: arXiv
+  toc: Contents
+  revision:
+    first: First published
+    last: Last revised
+    history: Revision history
+    date_format: "%Y-%m-%d"
+  sections:
+    trigger: Sections
+    label: Article sections
+    close: Close section navigation
+  archive:
+    title: Writing archive
+    description: Browse writing by year.
+  taxonomy:
+    tags: Writing tags
+    categories: Writing categories
+    empty: No items yet.
+  not_found:
+    title: Page not found
+    description: This page could not be found.
+    back: Back to writing
+  date_format: "%Y-%m-%d"

@@ -1,0 +1,124 @@
+---
+layout: default
+---
+{% assign lang_key = page.lang | default: 'zh' %}
+{% assign text = site.data.site_text[lang_key] %}
+{% assign revision_date_format = text.revision.date_format %}
+{% capture article_toc_markup %}{% toc %}{% endcapture %}
+{% assign article_toc_markup = article_toc_markup | strip | replace: ' id="toc"', '' %}
+{% assign has_article_toc = false %}
+{% if article_toc_markup contains '<li' %}
+  {% assign has_article_toc = true %}
+{% endif %}
+<article class="article-shell">
+  <div class="article-column">
+    <header class="article-header">
+      <h1>{{ page.title }}</h1>
+      <div class="article-meta">
+        <div class="article-tags">
+          {% for tag in page.sorted_tags %}
+            {% assign encoded_tag = tag | url_encode %}
+            <a href="{{ text.urls.writing | append: '?tag=' | append: encoded_tag | relative_url }}">{{ tag }}</a>
+          {% endfor %}
+        </div>
+
+        {% if page.revisions %}
+          {% assign revision_total = page.revisions | size %}
+        {% else %}
+          {% assign revision_total = 0 %}
+        {% endif %}
+        <details class="article-history">
+          <summary>
+            <span class="article-history__summary">
+              {% if revision_total > 0 %}
+                {% assign first_revision = page.revisions | first %}
+                {% assign last_revision = page.revisions | last %}
+                <span>
+                  {{ text.revision.first }}
+                  <time datetime="{{ first_revision.date }}">{{ first_revision.date | date: revision_date_format }}</time>
+                </span>
+                {% if revision_total > 1 %}
+                  <span class="article-meta__separator" aria-hidden="true">·</span>
+                  <span>
+                    {{ text.revision.last }}
+                    <time datetime="{{ last_revision.date }}">{{ last_revision.date | date: revision_date_format }}</time>
+                  </span>
+                {% endif %}
+              {% else %}
+                <span>
+                  {{ text.revision.first }}
+                  <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: revision_date_format }}</time>
+                </span>
+              {% endif %}
+              <span class="article-meta__separator" aria-hidden="true">·</span>
+              <span class="article-history__action">{{ text.revision.history }}</span>
+            </span>
+          </summary>
+          <ol class="article-history__list">
+            {% if revision_total > 0 %}
+              {% for revision in page.revisions %}
+                <li>
+                  <time datetime="{{ revision.date }}">{{ revision.date | date: revision_date_format }}</time>
+                  <span>{{ revision.note }}</span>
+                </li>
+              {% endfor %}
+            {% else %}
+              <li>
+                <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: revision_date_format }}</time>
+                <span>{{ text.revision.first }}</span>
+              </li>
+            {% endif %}
+          </ol>
+        </details>
+      </div>
+    </header>
+
+    {% if has_article_toc %}
+      <button
+        class="article-section-trigger"
+        type="button"
+        aria-controls="article-section-dialog"
+        aria-expanded="false"
+        data-article-section-trigger
+      >
+        {{ text.sections.trigger }}
+      </button>
+      <dialog
+        class="article-section-dialog"
+        id="article-section-dialog"
+        aria-labelledby="article-section-dialog-title"
+        data-article-section-dialog
+      >
+        <div class="article-section-dialog__header">
+          <strong id="article-section-dialog-title">{{ text.sections.label }}</strong>
+          <button
+            type="button"
+            aria-label="{{ text.sections.close }}"
+            data-article-section-close
+          >
+            ×
+          </button>
+        </div>
+        <nav aria-label="{{ text.sections.label }}" data-article-navigation>
+          {{ article_toc_markup }}
+        </nav>
+      </dialog>
+    {% endif %}
+
+    <div class="post-content" id="markdown-content">
+      {{ content }}
+    </div>
+  </div>
+
+  {% if has_article_toc %}
+    <aside class="article-side-toc">
+      <nav aria-label="{{ text.sections.label }}" data-article-navigation>
+        {{ article_toc_markup }}
+      </nav>
+    </aside>
+  {% endif %}
+</article>
+
+{% if has_article_toc %}
+  <script src="{{ '/assets/js/article-navigation.js' | relative_url | bust_file_cache }}" defer></script>
+{% endif %}

@@ -1,0 +1,34 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign text = site.data.site_text[lang_key] %}
+<section class="project-list" aria-label="{{ text.nav.github }}" data-filter-list>
+  {% for project in site.data.project_runtime %}
+    {% assign description = project.descriptions[page.lang] %}
+    {% capture project_tags %}{% if project.language %}{{ project.language }}{% endif %}{% if project.language and project.license %}|{% endif %}{% if project.license %}{{ project.license }}{% endif %}{% endcapture %}
+    <article class="project-entry" data-filter-entry data-tags="{{ project_tags | strip | escape }}">
+      <div class="entry-meta index-meta">
+        <div class="index-meta__lead">
+          {% if project.language %}
+            {% assign encoded_language = project.language | url_encode %}
+            <a class="project-tag" href="{{ text.urls.github | append: '?tag=' | append: encoded_language | relative_url }}" data-tag="{{ project.language | escape }}">{{ project.language }}</a>
+          {% endif %}
+          {% if project.license %}
+            {% assign encoded_license = project.license | url_encode %}
+            <a class="project-tag" href="{{ text.urls.github | append: '?tag=' | append: encoded_license | relative_url }}" data-tag="{{ project.license | escape }}"><span class="sr-only">{{ text.project.license }} </span>{{ project.license }}</a>
+          {% endif %}
+        </div>
+        <span class="entry-rule" aria-hidden="true"></span>
+        <div class="index-meta__tail">
+          <span aria-label="{{ text.project.stars }} {{ project.stars }}">★ {{ project.stars }}</span>
+          <span>{{ text.project.forks }} {{ project.forks }}</span>
+        </div>
+      </div>
+      <a class="project-main" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">
+        <h2>{{ project.name }}</h2>
+        {% if description %}<p>{{ description }}</p>{% endif %}
+        <span class="sr-only">{{ text.project.open_repository }}</span>
+      </a>
+    </article>
+  {% endfor %}
+  <p class="empty-state" data-filter-empty hidden>{{ text.taxonomy.empty }}</p>
+</section>

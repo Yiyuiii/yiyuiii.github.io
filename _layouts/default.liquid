@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="{{ page.lang | default: site.lang }}">
+  <head>
+    {% if page.redirect %}
+      {% if page.redirect == true %}
+        {% assign redirect = '/' | relative_url %}
+      {% elsif page.redirect contains '://' %}
+        {% assign redirect = page.redirect %}
+      {% else %}
+        {% assign redirect = page.redirect | relative_url %}
+      {% endif %}
+      <meta http-equiv="refresh" content="0; url={{ redirect }}">
+    {% endif %}
+    {% include head.liquid %}
+  </head>
+  <body>
+    {% assign lang_key = page.lang | default: 'zh' %}
+    {% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+    {% assign text = site.data.site_text[lang_key] %}
+    <a class="skip-link" href="#main-content">{{ text.skip_to_content }}</a>
+    {% include header.liquid %}
+    <main id="main-content" class="site-main" tabindex="-1">
+      {{ content }}
+    </main>
+    {% include search-modal.liquid %}
+    {% include footer.liquid %}
+    <script src="{{ '/assets/js/theme-compat.js' | relative_url | bust_file_cache }}"></script>
+    {% include scripts.liquid %}
+    <script src="{{ '/assets/js/site-search.js' | relative_url | bust_file_cache }}"></script>
+  </body>
+</html>

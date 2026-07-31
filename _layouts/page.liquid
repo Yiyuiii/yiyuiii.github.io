@@ -1,0 +1,14 @@
+---
+layout: default
+---
+<div class="page-shell">
+  {% unless page.hide_title %}
+    <header class="page-header">
+      <h1>{{ page.title }}</h1>
+      {% if page.description %}<p>{{ page.description }}</p>{% endif %}
+    </header>
+  {% endunless %}
+  <article class="page-content">
+    {{ content }}
+  </article>
+</div>

@@ -1,0 +1,240 @@
+- key: hdbo-b-ijcnn-2025
+  title:
+    zh: "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization"
+    en: "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization"
+  authors:
+    zh:
+      - Yiyu Chen
+      - Hongye Cao
+      - Quanlin Chen
+      - Jing Huo
+      - Dong Li
+      - Xu He
+      - Yang Gao
+    en:
+      - Yiyu Chen
+      - Hongye Cao
+      - Quanlin Chen
+      - Jing Huo
+      - Dong Li
+      - Xu He
+      - Yang Gao
+  venue:
+    zh: IJCNN
+    en: IJCNN
+  year: 2025
+  order: 10
+  status: published
+  links:
+    - kind: doi
+      url: https://doi.org/10.1109/IJCNN64981.2025.11228765
+
+- key: hdbo-survey-2025
+  title:
+    zh: 高维贝叶斯优化研究综述
+    en: Survey on High-dimensional Bayesian Optimization
+  authors:
+    zh:
+      - 陈泉霖
+      - 陈奕宇
+      - 霍静
+      - 曹宏业
+      - 高阳
+      - 李栋
+      - 郝建业
+    en:
+      - Quanlin Chen
+      - Yiyu Chen
+      - Jing Huo
+      - Hongye Cao
+      - Yang Gao
+      - Dong Li
+      - Jianye Hao
+  venue:
+    zh: 软件学报
+    en: Journal of Software
+  year: 2025
+  order: 20
+  status: published
+  self_contribution:
+    zh: （共同第一作者）
+    en: (co-first author)
+  links:
+    - kind: journal
+      url: https://www.jos.org.cn/jos/article/abstract/7304
+    - kind: doi
+      url: https://doi.org/10.13328/j.cnki.jos.007304
+
+- key: trust-region-newton-ecai-2025
+  title:
+    zh: Enhancing Trust-Region Bayesian Optimization via Newton Methods
+    en: Enhancing Trust-Region Bayesian Optimization via Newton Methods
+  authors:
+    zh:
+      - Quanlin Chen
+      - Yiyu Chen
+      - Jing Huo
+      - Tianyu Ding
+      - Yang Gao
+      - Yuetong Chen
+    en:
+      - Quanlin Chen
+      - Yiyu Chen
+      - Jing Huo
+      - Tianyu Ding
+      - Yang Gao
+      - Yuetong Chen
+  venue:
+    zh: ECAI
+    en: ECAI
+  year: 2025
+  order: 30
+  status: published
+  links:
+    - kind: arxiv
+      url: https://arxiv.org/abs/2508.18423
+    - kind: doi
+      url: https://doi.org/10.3233/FAIA251168
+
+- key: meta-rl-survey-2024
+  title:
+    zh: 元强化学习研究综述
+    en: Survey of Meta-reinforcement Learning Research
+  authors:
+    zh:
+      - 陈奕宇
+      - 霍静
+      - 丁天雨
+      - 高阳
+    en:
+      - Yiyu Chen
+      - Jing Huo
+      - Tianyu Ding
+      - Yang Gao
+  venue:
+    zh: 软件学报
+    en: Journal of Software
+  year: 2024
+  order: 40
+  status: published
+  recognition:
+    label:
+      zh: 2024年高被关注综述论文
+      en: 2024 Top-20 High-Attention Review Paper
+    url: https://mp.weixin.qq.com/s/0c-6egiMkVL0nn7jbSP0Cg
+  links:
+    - kind: journal
+      url: https://www.jos.org.cn/jos/article/abstract/7011
+    - kind: doi
+      url: https://doi.org/10.13328/j.cnki.jos.007011
+
+- key: supervised-dr-ppsn-2024
+  title:
+    zh: Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization
+    en: Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization
+  authors:
+    zh:
+      - Quanlin Chen
+      - Jing Huo
+      - Yiyu Chen
+      - Tianyu Ding
+      - Yang Gao
+      - Dong Li
+      - Xu He
+    en:
+      - Quanlin Chen
+      - Jing Huo
+      - Yiyu Chen
+      - Tianyu Ding
+      - Yang Gao
+      - Dong Li
+      - Xu He
+  venue:
+    zh: PPSN
+    en: PPSN
+  year: 2024
+  order: 50
+  status: published
+  links:
+    - kind: doi
+      url: https://doi.org/10.1007/978-3-031-70068-2_22
+
+- key: casil-aamas-2024
+  title:
+    zh: Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture
+    en: Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture
+  authors:
+    zh:
+      - Zixuan Chen
+      - Ze Ji
+      - Shuyang Liu
+      - Jing Huo
+      - Yiyu Chen
+      - Yang Gao
+    en:
+      - Zixuan Chen
+      - Ze Ji
+      - Shuyang Liu
+      - Jing Huo
+      - Yiyu Chen
+      - Yang Gao
+  venue:
+    zh: AAMAS
+    en: AAMAS
+  year: 2024
+  order: 60
+  status: published
+  links:
+    - kind: pdf
+      url: https://www.ifaamas.org/Proceedings/aamas2024/pdfs/p2204.pdf
+
+- key: radar-rl-2023
+  title:
+    zh: A Practical Reinforcement Learning Framework for Automatic Radar Detection
+    en: A Practical Reinforcement Learning Framework for Automatic Radar Detection
+  authors:
+    zh:
+      - Junpeng Yu
+      - Yiyu Chen
+    en:
+      - Junpeng Yu
+      - Yiyu Chen
+  venue:
+    zh: ZTE Communications
+    en: ZTE Communications
+  year: 2023
+  order: 70
+  status: published
+  self_contribution:
+    zh: （共同第一作者）
+    en: (co-first author)
+  links:
+    - kind: journal
+      url: https://www.zte.com.cn/global/about/magazine/zte-communications/2023/en202303/special-topic/en202303004.html
+    - kind: doi
+      url: https://doi.org/10.12142/ZTECOM.202303004
+
+- key: tild-aamas-2023
+  title:
+    zh: "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations"
+    en: "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations"
+  authors:
+    zh:
+      - Zixuan Chen
+      - Wenbin Li
+      - Yang Gao
+      - Yiyu Chen
+    en:
+      - Zixuan Chen
+      - Wenbin Li
+      - Yang Gao
+      - Yiyu Chen
+  venue:
+    zh: AAMAS
+    en: AAMAS
+  year: 2023
+  order: 80
+  status: published
+  links:
+    - kind: pdf
+      url: https://www.ifaamas.org/Proceedings/aamas2023/pdfs/p2421.pdf

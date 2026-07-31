@@ -1,0 +1,66 @@
+- repository: Yiyuiii/codex-cc-tools
+  source:
+    locale: en
+    path: README.md
+    object_id: 05ff726f7531d6bf5746b8522b17fdb0be86bdaf
+    description: Claude Code task tools for Codex via MCP.
+  translations:
+    zh:
+      source_object_id: 05ff726f7531d6bf5746b8522b17fdb0be86bdaf
+      status: current
+      description: Codex 通过 MCP 调用的 Claude Code 任务工具。
+- repository: Yiyuiii/HDBO-B
+  source:
+    locale: en
+    path: README.md
+    object_id: 10ca0ce7c0132aa990a1ca833ea591fa018f7d79
+    description: HDBO-B, a generalized and unified benchmark for High Dimensional Bayesian Optimization, is including testing functions, example algorithms and more examples.
+  translations:
+    zh:
+      source_object_id: 10ca0ce7c0132aa990a1ca833ea591fa018f7d79
+      status: current
+      description: HDBO-B 是一个通用、统一的高维贝叶斯优化基准，包含测试函数、示例算法及更多实例。
+- repository: Yiyuiii/nonebot-plugin-moegoe
+  source:
+    locale: zh
+    path: README.md
+    object_id: 1c0002ef4357082d85222a426f449bbe92432daa
+    description: 用API让原神角色说话！
+  translations:
+    en:
+      source_object_id: 1c0002ef4357082d85222a426f449bbe92432daa
+      status: current
+      description: Use an API to make Genshin Impact characters speak!
+- repository: Yiyuiii/simple_asr_llm_tts
+  source:
+    locale: en
+    path: README.md
+    object_id: 2c7d6ccb5ba1958191560a3678a8dae10f2f94a0
+    description: A simple voice-to-voice LLM chat repo. All is free and light-weight.
+  translations:
+    zh:
+      source_object_id: 2c7d6ccb5ba1958191560a3678a8dae10f2f94a0
+      status: current
+      description: 一个简单的端到端语音大模型聊天仓库；全部组件免费且轻量。
+- repository: Yiyuiii/solver4turingmachine
+  source:
+    locale: en
+    path: README.md
+    object_id: c9aa1b8f5e0ea2df854054dd7d7bade2139c5ee6
+    description: 'This is a solver for the board game: Turing Machine.'
+  translations:
+    zh:
+      source_object_id: c9aa1b8f5e0ea2df854054dd7d7bade2139c5ee6
+      status: current
+      description: 这是桌游《图灵机》的求解器。
+- repository: Yiyuiii/taco
+  source:
+    locale: en
+    path: README.md
+    object_id: d7cd74ad8481414001e39fe89fc5bdc99ea7f93d
+    description: TACO extends the LLM-based Bayesian optimization framework LLAMBO with active cross-task transfer. At each BO round, a single LLM call simultaneously proposes target hyperparameter candidates and selects an auxiliary query, accumulating cross-task evidence that feeds back into subsequent rounds.
+  translations:
+    zh:
+      source_object_id: d7cd74ad8481414001e39fe89fc5bdc99ea7f93d
+      status: current
+      description: TACO 在基于大语言模型的贝叶斯优化框架 LLAMBO 上加入主动跨任务迁移。每轮贝叶斯优化只需一次大语言模型调用，即可同时提出目标超参数候选并选择辅助查询；累积的跨任务证据会反馈到后续轮次中。
