@@ -1,0 +1,303 @@
+<!DOCTYPE html> <html lang="zh"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 《特鲁瓦》资源-分值量化分析攻略 | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="在《特鲁瓦》桌游中，玩家的行动依赖随机的骰子点数，而购买其他人骰子的机制使得原本高随机性的个人产出变为所有人共享的公共产出，以新颖的方式平衡了随机性和策略性。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="website"> <meta property="og:title" content="yiyuiii | 《特鲁瓦》资源-分值量化分析攻略"> <meta property="og:url" content="https://yiyuiii.github.io/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/"> <meta property="og:description" content="在《特鲁瓦》桌游中，玩家的行动依赖随机的骰子点数，而购买其他人骰子的机制使得原本高随机性的个人产出变为所有人共享的公共产出，以新颖的方式平衡了随机性和策略性。"> <meta property="og:image" content="/assets/img/favicons/android-chrome-256x256.png"> <meta property="og:locale" content="zh-CN"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="《特鲁瓦》资源-分值量化分析攻略"> <meta name="twitter:description" content="在《特鲁瓦》桌游中，玩家的行动依赖随机的骰子点数，而购买其他人骰子的机制使得原本高随机性的个人产出变为所有人共享的公共产出，以新颖的方式平衡了随机性和策略性。"> <meta name="twitter:image" content="/assets/img/favicons/android-chrome-256x256.png"> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Yiyu Chen"
+        },
+        "url": "https://yiyuiii.github.io/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "@type": "WebSite",
+        "description": "在《特鲁瓦》桌游中，玩家的行动依赖随机的骰子点数，而购买其他人骰子的机制使得原本高随机性的个人产出变为所有人共享的公共产出，以新颖的方式平衡了随机性和策略性。",
+        "headline": "《特鲁瓦》资源-分值量化分析攻略",
+        
+        "sameAs": ["https://github.com/Yiyuiii"],
+        
+        "name": "Yiyu Chen",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://yiyuiii.github.io/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <a class="site-brand" href="/" aria-label="yiyuiii"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> <span>yiyuiii</span> </a> <nav class="site-nav" aria-label="主导航"> <a href="/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <a class="language-switch" href="/en/?missing_translation=1" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <article class="article-shell"> <div class="article-column"> <header class="article-header"> <h1>《特鲁瓦》资源-分值量化分析攻略</h1> <div class="article-meta"> <div class="article-tags"> <a href="/?tag=%E6%A1%8C%E6%B8%B8">桌游</a> <a href="/?tag=%E7%89%B9%E9%B2%81%E7%93%A6">特鲁瓦</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> 初稿 <time datetime="2024-07-01">2024.07.01</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">修订历史</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2024-07-01">2024.07.01</time> <span>初稿</span> </li> </ol> </details> </div> </header> <button class="article-section-trigger" type="button" aria-controls="article-section-dialog" aria-expanded="false" data-article-section-trigger> 章节 </button> <dialog class="article-section-dialog" id="article-section-dialog" aria-labelledby="article-section-dialog-title" data-article-section-dialog> <div class="article-section-dialog__header"> <strong id="article-section-dialog-title">文章章节</strong> <button type="button" aria-label="关闭章节导航" data-article-section-close> × </button> </div> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h3"><a href="#%E5%89%8D%E8%A8%80">前言</a></li> <li class="toc-entry toc-h3"><a href="#%E5%BD%B1%E5%93%8D%E5%8A%9B">影响力</a></li> <li class="toc-entry toc-h3"> <a href="#%E4%BA%8B%E4%BB%B6%E7%BB%93%E7%AE%97">事件结算</a> <ul> <li class="toc-entry toc-h4"><a href="#%E4%BA%8B%E4%BB%B6%E7%89%8C%E7%9A%84%E6%94%B6%E7%9B%8A">事件牌的收益</a></li> </ul> </li> <li class="toc-entry toc-h3"><a href="#%E9%AA%B0%E5%AD%90%E7%9A%84%E4%BD%BF%E7%94%A8">骰子的使用</a></li> <li class="toc-entry toc-h3"><a href="#%E5%8A%9F%E8%83%BD%E7%89%8C">功能牌</a></li> <li class="toc-entry toc-h3"><a href="#%E9%92%B1">钱</a></li> </ul> </nav> </dialog> <div class="post-content" id="markdown-content"> <p><img src="/assets/posts/202407012233/cover-bgg-1091724-square.webp" alt="《特鲁瓦》四人对局"></p> <p><em>题图：<a href="https://boardgamegeek.com/image/1091724/troyes" rel="external nofollow noopener" target="_blank">Overview of the board. 4 player game.</a>，摄影：BoardGameGeek 用户 verminose，<a href="https://creativecommons.org/licenses/by-nc/3.0/" rel="external nofollow noopener" target="_blank">CC BY-NC 3.0</a>；本站作方形裁切。</em></p> <h3 id="前言">前言</h3> <p>在《特鲁瓦》桌游中，玩家的行动依赖随机的骰子点数，而购买其他人骰子的机制使得原本高随机性的个人产出变为所有人共享的公共产出，以新颖的方式平衡了随机性和策略性。</p> <p>在玩过两局《特鲁瓦》后，我直觉这个游戏的分数收益可以简单地近似量化，这篇文章就记录了这个量化过程。</p> <p>作为一个计分游戏，我们可以从得分倒推各个资源的收益。</p> <h3 id="影响力">影响力</h3> <p>1影响力重掷后点数期望3.5点，重掷1点最佳，即期望收益2.5点数；</p> <p>4影响力稳定使最多3个点数翻转，翻转1点到6点最佳，即期望收益15点数，平均每影响力收益3.75点数；</p> <p>考虑到4影响力的收集和最大化收益都很困难，影响力到点数的量化暂定为3点。</p> <p>注意，如果希望充分利用影响力，需要为自己保留相应多的骰子。</p> <h3 id="事件结算">事件结算</h3> <p>事件牌是从点数到分数最直接的转换方式。</p> <p>每个cube=2~4点骰子，获得1影响力， 因此需要2点骰子的事件牌怎么都不会亏。</p> <h4 id="事件牌的收益">事件牌的收益</h4> <p>以最少花费稳拿一位的话， $4 \times 2=8$点稳拿$2+1=3$分+4影响力，即8点 = 3分+12点； $2 \times 4=8$、$3 \times 3=9$点稳拿$3+1=4$分 + 2、3影响力，即9点=4分+9点； $3 \times 4=12$点稳拿$4+1=5$分 + 3影响力，即12点=5分+9点； 我们发现，分母越小的事件牌给的影响力越多，因此它们的收益更高。</p> <p>以全额花费完成事件牌的话， $7 \times 2=14$点得到$2+1=3$分 + 7影响力，即14点 = 3分+21点； $4 \times 4=16$、$5 \times 3=15$点得到$3+1=4$分 + 4~5影响力，即15点=4分+12~15点；</p> <p>拿二位的话， 2~4点得到1~2分 + 1影响力，约等于白赚1~2分。</p> <p>从以上收益看到，以全额花费完成事件牌的收益和拿二位相近，所以当事件牌足够多时，玩家的最优选择是不帮助别人得到最少花费的一位，单刷事件牌。</p> <p>这里建议策略是，做好单刷事件牌的准备，保证每个已投资的事件牌都能完成即可。</p> <p>另外，因为事件牌行动完全回本，其收益取决于玩家能够得到的红点数上限。</p> <h3 id="骰子的使用">骰子的使用</h3> <p>购买：以性价比高的组合计算，购买骰子支付2~4钱，获得4~6点数，是一定要买的。自己付钱购买后别人也会付钱买回来，所以不用太计较钱。</p> <p>解决黑骰：根据影响力收益得到，打3点以下的黑骰是赚的，否则是亏的。</p> <p>大教堂：1~3点=1影响力+1分，4~6点=2影响力+1分，每行首次填入+2分，即每行首次填入+3分，后续填入+1分。</p> <p>市民：如果2影响力获得市民，市民产生的骰子等价于2~4钱的回合收益。 因此，建议用小点数调整自己的市民位置，踢掉别人的市民，或为将来的功能牌工位购买市民。</p> <p>换钱：标准行动2黄点数=1钱，是很亏的行动，不能作为量化依据。</p> <h3 id="功能牌">功能牌</h3> <p>功能牌提供了很多高价值的行动，它们对一局游戏的资源-价值转换有很大的影响。 工位上收益为2影响力+2~6钱=1~3分，基本不赚不亏，因此后面不重复列出。</p> <p>（白1）僧侣：3白点=3a黄点-a白点。收益为2a-3点，由于产出黄点需要配合黄牌使用。</p> <p>（白2）圣堂武士：3白点=2a红点-a白点。收益为a-3点，该牌产生收益不高，但强在能用最高12红点抢占事件牌一位。</p> <p>（白3）游行：4白点=2分。性价比不高的终局收官行动。</p> <p>（红1）弓箭手：2红点=$\frac{2}{3}$概率cube~=4点，在踩分母=3以上的事件牌时有近乎翻倍的收益。</p> <p>（红2）佣兵：2红点=3钱，血亏。</p> <p>（红3）队长：4红点=x分，3分相对可以接受，在独红时很强。</p> <p>（黄1）磨坊工：4黄点=4+钱，6钱相对可以接受，不过刷钱的作用比较有限，用于购买是没有用的。</p> <p>（黄2）铁匠：3黄点=+5红点，相当高的性价比。</p> <p>（黄3）技工：4黄点+3钱=2分，性价比极低的终局收官行动。</p> <h3 id="钱">钱</h3> <p>钱的主要作用在于上功能牌工位、购买骰子、黄高级牌换分、以及角色牌得分。</p> <p>功能牌工位转换效率不高，购买骰子、角色牌得分是刚需操作、黄高级牌换分是血亏行动，因此钱的角色更多是一种行动限制，而不是主要刷分手段。</p> </div> </div> <aside class="article-side-toc"> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h3"><a href="#%E5%89%8D%E8%A8%80">前言</a></li> <li class="toc-entry toc-h3"><a href="#%E5%BD%B1%E5%93%8D%E5%8A%9B">影响力</a></li> <li class="toc-entry toc-h3"> <a href="#%E4%BA%8B%E4%BB%B6%E7%BB%93%E7%AE%97">事件结算</a> <ul> <li class="toc-entry toc-h4"><a href="#%E4%BA%8B%E4%BB%B6%E7%89%8C%E7%9A%84%E6%94%B6%E7%9B%8A">事件牌的收益</a></li> </ul> </li> <li class="toc-entry toc-h3"><a href="#%E9%AA%B0%E5%AD%90%E7%9A%84%E4%BD%BF%E7%94%A8">骰子的使用</a></li> <li class="toc-entry toc-h3"><a href="#%E5%8A%9F%E8%83%BD%E7%89%8C">功能牌</a></li> <li class="toc-entry toc-h3"><a href="#%E9%92%B1">钱</a></li> </ul> </nav> </aside> </article> <script src="/assets/js/article-navigation.js?v=b592d47d060495aefbb976ca4bfd7657" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目或论文"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+      
+      {
+        "title": "《大创造时代》资源-分值量化计算思路",
+        "description": "本文尝试把《大创造时代》中的不同资源换算到同一尺度，并用跨轮迭代模型比较资源在局中的实际价值。",
+        "tags": ["大创造时代","桌游"],
+        "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "《特鲁瓦》资源-分值量化分析攻略",
+        "description": "在《特鲁瓦》桌游中，玩家的行动依赖随机的骰子点数，而购买其他人骰子的机制使得原本高随机性的个人产出变为所有人共享的公共产出，以新颖的方式平衡了随机性和策略性。",
+        "tags": ["特鲁瓦","桌游"],
+        "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "《盖亚计划》资源-分值量化计算思路",
+        "description": "本文给出《盖亚计划》桌游中各类资源到价值的近似量化思路，为玩家的发展规划提供基础的宏观参考。",
+        "tags": ["盖亚计划","桌游"],
+        "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "了解游泳",
+        "description": "我写这个文章的时候已经自学了几个月的游泳。我从一开始害怕水，到后来浮不起来、游不快、不会换气，到现在能比较快速地用平蛙姿势游50米，终于算是入门了。这期间零散搜集了很多教学文字和视频，深深体会到自学的不易，踩了一些坑也有一些感悟，希望在这里记录尽可能全面的游泳入门流程，给正好有需要的人们看看。",
+        "tags": ["游泳"],
+        "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "逻辑对决桌游攻略",
+        "description": "截至 2023 年 2 月，我在 BGA 上玩了近 500 场《逻辑对决》。这篇攻略从数字推理、问题价值和终局攻防出发，整理我当时形成的一套实战思路。",
+        "tags": ["逻辑对决","桌游"],
+        "url": "/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "四季物语量化分析攻略",
+        "description": "《四季物语》以魔法和自然为主题，美术风格轻快，游戏节奏紧凑，规则简单而不失深度，是一款热度很高的2~4人桌游。",
+        "tags": ["四季物语","桌游"],
+        "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "装机记录",
+        "description": "2022 年双 11，笔记本开始频繁蓝屏，GTX 1060 Ti 也逐渐跟不上新显示器；我决定趁活动装一台 R5 5600 + RX 6600 XT 主机，顺手记录这次选型、预算和踩坑。",
+        "tags": ["装机"],
+        "url": "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "制作一张匹配形状的字符画",
+        "description": "最近玩字符画，查了一下主流的字符画算法，基本采用平均灰度这一指标将图片区域映射到单个字符。",
+        "tags": ["NoneBot","Python","字符画"],
+        "url": "/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "云服务器折腾随笔",
+        "description": "这篇文章记录了我2022年暑假期间调研、尝试云服务器的一些情况。",
+        "tags": ["云服务器"],
+        "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "用API让原神角色说话！",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "HDBO-B 是一个通用、统一的高维贝叶斯优化基准，包含测试函数、示例算法及更多实例。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "一个简单的端到端语音大模型聊天仓库；全部组件免费且轻量。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "这是桌游《图灵机》的求解器。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "Codex 通过 MCP 调用的 Claude Code 任务工具。",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "TACO 在基于大语言模型的贝叶斯优化框架 LLAMBO 上加入主动跨任务迁移。每轮贝叶斯优化只需一次大语言模型调用，即可同时提出目标超参数候选并选择辅助查询；累积的跨任务证据会反馈到后续轮次中。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/publications/#hdbo-b-ijcnn-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "高维贝叶斯优化研究综述",
+      "description": "陈泉霖, 陈奕宇, 霍静, 曹宏业, 高阳, 李栋, 郝建业 · 软件学报",
+      "tags": [2025],
+      "url": "/publications/#hdbo-survey-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/publications/#trust-region-newton-ecai-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "元强化学习研究综述",
+      "description": "陈奕宇, 霍静, 丁天雨, 高阳 · 软件学报 · 2024年高被关注综述论文",
+      "tags": [2024],
+      "url": "/publications/#meta-rl-survey-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/publications/#supervised-dr-ppsn-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/publications/#casil-aamas-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/publications/#radar-rl-2023",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/publications/#tild-aamas-2023",
+      "kind": "论文"
+    }
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=20b4374179b819e7217d01777148cec5"></script> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10.7.0/dist/mermaid.min.js" integrity="sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js" integrity="sha256-1rA678n2xEx7x4cTZ5x4wpUCj6kUMZEZ5cxLSVSFWxw=" crossorigin="anonymous"></script> <script defer src="/assets/al_charts/js/mermaid-setup.js" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script src="/assets/js/site-search.js?v=af3dcf1d63c7ba529e2230dc6aae0477"></script> </body> </html>

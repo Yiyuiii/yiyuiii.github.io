@@ -1,0 +1,233 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Building a Personal GitHub Page | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="This article is about my experience of how to successfully start a Personal GitHub website."> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="website"> <meta property="og:title" content="yiyuiii | Building a Personal GitHub Page"> <meta property="og:url" content="https://yiyuiii.github.io/posts/build-a-personal-github-page/"> <meta property="og:description" content="This article is about my experience of how to successfully start a Personal GitHub website."> <meta property="og:image" content="/assets/img/favicons/android-chrome-256x256.png"> <meta property="og:locale" content="zh-CN"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Building a Personal GitHub Page"> <meta name="twitter:description" content="This article is about my experience of how to successfully start a Personal GitHub website."> <meta name="twitter:image" content="/assets/img/favicons/android-chrome-256x256.png"> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Yiyu Chen"
+        },
+        "url": "https://yiyuiii.github.io/posts/build-a-personal-github-page/",
+        "@type": "WebSite",
+        "description": "This article is about my experience of how to successfully start a Personal GitHub website.",
+        "headline": "Building a Personal GitHub Page",
+        
+        "sameAs": ["https://github.com/Yiyuiii"],
+        
+        "name": "Yiyu Chen",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://yiyuiii.github.io/posts/build-a-personal-github-page/"> </head> <body> <a class="skip-link" href="#main-content">Skip to content</a> <header class="site-header"> <div class="site-header__inner"> <a class="site-brand" href="/en/" aria-label="yiyuiii"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> <span>yiyuiii</span> </a> <nav class="site-nav" aria-label="Primary navigation"> <a href="/en/">Writing</a> <a href="/en/projects/">GitHub</a> <a href="/en/publications/">Papers</a> <a href="/en/about/">About yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="Search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <a class="language-switch" href="/?missing_translation=1" aria-label="Switch to Chinese"> 中 </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <article class="article-shell"> <div class="article-column"> <header class="article-header"> <h1>Building a Personal GitHub Page</h1> <div class="article-meta"> <div class="article-tags"> <a href="/en/?tag=GitHub">GitHub</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> First published <time datetime="2021-09-16">2021-09-16</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">Revision history</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2021-09-16">2021-09-16</time> <span>First published</span> </li> </ol> </details> </div> </header> <button class="article-section-trigger" type="button" aria-controls="article-section-dialog" aria-expanded="false" data-article-section-trigger> Sections </button> <dialog class="article-section-dialog" id="article-section-dialog" aria-labelledby="article-section-dialog-title" data-article-section-dialog> <div class="article-section-dialog__header"> <strong id="article-section-dialog-title">Article sections</strong> <button type="button" aria-label="Close section navigation" data-article-section-close> × </button> </div> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h1"> <a href="#building-a-personal-github-page">Building a Personal GitHub Page</a> <ul> <li class="toc-entry toc-h2"> <a href="#background">Background</a> <ul> <li class="toc-entry toc-h3"><a href="#github-pages">GitHub Pages</a></li> <li class="toc-entry toc-h3"><a href="#jekyll">Jekyll</a></li> <li class="toc-entry toc-h3"><a href="#ruby">Ruby</a></li> <li class="toc-entry toc-h3"><a href="#rubygems">RubyGems</a></li> <li class="toc-entry toc-h3"><a href="#buddle">Buddle</a></li> <li class="toc-entry toc-h3"><a href="#jekyll-theme">Jekyll Theme</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#my-practice">My Practice</a> <ul> <li class="toc-entry toc-h3"><a href="#theme">Theme</a></li> <li class="toc-entry toc-h3"> <a href="#debug">Debug</a> <ul> <li class="toc-entry toc-h4"><a href="#common-build-failure">Common Build Failure</a></li> <li class="toc-entry toc-h4"><a href="#_configyml-failure">_config.yml Failure</a></li> </ul> </li> </ul> </li> <li class="toc-entry toc-h2"><a href="#result">Result</a></li> <li class="toc-entry toc-h2"><a href="#reference">Reference</a></li> </ul> </li> </ul> </nav> </dialog> <div class="post-content" id="markdown-content"> <p><img src="/assets/posts/202109160000/cover-homepage-2026-07-30.webp" alt="The Chinese writing index of this personal GitHub Pages site"></p> <p><em>Cover: this site’s Chinese writing index on 30 July 2026; screenshot and site content by the author.</em></p> <p>This article is about my experience of how to successfully start a Personal GitHub website.</p> <h1 id="building-a-personal-github-page">Building a Personal GitHub Page</h1> <p><strong>Attention:</strong> since there are variety of detailed tutorials available online, here we just focus on some key points. You may frequently open other websites.</p> <h2 id="background">Background</h2> <p>During my hard going through, I found that there’s plenty of background barriers in front of a beginner to arrange everything elegantly. So let’s begin.</p> <h3 id="github-pages">GitHub Pages</h3> <p><a href="https://pages.github.com/" rel="external nofollow noopener" target="_blank">GitHub Pages</a> provides free personal &amp; project websites for all users.</p> <p>Its pros are,</p> <ul> <li> <p>Totally free</p> </li> <li> <p>Easy to manage</p> </li> </ul> <p>Its cons are,</p> <ul> <li> <p>Static contents only</p> </li> <li> <p>Blogs cannot be indexed by Baidu</p> </li> <li> <p>Space cannot be greater than 1G</p> </li> <li> <p>Flow cannot exceed 100G monthly</p> </li> <li> <p>No more than 10 updates per hour</p> </li> </ul> <p>But it’s free!</p> <p>To enable this feature, follow the steps below.</p> <ol> <li>Get a repository with name ‘*.github.io’. The content of repository is the source of website.</li> <li>Enable feature in ‘Repository - Setting - Pages’.</li> <li>Website ‘*.github.io’ is generated automatically each time the repository is updated. Upload a README, and watch it on ‘*.github.io’.</li> </ol> <p>Notice that</p> <ul> <li> <p>Page building requires time. It’s often done within 1 minute.</p> </li> <li> <p>Page files generated is not visible on GitHub.</p> </li> <li> <p>GitHub Pages supports Jekyll, as well as pure HTML documents. The themes in ‘Repository - Setting - Pages’ are exactly Jekyll themes.</p> </li> </ul> <p>Upon getting the website, the next step is to enrich it. Commonly on GitHub Pages we use Jekyll.</p> <h3 id="jekyll">Jekyll</h3> <p><a href="https://jekyllrb.com/" rel="external nofollow noopener" target="_blank">Jekyll</a> provides generator of static websites and blogs without database. In most time, we update Jekyll websites with Markdown files.</p> <p>For installation: <a href="https://jekyllrb.com/docs/installation/" rel="external nofollow noopener" target="_blank">https://jekyllrb.com/docs/installation/</a></p> <p>Jekyll is a Ruby ‘package’, so Ruby first.</p> <h3 id="ruby">Ruby</h3> <p><a href="https://www.ruby-lang.org/" rel="external nofollow noopener" target="_blank">Ruby</a> is an object-oriented dynamic language. For our usage, Ruby+Devkit installed is all we need.</p> <h3 id="rubygems">RubyGems</h3> <p><a href="https://rubygems.org/" rel="external nofollow noopener" target="_blank">RubyGems</a> is a package manager for Ruby. It provides a standard format for distributing Ruby programs and libraries, as well as a tool for managing package installation. A package for Ruby is called a ‘gem’.</p> <p>Jekyll is a Ruby gem.</p> <h3 id="buddle">Buddle</h3> <p><a href="https://bundler.io/" rel="external nofollow noopener" target="_blank">Buddle</a> (or Bundler) provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed.</p> <p>In our procedure, sometimes <code class="language-plaintext highlighter-rouge">buddle exec</code> is needed.</p> <h3 id="jekyll-theme">Jekyll Theme</h3> <p><a href="https://jekyllrb.com/docs/themes/" rel="external nofollow noopener" target="_blank">Jekyll Theme</a> specify plugins and package up assets, layouts, includes, and stylesheets in a way that can be overridden by your site’s content. A Jekyll Theme is a Gem. Specifically, those resources are included:</p> <ul> <li> <p>assets</p> </li> <li> <p>_layouts</p> </li> <li> <p>_includes</p> </li> <li> <p>_sass</p> </li> </ul> <p>Above is what I found online. At a guess, its potentiality is more than these, but I haven’t found out the mechanism yet.</p> <h2 id="my-practice">My Practice</h2> <p>With the information above, in fact we have multiple choices to build a GitHub Page:</p> <ol> <li>Build with Jekyll, with theme &amp; site separated</li> <li>Build with Jekyll, with theme &amp; site integrated</li> <li>Build locally, just upload site files</li> </ol> <p>Up to now my blog matches Option 2, and Option 1 is a final goal.</p> <h3 id="theme">Theme</h3> <p><a href="https://github.com/cotes2020/jekyll-theme-chirpy" rel="external nofollow noopener" target="_blank">Chirpy</a> is the theme I currently use, it’s so close to the perfection in my mind. We have three ways to apply a theme:</p> <ol> <li>Remote import in ‘_config.yml’: <code class="language-plaintext highlighter-rouge">remote_theme: cotes2020/jekyll-theme-chirpy</code> </li> <li>Fork the project, then remote import the copy in ‘_config.yml’</li> <li>Copy all, with theme &amp; site integrated, and disable external theme in ‘_config.yml’</li> </ol> <p>I chose Option 3, as there was code incompatibility between Chirpy &amp; Github-Pages Gem, so it’ll be unstable with external theme.</p> <p>Chirpy also provides a <a href="https://github.com/cotes2020/jekyll-theme-chirpy#readme" rel="external nofollow noopener" target="_blank">tutorial</a>.</p> <h3 id="debug">Debug</h3> <p>As long as a BUG occurs during GitHub Page building, you will receive an e-mail.</p> <h4 id="common-build-failure">Common Build Failure</h4> <blockquote> <p>The page build failed for the <code class="language-plaintext highlighter-rouge">master</code> branch with the following error:</p> <p>Page build failed. For more information, see https://docs.github.com/github/working-with-github-pages/troubleshooting-jekyll-build-errors-for-github-pages-sites#troubleshooting-build-errors.</p> <p>For information on troubleshooting Jekyll see:</p> <p>https://docs.github.com/articles/troubleshooting-jekyll-builds</p> <p>If you have any questions you can submit a request at https://support.github.com/contact?tags=dotcom-pages&amp;repo_id=406411513&amp;page_build_id=279574162</p> </blockquote> <p>This message does not feedback the exact problems to us. To deal with this, we should rely on local environment, where bug feedbacks can be found in the console.</p> <p>But notice that GitHub Page building relies on a specific set of Gems. The list is shown on <a href="https://pages.github.com/versions.json" rel="external nofollow noopener" target="_blank">https://pages.github.com/versions.json</a>. While testing locally, the difference of Gem version may leads to different result. To sync, just import Gem in ‘Gemfile’: <code class="language-plaintext highlighter-rouge">gem 'github-pages'</code>, and exec <code class="language-plaintext highlighter-rouge">buddle exec jekyll serve</code> in console.</p> <h4 id="_configyml-failure">_config.yml Failure</h4> <blockquote> <p>The page build failed for the <code class="language-plaintext highlighter-rouge">master</code> branch with the following error:</p> <p>You have an error on line 2 of your <code class="language-plaintext highlighter-rouge">_config.yml</code> file. For more information, see https://docs.github.com/github/working-with-github-pages/troubleshooting-jekyll-build-errors-for-github-pages-sites#config-file-error.</p> <p>For information on troubleshooting Jekyll see:</p> <p>https://docs.github.com/articles/troubleshooting-jekyll-builds</p> <p>If you have any questions you can submit a request at https://support.github.com/contact?tags=dotcom-pages&amp;repo_id=406061228&amp;page_build_id=279331936</p> </blockquote> <p>This kind of messages indicate where the bug exists. For more information, just test it locally.</p> <h2 id="result">Result</h2> <p>And <a href="https://yiyuiii.github.io/">this website</a> is the outcome.</p> <h2 id="reference">Reference</h2> </div> </div> <aside class="article-side-toc"> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h1"> <a href="#building-a-personal-github-page">Building a Personal GitHub Page</a> <ul> <li class="toc-entry toc-h2"> <a href="#background">Background</a> <ul> <li class="toc-entry toc-h3"><a href="#github-pages">GitHub Pages</a></li> <li class="toc-entry toc-h3"><a href="#jekyll">Jekyll</a></li> <li class="toc-entry toc-h3"><a href="#ruby">Ruby</a></li> <li class="toc-entry toc-h3"><a href="#rubygems">RubyGems</a></li> <li class="toc-entry toc-h3"><a href="#buddle">Buddle</a></li> <li class="toc-entry toc-h3"><a href="#jekyll-theme">Jekyll Theme</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#my-practice">My Practice</a> <ul> <li class="toc-entry toc-h3"><a href="#theme">Theme</a></li> <li class="toc-entry toc-h3"> <a href="#debug">Debug</a> <ul> <li class="toc-entry toc-h4"><a href="#common-build-failure">Common Build Failure</a></li> <li class="toc-entry toc-h4"><a href="#_configyml-failure">_config.yml Failure</a></li> </ul> </li> </ul> </li> <li class="toc-entry toc-h2"><a href="#result">Result</a></li> <li class="toc-entry toc-h2"><a href="#reference">Reference</a></li> </ul> </li> </ul> </nav> </aside> </article> <script src="/assets/js/article-navigation.js?v=b592d47d060495aefbb976ca4bfd7657" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="Enter a term to start searching." data-no-results="No matching content found." data-missing-translation="This item has no English version yet. You are viewing the English writing index."> <div class="search-dialog__header"> <h2 id="search-title">Search this site</h2> <button id="search-close" class="icon-button" type="button" aria-label="Close search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">Search this site</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search writing, projects, or papers"> <p id="search-status" class="search-status" aria-live="polite">Enter a term to start searching.</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      {
+        "title": "Reinforcement Learning Issues",
+        "description": "This article is about Reinforcement Learning issues.",
+        "tags": ["Reinforcement Learning"],
+        "url": "/posts/reinforcement-learning-issues/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Building a Personal GitHub Page",
+        "description": "This article is about my experience of how to successfully start a Personal GitHub website.",
+        "tags": ["GitHub"],
+        "url": "/posts/build-a-personal-github-page/",
+        "kind": "Writing"
+      }
+      
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "Use an API to make Genshin Impact characters speak!",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "HDBO-B, a generalized and unified benchmark for High Dimensional Bayesian Optimization, is including testing functions, example algorithms and more examples.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "A simple voice-to-voice LLM chat repo. All is free and light-weight.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "This is a solver for the board game: Turing Machine.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "Claude Code task tools for Codex via MCP.",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "TACO extends the LLM-based Bayesian optimization framework LLAMBO with active cross-task transfer. At each BO round, a single LLM call simultaneously proposes target hyperparameter candidates and selects an auxiliary query, accumulating cross-task evidence that feeds back into subsequent rounds.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-b-ijcnn-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey on High-dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Hongye Cao, Yang Gao, Dong Li, Jianye Hao · Journal of Software",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-survey-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/en/publications/#trust-region-newton-ecai-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey of Meta-reinforcement Learning Research",
+      "description": "Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao · Journal of Software · 2024 Top-20 High-Attention Review Paper",
+      "tags": [2024],
+      "url": "/en/publications/#meta-rl-survey-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/en/publications/#supervised-dr-ppsn-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/en/publications/#casil-aamas-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/en/publications/#radar-rl-2023",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/en/publications/#tild-aamas-2023",
+      "kind": "Papers"
+    }
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=20b4374179b819e7217d01777148cec5"></script> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script src="/assets/js/site-search.js?v=af3dcf1d63c7ba529e2230dc6aae0477"></script> </body> </html>

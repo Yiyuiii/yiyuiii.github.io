@@ -1,0 +1,1 @@
+"function"!=typeof window.determineComputedTheme&&(window.determineComputedTheme=function(){return"light"});
