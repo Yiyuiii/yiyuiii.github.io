@@ -19,8 +19,8 @@
 - `/` 与 `/en/` 是欢迎页，人工文案集中在 `_data/home.yml`；`/writing/` 与 `/en/writing/` 是随笔索引。`_data/home_feed.yml` 只维护三类公开内容的稳定引用与本站实质整理日期，运行时不使用热度或类型配额排序。
 - docs 已由 _config.yml 排除，不会生成公开页面。
 - 11 篇迁移前旧文已获得稳定 `uid`、`translation_key` 和显式 permalink；2 篇英文源位于 `/en/posts/`，原 URL 通过 legacy 重定向兼容。
-- 11 篇旧文的迁移范围保持封闭；截至 2026-08-01，已有 9 组完成双语配对，`_data/translation_exemptions.yml` 仅保留《四季物语量化分析攻略》和《了解游泳》两篇未完成旧文。新文章必须双语发布，不得新增豁免。
-- `scripts/translation_guard.py` 同时保护翻译 source hash、成对 URL、结构签名和修订日期；单语旧文不得提前声明不存在的 `translation_url`。
+- 11 篇旧文已全部完成双语配对；`_data/translation_exemptions.yml` 现为保留架构的空闭集。新文章必须双语发布，不得新增豁免。
+- `scripts/translation_guard.py` 同时保护翻译 source hash、成对 URL、结构签名和修订日期；普通代码围栏逐字保护，Mermaid 仅允许独立 `ID(可见标签)` 节点的标签本地化，图类型、节点 ID、形状和边仍必须一致。
 - 截至 2026-08-01，当前可用的外部审阅渠道只有 Ark Coding Plan 和本地 Kimi，DeepSeek API 暂不可用；这些是动态状态，未来每次使用前必须复核实际可用性。
 
 ## 常用验证

@@ -248,6 +248,96 @@ literal
     assert post_structure_signature(zh) == post_structure_signature(en)
 
 
+def test_mermaid_signature_allows_only_parenthesized_node_label_localization():
+    zh = """```mermaid
+graph LR
+D1(骰子一)
+A1(打出卡牌)
+D1 --> A1
+```
+"""
+    en = """```mermaid
+graph LR
+D1(Die one)
+A1(Play the card)
+D1 --> A1
+```
+"""
+
+    assert post_structure_signature(zh) == post_structure_signature(en)
+
+
+@pytest.mark.parametrize(
+    "changed",
+    [
+        """```mermaid
+graph LR
+D2(Die one)
+A1(Play the card)
+D2 --> A1
+```
+""",
+        """```mermaid
+graph LR
+D1(Die one)
+A1(Play the card)
+```
+""",
+        """```mermaid
+graph LR
+D1(Die one)
+A1(Play the card)
+A1 --> D1
+```
+""",
+        """```mermaid
+graph TD
+D1(Die one)
+A1(Play the card)
+D1 --> A1
+```
+""",
+        """```mermaid
+graph LR
+D1((Die one))
+A1(Play the card)
+D1 --> A1
+```
+""",
+    ],
+    ids=(
+        "changed-node-id",
+        "deleted-edge",
+        "reversed-edge",
+        "changed-graph-direction",
+        "changed-node-shape",
+    ),
+)
+def test_mermaid_signature_rejects_non_label_drift(changed):
+    source = """```mermaid
+graph LR
+D1(骰子一)
+A1(打出卡牌)
+D1 --> A1
+```
+"""
+
+    assert post_structure_signature(source) != post_structure_signature(changed)
+
+
+def test_non_mermaid_fence_still_requires_literal_content():
+    source = """```text
+D1(中文标签)
+```
+"""
+    translation = """```text
+D1(English label)
+```
+"""
+
+    assert post_structure_signature(source) != post_structure_signature(translation)
+
+
 def test_internal_post_links_can_map_to_the_same_translation_identity():
     zh = "[相关文章](/posts/related/#shared)"
     en = "[Related article](/en/posts/related/#shared)"

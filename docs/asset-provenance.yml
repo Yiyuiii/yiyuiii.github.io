@@ -99,6 +99,7 @@ covers:
   - asset: "assets/posts/202301162233/cover-bgg-2898488-square.webp"
     posts:
       - "_posts/2023-01-18-四季物语量化分析攻略.md"
+      - "_posts/2023-01-18-quantitative-strategy-guide-to-seasons.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/2898488/seasons"
     author: "BoardGameGeek user dodecalouise"
@@ -126,6 +127,7 @@ covers:
   - asset: "assets/posts/202307232000/cover-breaststroke-square.webp"
     posts:
       - "_posts/2023-07-23-了解游泳.md"
+      - "_posts/2023-07-23-understanding-swimming.md"
     origin_type: "external"
     source_url: "https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg"
     author: "Adrian Pingstone"

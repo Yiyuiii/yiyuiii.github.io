@@ -56,6 +56,10 @@ MATH = re.compile(
     r"|(?<!\\)\$(?!\$)(?:\\.|[^$\r\n])+?(?<!\\)\$"
 )
 MARKDOWN = MarkdownIt("commonmark").enable("table")
+MERMAID_PAREN_LABEL = re.compile(
+    r"^(?P<indent>[ \t]*)(?P<id>[A-Za-z_][A-Za-z0-9_-]*)"
+    r"(?P<open>\()(?P<label>[^()\r\n]+)(?P<close>\))(?P<trailing>[ \t]*)$"
+)
 
 
 class TranslationError(RuntimeError):
@@ -276,8 +280,23 @@ def post_structure_signature(
         if token.type == "heading_open":
             heading_outline.append(int(token.tag[1:]))
         elif token.type in {"fence", "code_block"}:
+            info = _normalize_string(token.info)
+            content = _normalize_string(token.content)
+            fence_language = info.strip().split(maxsplit=1)
+            if fence_language and fence_language[0].casefold() == "mermaid":
+                content = "\n".join(
+                    MERMAID_PAREN_LABEL.sub(
+                        lambda match: (
+                            f"{match.group('indent')}{match.group('id')}"
+                            f"{match.group('open')}<localized-label>{match.group('close')}"
+                            f"{match.group('trailing')}"
+                        ),
+                        line,
+                    )
+                    for line in content.split("\n")
+                )
             code_blocks.append(
-                (_normalize_string(token.info), _normalize_string(token.content))
+                (info, content)
             )
             if token.map:
                 for line_number in range(token.map[0], token.map[1]):

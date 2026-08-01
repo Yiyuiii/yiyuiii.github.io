@@ -1,12 +1,2 @@
 version: 1
-exemptions:
-  - translation_key: post-202301162233
-    source_language: zh
-    source: _posts/2023-01-18-四季物语量化分析攻略.md
-    missing_language: en
-    reason: Existing Chinese article predates the bilingual publication contract.
-  - translation_key: post-202307232000
-    source_language: zh
-    source: _posts/2023-07-23-了解游泳.md
-    missing_language: en
-    reason: Existing Chinese article predates the bilingual publication contract.
+exemptions: []
