@@ -588,7 +588,7 @@ Expected: `17 passed`。
 Run:
 
 ~~~powershell
-git add tests/test_writing_contracts.py
+git add tests/test_writing_contracts.py tests/test_asset_provenance.py
 git diff --cached --check
 git commit -m "test: 从历史快照解耦写作契约"
 ~~~
