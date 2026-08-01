@@ -1,0 +1,355 @@
+<!DOCTYPE html> <html lang="zh"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 强化学习问题随笔 | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="本文记录了我见到的一些强化学习问题。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/reinforcement-learning-issues/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="强化学习问题随笔"> <meta property="og:url" content="https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/"> <meta property="og:description" content="本文记录了我见到的一些强化学习问题。"> <meta property="og:locale" content="zh_CN"> <meta property="og:locale:alternate" content="en_US"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="强化学习问题随笔"> <meta name="twitter:description" content="本文记录了我见到的一些强化学习问题。"> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+    "headline": "强化学习问题随笔",
+    "description": "本文记录了我见到的一些强化学习问题。",
+    "inLanguage": "zh-CN",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2021-09-17T00:00:00+08:00",
+    "dateModified": "2021-09-17T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <script>
+    (function () {
+      var saved = null;
+      try {
+        saved = localStorage.getItem("yiyuiii.sunlight.v1");
+      } catch (error) {
+        saved = null;
+      }
+      saved = saved === "on" || saved === "off" ? saved : "on";
+      document.documentElement.dataset.sunlight = saved === "off" ? "off" : "on";
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <a class="site-brand" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> <span>yiyuiii</span> </a> <nav class="site-nav" aria-label="主导航"> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="sunlight-toggle" class="icon-button sunlight-toggle" type="button" aria-label="关闭阳光背景" aria-pressed="true" data-enable-label="开启阳光背景" data-disable-label="关闭阳光背景" data-status-on="阳光背景已开启" data-status-off="阳光背景已关闭" hidden> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> </button> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/posts/reinforcement-learning-issues/" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <article class="article-shell"> <div class="article-column"> <header class="article-header"> <h1>强化学习问题随笔</h1> <div class="article-meta"> <div class="article-tags"> <a href="/writing/?tag=%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0">强化学习</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> 初稿 <time datetime="2021-09-17">2021.09.17</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">修订历史</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2021-09-17">2021.09.17</time> <span>初稿</span> </li> </ol> </details> </div> </header> <button class="article-section-trigger" type="button" aria-controls="article-section-dialog" aria-expanded="false" data-article-section-trigger> 章节 </button> <dialog class="article-section-dialog" id="article-section-dialog" aria-labelledby="article-section-dialog-title" data-article-section-dialog> <div class="article-section-dialog__header"> <strong id="article-section-dialog-title">文章章节</strong> <button type="button" aria-label="关闭章节导航" data-article-section-close> × </button> </div> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#%E5%AD%A6%E4%B9%A0">学习</a> <ul> <li class="toc-entry toc-h3"><a href="#python">Python</a></li> <li class="toc-entry toc-h3"><a href="#%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA">多臂老虎机</a></li> <li class="toc-entry toc-h3"><a href="#%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0">深度强化学习</a></li> <li class="toc-entry toc-h3"><a href="#%E8%BF%9B%E9%98%B6%E6%88%90%E6%9E%9C">进阶成果</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E7%8E%B0%E6%9C%89%E5%B7%A5%E5%85%B7%E5%8C%85">现有工具包</a> <ul> <li class="toc-entry toc-h3"><a href="#rllib">RLlib</a></li> <li class="toc-entry toc-h3"><a href="#elegentrl">ElegentRL</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E7%8E%AF%E5%A2%83">环境</a></li> <li class="toc-entry toc-h2"> <a href="#%E7%8A%B6%E6%80%81">状态</a> <ul> <li class="toc-entry toc-h3"><a href="#%E8%A1%A8%E7%A4%BA">表示</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%A5%96%E5%8A%B1">奖励</a> <ul> <li class="toc-entry toc-h3"><a href="#%E8%AE%BE%E8%AE%A1">设计</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E7%BB%8F%E9%AA%8C%E5%9B%9E%E6%94%BE%E7%BC%93%E5%86%B2%E5%8C%BA">经验回放缓冲区</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%BC%98%E5%85%88%E7%BB%8F%E9%AA%8C%E5%9B%9E%E6%94%BEper">优先经验回放（PER）</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E8%87%AA%E6%88%91%E5%8D%9A%E5%BC%88">自我博弈</a> <ul> <li class="toc-entry toc-h3"><a href="#%E6%B2%A1%E6%9C%89%E5%8F%AF%E7%94%A8%E5%9F%BA%E7%BA%BF%E6%97%B6%E5%A6%82%E4%BD%95%E8%AF%84%E4%BC%B0%E7%AD%96%E7%95%A5">没有可用基线时，如何评估策略？</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95">测试方法</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%B7%A5%E5%85%B7">工具</a></li> </ul> </li> </ul> </nav> </dialog> <figure class="article-cover"> <img class="article-cover__image" src="/assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp" alt="典型的强化学习智能体—环境交互循环" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>题图：<a href="https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg" rel="external nofollow noopener" target="_blank">强化学习示意图</a>，作者为 Wikimedia Commons 用户 Megajuice（Wikimedia Commons user Megajuice），采用 <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="external nofollow noopener" target="_blank">CC0 1.0</a>；本站将其处理为方形版式。</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <p>本文记录了我见到的一些强化学习问题，并会持续更新。</p> <h2 id="学习">学习</h2> <p>我建议按以下顺序学习：</p> <ol> <li>Python（或其它语言）</li> <li>PyTorch（或其它深度学习软件包）</li> <li>深度监督学习（例如 MNIST 手写识别）</li> <li>表格型强化学习（例如 Q-Learning、TD($\lambda$)）</li> <li>深度 Q-Learning（例如 DQN、D3QN）</li> <li>策略梯度方法（例如 DDPG、SAC、PPO、TD3）</li> <li>进阶成果（例如 AlphaGo、MuZero、Agent57）</li> </ol> <h3 id="python">Python</h3> <p><a href="https://www.runoob.com/python3/python3-tutorial.html" rel="external nofollow noopener" target="_blank">菜鸟教程</a>（中文）</p> <h3 id="多臂老虎机">多臂老虎机</h3> <p><a href="https://lilianweng.github.io/lil-log/2018/01/23/the-multi-armed-bandit-problem-and-its-solutions.html" rel="external nofollow noopener" target="_blank">多臂老虎机问题及其解决方案，LiLian Weng</a></p> <h3 id="深度强化学习">深度强化学习</h3> <p><a href="https://lilianweng.github.io/lil-log/2018/02/19/a-long-peek-into-reinforcement-learning.html" rel="external nofollow noopener" target="_blank">强化学习长篇概览，LiLian Weng</a></p> <p><a href="https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html" rel="external nofollow noopener" target="_blank">策略梯度算法，LiLian Weng</a></p> <h3 id="进阶成果">进阶成果</h3> <p><a href="https://zhuanlan.zhihu.com/p/206735209" rel="external nofollow noopener" target="_blank">MuZero，知乎</a>（中文）</p> <h2 id="现有工具包">现有工具包</h2> <h3 id="rllib">RLlib</h3> <p><a href="https://docs.ray.io/en/master/rllib.html" rel="external nofollow noopener" target="_blank">https://docs.ray.io/en/master/rllib.html</a></p> <ul> <li>流行的全能型开源库</li> <li>需要花时间学习</li> </ul> <h3 id="elegentrl">ElegentRL</h3> <p><a href="https://github.com/AI4Finance-Foundation/ElegantRL" rel="external nofollow noopener" target="_blank">https://github.com/AI4Finance-Foundation/ElegantRL</a></p> <ul> <li>轻量且可扩展的开源库</li> <li>容易学习</li> <li>仍在开发和改进中</li> </ul> <h2 id="环境">环境</h2> <p>一般来说，Environment 类派生自 <strong>gym.Env</strong>，并遵循其接口定义。</p> <p>一般来说，Environment 的<strong>计算开销</strong>主要集中在 CPU。</p> <h2 id="状态">状态</h2> <h3 id="表示">表示</h3> <p>许多流行的 CNN 结构并不适合强化学习，包括：</p> <ul> <li>Batch Norm</li> <li>平移不变操作，例如池化</li> </ul> <p>有时还需要：</p> <ul> <li>在深层网络的输出层使用正交归一化</li> <li>随参数数量增加而采用较低的学习率，或冻结参数</li> </ul> <h2 id="奖励">奖励</h2> <h3 id="设计">设计</h3> <p>奖励设计没有统一标准。原则上，奖励越密集，学习越快；收敛性能则取决于奖励所提供的引导。</p> <h2 id="经验回放缓冲区">经验回放缓冲区</h2> <p>经验回放缓冲区应尽可能大，以便<strong>描述环境和策略</strong>。</p> <p>当经验回放缓冲区无法足够大时，可以尝试降低学习率。</p> <h3 id="优先经验回放per">优先经验回放（PER）</h3> <p>优先经验回放会使深度网络的数据发生<strong>分布偏移</strong>；当奖励密集时，这会对性能产生很大影响。通常，我们在训练早期使用 PER。</p> <p>作为一种改进，可以尝试<strong>自模仿学习</strong>。</p> <h2 id="自我博弈">自我博弈</h2> <h3 id="没有可用基线时如何评估策略">没有可用基线时，如何评估策略？</h3> <p>一种思路是：维护一个由历史策略组成的基线策略集合。</p> <ol> <li>在训练期间记录历史策略。</li> <li>按“支配关系”对策略分级，也就是更高等级的策略压制更低等级的策略。</li> <li>从每个等级抽取策略，组成基线策略集合。</li> </ol> <h2 id="测试方法">测试方法</h2> <p>强化学习方法比监督学习方法更复杂。出现 BUG 时，往往会不知道该如何继续。下面是一些建议：</p> <ul> <li> <strong>从易到难。</strong> 例如，通过 DQN 构建 D3QN，通过基础环境构建困难环境，在“gridworld”“cartpole”等简单环境上测试强化学习方法，或者基于成熟工作修改强化学习方法。</li> <li>为方法中的每个模块编写<strong>测试</strong>，例如经验回放缓冲区。</li> <li> <strong>进一步学习</strong>强化学习、PyTorch/Tensorflow、Python 等知识。</li> </ul> <h3 id="工具">工具</h3> <ul> <li>PyCharm profiler</li> <li>memory_profiler、line_profiler</li> <li>Pytorch.autograd：profiler、grad_check、anomaly_detection</li> <li>断点</li> <li>Print()</li> </ul> </div> </div> <aside class="article-side-toc"> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#%E5%AD%A6%E4%B9%A0">学习</a> <ul> <li class="toc-entry toc-h3"><a href="#python">Python</a></li> <li class="toc-entry toc-h3"><a href="#%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA">多臂老虎机</a></li> <li class="toc-entry toc-h3"><a href="#%E6%B7%B1%E5%BA%A6%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0">深度强化学习</a></li> <li class="toc-entry toc-h3"><a href="#%E8%BF%9B%E9%98%B6%E6%88%90%E6%9E%9C">进阶成果</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E7%8E%B0%E6%9C%89%E5%B7%A5%E5%85%B7%E5%8C%85">现有工具包</a> <ul> <li class="toc-entry toc-h3"><a href="#rllib">RLlib</a></li> <li class="toc-entry toc-h3"><a href="#elegentrl">ElegentRL</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E7%8E%AF%E5%A2%83">环境</a></li> <li class="toc-entry toc-h2"> <a href="#%E7%8A%B6%E6%80%81">状态</a> <ul> <li class="toc-entry toc-h3"><a href="#%E8%A1%A8%E7%A4%BA">表示</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%A5%96%E5%8A%B1">奖励</a> <ul> <li class="toc-entry toc-h3"><a href="#%E8%AE%BE%E8%AE%A1">设计</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E7%BB%8F%E9%AA%8C%E5%9B%9E%E6%94%BE%E7%BC%93%E5%86%B2%E5%8C%BA">经验回放缓冲区</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%BC%98%E5%85%88%E7%BB%8F%E9%AA%8C%E5%9B%9E%E6%94%BEper">优先经验回放（PER）</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E8%87%AA%E6%88%91%E5%8D%9A%E5%BC%88">自我博弈</a> <ul> <li class="toc-entry toc-h3"><a href="#%E6%B2%A1%E6%9C%89%E5%8F%AF%E7%94%A8%E5%9F%BA%E7%BA%BF%E6%97%B6%E5%A6%82%E4%BD%95%E8%AF%84%E4%BC%B0%E7%AD%96%E7%95%A5">没有可用基线时，如何评估策略？</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95">测试方法</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%B7%A5%E5%85%B7">工具</a></li> </ul> </li> </ul> </nav> </aside> </article> <script src="/assets/js/article-navigation.js?v=b592d47d060495aefbb976ca4bfd7657" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目或论文"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+      
+      {
+        "title": "《大创造时代》资源-分值量化计算思路",
+        "description": "本文尝试把《大创造时代》中的不同资源换算到同一尺度，并用跨轮迭代模型比较资源在局中的实际价值。",
+        "tags": ["大创造时代","桌游"],
+        "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《特鲁瓦》资源-分值量化分析攻略",
+        "description": "在《特鲁瓦》桌游中，玩家的行动依赖随机的骰子点数，而购买其他人骰子的机制使得原本高随机性的个人产出变为所有人共享的公共产出，以新颖的方式平衡了随机性和策略性。",
+        "tags": ["特鲁瓦","桌游"],
+        "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《盖亚计划》资源-分值量化计算思路",
+        "description": "本文给出《盖亚计划》桌游中各类资源到价值的近似量化思路，为玩家的发展规划提供基础的宏观参考。",
+        "tags": ["盖亚计划","桌游"],
+        "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "了解游泳",
+        "description": "我写这个文章的时候已经自学了几个月的游泳。我从一开始害怕水，到后来浮不起来、游不快、不会换气，到现在能比较快速地用平蛙姿势游50米，终于算是入门了。这期间零散搜集了很多教学文字和视频，深深体会到自学的不易，踩了一些坑也有一些感悟，希望在这里记录尽可能全面的游泳入门流程，给正好有需要的人们看看。",
+        "tags": ["游泳"],
+        "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "逻辑对决桌游攻略",
+        "description": "截至 2023 年 2 月，我在 BGA 上玩了近 500 场《逻辑对决》。这篇攻略从数字推理、问题价值和终局攻防出发，整理我当时形成的一套实战思路。",
+        "tags": ["逻辑对决","桌游"],
+        "url": "/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四季物语量化分析攻略",
+        "description": "《四季物语》以魔法和自然为主题，美术风格轻快，游戏节奏紧凑，规则简单而不失深度，是一款热度很高的2~4人桌游。",
+        "tags": ["四季物语","桌游"],
+        "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "装机记录",
+        "description": "2022 年双 11，笔记本开始频繁蓝屏，GTX 1060 Ti 也逐渐跟不上新显示器；我决定趁活动装一台 R5 5600 + RX 6600 XT 主机，顺手记录这次选型、预算和踩坑。",
+        "tags": ["装机"],
+        "url": "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "制作一张匹配形状的字符画",
+        "description": "最近玩字符画，查了一下主流的字符画算法，基本采用平均灰度这一指标将图片区域映射到单个字符。",
+        "tags": ["NoneBot","Python","字符画"],
+        "url": "/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "云服务器折腾随笔",
+        "description": "这篇文章记录了我2022年暑假期间调研、尝试云服务器的一些情况。",
+        "tags": ["云服务器"],
+        "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "强化学习问题随笔",
+        "description": "本文记录了我见到的一些强化学习问题。",
+        "tags": ["强化学习"],
+        "url": "/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "搭建个人 GitHub 主页",
+        "description": "本文记录了我如何成功搭建个人 GitHub 网站的经验。",
+        "tags": ["GitHub"],
+        "url": "/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "用API让原神角色说话！",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "HDBO-B 是一个通用、统一的高维贝叶斯优化基准，包含测试函数、示例算法及更多实例。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "一个简单的端到端语音大模型聊天仓库；全部组件免费且轻量。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "这是桌游《图灵机》的求解器。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "Codex 通过 MCP 调用的 Claude Code 任务工具。",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "TACO 在基于大语言模型的贝叶斯优化框架 LLAMBO 上加入主动跨任务迁移。每轮贝叶斯优化只需一次大语言模型调用，即可同时提出目标超参数候选并选择辅助查询；累积的跨任务证据会反馈到后续轮次中。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/publications/#hdbo-b-ijcnn-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "高维贝叶斯优化研究综述",
+      "description": "陈泉霖, 陈奕宇, 霍静, 曹宏业, 高阳, 李栋, 郝建业 · 软件学报",
+      "tags": [2025],
+      "url": "/publications/#hdbo-survey-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/publications/#trust-region-newton-ecai-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "元强化学习研究综述",
+      "description": "陈奕宇, 霍静, 丁天雨, 高阳 · 软件学报 · 2024年高被关注综述论文",
+      "tags": [2024],
+      "url": "/publications/#meta-rl-survey-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/publications/#supervised-dr-ppsn-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/publications/#casil-aamas-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/publications/#radar-rl-2023",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/publications/#tild-aamas-2023",
+      "kind": "论文"
+    }
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=20b4374179b819e7217d01777148cec5"></script> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script src="/assets/js/site-search.js?v=af3dcf1d63c7ba529e2230dc6aae0477"></script> <script src="/assets/js/sunlight.js?v=14eaf038e7b4740f0bfd2c55ac0f5dc2"></script> </body> </html>

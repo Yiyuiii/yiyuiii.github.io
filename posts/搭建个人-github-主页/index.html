@@ -1,0 +1,355 @@
+<!DOCTYPE html> <html lang="zh"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 搭建个人 GitHub 主页 | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="本文记录了我如何成功搭建个人 GitHub 网站的经验。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/build-a-personal-github-page/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="搭建个人 GitHub 主页"> <meta property="og:url" content="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <meta property="og:description" content="本文记录了我如何成功搭建个人 GitHub 网站的经验。"> <meta property="og:locale" content="zh_CN"> <meta property="og:locale:alternate" content="en_US"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202109160000/cover-homepage-2026-07-30.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="搭建个人 GitHub 主页"> <meta name="twitter:description" content="本文记录了我如何成功搭建个人 GitHub 网站的经验。"> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202109160000/cover-homepage-2026-07-30.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+    "headline": "搭建个人 GitHub 主页",
+    "description": "本文记录了我如何成功搭建个人 GitHub 网站的经验。",
+    "inLanguage": "zh-CN",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2021-09-16T00:00:00+08:00",
+    "dateModified": "2021-09-16T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <script>
+    (function () {
+      var saved = null;
+      try {
+        saved = localStorage.getItem("yiyuiii.sunlight.v1");
+      } catch (error) {
+        saved = null;
+      }
+      saved = saved === "on" || saved === "off" ? saved : "on";
+      document.documentElement.dataset.sunlight = saved === "off" ? "off" : "on";
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <a class="site-brand" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> <span>yiyuiii</span> </a> <nav class="site-nav" aria-label="主导航"> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="sunlight-toggle" class="icon-button sunlight-toggle" type="button" aria-label="关闭阳光背景" aria-pressed="true" data-enable-label="开启阳光背景" data-disable-label="关闭阳光背景" data-status-on="阳光背景已开启" data-status-off="阳光背景已关闭" hidden> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> </button> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/posts/build-a-personal-github-page/" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <article class="article-shell"> <div class="article-column"> <header class="article-header"> <h1>搭建个人 GitHub 主页</h1> <div class="article-meta"> <div class="article-tags"> <a href="/writing/?tag=GitHub">GitHub</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> 初稿 <time datetime="2021-09-16">2021.09.16</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">修订历史</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2021-09-16">2021.09.16</time> <span>初稿</span> </li> </ol> </details> </div> </header> <button class="article-section-trigger" type="button" aria-controls="article-section-dialog" aria-expanded="false" data-article-section-trigger> 章节 </button> <dialog class="article-section-dialog" id="article-section-dialog" aria-labelledby="article-section-dialog-title" data-article-section-dialog> <div class="article-section-dialog__header"> <strong id="article-section-dialog-title">文章章节</strong> <button type="button" aria-label="关闭章节导航" data-article-section-close> × </button> </div> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#%E8%83%8C%E6%99%AF">背景</a> <ul> <li class="toc-entry toc-h3"><a href="#github-pages">GitHub Pages</a></li> <li class="toc-entry toc-h3"><a href="#jekyll">Jekyll</a></li> <li class="toc-entry toc-h3"><a href="#ruby">Ruby</a></li> <li class="toc-entry toc-h3"><a href="#rubygems">RubyGems</a></li> <li class="toc-entry toc-h3"><a href="#buddle">Buddle</a></li> <li class="toc-entry toc-h3"><a href="#jekyll-%E4%B8%BB%E9%A2%98">Jekyll 主题</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E6%88%91%E7%9A%84%E5%AE%9E%E8%B7%B5">我的实践</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%B8%BB%E9%A2%98">主题</a></li> <li class="toc-entry toc-h3"> <a href="#%E8%B0%83%E8%AF%95">调试</a> <ul> <li class="toc-entry toc-h4"><a href="#%E5%B8%B8%E8%A7%81%E6%9E%84%E5%BB%BA%E5%A4%B1%E8%B4%A5">常见构建失败</a></li> <li class="toc-entry toc-h4"><a href="#_configyml-%E5%A4%B1%E8%B4%A5">_config.yml 失败</a></li> </ul> </li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E7%BB%93%E6%9E%9C">结果</a></li> <li class="toc-entry toc-h2"><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li> </ul> </nav> </dialog> <figure class="article-cover"> <img class="article-cover__image" src="/assets/posts/202109160000/cover-homepage-2026-07-30.webp" alt="这个个人 GitHub Pages 站点的中文随笔首页" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>题图：本站于 2026 年 7 月 30 日的中文随笔首页；截图及站点内容均由作者制作。</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <p>本文记录了我如何成功搭建个人 GitHub 网站的经验。</p> <p><span id="building-a-personal-github-page" aria-hidden="true"></span></p> <p><strong>注意：</strong> 网上已经有各种各样的详细教程，所以这里仅关注一些关键点。阅读过程中，你可能需要频繁打开其它网站。</p> <h2 id="背景">背景</h2> <p>在一路艰难摸索的过程中，我发现，初学者若想把一切都优雅地安排好，会遇到许多背景知识方面的门槛。那么，让我们开始吧。</p> <h3 id="github-pages">GitHub Pages</h3> <p><a href="https://pages.github.com/" rel="external nofollow noopener" target="_blank">GitHub Pages</a> 为所有用户提供免费的个人网站与项目网站。</p> <p>它的优点有：</p> <ul> <li> <p>完全免费</p> </li> <li> <p>容易管理</p> </li> </ul> <p>它的缺点有：</p> <ul> <li> <p>只能托管静态内容</p> </li> <li> <p>博客无法被百度收录</p> </li> <li> <p>空间不能超过 1G</p> </li> <li> <p>每月流量不能超过 100G</p> </li> <li> <p>每小时更新不能超过 10 次</p> </li> </ul> <p>但它是免费的！</p> <p>按照以下步骤即可启用这项功能。</p> <ol> <li>获得一个名为“*.github.io”的仓库。仓库内容就是网站的源文件。</li> <li>在“Repository - Setting - Pages”中启用这项功能。</li> <li>每当仓库更新时，网站“*.github.io”都会自动生成。上传一份 README，然后到“*.github.io”查看它。</li> </ol> <p>请注意：</p> <ul> <li> <p>页面构建需要时间，通常会在 1 分钟内完成。</p> </li> <li> <p>GitHub 上看不到生成后的页面文件。</p> </li> <li> <p>GitHub Pages 既支持 Jekyll，也支持纯 HTML 文档。“Repository - Setting - Pages”中的主题正是 Jekyll 主题。</p> </li> </ul> <p>得到网站之后，下一步就是丰富它的内容。在 GitHub Pages 上，我们通常使用 Jekyll。</p> <h3 id="jekyll">Jekyll</h3> <p><a href="https://jekyllrb.com/" rel="external nofollow noopener" target="_blank">Jekyll</a> 提供无需数据库的静态网站与博客生成器。大多数时候，我们通过 Markdown 文件更新 Jekyll 网站。</p> <p>安装说明：<a href="https://jekyllrb.com/docs/installation/" rel="external nofollow noopener" target="_blank">https://jekyllrb.com/docs/installation/</a></p> <p>Jekyll 是一个 Ruby“包”，所以要先安装 Ruby。</p> <h3 id="ruby">Ruby</h3> <p><a href="https://www.ruby-lang.org/" rel="external nofollow noopener" target="_blank">Ruby</a> 是一种面向对象的动态语言。就我们的用途而言，只需安装 Ruby+Devkit。</p> <h3 id="rubygems">RubyGems</h3> <p><a href="https://rubygems.org/" rel="external nofollow noopener" target="_blank">RubyGems</a> 是 Ruby 的包管理器。它提供分发 Ruby 程序和库的标准格式，也提供管理软件包安装的工具。Ruby 的软件包称为“gem”。</p> <p>Jekyll 是一个 Ruby gem。</p> <h3 id="buddle">Buddle</h3> <p><a href="https://bundler.io/" rel="external nofollow noopener" target="_blank">Buddle</a>（或 Bundler）通过跟踪并安装项目所需的确切 gem 及其版本，为 Ruby 项目提供一致的环境。</p> <p>在我们的流程中，有时需要使用 <code class="language-plaintext highlighter-rouge">buddle exec</code>。</p> <h3 id="jekyll-主题">Jekyll 主题</h3> <p><a href="https://jekyllrb.com/docs/themes/" rel="external nofollow noopener" target="_blank">Jekyll Theme</a> 会指定插件，并将资源、布局、include 和样式表打包，使你的网站内容可以覆盖它们。Jekyll 主题是一个 Gem。具体而言，其中包含这些资源：</p> <ul> <li> <p>assets</p> </li> <li> <p>_layouts</p> </li> <li> <p>_includes</p> </li> <li> <p>_sass</p> </li> </ul> <p>以上是我从网上找到的内容。我的猜测是，它的能力不止这些，但我还没有弄清其中的机制。</p> <h2 id="我的实践">我的实践</h2> <p>有了以上信息，实际上我们有多种方式可以构建 GitHub Page：</p> <ol> <li>使用 Jekyll 构建，主题与站点分离</li> <li>使用 Jekyll 构建，主题与站点集成</li> <li>在本地构建，只上传站点文件</li> </ol> <p>截至当时，我的博客采用方案 2，而方案 1 是最终目标。</p> <h3 id="主题">主题</h3> <p><a href="https://github.com/cotes2020/jekyll-theme-chirpy" rel="external nofollow noopener" target="_blank">Chirpy</a> 是我当时使用的主题，它非常接近我心目中的完美形态。应用主题有三种方式：</p> <ol> <li>在“_config.yml”中远程导入：<code class="language-plaintext highlighter-rouge">remote_theme: cotes2020/jekyll-theme-chirpy</code> </li> <li>Fork 该项目，然后在“_config.yml”中远程导入这个副本</li> <li>复制全部内容，将主题与站点集成，并在“_config.yml”中禁用外部主题</li> </ol> <p>我选择了方案 3，因为 Chirpy 与 Github-Pages Gem 之间存在代码兼容性问题，使用外部主题会不稳定。</p> <p>Chirpy 也提供了一份<a href="https://github.com/cotes2020/jekyll-theme-chirpy#readme" rel="external nofollow noopener" target="_blank">教程</a>。</p> <h3 id="调试">调试</h3> <p>只要 GitHub Page 构建过程中出现 BUG，你就会收到一封电子邮件。</p> <h4 id="常见构建失败">常见构建失败</h4> <blockquote> <p>The page build failed for the <code class="language-plaintext highlighter-rouge">master</code> branch with the following error:</p> <p>Page build failed. For more information, see https://docs.github.com/github/working-with-github-pages/troubleshooting-jekyll-build-errors-for-github-pages-sites#troubleshooting-build-errors.</p> <p>For information on troubleshooting Jekyll see:</p> <p>https://docs.github.com/articles/troubleshooting-jekyll-builds</p> <p>If you have any questions you can submit a request at https://support.github.com/contact?tags=dotcom-pages&amp;repo_id=406411513&amp;page_build_id=279574162</p> </blockquote> <p>这条消息不会把确切的问题反馈给我们。要处理这种情况，应依靠本地环境，因为可以在控制台中看到 BUG 的反馈。</p> <p>但要注意，GitHub Page 的构建依赖一组特定的 Gem。其列表见 <a href="https://pages.github.com/versions.json" rel="external nofollow noopener" target="_blank">https://pages.github.com/versions.json</a>。在本地测试时，Gem 版本差异可能导致不同的结果。若要同步，只需在“Gemfile”中引入 Gem：<code class="language-plaintext highlighter-rouge">gem 'github-pages'</code>，然后在控制台执行 <code class="language-plaintext highlighter-rouge">buddle exec jekyll serve</code>。</p> <h4 id="_configyml-失败">_config.yml 失败</h4> <blockquote> <p>The page build failed for the <code class="language-plaintext highlighter-rouge">master</code> branch with the following error:</p> <p>You have an error on line 2 of your <code class="language-plaintext highlighter-rouge">_config.yml</code> file. For more information, see https://docs.github.com/github/working-with-github-pages/troubleshooting-jekyll-build-errors-for-github-pages-sites#config-file-error.</p> <p>For information on troubleshooting Jekyll see:</p> <p>https://docs.github.com/articles/troubleshooting-jekyll-builds</p> <p>If you have any questions you can submit a request at https://support.github.com/contact?tags=dotcom-pages&amp;repo_id=406061228&amp;page_build_id=279331936</p> </blockquote> <p>这类消息会指出 BUG 所在的位置。若要了解更多，只需在本地测试。</p> <h2 id="结果">结果</h2> <p>而<a href="https://yiyuiii.github.io/">这个网站</a>就是最终成果。</p> <h2 id="参考资料">参考资料</h2> </div> </div> <aside class="article-side-toc"> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#%E8%83%8C%E6%99%AF">背景</a> <ul> <li class="toc-entry toc-h3"><a href="#github-pages">GitHub Pages</a></li> <li class="toc-entry toc-h3"><a href="#jekyll">Jekyll</a></li> <li class="toc-entry toc-h3"><a href="#ruby">Ruby</a></li> <li class="toc-entry toc-h3"><a href="#rubygems">RubyGems</a></li> <li class="toc-entry toc-h3"><a href="#buddle">Buddle</a></li> <li class="toc-entry toc-h3"><a href="#jekyll-%E4%B8%BB%E9%A2%98">Jekyll 主题</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E6%88%91%E7%9A%84%E5%AE%9E%E8%B7%B5">我的实践</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%B8%BB%E9%A2%98">主题</a></li> <li class="toc-entry toc-h3"> <a href="#%E8%B0%83%E8%AF%95">调试</a> <ul> <li class="toc-entry toc-h4"><a href="#%E5%B8%B8%E8%A7%81%E6%9E%84%E5%BB%BA%E5%A4%B1%E8%B4%A5">常见构建失败</a></li> <li class="toc-entry toc-h4"><a href="#_configyml-%E5%A4%B1%E8%B4%A5">_config.yml 失败</a></li> </ul> </li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E7%BB%93%E6%9E%9C">结果</a></li> <li class="toc-entry toc-h2"><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li> </ul> </nav> </aside> </article> <script src="/assets/js/article-navigation.js?v=b592d47d060495aefbb976ca4bfd7657" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目或论文"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+      
+      {
+        "title": "《大创造时代》资源-分值量化计算思路",
+        "description": "本文尝试把《大创造时代》中的不同资源换算到同一尺度，并用跨轮迭代模型比较资源在局中的实际价值。",
+        "tags": ["大创造时代","桌游"],
+        "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《特鲁瓦》资源-分值量化分析攻略",
+        "description": "在《特鲁瓦》桌游中，玩家的行动依赖随机的骰子点数，而购买其他人骰子的机制使得原本高随机性的个人产出变为所有人共享的公共产出，以新颖的方式平衡了随机性和策略性。",
+        "tags": ["特鲁瓦","桌游"],
+        "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《盖亚计划》资源-分值量化计算思路",
+        "description": "本文给出《盖亚计划》桌游中各类资源到价值的近似量化思路，为玩家的发展规划提供基础的宏观参考。",
+        "tags": ["盖亚计划","桌游"],
+        "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "了解游泳",
+        "description": "我写这个文章的时候已经自学了几个月的游泳。我从一开始害怕水，到后来浮不起来、游不快、不会换气，到现在能比较快速地用平蛙姿势游50米，终于算是入门了。这期间零散搜集了很多教学文字和视频，深深体会到自学的不易，踩了一些坑也有一些感悟，希望在这里记录尽可能全面的游泳入门流程，给正好有需要的人们看看。",
+        "tags": ["游泳"],
+        "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "逻辑对决桌游攻略",
+        "description": "截至 2023 年 2 月，我在 BGA 上玩了近 500 场《逻辑对决》。这篇攻略从数字推理、问题价值和终局攻防出发，整理我当时形成的一套实战思路。",
+        "tags": ["逻辑对决","桌游"],
+        "url": "/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四季物语量化分析攻略",
+        "description": "《四季物语》以魔法和自然为主题，美术风格轻快，游戏节奏紧凑，规则简单而不失深度，是一款热度很高的2~4人桌游。",
+        "tags": ["四季物语","桌游"],
+        "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "装机记录",
+        "description": "2022 年双 11，笔记本开始频繁蓝屏，GTX 1060 Ti 也逐渐跟不上新显示器；我决定趁活动装一台 R5 5600 + RX 6600 XT 主机，顺手记录这次选型、预算和踩坑。",
+        "tags": ["装机"],
+        "url": "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "制作一张匹配形状的字符画",
+        "description": "最近玩字符画，查了一下主流的字符画算法，基本采用平均灰度这一指标将图片区域映射到单个字符。",
+        "tags": ["NoneBot","Python","字符画"],
+        "url": "/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "云服务器折腾随笔",
+        "description": "这篇文章记录了我2022年暑假期间调研、尝试云服务器的一些情况。",
+        "tags": ["云服务器"],
+        "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "强化学习问题随笔",
+        "description": "本文记录了我见到的一些强化学习问题。",
+        "tags": ["强化学习"],
+        "url": "/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "搭建个人 GitHub 主页",
+        "description": "本文记录了我如何成功搭建个人 GitHub 网站的经验。",
+        "tags": ["GitHub"],
+        "url": "/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "用API让原神角色说话！",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "HDBO-B 是一个通用、统一的高维贝叶斯优化基准，包含测试函数、示例算法及更多实例。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "一个简单的端到端语音大模型聊天仓库；全部组件免费且轻量。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "这是桌游《图灵机》的求解器。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "Codex 通过 MCP 调用的 Claude Code 任务工具。",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "TACO 在基于大语言模型的贝叶斯优化框架 LLAMBO 上加入主动跨任务迁移。每轮贝叶斯优化只需一次大语言模型调用，即可同时提出目标超参数候选并选择辅助查询；累积的跨任务证据会反馈到后续轮次中。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/publications/#hdbo-b-ijcnn-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "高维贝叶斯优化研究综述",
+      "description": "陈泉霖, 陈奕宇, 霍静, 曹宏业, 高阳, 李栋, 郝建业 · 软件学报",
+      "tags": [2025],
+      "url": "/publications/#hdbo-survey-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/publications/#trust-region-newton-ecai-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "元强化学习研究综述",
+      "description": "陈奕宇, 霍静, 丁天雨, 高阳 · 软件学报 · 2024年高被关注综述论文",
+      "tags": [2024],
+      "url": "/publications/#meta-rl-survey-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/publications/#supervised-dr-ppsn-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/publications/#casil-aamas-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/publications/#radar-rl-2023",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/publications/#tild-aamas-2023",
+      "kind": "论文"
+    }
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=20b4374179b819e7217d01777148cec5"></script> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script src="/assets/js/site-search.js?v=af3dcf1d63c7ba529e2230dc6aae0477"></script> <script src="/assets/js/sunlight.js?v=14eaf038e7b4740f0bfd2c55ac0f5dc2"></script> </body> </html>
