@@ -94,6 +94,7 @@ en:
 - 正文排版：`D:\Codes\yiyuiii.github.io-worktrees\typography` / `feature/article-typography`
 - 缩略图：`D:\Codes\yiyuiii.github.io-worktrees\thumbnails` / `feature/post-thumbnails`
 - 欢迎页与内容流：`D:\Codes\yiyuiii.github.io-worktrees\welcome` / `feature/welcome-feed`
+- 阳光背景与开关：`D:\Codes\yiyuiii.github.io-worktrees\sunlight` / `feature/sunlight-background`
 - 随笔翻译批次 A：`D:\Codes\yiyuiii.github.io-worktrees\translations-a` / `feature/translations-a`
 - 随笔翻译批次 B：`D:\Codes\yiyuiii.github.io-worktrees\translations-b` / `feature/translations-b`
 - 随笔翻译批次 C：`D:\Codes\yiyuiii.github.io-worktrees\translations-c` / `feature/translations-c`
