@@ -225,30 +225,37 @@ revisions:
 </blockquote>
 ```
 
-### 保留多轮修订稿
+### 使用 Git 保留多轮修订
 
-需要由人工或不同 LLM 逐轮改写的文章，在下面建立与文章同名的修订档案目录：
+master 当前树只保存正式文章，不复制完整旧稿、AI 审阅稿或候选稿。需要多轮修改时：
 
-```text
-docs/content-revisions/<文章日期与名称>/
-```
+1. 从最新 master 创建独立分支或临时 worktree。
+2. 修改前先提交或记录基准提交；不要在 docs 下复制整篇文章。
+3. 在 _posts 中实施经批准的当前稿，每一轮用独立 Git 提交标记边界。
+4. 使用 git diff 比较任意提交；需要恢复时从 Git 历史读取旧版本。
+5. 只把具有长期维护价值的结构化事实保留在当前树。
 
-目录中的 Markdown 是只读历史快照，按 `来源-日期.md` 命名，例如 `original-2022-11-11.md`、`chatgpt-2026-07-29.md`。正式站点始终只读取 `_posts/` 中的当前稿；`docs/` 已由 `_config.yml` 排除，不会把历史快照构建成重复页面。
-
-每轮修订遵循以下顺序：
-
-1. 在改写前保存当前基准稿；已有相同快照时先核对内容，不覆盖。
-2. 只在 `_posts/` 中实施本轮批准稿。
-3. 若该版本需要长期对照，再新增带来源和日期的完整快照。
-4. 不原地修改旧快照；后续 Kimi、ChatGPT 或人工版本分别新增文件，并由 Git 提交记录版本边界。
-
-可用下面的命令比较任意两版：
+比较文章前后版本：
 
 ```powershell
-git diff --no-index -- `
-  docs/content-revisions/2022-11-11-装机记录/original-2022-11-11.md `
-  docs/content-revisions/2022-11-11-装机记录/chatgpt-2026-07-29.md
+git diff <基准提交>..<当前提交> -- "_posts/<文章文件>.md"
 ```
+
+文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。更换封面时必须同步更新：
+
+- asset 与 post 路径。
+- 来源页面、作者、许可与许可链接。
+- 裁切、缩放、格式转换或生成说明。
+- 当前生产文件的 dimensions 与 sha256。
+- 正文中需要公开显示的来源或署名。
+
+计算当前文件 SHA-256：
+
+```powershell
+(Get-FileHash -Algorithm SHA256 "assets/posts/<目录>/<封面文件>").Hash.ToLowerInvariant()
+```
+
+当前生产使用的生成图必须在 docs/asset-provenance.yml 保存生成日期、生成器、完整提示词、参考输入边界、用途和批准状态。未采用候选的原图、生成源和提示词只在确有长期法律或再生成需求时进入专门资产库；不要默认放进站点 master。
 
 ## GitHub 仓库
 
