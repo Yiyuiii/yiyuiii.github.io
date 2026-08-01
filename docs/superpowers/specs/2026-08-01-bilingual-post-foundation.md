@@ -41,7 +41,9 @@
 - 自指 canonical；兼容重定向页可用 `canonical_url` 指向目标；
 - 只有实际存在 `translation_url` 时才输出 `zh-CN`、`en`、`x-default` alternates；
 - 随页面语言变化的 OG locale；
-- post 使用 `BlogPosting` 和正确的 `inLanguage`、发布日期、修订日期。
+- post 固定使用 `BlogPosting` 和正确的 `inLanguage`、发布日期、修订日期；
+- 普通页面读取显式 `schema_type`，未声明时保守回退为 `WebPage`；当前 About 使用 `ProfilePage`，随笔、项目、论文、归档、标签与分类索引使用 `CollectionPage`；未来欢迎页占用根路径时再由欢迎页显式声明 `WebSite`；
+- 重定向页保留 canonical 与 OG 元数据，但不输出会把过渡页面误报为正式内容的 JSON-LD。
 
 标签和分类入口回到当前语言的随笔筛选，不再把英文访客送到无语言前缀的混合归档。旧的 tag/category/year URL 继续保留：同一归档中只要存在中文随笔就优先显示中文；仅有英文旧文时保留英文归档，避免历史页面被过滤为空。
 

@@ -4,6 +4,7 @@ title: About yiyuiii
 permalink: /en/about/
 description: A short personal introduction
 lang: en
+schema_type: ProfilePage
 nav_key: about
 translation_url: /about/
 translation_key: about-yiyuiii

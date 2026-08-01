@@ -117,9 +117,43 @@ def test_site_owned_seo_is_language_aware_and_does_not_advertise_missing_pairs()
     assert "{% if page.translation_url %}" in seo
     assert 'property="og:locale"' in seo
     assert "zh_CN" in seo and "en_US" in seo
-    assert '"@type"' in seo and "BlogPosting" in seo
+    assert "page.schema_type | default: 'WebPage'" in seo
+    assert "schema_type = 'BlogPosting'" in seo
+    assert '"@type": {{ schema_type | jsonify }}' in seo
     assert '"inLanguage"' in seo
+    assert "{% unless page.redirect %}" in seo
+    structured_data_guard = seo.index("{% unless page.redirect %}")
+    assert seo.index('rel="canonical"') < structured_data_guard
+    assert seo.index('property="og:type"') < structured_data_guard
+    assert seo.index('type="application/ld+json"') > structured_data_guard
     assert head.count('rel="canonical"') == 0
+
+
+def test_index_and_profile_pages_declare_their_schema_semantics():
+    expected = {
+        "_pages/about.md": "ProfilePage",
+        "_pages/about.en.md": "ProfilePage",
+        "_pages/writing.md": "CollectionPage",
+        "_pages/writing.en.md": "CollectionPage",
+        "_pages/projects.md": "CollectionPage",
+        "_pages/projects.en.md": "CollectionPage",
+        "_pages/publications.md": "CollectionPage",
+        "_pages/publications.en.md": "CollectionPage",
+        "_pages/archives.md": "CollectionPage",
+        "_pages/archives.en.md": "CollectionPage",
+        "_pages/tags.md": "CollectionPage",
+        "_pages/tags.en.md": "CollectionPage",
+        "_pages/categories.md": "CollectionPage",
+        "_pages/categories.en.md": "CollectionPage",
+    }
+
+    assert {
+        path: frontmatter(path).get("schema_type")
+        for path in expected
+    } == expected
+
+    archive_compat = text("_plugins/legacy-post-compat.rb")
+    assert 'page.data["schema_type"] = "CollectionPage"' in archive_compat
 
 
 def test_head_allows_only_used_cdn_fonts_and_production_favicons():

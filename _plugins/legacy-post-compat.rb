@@ -25,4 +25,5 @@ Jekyll::Hooks.register :pages, :pre_render do |page|
   next unless documents.respond_to?(:any?)
 
   page.data["lang"] = documents.any? { |document| document.data["lang"] == "zh" } ? "zh" : "en"
+  page.data["schema_type"] = "CollectionPage"
 end

@@ -4,6 +4,7 @@ title: 随笔标签
 permalink: /tags/
 description: 按标签浏览随笔。
 lang: zh
+schema_type: CollectionPage
 translation_url: /en/tags/
 ---
 

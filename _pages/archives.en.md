@@ -4,6 +4,7 @@ title: Writing archive
 permalink: /en/archives/
 description: Browse writing by year.
 lang: en
+schema_type: CollectionPage
 translation_url: /archives/
 ---
 

@@ -4,6 +4,7 @@ title: Writing categories
 permalink: /en/categories/
 description: Browse writing by category.
 lang: en
+schema_type: CollectionPage
 translation_url: /categories/
 ---
 

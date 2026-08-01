@@ -4,6 +4,7 @@ title: Writing tags
 permalink: /en/tags/
 description: Browse writing by topic.
 lang: en
+schema_type: CollectionPage
 translation_url: /tags/
 ---
 

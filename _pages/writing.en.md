@@ -4,6 +4,7 @@ title: Writing
 description: Essays on software, games, quantitative analysis, and everyday learning.
 permalink: /en/
 lang: en
+schema_type: CollectionPage
 nav_key: writing
 hide_title: true
 translation_url: /

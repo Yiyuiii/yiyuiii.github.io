@@ -4,6 +4,7 @@ title: 随笔分类
 permalink: /categories/
 description: 按分类浏览随笔。
 lang: zh
+schema_type: CollectionPage
 translation_url: /en/categories/
 ---
 
