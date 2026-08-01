@@ -41,8 +41,10 @@ npm run test:browser
 - 生产封面来源：docs/asset-provenance.yml
 - 目录整理设计：docs/superpowers/specs/2026-08-01-formalize-repository-tree-design.md
 - 目录整理实施计划：docs/superpowers/plans/2026-08-01-formalize-repository-tree.md
+- 主页下一阶段实施计划：docs/superpowers/plans/2026-08-01-homepage-refresh.md
 
 ## AI 历史总结
 
 - 2026-07-31：本地根目录已整理为 master、original-40a013、archives 三个职责清楚的入口；冷备份及原站均已校验。该条是历史总结，继续工作前应以实际文件与 manifests 复核。
 - 2026-08-01：用户批准方案 B，将完整修订稿、AI 审阅稿、封面候选与源图移出 master 当前树，并以结构化生产来源清单保留必要证据。该条是设计决策摘要，精确边界以已批准设计为准。
+- 2026-08-01：用户批准按专业子任务实施欢迎页、双语随笔、正文排版、缩略图与阳光背景等下一阶段工作；欢迎页文案必须便于人工编辑，功能指引优先尝试箭头并在跨视口效果不佳时回退为文本。精确接口、依赖与验收以主页下一阶段实施计划为准。
