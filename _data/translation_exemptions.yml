@@ -1,0 +1,57 @@
+version: 1
+exemptions:
+  - translation_key: post-202109160000
+    source_language: en
+    source: _posts/2021-09-16-build a personal github page.md
+    missing_language: zh
+    reason: Existing English article predates the bilingual publication contract.
+  - translation_key: post-202109170000
+    source_language: en
+    source: _posts/2021-09-17-reinforcement learning issues.md
+    missing_language: zh
+    reason: Existing English article predates the bilingual publication contract.
+  - translation_key: post-202208142347
+    source_language: zh
+    source: _posts/2022-08-14-云服务器折腾随笔.md
+    missing_language: en
+    reason: Existing Chinese article predates the bilingual publication contract.
+  - translation_key: post-202208171838
+    source_language: zh
+    source: _posts/2022-08-17-制作一张匹配形状的字符画.md
+    missing_language: en
+    reason: Existing Chinese article predates the bilingual publication contract.
+  - translation_key: post-202211110000
+    source_language: zh
+    source: _posts/2022-11-11-装机记录.md
+    missing_language: en
+    reason: Existing Chinese article predates the bilingual publication contract.
+  - translation_key: post-202301162233
+    source_language: zh
+    source: _posts/2023-01-18-四季物语量化分析攻略.md
+    missing_language: en
+    reason: Existing Chinese article predates the bilingual publication contract.
+  - translation_key: post-202302032000
+    source_language: zh
+    source: _posts/2023-02-03-逻辑对决桌游攻略.md
+    missing_language: en
+    reason: Existing Chinese article predates the bilingual publication contract.
+  - translation_key: post-202307232000
+    source_language: zh
+    source: _posts/2023-07-23-了解游泳.md
+    missing_language: en
+    reason: Existing Chinese article predates the bilingual publication contract.
+  - translation_key: post-202404232233
+    source_language: zh
+    source: _posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md
+    missing_language: en
+    reason: Existing Chinese article predates the bilingual publication contract.
+  - translation_key: post-202407012233
+    source_language: zh
+    source: _posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md
+    missing_language: en
+    reason: Existing Chinese article predates the bilingual publication contract.
+  - translation_key: post-202510112233
+    source_language: zh
+    source: _posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md
+    missing_language: en
+    reason: Existing Chinese article predates the bilingual publication contract.

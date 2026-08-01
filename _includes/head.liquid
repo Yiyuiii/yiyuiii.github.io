@@ -1,4 +1,5 @@
 {% include metadata.liquid %}
+{% include bilingual-seo.liquid %}
 <meta
   http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"
@@ -15,7 +16,6 @@
   id="highlight_theme_light"
 >
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url | bust_css_cache }}">
-<link rel="canonical" href="{{ page.url | replace: 'index.html', '' | absolute_url }}">
 {% if site.plugins contains 'al_math' %}
   {% include plugins/al_math_styles.liquid %}
 {% endif %}

@@ -81,6 +81,36 @@ def test_removed_duplicate_post_title_keeps_its_public_fragment_anchor():
     assert 'id="building-a-personal-github-page"' in body
 
 
+def test_taxonomy_navigation_returns_to_the_current_language_filter():
+    for path in (
+        "_pages/tags.md",
+        "_pages/tags.en.md",
+        "_pages/categories.md",
+        "_pages/categories.en.md",
+    ):
+        source = text(path)
+        assert "site.data.site_text[lang_key]" in source
+        assert "text.urls.writing" in source
+        assert "?tag=" in source
+        assert "prepend: '/tags/'" not in source
+        assert "prepend: '/categories/'" not in source
+
+    post_list = text("_includes/post-list.liquid")
+    assert "post.tags | concat: post.categories" in post_list
+
+
+def test_generated_legacy_archives_prefer_chinese_but_keep_english_only_routes():
+    archive = text("_layouts/archive.liquid")
+    plugin = text("_plugins/legacy-post-compat.rb")
+
+    assert 'lang_key = page.lang | default: "zh"' in archive
+    assert 'site.data.site_text[lang_key]' in archive
+    assert 'page.documents | where: "lang", lang_key' in archive
+    assert 'page.data["layout"] == "archive"' in plugin
+    assert 'document.data["lang"] == "zh"' in plugin
+    assert '? "zh" : "en"' in plugin
+
+
 def test_every_post_has_a_nonempty_authored_excerpt():
     posts = sorted((ROOT / "_posts").glob("*.md"))
     excerpts = {

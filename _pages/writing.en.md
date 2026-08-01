@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Writing
+description: Essays on software, games, quantitative analysis, and everyday learning.
 permalink: /en/
 lang: en
 nav_key: writing

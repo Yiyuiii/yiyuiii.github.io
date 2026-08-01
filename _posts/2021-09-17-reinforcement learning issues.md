@@ -1,8 +1,11 @@
 ---
 title: Reinforcement Learning Issues
+uid: "202109170000"
 author: Yiyu Chen
 date: 2021-09-17 00:00:00 +0800
 lang: en
+permalink: /en/posts/reinforcement-learning-issues/
+translation_key: post-202109170000
 categories: [Reinforcement Learning]
 tags: [Reinforcement Learning]
 math: True

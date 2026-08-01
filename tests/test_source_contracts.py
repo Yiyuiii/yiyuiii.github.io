@@ -101,6 +101,27 @@ def test_document_language_uses_page_value_and_google_fonts_are_absent():
     assert "google_fonts" not in head
 
 
+def test_site_owned_seo_is_language_aware_and_does_not_advertise_missing_pairs():
+    config = yaml.safe_load(text("_config.yml"))
+    head = text("_includes/head.liquid")
+    seo = text("_includes/bilingual-seo.liquid")
+
+    assert config["serve_og_meta"] is False
+    assert config["serve_schema_org"] is False
+    assert "{% include bilingual-seo.liquid %}" in head
+    assert "page.canonical_url | default: page.url" in seo
+    assert 'rel="canonical"' in seo
+    assert 'rel="alternate" hreflang="zh-CN"' in seo
+    assert 'rel="alternate" hreflang="en"' in seo
+    assert 'rel="alternate" hreflang="x-default"' in seo
+    assert "{% if page.translation_url %}" in seo
+    assert 'property="og:locale"' in seo
+    assert "zh_CN" in seo and "en_US" in seo
+    assert '"@type"' in seo and "BlogPosting" in seo
+    assert '"inLanguage"' in seo
+    assert head.count('rel="canonical"') == 0
+
+
 def test_head_allows_only_used_cdn_fonts_and_production_favicons():
     head = text("_includes/head.liquid")
     favicon_dir = ROOT / "assets" / "img" / "favicons"

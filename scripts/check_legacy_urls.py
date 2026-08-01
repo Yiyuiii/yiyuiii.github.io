@@ -73,6 +73,12 @@ def verify_inventory(site: Path, inventory: list[dict]) -> None:
                 errors.append(
                     f"{route}: redirect target {actual!r}, expected {expected}"
                 )
+                continue
+            target_output = route_path(site, expected)
+            if not target_output.is_file():
+                errors.append(
+                    f"{route}: redirect target {expected} is missing at {target_output}"
+                )
         elif policy == "retirement":
             if not output.is_file():
                 errors.append(f"{route}: retirement worker missing")

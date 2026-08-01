@@ -171,8 +171,10 @@ python scripts/translation_guard.py --check --production
 ## 随笔
 
 - 正文：`_posts/*.md`
-- 中文文章使用 `lang: zh`，英文原文使用 `lang: en`
-- 不要求每篇文章有翻译
+- 中文文章使用 `lang: zh`，英文文章使用 `lang: en`
+- 新文章必须同时提供完整中英文版本；当前 11 篇旧文按 `_data/translation_exemptions.yml` 逐篇迁移，不能向清单加入新文章
+- 每组共用引号包裹的 12 位 `uid` 和 `post-<uid>` 形式的 `translation_key`
+- 中文 URL 位于 `/posts/`，英文 URL 位于 `/en/posts/`，并且全部使用显式 `permalink`
 - `tags` 是文章自己的真实标签；首页会按当前语言中的全局出现频率自动排序
 - 只有明确选择图片时才写 `thumbnail: /assets/...`
 
@@ -195,6 +197,15 @@ python scripts/translation_guard.py --check --production
 所有随笔共用 `assets/css/main.scss` 中唯一一套 `.post-content` 排版。文章不得添加仅供自己使用的 CSS class、ID 或样式文件来调整字号、字距、列表、代码块和图片。中英文可以通过页面 `lang` 使用同一系统内的语言级规则，但不得按文章分叉。
 
 极少数历史文章可能在正文中保留不可见的显式片段锚点，以兼容已经公开的旧链接。它不是标题，也不要随意删除或改名；制作对应翻译时，应让双方的标题层级和显式 ID 保持一致，便于翻译结构签名检查图片、公式、代码、章节和锚点的对应关系。
+
+真实原稿一方不写 `translation_source`；译文用该字段指向原稿，并保存 `translation_status: current` 和 `source_hash`。双方只有在文件都实际存在时才写 `translation_url`，且必须互相指向对方的显式 `permalink`。不要为了统一方向，把两篇英文旧文的中文译文反过来定义为原稿。
+
+完成一组迁移时必须同步删除 `_data/translation_exemptions.yml` 中对应的 `translation_key`。守卫会检查图片目标、公式、代码块、行内代码、外部链接、可映射的站内文章链接、表格行列轮廓、标题层级、显式锚点、脚注、资料说明标记和修订日期是否对应；仍需另行复核自然语言语义，不能只刷新 hash：
+
+```powershell
+python scripts/translation_guard.py --write "_posts/<译文文件>.md"
+python scripts/translation_guard.py --check --production
+```
 
 ### 维护修订历史
 

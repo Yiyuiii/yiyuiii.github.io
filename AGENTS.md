@@ -8,6 +8,7 @@
 - original-40a013 与 archives 不得进入站点提交。
 - Anthropic 来源永久不可用，不得尝试。
 - 对用户交流和审阅材料使用中文。
+- 每篇随笔最终必须有完整中英文版本，并保持图片、公式、代码、标题结构、锚点与修订日期对应。
 
 ## 当前事实状态
 
@@ -16,6 +17,9 @@
 - _posts 保存当前文章；docs/asset-provenance.yml 保存当前文章封面的来源、许可、处理与 SHA-256。
 - _data/legacy_urls.yml、scripts/check_legacy_urls.py 与浏览器测试共同保护旧 URL。
 - docs 已由 _config.yml 排除，不会生成公开页面。
+- 11 篇迁移前旧文已获得稳定 `uid`、`translation_key` 和显式 permalink；2 篇英文源位于 `/en/posts/`，原 URL 通过 legacy 重定向兼容。
+- `_data/translation_exemptions.yml` 只允许这 11 篇旧文暂时单语；新文章必须双语发布，每完成一组迁移就删除一个豁免。
+- `scripts/translation_guard.py` 同时保护翻译 source hash、成对 URL、结构签名和修订日期；单语旧文不得提前声明不存在的 `translation_url`。
 - 截至 2026-08-01，当前可用的外部审阅渠道只有 Ark Coding Plan 和本地 Kimi，DeepSeek API 暂不可用；这些是动态状态，未来每次使用前必须复核实际可用性。
 
 ## 常用验证
@@ -38,6 +42,7 @@ npm run test:browser
 ## 关键文档
 
 - 内容维护：docs/content-editing.md
+- 双语随笔基础：docs/superpowers/specs/2026-08-01-bilingual-post-foundation.md
 - 生产封面来源：docs/asset-provenance.yml
 - 目录整理设计：docs/superpowers/specs/2026-08-01-formalize-repository-tree-design.md
 - 目录整理实施计划：docs/superpowers/plans/2026-08-01-formalize-repository-tree.md

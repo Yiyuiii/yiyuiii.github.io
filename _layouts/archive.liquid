@@ -1,0 +1,31 @@
+---
+layout: default
+---
+{% assign lang_key = page.lang | default: "zh" %}
+{% assign text = site.data.site_text[lang_key] %}
+{% assign documents = page.documents | where: "lang", lang_key %}
+<div class="post">
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% if page.type == 'year' %}
+      <p class="post-description">{{ text.archive.description }}</p>
+    {% elsif page.type == 'tags' %}
+      <p class="post-description">{{ text.taxonomy.tags }}</p>
+    {% elsif page.type == 'categories' %}
+      <p class="post-description">{{ text.taxonomy.categories }}</p>
+    {% endif %}
+  </header>
+
+  <article class="archive">
+    <div class="table-responsive">
+      <table class="table table-sm table-borderless">
+        {% for document in documents %}
+          <tr>
+            <th scope="row">{{ document.date | date: text.date_format }}</th>
+            <td><a class="post-link" href="{{ document.url | relative_url }}">{{ document.title }}</a></td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </article>
+</div>
