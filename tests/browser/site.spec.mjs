@@ -636,6 +636,85 @@ test("article desktop left rail stays sticky and readable while article controls
   expect(readingWidth.overflow).toBe(false);
 });
 
+for (const viewport of viewports) {
+  test(`article typography stays consistent at ${viewport.width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await page.goto(
+      "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+    );
+
+    await expect(page.locator("main h1")).toHaveCount(1);
+    await expect(page.locator(".post-content h1")).toHaveCount(0);
+
+    const typography = await page.evaluate(() => {
+      const content = document.querySelector(".post-content");
+      const title = document.querySelector(".article-header h1");
+      const h2 = content.querySelector("h2");
+      const h3 = content.querySelector("h3");
+      const h4 = content.querySelector("h4");
+      const inlineCode = content.querySelector(":not(pre) > code");
+      const pre = content.querySelector("pre");
+      const blockCode = pre.querySelector("code");
+      const image = content.querySelector("img");
+      const time = document.querySelector(".article-meta time");
+      const headings = [...content.querySelectorAll("h2, h3, h4")].map(
+        (heading) => Number(heading.tagName.slice(1)),
+      );
+      return {
+        bodySize: Number.parseFloat(getComputedStyle(content).fontSize),
+        titleSize: Number.parseFloat(getComputedStyle(title).fontSize),
+        h2Size: Number.parseFloat(getComputedStyle(h2).fontSize),
+        h3Size: Number.parseFloat(getComputedStyle(h3).fontSize),
+        h4Size: Number.parseFloat(getComputedStyle(h4).fontSize),
+        inlineCodeSize: Number.parseFloat(getComputedStyle(inlineCode).fontSize),
+        preSize: Number.parseFloat(getComputedStyle(pre).fontSize),
+        preColor: getComputedStyle(pre).color,
+        blockCodeColor: getComputedStyle(blockCode).color,
+        blockCodeBackground: getComputedStyle(blockCode).backgroundColor,
+        imageRadius: Number.parseFloat(getComputedStyle(image).borderRadius),
+        dateVariant: getComputedStyle(time).fontVariantNumeric,
+        headings,
+        overflow: document.documentElement.scrollWidth > innerWidth,
+      };
+    });
+
+    expect(typography.bodySize).toBe(17);
+    expect(typography.titleSize).toBeGreaterThanOrEqual(28.7);
+    expect(typography.titleSize).toBeLessThanOrEqual(38.5);
+    expect(typography.h2Size).toBeGreaterThanOrEqual(22.3);
+    expect(typography.h2Size).toBeLessThanOrEqual(24.9);
+    expect(typography.h3Size).toBeCloseTo(20.4, 1);
+    expect(typography.h4Size).toBeCloseTo(17.6, 1);
+    expect(typography.inlineCodeSize).toBeGreaterThanOrEqual(14.5);
+    expect(typography.preSize).toBeGreaterThanOrEqual(13.4);
+    expect(typography.blockCodeColor).toBe(typography.preColor);
+    expect(typography.blockCodeBackground).toBe("rgba(0, 0, 0, 0)");
+    expect(typography.imageRadius).toBeGreaterThanOrEqual(6);
+    expect(typography.dateVariant).toContain("tabular-nums");
+    expect(typography.headings[0]).toBe(2);
+    expect(
+      typography.headings.every(
+        (level, index, headings) => index === 0 || level <= headings[index - 1] + 1,
+      ),
+    ).toBe(true);
+    expect(typography.overflow).toBe(false);
+  });
+}
+
+test("legacy duplicate-title fragment remains addressable without a second h1", async ({
+  page,
+}) => {
+  await page.goto(
+    "/posts/build-a-personal-github-page/#building-a-personal-github-page",
+  );
+
+  await expect(page.locator("main h1")).toHaveCount(1);
+  await expect(page.locator(".post-content h1")).toHaveCount(0);
+  await expect(page.locator("#building-a-personal-github-page")).toHaveCount(1);
+});
+
 for (const viewport of [
   { width: 390, height: 844 },
   { width: 320, height: 800 },

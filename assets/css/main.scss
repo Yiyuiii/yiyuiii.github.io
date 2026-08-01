@@ -67,11 +67,14 @@ body {
     "PingFang SC",
     "Hiragino Sans GB",
     "Microsoft YaHei",
+    "Noto Sans CJK SC",
+    "Source Han Sans SC",
+    "Noto Sans SC",
     sans-serif;
   font-size: clamp(16px, 0.28vw + 15px, 17px);
   font-weight: 400;
   line-height: 1.75;
-  letter-spacing: -0.004em;
+  letter-spacing: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -89,6 +92,10 @@ a:hover {
 button,
 input {
   font: inherit;
+}
+
+time {
+  font-variant-numeric: tabular-nums;
 }
 
 :focus-visible {
@@ -265,10 +272,24 @@ svg {
 .article-header h1 {
   margin: 0;
   color: var(--ink);
+  line-height: 1.2;
+}
+
+.page-header h1 {
   font-size: clamp(2rem, 4.8vw, 3rem);
   font-weight: 720;
-  line-height: 1.2;
   letter-spacing: -0.035em;
+}
+
+.article-header h1 {
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: normal;
+}
+
+html:lang(en) .article-header h1 {
+  letter-spacing: -0.01em;
 }
 
 .page-header p {
@@ -709,19 +730,99 @@ svg {
 .post-content {
   max-width: 72ch;
   color: var(--body);
+  font-family: inherit;
   font-size: 17px;
   line-height: 1.85;
+  letter-spacing: normal;
   overflow-wrap: anywhere;
 }
 
-.post-content h2 {
-  margin-top: 2.5em;
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  margin-right: 0;
+  margin-left: 0;
+  color: var(--ink);
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: normal;
   scroll-margin-top: 1.5rem;
 }
 
+.post-content h1,
+.post-content h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.8rem;
+  font-size: clamp(1.4rem, 2.4vw, 1.55rem);
+  line-height: 1.4;
+}
+
 .post-content h3 {
-  margin-top: 2em;
-  scroll-margin-top: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.65rem;
+  font-size: 1.275rem;
+  line-height: 1.45;
+}
+
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  margin-top: 1.6rem;
+  margin-bottom: 0.55rem;
+  line-height: 1.55;
+}
+
+.post-content h4 {
+  font-size: 1.1rem;
+}
+
+.post-content h5,
+.post-content h6 {
+  font-size: 1em;
+}
+
+.post-content h6 {
+  color: var(--meta);
+}
+
+html:lang(en) .post-content h1,
+html:lang(en) .post-content h2,
+html:lang(en) .post-content h3 {
+  letter-spacing: -0.01em;
+}
+
+.post-content strong {
+  color: inherit;
+  font-weight: 700;
+}
+
+.post-content > p,
+.post-content > ul,
+.post-content > ol,
+.post-content > dl,
+.post-content > figure,
+.post-content > table,
+.post-content > .highlighter-rouge {
+  margin-top: 0;
+  margin-bottom: 1.1rem;
+}
+
+.post-content ul,
+.post-content ol {
+  padding-inline-start: 1.6em;
+}
+
+.post-content li + li {
+  margin-top: 0.32em;
+}
+
+.post-content li > ul,
+.post-content li > ol {
+  margin-top: 0.4em;
+  margin-bottom: 0;
 }
 
 .post-content blockquote:not(.article-evidence) {
@@ -757,17 +858,66 @@ svg {
 }
 
 .post-content img {
+  display: block;
   height: auto;
+  margin-inline: auto;
+  border-radius: 0.42rem;
 }
 
 .post-content pre {
   max-width: 100%;
+  padding: 0.85rem 1rem;
+  margin: 1.35rem 0;
+  border: 1px solid color-mix(in srgb, var(--divider) 78%, transparent);
+  border-radius: 0.42rem;
+  color: var(--body);
+  background: color-mix(in srgb, var(--surface) 82%, var(--amethyst-soft));
   overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  tab-size: 2;
+}
+
+.post-content figure.highlight,
+.post-content .highlighter-rouge,
+.post-content .highlighter-rouge > .highlight {
+  background: transparent;
+}
+
+.post-content figure.highlight,
+.post-content .highlighter-rouge {
+  margin-top: 1.35rem;
+  margin-bottom: 1.35rem;
+}
+
+.post-content figure.highlight pre,
+.post-content .highlighter-rouge pre {
+  margin: 0;
+}
+
+.post-content pre code {
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.post-content :not(pre) > code {
+  padding: 0.12em 0.3em;
+  border-radius: 0.22rem;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--amethyst-soft) 72%, var(--surface));
+  font-size: 0.86em;
+  font-weight: 500;
 }
 
 .post-content table {
   display: block;
   max-width: 100%;
+  margin-top: 1.35rem;
+  margin-bottom: 1.35rem;
   overflow-x: auto;
 }
 
@@ -1258,6 +1408,34 @@ html[data-not-found-language="en"] .not-found-page [data-language="zh"] {
 
   .site-main {
     padding-top: 2.2rem;
+  }
+
+  .article-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .article-header h1 {
+    font-size: clamp(1.8rem, 8.5vw, 2.2rem);
+  }
+
+  .post-content h1,
+  .post-content h2 {
+    margin-top: 2.1rem;
+  }
+
+  .post-content h3 {
+    margin-top: 1.75rem;
+  }
+
+  .post-content h4,
+  .post-content h5,
+  .post-content h6 {
+    margin-top: 1.45rem;
+  }
+
+  .post-content pre {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.84rem;
   }
 
   .entry-grid {

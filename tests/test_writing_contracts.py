@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import yaml
@@ -15,6 +16,34 @@ def frontmatter(path):
     return yaml.safe_load(source.split("---", 2)[1])
 
 
+def markdown_headings(path):
+    """Return headings outside fenced code blocks from a post body."""
+    body = path.read_text(encoding="utf-8").split("---", 2)[2]
+    headings = []
+    in_fence = False
+    fence = None
+
+    for line in body.splitlines():
+        fence_match = re.match(r"^\s*(`{3,}|~{3,})", line)
+        if fence_match:
+            marker = fence_match.group(1)[0]
+            if not in_fence:
+                in_fence = True
+                fence = marker
+            elif marker == fence:
+                in_fence = False
+                fence = None
+            continue
+        if in_fence:
+            continue
+
+        heading = re.match(r"^(#{1,6})\s+(.+?)\s*$", line)
+        if heading:
+            headings.append((len(heading.group(1)), heading.group(2)))
+
+    return headings
+
+
 def test_every_post_has_an_explicit_source_language():
     posts = sorted((ROOT / "_posts").glob("*.md"))
     languages = [frontmatter(path)["lang"] for path in posts]
@@ -22,6 +51,34 @@ def test_every_post_has_an_explicit_source_language():
     assert len(posts) == 11
     assert languages.count("en") == 2
     assert languages.count("zh") == 9
+
+
+def test_every_post_body_starts_at_h2_and_never_skips_a_heading_level():
+    posts = sorted((ROOT / "_posts").glob("*.md"))
+
+    for path in posts:
+        headings = markdown_headings(path)
+        assert headings, f"{path.name} has no body headings"
+        assert headings[0][0] == 2, (
+            f"{path.name} must start its body outline at h2: {headings[0]!r}"
+        )
+        assert all(2 <= level <= 4 for level, _ in headings), (
+            f"{path.name} must reserve h1 for the article layout: {headings!r}"
+        )
+        for previous, current in zip(headings, headings[1:]):
+            assert current[0] <= previous[0] + 1, (
+                f"{path.name} skips from h{previous[0]} to h{current[0]}: "
+                f"{previous[1]!r} -> {current[1]!r}"
+            )
+
+
+def test_removed_duplicate_post_title_keeps_its_public_fragment_anchor():
+    body = text("_posts/2021-09-16-build a personal github page.md").split(
+        "---", 2
+    )[2]
+
+    assert "# Building a Personal GitHub Page" not in body
+    assert 'id="building-a-personal-github-page"' in body
 
 
 def test_every_post_has_a_nonempty_authored_excerpt():
