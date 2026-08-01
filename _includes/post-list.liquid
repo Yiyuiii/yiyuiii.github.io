@@ -5,7 +5,8 @@
 {% assign posts = site.posts | where: 'lang', page.lang %}
 <section class="writing-list" aria-label="{{ text.nav.writing }}" data-filter-list>
   {% for post in posts %}
-    <article class="writing-entry" data-filter-entry data-tags="{{ post.tags | join: '|' | escape }}">
+    {% assign filter_terms = post.tags | concat: post.categories %}
+    <article class="writing-entry" data-filter-entry data-tags="{{ filter_terms | join: '|' | escape }}">
       <div class="entry-meta">
         <div class="entry-tags">
           {% assign display_tags = post.sorted_tags | default: post.tags %}
@@ -26,7 +27,7 @@
         </a>
         {% if post.thumbnail %}
           <a class="entry-thumbnail" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
-            <img src="{{ post.thumbnail | relative_url }}" alt="" loading="lazy">
+            {% include responsive-thumbnail.liquid thumbnail=post.thumbnail alt="" priority=forloop.first %}
           </a>
         {% endif %}
       </div>

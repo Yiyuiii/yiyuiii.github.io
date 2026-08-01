@@ -16,6 +16,7 @@ from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
 import yaml
+from markdown_it import MarkdownIt
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +28,15 @@ TRACKED_KEYS = (
     "categories",
     "body",
 )
+OPTIONAL_POST_TRACKED_KEYS = (
+    "uid",
+    "date",
+    "author",
+    "thumbnail",
+    "article_cover",
+    "math",
+    "mermaid",
+)
 FRONTMATTER = re.compile(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n)?", re.DOTALL)
 HAN = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff]")
 REVISION_DATE = re.compile(r"\d{4}-\d{2}-\d{2}\Z")
@@ -36,6 +46,22 @@ ABOUT_BLOCK_TYPES = {"greeting", "prose", "education", "details", "links"}
 ABOUT_ICONS = {"github", "email", "rss", "paypal"}
 ABOUT_PLACEHOLDER = re.compile(r"\b(?:TODO|TBD)\b|待翻译", re.IGNORECASE)
 ABOUT_LINK = re.compile(r"(?<!!)\[[^\]\r\n]+\]\(([^)\s]+)([^)]*)\)")
+POST_UID = re.compile(r"\d{12}\Z")
+POST_TRANSLATION_KEY = re.compile(r"post-(\d{12})\Z")
+HTML_IMAGE = re.compile(r"<img\b[^>]*\bsrc=[\"']([^\"']+)[\"'][^>]*>", re.I)
+EXPLICIT_ANCHOR = re.compile(r"\{:[^}\r\n]*#([A-Za-z][\w:.-]*)[^}\r\n]*\}")
+FOOTNOTE = re.compile(r"\[\^([^\]]+)\]")
+INLINE_CODE_SOURCE = re.compile(r"(`+)([^\r\n]*?)\1")
+MATH = re.compile(
+    r"(?s)\$\$.*?\$\$|\\\[.*?\\\]|\\\(.*?\\\)"
+    r"|(?<!\\)\$(?!\$)(?:\\.|[^$\r\n])+?(?<!\\)\$"
+)
+MARKDOWN = MarkdownIt("commonmark").enable("table")
+ARTICLE_COVER_KEYS = {"alt", "caption"}
+MERMAID_PAREN_LABEL = re.compile(
+    r"^(?P<indent>[ \t]*)(?P<id>[A-Za-z_][A-Za-z0-9_-]*)"
+    r"(?P<open>\()(?P<label>[^()\r\n]+)(?P<close>\))(?P<trailing>[ \t]*)$"
+)
 
 
 class TranslationError(RuntimeError):
@@ -150,6 +176,10 @@ def _normalize_string(value: str) -> str:
 
 
 def _normalize(value: Any) -> Any:
+    if isinstance(value, datetime):
+        return value.isoformat()
+    if isinstance(value, date):
+        return value.isoformat()
     if isinstance(value, str):
         return _normalize_string(value)
     if isinstance(value, list):
@@ -163,6 +193,9 @@ def _normalize(value: Any) -> Any:
 
 def source_hash(content: Mapping[str, Any]) -> str:
     payload = {key: _normalize(content.get(key)) for key in TRACKED_KEYS}
+    for key in OPTIONAL_POST_TRACKED_KEYS:
+        if key in content:
+            payload[key] = _normalize(content[key])
     if content.get("revisions") is not None:
         payload["revisions"] = _normalize(content["revisions"])
     serialized = json.dumps(
@@ -171,6 +204,444 @@ def source_hash(content: Mapping[str, Any]) -> str:
         separators=(",", ":"),
     ).encode("utf-8")
     return hashlib.sha256(serialized).hexdigest()
+
+
+def _normalized_link_target(
+    target: str,
+    internal_link_map: Mapping[str, str],
+) -> tuple[str, str]:
+    parsed = urlsplit(target)
+    if parsed.scheme or parsed.netloc or target.startswith("//"):
+        return ("external", _normalize_string(target))
+    mapped_path = internal_link_map.get(parsed.path, parsed.path)
+    normalized = mapped_path
+    if parsed.query:
+        normalized += f"?{parsed.query}"
+    if parsed.fragment:
+        normalized += f"#{parsed.fragment}"
+    return ("internal", _normalize_string(normalized))
+
+
+def _article_cover_signature(document: Document) -> dict[str, tuple[str, ...]]:
+    """Validate localized cover copy and return its protected Markdown shape."""
+
+    cover = document.frontmatter.get("article_cover")
+    context = f"{document.path}: article_cover"
+    if not isinstance(cover, dict) or set(cover) != ARTICLE_COVER_KEYS:
+        raise TranslationError(
+            f"{context} must contain exactly {sorted(ARTICLE_COVER_KEYS)}"
+        )
+
+    thumbnail = document.frontmatter.get("thumbnail")
+    if (
+        not isinstance(thumbnail, str)
+        or not thumbnail.startswith("/assets/posts/")
+        or "\\" in thumbnail
+        or "?" in thumbnail
+        or "#" in thumbnail
+    ):
+        raise TranslationError(f"{context} requires a safe local post thumbnail")
+
+    alt = cover.get("alt")
+    if not isinstance(alt, str) or not alt.strip() or alt != alt.strip():
+        raise TranslationError(f"{context}.alt must be a non-empty trimmed string")
+    if ABOUT_PLACEHOLDER.search(alt) or any(
+        marker in alt for marker in ("\n", "\r", "<", ">", "[", "]", "`")
+    ):
+        raise TranslationError(f"{context}.alt must be plain safe text")
+
+    caption = cover.get("caption")
+    if (
+        not isinstance(caption, str)
+        or not caption.strip()
+        or caption != caption.strip()
+        or ABOUT_PLACEHOLDER.search(caption)
+    ):
+        raise TranslationError(f"{context}.caption must be a complete trimmed string")
+
+    tokens = MARKDOWN.parse(caption)
+    if [token.type for token in tokens] != [
+        "paragraph_open",
+        "inline",
+        "paragraph_close",
+    ]:
+        raise TranslationError(
+            f"{context}.caption must be one inline Markdown paragraph"
+        )
+
+    allowed = {
+        "text",
+        "link_open",
+        "link_close",
+        "em_open",
+        "em_close",
+        "strong_open",
+        "strong_close",
+    }
+    structure: list[str] = []
+    links: list[str] = []
+    for child in tokens[1].children or ():
+        if child.type not in allowed:
+            raise TranslationError(
+                f"{context}.caption uses unsupported or unsafe Markdown"
+            )
+        structure.append(child.type)
+        if child.type == "link_open":
+            href = child.attrGet("href") or ""
+            parsed = urlsplit(href)
+            if parsed.scheme != "https" or not parsed.netloc or child.attrGet("title"):
+                raise TranslationError(
+                    f"{context}.caption links must be title-free HTTPS URLs"
+                )
+            links.append(_normalize_string(href))
+
+    return {"structure": tuple(structure), "links": tuple(links)}
+
+
+def _table_cell_count(line: str) -> int:
+    without_code = INLINE_CODE_SOURCE.sub("", line.strip())
+    delimiters: list[int] = []
+    escaped = False
+    for index, character in enumerate(without_code):
+        if character == "\\":
+            escaped = not escaped
+            continue
+        if character == "|" and not escaped:
+            delimiters.append(index)
+        escaped = False
+    leading = bool(delimiters and delimiters[0] == 0)
+    trailing = bool(delimiters and delimiters[-1] == len(without_code) - 1)
+    return len(delimiters) + 1 - int(leading) - int(trailing)
+
+
+def post_structure_signature(
+    body: str,
+    *,
+    internal_link_map: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
+    """Return language-neutral tokens that translations must preserve exactly."""
+
+    normalized = _normalize_string(body)
+    tokens = MARKDOWN.parse(normalized)
+    link_map = internal_link_map or {}
+    heading_outline: list[int] = []
+    images: list[str] = []
+    code_blocks: list[tuple[str, str]] = []
+    inline_code: list[str] = []
+    external_links: list[str] = []
+    internal_links: list[str] = []
+    table_shapes: list[tuple[int, ...]] = []
+    source_lines = normalized.splitlines()
+    masked_lines = normalized.splitlines(keepends=True)
+
+    def consume_inline(children: Iterable[Any]) -> None:
+        for child in children:
+            if child.type == "code_inline":
+                inline_code.append(_normalize_string(child.content))
+            elif child.type == "image":
+                images.append(_normalize_string(child.attrGet("src") or ""))
+            elif child.type == "link_open":
+                kind, target = _normalized_link_target(
+                    child.attrGet("href") or "",
+                    link_map,
+                )
+                (external_links if kind == "external" else internal_links).append(
+                    target
+                )
+            elif child.type == "html_inline":
+                images.extend(
+                    _normalize_string(match.group(1))
+                    for match in HTML_IMAGE.finditer(child.content)
+                )
+
+    for token in tokens:
+        if token.type == "heading_open":
+            heading_outline.append(int(token.tag[1:]))
+        elif token.type in {"fence", "code_block"}:
+            info = _normalize_string(token.info)
+            content = _normalize_string(token.content)
+            fence_language = info.strip().split(maxsplit=1)
+            if fence_language and fence_language[0].casefold() == "mermaid":
+                content = "\n".join(
+                    MERMAID_PAREN_LABEL.sub(
+                        lambda match: (
+                            f"{match.group('indent')}{match.group('id')}"
+                            f"{match.group('open')}<localized-label>{match.group('close')}"
+                            f"{match.group('trailing')}"
+                        ),
+                        line,
+                    )
+                    for line in content.split("\n")
+                )
+            code_blocks.append(
+                (info, content)
+            )
+            if token.map:
+                for line_number in range(token.map[0], token.map[1]):
+                    masked_lines[line_number] = "\n"
+        elif token.type == "inline":
+            consume_inline(token.children or ())
+        elif token.type == "html_block":
+            images.extend(
+                _normalize_string(match.group(1))
+                for match in HTML_IMAGE.finditer(token.content)
+            )
+
+        if token.type == "table_open" and token.map:
+            table_lines = source_lines[token.map[0] : token.map[1]]
+            table_shapes.append(
+                tuple(
+                    _table_cell_count(line)
+                    for index, line in enumerate(table_lines)
+                    if index != 1
+                )
+            )
+
+    masked = "".join(masked_lines)
+    masked = INLINE_CODE_SOURCE.sub(
+        lambda match: " " * len(match.group(0)),
+        masked,
+    )
+    return {
+        "heading_outline": tuple(heading_outline),
+        "images": tuple(images),
+        "math": tuple(_normalize_string(match.group(0)) for match in MATH.finditer(masked)),
+        "code_fences": tuple(code_blocks),
+        "inline_code": tuple(inline_code),
+        "external_links": tuple(external_links),
+        "internal_links": tuple(internal_links),
+        "table_shapes": tuple(table_shapes),
+        "explicit_anchors": tuple(EXPLICIT_ANCHOR.findall(masked)),
+        "footnotes": tuple(FOOTNOTE.findall(masked)),
+        "evidence_markers": masked.count("{: .article-evidence}"),
+    }
+
+
+def load_translation_exemptions(path: Path, *, root: Path = ROOT) -> dict[str, dict[str, str]]:
+    """Load the closed migration list for articles that predate bilingual release."""
+
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or set(data) != {"version", "exemptions"}:
+        raise TranslationError(
+            f"{path}: root must contain exactly version and exemptions"
+        )
+    if data["version"] != 1 or not isinstance(data["exemptions"], list):
+        raise TranslationError(f"{path}: version must be 1 and exemptions must be a list")
+
+    loaded: dict[str, dict[str, str]] = {}
+    for index, item in enumerate(data["exemptions"]):
+        item_path = f"{path}: exemptions[{index}]"
+        required = {
+            "translation_key",
+            "source_language",
+            "source",
+            "missing_language",
+            "reason",
+        }
+        if not isinstance(item, dict) or set(item) != required:
+            raise TranslationError(f"{item_path} must contain exactly {sorted(required)}")
+        key = item["translation_key"]
+        if not isinstance(key, str) or not POST_TRANSLATION_KEY.fullmatch(key):
+            raise TranslationError(f"{item_path}.translation_key is invalid")
+        if key in loaded:
+            raise TranslationError(f"{item_path}.translation_key duplicates {key}")
+        source_language = item["source_language"]
+        missing_language = item["missing_language"]
+        if {source_language, missing_language} != {"zh", "en"}:
+            raise TranslationError(f"{item_path}: languages must be complementary zh/en")
+        source = item["source"]
+        if not isinstance(source, str) or Path(source).as_posix() != source:
+            raise TranslationError(f"{item_path}.source must be a canonical POSIX path")
+        source_path = _resolve_source(source, root=root)
+        if not source_path.is_file():
+            raise TranslationError(f"{item_path}.source does not exist: {source}")
+        reason = item["reason"]
+        if not isinstance(reason, str) or not reason.strip():
+            raise TranslationError(f"{item_path}.reason must be non-empty")
+        loaded[key] = {
+            "source_language": source_language,
+            "source": source,
+            "missing_language": missing_language,
+            "reason": reason,
+        }
+    return loaded
+
+
+def _validate_post_path(value: Any, *, language: str, context: str) -> str:
+    if not isinstance(value, str) or not value.startswith("/") or not value.endswith("/"):
+        raise TranslationError(f"{context}: permalink must be a root-relative directory URL")
+    if "?" in value or "#" in value or "\\" in value or "//" in value[1:]:
+        raise TranslationError(f"{context}: permalink is not canonical")
+    prefix = "/en/posts/" if language == "en" else "/posts/"
+    if not value.startswith(prefix) or value == prefix:
+        raise TranslationError(f"{context}: {language} permalink must start with {prefix}")
+    return value
+
+
+def _compare_post_structure(
+    key: str,
+    source: Document,
+    translation: Document,
+    *,
+    internal_link_map: Mapping[str, str],
+) -> None:
+    source_signature = post_structure_signature(
+        source.body,
+        internal_link_map=internal_link_map,
+    )
+    translation_signature = post_structure_signature(
+        translation.body,
+        internal_link_map=internal_link_map,
+    )
+    labels = {
+        "heading_outline": "heading outline",
+        "images": "images",
+        "math": "math",
+        "code_fences": "code fences",
+        "inline_code": "inline code",
+        "external_links": "external links",
+        "internal_links": "internal links",
+        "table_shapes": "table shapes",
+        "explicit_anchors": "explicit anchors",
+        "footnotes": "footnotes",
+        "evidence_markers": "evidence markers",
+    }
+    for field, label in labels.items():
+        if source_signature[field] != translation_signature[field]:
+            raise TranslationError(f"{key}: bilingual {label} differ")
+
+
+def check_post_contracts(
+    documents: Iterable[Document],
+    *,
+    exemptions: Mapping[str, Mapping[str, str]],
+    root: Path = ROOT,
+    production: bool = False,
+) -> None:
+    """Enforce stable post identities and complete bilingual pairs in production."""
+
+    root = root.resolve()
+    groups: dict[str, list[Document]] = {}
+    permalinks: dict[str, Path] = {}
+    for document in documents:
+        data = document.frontmatter
+        _article_cover_signature(document)
+        uid = data.get("uid")
+        key = data.get("translation_key")
+        language = data.get("lang")
+        if not isinstance(uid, str) or not POST_UID.fullmatch(uid):
+            raise TranslationError(f"{document.path}: uid must be a quoted 12-digit string")
+        if key != f"post-{uid}":
+            raise TranslationError(
+                f"{document.path}: translation_key must be post-{uid}"
+            )
+        if language not in {"zh", "en"}:
+            raise TranslationError(f"{document.path}: lang must be zh or en")
+        permalink = _validate_post_path(
+            data.get("permalink"),
+            language=language,
+            context=str(document.path),
+        )
+        if permalink in permalinks:
+            raise TranslationError(
+                f"duplicate post permalink {permalink}: {permalinks[permalink]} and {document.path}"
+            )
+        permalinks[permalink] = document.path
+        groups.setdefault(key, []).append(document)
+
+    if production and exemptions:
+        raise TranslationError(
+            "production translation exemptions must remain empty"
+        )
+
+    unknown_exemptions = set(exemptions) - set(groups)
+    if unknown_exemptions:
+        raise TranslationError(f"translation exemptions reference missing posts: {sorted(unknown_exemptions)}")
+
+    internal_link_map = {
+        document.frontmatter["permalink"]: f"post:{key}"
+        for key, members in groups.items()
+        for document in members
+    }
+
+    for key, members in groups.items():
+        languages = {member.frontmatter["lang"] for member in members}
+        if len(members) == 1:
+            member = members[0]
+            data = member.frontmatter
+            if any(
+                field in data
+                for field in (
+                    "translation_url",
+                    "translation_source",
+                    "translation_status",
+                    "source_hash",
+                )
+            ):
+                raise TranslationError(
+                    f"{member.path}: singleton must not advertise nonexistent translation"
+                )
+            exemption = exemptions.get(key)
+            missing = "en" if data["lang"] == "zh" else "zh"
+            if production and exemption is None:
+                raise TranslationError(f"{key}: missing {missing} counterpart")
+            if exemption is not None:
+                expected_source = member.path.resolve().relative_to(root).as_posix()
+                if (
+                    exemption.get("source_language") != data["lang"]
+                    or exemption.get("missing_language") != missing
+                    or exemption.get("source") != expected_source
+                ):
+                    raise TranslationError(f"{key}: exemption does not match its singleton source")
+            continue
+
+        if len(members) != 2 or languages != {"zh", "en"}:
+            raise TranslationError(f"{key}: must contain exactly one zh and one en post")
+        if key in exemptions:
+            raise TranslationError(f"{key}: stale exemption remains after pair completion")
+
+        translations = [
+            member for member in members if member.frontmatter.get("translation_source")
+        ]
+        if len(translations) != 1:
+            raise TranslationError(f"{key}: exactly one member must declare translation_source")
+        translation = translations[0]
+        source = members[0] if members[1] is translation else members[1]
+        if _resolve_source(
+            str(translation.frontmatter["translation_source"]), root=root
+        ) != source.path.resolve():
+            raise TranslationError(f"{key}: translation_source does not identify its pair source")
+
+        for member, counterpart in ((source, translation), (translation, source)):
+            if member.frontmatter.get("translation_url") != counterpart.frontmatter["permalink"]:
+                raise TranslationError(f"{member.path}: translation_url is not reciprocal")
+        for field in ("uid", "author", "date", "thumbnail", "math", "mermaid"):
+            if _normalize(source.frontmatter.get(field)) != _normalize(
+                translation.frontmatter.get(field)
+            ):
+                raise TranslationError(f"{key}: shared field {field} differs")
+        source_cover = _article_cover_signature(source)
+        translation_cover = _article_cover_signature(translation)
+        if source_cover["structure"] != translation_cover["structure"]:
+            raise TranslationError(f"{key}: bilingual article cover caption structure differs")
+        if source_cover["links"] != translation_cover["links"]:
+            raise TranslationError(f"{key}: bilingual article cover caption links differ")
+        if _revision_dates(source) != _revision_dates(translation):
+            raise TranslationError(f"{key}: revision dates do not match")
+        if production and translation.frontmatter.get("translation_status") != "current":
+            raise TranslationError(f"{translation.path}: translation status is not current")
+        expected_hash = source_hash(source.hash_input())
+        if translation.frontmatter.get("source_hash") != expected_hash:
+            raise TranslationError(f"{translation.path}: stale source_hash")
+        for field in ("translation_status", "source_hash"):
+            if field in source.frontmatter:
+                raise TranslationError(f"{source.path}: source must not declare {field}")
+        _compare_post_structure(
+            key,
+            source,
+            translation,
+            internal_link_map=internal_link_map,
+        )
 
 
 def load_about_data(path: Path) -> dict[str, Any]:
@@ -699,8 +1170,26 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Updated {args.write_about}: {digest}")
 
     if args.check:
+        document_paths = _document_paths(ROOT)
         check_documents(
-            _document_paths(ROOT),
+            document_paths,
+            root=ROOT,
+            production=args.production,
+        )
+        post_documents = [
+            parse_document(path)
+            for path in document_paths
+            if path.parent.name == "_posts"
+        ]
+        exemptions_path = ROOT / "_data" / "translation_exemptions.yml"
+        exemptions = (
+            load_translation_exemptions(exemptions_path, root=ROOT)
+            if exemptions_path.exists()
+            else {}
+        )
+        check_post_contracts(
+            post_documents,
+            exemptions=exemptions,
             root=ROOT,
             production=args.production,
         )

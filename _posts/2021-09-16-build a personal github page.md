@@ -1,21 +1,25 @@
 ---
 title: Building a Personal GitHub Page
+uid: "202109160000"
 author: Yiyu Chen
 date: 2021-09-16 00:00:00 +0800
 lang: en
+permalink: /en/posts/build-a-personal-github-page/
+translation_key: post-202109160000
+translation_url: /posts/搭建个人-github-主页/
 categories: [Tutorial]
 tags: [GitHub]
 thumbnail: /assets/posts/202109160000/cover-homepage-2026-07-30.webp
+article_cover:
+  alt: "The Chinese writing index of this personal GitHub Pages site"
+  caption: >-
+    Cover: this site's Chinese writing index on 30 July 2026; screenshot and site content by the author.
 excerpt: This article is about my experience of how to successfully start a Personal GitHub website. 
 ---
 
-![The Chinese writing index of this personal GitHub Pages site](/assets/posts/202109160000/cover-homepage-2026-07-30.webp)
-
-*Cover: this site's Chinese writing index on 30 July 2026; screenshot and site content by the author.*
-
 This article is about my experience of how to successfully start a Personal GitHub website. 
 
-# Building a Personal GitHub Page
+<span id="building-a-personal-github-page" aria-hidden="true"></span>
 
 **Attention:** since there are variety of detailed tutorials available online, here we just focus on some key points. You may frequently open other websites.
 

@@ -2,6 +2,37 @@
 
 这个站点把长文本、短界面文案、公开仓库数据和论文数据分开保存。修改内容时优先编辑源文件，不要把正文写进布局、样式或脚本。
 
+## 欢迎页与内容流
+
+`/` 与 `/en/` 是中英文欢迎页，所有人工欢迎文案集中在 `_data/home.yml`。这里维护欢迎标题、介绍、页眉功能指引、“今日轮换 / 浏览起点 / 最近整理”等分区文字、内容类型名称和无 JavaScript 说明；不要把这些可见文字写进 `_includes/home-feed.liquid`、`assets/js/home-feed.js` 或 CSS。两种语言必须保持完全相同的键、列表结构和指引目标。
+
+`/writing/` 与 `/en/writing/` 才是随笔索引。左上品牌链接回当前语言欢迎页，页顶“随笔 / Writing”进入对应索引；旧 `/?tag=...` 在 JavaScript 可用时会保留完整 query 与 hash 迁移到随笔索引，无 JavaScript 时欢迎页提供自然入口。
+
+欢迎页的混合内容流只在 `_data/home_feed.yml` 维护稳定引用和 `feed_date`，不重复抄写标题、摘要或 URL。每条记录只能有：
+
+```yaml
+- id: "writing:202302032000"
+  kind: writing
+  ref: "202302032000"
+  feed_date: 2026-07-31
+```
+
+- `writing` 的 `ref` 是文章 `uid`；`project` 是 `owner/repository`；`publication` 是论文 `key`。
+- `id` 必须严格等于 `<kind>:<ref>`，创建后不得改变。
+- `feed_date` 表示内容首次进入本站，或最近一次在本站发生实质整理的日期。普通 GitHub push、Star/Fork 变化、构建更新和只改错别字不得刷新日期。
+- 所有公开来源都必须恰好出现一次；不得增加 `featured`、`priority`、`score`、类型配额或其它隐性排序字段。
+- 运行时严格按 `feed_date` 降序、同日 `id` 升序，显示最近 8 项。同日内容集中属于真实日期与稳定规则的结果，不要为页面观感人工改日期。
+- “今日轮换”只从中英文都有内容、且不在任一语言最近 8 项中的共同身份选择；使用香港日期轮换，不记录访问。
+
+修改欢迎文案或内容流后运行：
+
+```powershell
+python -m pytest -q tests/test_home_contracts.py tests/test_check_site.py
+python scripts/translation_guard.py --write _pages/home.en.md
+python scripts/translation_guard.py --check --production
+node --check assets/js/home-feed.js
+```
+
 ## 关于yiyuiii
 
 日常编辑只需要打开一个文件：
@@ -171,12 +202,41 @@ python scripts/translation_guard.py --check --production
 ## 随笔
 
 - 正文：`_posts/*.md`
-- 中文文章使用 `lang: zh`，英文原文使用 `lang: en`
-- 不要求每篇文章有翻译
-- `tags` 是文章自己的真实标签；首页会按当前语言中的全局出现频率自动排序
-- 只有明确选择图片时才写 `thumbnail: /assets/...`
+- 中文文章使用 `lang: zh`，英文文章使用 `lang: en`
+- 新文章必须同时提供完整中英文版本；现有 11 组、22 篇随笔已经全部配对，`_data/translation_exemptions.yml` 必须保持空闭集，不能加入新豁免
+- 每组共用引号包裹的 12 位 `uid` 和 `post-<uid>` 形式的 `translation_key`
+- 中文 URL 位于 `/posts/`，英文 URL 位于 `/en/posts/`，并且全部使用显式 `permalink`
+- `tags` 是文章自己的真实标签；随笔索引会按当前语言中的全局出现频率自动排序
+- 每篇已发布随笔都必须声明共享的 `thumbnail: /assets/posts/...`，以及只含本地化 `alt`、`caption` 的 `article_cover`；题图由统一组件渲染，不要在 Markdown 正文重复插入首图和图注
 
-文章正文和原有永久链接不要为了首页展示而改写。首页摘要来自 `description` 或完整 `excerpt`，不会自动截断。
+文章正文和原有永久链接不要为了索引或欢迎页展示而改写。随笔摘要来自 `description` 或完整 `excerpt`，不会自动截断；欢迎页从同一字段读取，不另存重复摘要。
+
+### 正文标题与统一排版
+
+文章布局会用 front matter 的 `title` 生成页面唯一的一级标题。Markdown 正文必须从二级标题开始，只使用连续的二级、三级和四级层次：
+
+```markdown
+## 主要章节
+
+### 子章节
+
+#### 更细的说明
+```
+
+不要在正文重复文章标题，不要从二级标题直接跳到四级标题，也不要用加粗段落代替标题。新增、翻译或重排章节时，应同时检查侧边章节导航与手机端章节对话框；标题文字会参与生成公开片段锚点，已发布标题不要只为视觉效果改名。
+
+所有随笔共用 `assets/css/main.scss` 中唯一一套 `.post-content` 排版。文章不得添加仅供自己使用的 CSS class、ID 或样式文件来调整字号、字距、列表、代码块和图片。中英文可以通过页面 `lang` 使用同一系统内的语言级规则，但不得按文章分叉。
+
+极少数历史文章可能在正文中保留不可见的显式片段锚点，以兼容已经公开的旧链接。它不是标题，也不要随意删除或改名；制作对应翻译时，应让双方的标题层级和显式 ID 保持一致，便于翻译结构签名检查图片、公式、代码、章节和锚点的对应关系。
+
+真实原稿一方不写 `translation_source`；译文用该字段指向原稿，并保存 `translation_status: current` 和 `source_hash`。双方只有在文件都实际存在时才写 `translation_url`，且必须互相指向对方的显式 `permalink`。不要为了统一方向，把两篇英文旧文的中文译文反过来定义为原稿。
+
+修改原稿后，必须先同步复核并更新译文语义，再刷新译文 `source_hash`；不要通过增加翻译豁免绕过差异。守卫会检查题图字段与来源链接、正文图片目标、公式、代码块、行内代码、外部链接、可映射的站内文章链接、表格行列轮廓、标题层级、显式锚点、脚注、资料说明标记和修订日期是否对应；仍需另行复核自然语言语义，不能只刷新 hash：
+
+```powershell
+python scripts/translation_guard.py --write "_posts/<译文文件>.md"
+python scripts/translation_guard.py --check --production
+```
 
 ### 维护修订历史
 
@@ -241,18 +301,28 @@ revisions:
 git diff <基准提交>..<当前提交> -- "_posts/<文章文件>.md"
 ```
 
-文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。每篇已发布文章的 `thumbnail` 必须恰好对应一条记录，`asset` 也不得重复。更换封面时按以下严格契约同步更新：
+文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。每篇已发布文章的 `thumbnail` 必须恰好由一条记录覆盖，`asset` 也不得重复；同一内容的中英文文章应列在同一记录的 `posts` 中并共享封面，不要复制图片。`article_cover.alt` 与 `article_cover.caption` 按语言人工撰写，但图注的 Markdown 结构、HTTPS 来源链接目标和顺序必须对应；页面统一通过 `_includes/article-cover.liquid` 显示 26rem 内等比、不裁切的正式题图，详细组件契约见 `docs/article-cover-component.md`。更换封面时按以下严格契约同步更新：
 
-- 文件顶层只能包含 `version` 与 `covers`，其中 `version` 为 1，`covers` 为记录列表。
-- 公共必填字段为 `asset`、`post`、`origin_type`、`source_url`、`author`、`license`、`license_url`、`transform`、`sha256`、`dimensions` 与 `attribution`；`origin_type` 只能是 `external`、`self-produced` 或 `generated`，除按类型要求为 null 的 URL 外，公共字符串字段必须非空。
-- `asset` 与 `post` 必须使用规范的仓库相对 POSIX 路径，不得含反斜线、绝对路径、空段、`.` 或 `..`；前者位于 `assets/posts`，后者位于 `_posts`，且两者必须实际存在。`asset` 必须等于文章 `thumbnail` 去掉开头 `/` 后的值。
+- 文件顶层只能包含 `version`、`index_derivatives` 与 `covers`，其中 `version` 为 2，`covers` 为按唯一正式封面组织的记录列表。
+- `index_derivatives` 固化随笔索引派生规则：版本 1、160/320 px、WebP quality 75、method 6、Lanczos、Pillow 12.0.0、libwebp 1.6.0，并清除元数据。编码规则变化时必须升级派生版本和文件名，不能原地覆盖旧缓存 URL。
+- 公共必填字段为 `asset`、`posts`、`origin_type`、`source_url`、`author`、`license`、`license_url`、`transform`、`sha256`、`dimensions` 与 `attribution`；`posts` 是非空、无重复的文章路径列表；`origin_type` 只能是 `external`、`self-produced` 或 `generated`，除按类型要求为 null 的 URL 外，公共字符串字段必须非空。
+- `asset` 与 `posts` 中的路径必须使用规范的仓库相对 POSIX 路径，不得含反斜线、绝对路径、空段、`.` 或 `..`；前者位于 `assets/posts`，后者位于 `_posts`，且都必须实际存在。每篇文章的 `thumbnail` 去掉开头 `/` 后必须等于所属记录的 `asset`。
 - 生产资产必须是 WebP；`dimensions` 是 `[宽, 高]` 两个正整数并与文件一致，`sha256` 必须与当前生产文件一致。
 - `external`：`source_url` 与 `license_url` 都必须是 HTTPS，`author`、`license` 与 `attribution` 必须非空；不得包含生成图专用字段或 `source_asset`。
 - `self-produced`：`source_url` 与 `license_url` 必须为 null，`license` 必须为 `project-owned`；可选 `source_asset`，但它只允许用于此类型，并且必须是 `assets` 下实际存在的规范仓库相对 POSIX 路径；不得包含生成图专用字段。
 - `generated`：`source_url` 与 `license_url` 必须为 null，`license` 必须为 `project-use-rights`，不得包含 `source_asset`；必须提供非空的 `generator`、`generated_at`、`source_description`、`purpose`、完整 `prompt` 与 `approval`，以及由非空字符串组成的非空 `reference_inputs` 列表。
 - 正文必须满足生产封面的使用与外部可见署名要求：通常应能看到对应资产 URL；仅 `purpose` 明确标为 `writing-index cover` 的生成图可只用于文章索引。外部封面的正文必须公开显示 `source_url`、`attribution` 与 `license`，`license_url` 与来源页不同时也必须显示。
 
-上述字段、路径、文件内容和正文可见性要求以 tests/test_asset_provenance.py 为权威可执行契约。
+上述字段、路径、文件内容和正文可见性要求以 tests/test_asset_provenance.py 与 tests/test_generate_post_thumbnails.py 为权威可执行契约。
+
+正式封面生成或更换后，在仓库根目录生成并检查索引派生图：
+
+```powershell
+python scripts/generate_post_thumbnails.py --write
+python scripts/generate_post_thumbnails.py --check
+```
+
+派生图与原图同目录，命名为 `<原文件名去扩展名>-index-v1-160.webp` 和 `-index-v1-320.webp`；原分辨率正式封面继续供文章正文使用，不得被派生图替换。派生图不在清单中重复保存 22 组路径和 SHA-256：每张原图已有受检 SHA-256，`index_derivatives` 又完整固定了尺寸、编码参数、Pillow 与 libwebp 版本，`--check` 和测试会从原图重新编码并逐字节比较提交文件。这条“原图哈希 + 固定编码器与策略 + 逐字节重算”链路是派生文件哈希的单一等价证据，避免两份清单失步。编码器版本不一致时脚本会在处理前明确失败。
 
 计算当前文件 SHA-256：
 
@@ -316,6 +386,12 @@ recognition:
 
 ## 本地检查
 
+### 阳光背景维护
+
+阳光效果的视觉参数集中在 `assets/css/main.scss` 的 `--sunlight-x`、`--sunlight-y` 与 `body::before`；不要按单页复制样式。若改变页眉最大宽度、水平内边距或头像尺寸，必须同步光源公式，并复跑 `tests/browser/sunlight.spec.mjs` 的 1280/390/320 px 对齐检查。
+
+开关文案只维护 `_data/site_text.yml` 的 `sunlight` 中英文并保持字段平行。存储键和值属于兼容接口；更换键必须升级版本，不得复用 `yiyuiii.sunlight.v1` 解释其它值，也不得把访问数据并入该键。404 和无 JavaScript 的降级边界以阳光规格文档与自动化测试为准。
+
 本机无需 Ruby 即可运行：
 
 ```powershell
@@ -325,6 +401,8 @@ python scripts/translation_guard.py --check --production
 node --check assets/js/site-search.js
 node --check assets/js/theme-compat.js
 node --check assets/js/article-navigation.js
+node --check assets/js/home-feed.js
+node --check assets/js/sunlight.js
 git diff --check
 ```
 

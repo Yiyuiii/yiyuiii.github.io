@@ -1,0 +1,15 @@
+{% assign thumbnail_base = include.thumbnail | remove: '.webp' %}
+{% assign thumbnail_160 = thumbnail_base | append: '-index-v1-160.webp' %}
+{% assign thumbnail_320 = thumbnail_base | append: '-index-v1-320.webp' %}
+{% assign thumbnail_sizes = include.sizes | default: '(max-width: 380px) 88px, (max-width: 640px) 109px, 134px' %}
+<img
+  {% if include.class %}class="{{ include.class | escape }}"{% endif %}
+  src="{{ thumbnail_160 | relative_url }}"
+  srcset="{{ thumbnail_160 | relative_url }} 160w, {{ thumbnail_320 | relative_url }} 320w"
+  sizes="{{ thumbnail_sizes }}"
+  width="160"
+  height="160"
+  alt="{{ include.alt | default: '' | escape }}"
+  decoding="async"
+  {% if include.priority %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+>

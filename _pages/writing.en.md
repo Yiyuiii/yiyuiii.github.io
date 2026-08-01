@@ -1,11 +1,13 @@
 ---
 layout: page
 title: Writing
-permalink: /en/
+description: Essays on software, games, quantitative analysis, and everyday learning.
+permalink: /en/writing/
 lang: en
+schema_type: CollectionPage
 nav_key: writing
 hide_title: true
-translation_url: /
+translation_url: /writing/
 translation_key: writing-index
 translation_source: _pages/writing.md
 translation_status: current

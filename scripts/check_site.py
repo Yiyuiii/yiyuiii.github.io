@@ -20,6 +20,8 @@ class SiteCheckError(RuntimeError):
 REQUIRED = (
     "/",
     "/en/",
+    "/writing/",
+    "/en/writing/",
     "/projects/",
     "/en/projects/",
     "/publications/",
@@ -33,6 +35,8 @@ REQUIRED = (
 )
 FORBIDDEN = ("/research/", "/cv/", "/playground/")
 INDEX_ROUTES = {
+    "/writing/",
+    "/en/writing/",
     "/projects/",
     "/en/projects/",
     "/publications/",
@@ -84,6 +88,50 @@ def _check_nav(soup: BeautifulSoup, *, route: str, language: str) -> None:
 def _check_index_shell(soup: BeautifulSoup, route: str) -> None:
     if soup.select_one(".page-header"):
         raise SiteCheckError(f"{route}: redundant page-header is present")
+
+
+def _check_home(soup: BeautifulSoup, route: str, language: str) -> None:
+    heading = soup.select(".home-welcome > h1")
+    if len(heading) != 1 or not heading[0].get_text(" ", strip=True):
+        raise SiteCheckError(f"{route}: welcome heading is missing")
+    if len(soup.select(".home-guide li")) != 5:
+        raise SiteCheckError(f"{route}: expected five persistent guide statements")
+
+    recent = soup.select("[data-home-recent] > .home-feed-item")
+    if len(recent) != 8:
+        raise SiteCheckError(f"{route}: expected 8 recent home items, got {len(recent)}")
+    ordered = []
+    for item in recent:
+        stable_id = item.get("data-stable-id", "")
+        timestamp = item.select_one("time[data-home-date]")
+        summary = item.select_one("[data-home-summary]")
+        if not stable_id or not timestamp or not summary or not summary.get_text(" ", strip=True):
+            raise SiteCheckError(f"{route}: home item lacks normalized identity, date, or summary")
+        ordered.append((timestamp.get("datetime", ""), stable_id))
+    expected = sorted(ordered, key=lambda item: item[1])
+    expected.sort(key=lambda item: item[0], reverse=True)
+    if ordered != expected:
+        raise SiteCheckError(f"{route}: recent home items are not feed_date desc/id asc")
+
+    rotation = soup.select("[data-home-rotation] > .home-feed-item")
+    if len(rotation) != 1:
+        raise SiteCheckError(f"{route}: no-JavaScript rotation fallback is missing")
+    recent_ids = {item[1] for item in ordered}
+    if rotation[0].get("data-stable-id") in recent_ids:
+        raise SiteCheckError(f"{route}: rotation fallback duplicates a recent home item")
+
+    for image in soup.select(".home-shell img[src]"):
+        source = image.get("src", "")
+        if not source.endswith("-index-v1-160.webp"):
+            raise SiteCheckError(f"{route}: home loads a non-derivative post image: {source}")
+    source = str(soup).lower()
+    if "mathjax" in source or "al_math" in source:
+        raise SiteCheckError(f"{route}: welcome page loads math assets")
+
+    expected_brand = "/en/" if language == "en" else "/"
+    brand = soup.select_one("a.site-brand")
+    if not brand or brand.get("href") != expected_brand:
+        raise SiteCheckError(f"{route}: brand does not return to the localized welcome page")
 
 
 def _check_projects(soup: BeautifulSoup, route: str) -> None:
@@ -437,7 +485,10 @@ def _check_writing_entries(
         if language == "zh"
         else re.compile(r"^\d{4}-\d{2}-\d{2}$")
     )
-    for entry in soup.select(".writing-entry"):
+    expected_sizes = (
+        "(max-width: 380px) 88px, (max-width: 640px) 109px, 134px"
+    )
+    for index, entry in enumerate(soup.select(".writing-entry")):
         heading = entry.find("h2")
         title = heading.get_text(" ", strip=True) if heading else "(untitled)"
         summary = entry.select_one(".entry-main > p")
@@ -453,6 +504,48 @@ def _check_writing_entries(
             raise SiteCheckError(
                 f"{route}: date for {title!r} uses invalid display format "
                 f"{date_text!r}"
+            )
+        thumbnail = entry.select_one(".entry-thumbnail img")
+        if thumbnail is None:
+            raise SiteCheckError(f"{route}: thumbnail for {title!r} is missing")
+        source = thumbnail.get("src", "")
+        candidates = [
+            item.rsplit(" ", 1)
+            for item in thumbnail.get("srcset", "").split(", ")
+            if item
+        ]
+        if not source.endswith("-index-v1-160.webp"):
+            raise SiteCheckError(
+                f"{route}: thumbnail src for {title!r} is not the 160px derivative"
+            )
+        if (
+            len(candidates) != 2
+            or candidates[0] != [source, "160w"]
+            or candidates[1][1] != "320w"
+            or not candidates[1][0].endswith("-index-v1-320.webp")
+            or candidates[1][0].removesuffix("-index-v1-320.webp")
+            != source.removesuffix("-index-v1-160.webp")
+        ):
+            raise SiteCheckError(
+                f"{route}: thumbnail candidates for {title!r} are invalid"
+            )
+        expected_attributes = {
+            "sizes": expected_sizes,
+            "width": "160",
+            "height": "160",
+            "decoding": "async",
+            "loading": "eager" if index == 0 else "lazy",
+        }
+        for attribute, expected in expected_attributes.items():
+            if thumbnail.get(attribute) != expected:
+                raise SiteCheckError(
+                    f"{route}: thumbnail {attribute} for {title!r} must be "
+                    f"{expected!r}"
+                )
+        expected_priority = "high" if index == 0 else None
+        if thumbnail.get("fetchpriority") != expected_priority:
+            raise SiteCheckError(
+                f"{route}: thumbnail priority for {title!r} is invalid"
             )
 
 
@@ -503,8 +596,8 @@ def check_site(site: Path, *, external_links: bool = False) -> None:
     if errors:
         raise SiteCheckError("\n".join(errors))
 
-    zh_routes = ("/", "/projects/", "/publications/", "/about/", "/archives/")
-    en_routes = ("/en/", "/en/projects/", "/en/publications/", "/en/about/")
+    zh_routes = ("/", "/writing/", "/projects/", "/publications/", "/about/", "/archives/")
+    en_routes = ("/en/", "/en/writing/", "/en/projects/", "/en/publications/", "/en/about/")
     for route in zh_routes:
         _check_nav(_soup(site, route), route=route, language="zh")
     for route in en_routes:
@@ -523,11 +616,13 @@ def check_site(site: Path, *, external_links: bool = False) -> None:
     _check_about(_soup(site, "/about/"), "/about/", "zh")
     _check_about(_soup(site, "/en/about/"), "/en/about/", "en")
     _check_not_found(_soup(site, "/404.html"))
-    zh_writing = _soup(site, "/")
-    en_writing = _soup(site, "/en/")
+    _check_home(_soup(site, "/"), "/", "zh")
+    _check_home(_soup(site, "/en/"), "/en/", "en")
+    zh_writing = _soup(site, "/writing/")
+    en_writing = _soup(site, "/en/writing/")
     _check_tag_order(zh_writing)
-    _check_writing_entries(zh_writing, route="/", language="zh")
-    _check_writing_entries(en_writing, route="/en/", language="en")
+    _check_writing_entries(zh_writing, route="/writing/", language="zh")
+    _check_writing_entries(en_writing, route="/en/writing/", language="en")
 
     css_files = list((site / "assets" / "css").glob("main*.css"))
     if css_files:

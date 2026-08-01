@@ -101,6 +101,63 @@ def test_document_language_uses_page_value_and_google_fonts_are_absent():
     assert "google_fonts" not in head
 
 
+def test_site_owned_seo_is_language_aware_and_does_not_advertise_missing_pairs():
+    config = yaml.safe_load(text("_config.yml"))
+    head = text("_includes/head.liquid")
+    seo = text("_includes/bilingual-seo.liquid")
+
+    assert config["serve_og_meta"] is False
+    assert config["serve_schema_org"] is False
+    assert "{% include bilingual-seo.liquid %}" in head
+    assert "page.canonical_url | default: page.url" in seo
+    assert 'rel="canonical"' in seo
+    assert 'rel="alternate" hreflang="zh-CN"' in seo
+    assert 'rel="alternate" hreflang="en"' in seo
+    assert 'rel="alternate" hreflang="x-default"' in seo
+    assert "{% if page.translation_url %}" in seo
+    assert 'property="og:locale"' in seo
+    assert "zh_CN" in seo and "en_US" in seo
+    assert "page.schema_type | default: 'WebPage'" in seo
+    assert "schema_type = 'BlogPosting'" in seo
+    assert '"@type": {{ schema_type | jsonify }}' in seo
+    assert '"inLanguage"' in seo
+    assert "{% unless page.redirect %}" in seo
+    structured_data_guard = seo.index("{% unless page.redirect %}")
+    assert seo.index('rel="canonical"') < structured_data_guard
+    assert seo.index('property="og:type"') < structured_data_guard
+    assert seo.index('type="application/ld+json"') > structured_data_guard
+    assert head.count('rel="canonical"') == 0
+
+
+def test_index_and_profile_pages_declare_their_schema_semantics():
+    expected = {
+        "_pages/home.md": "WebSite",
+        "_pages/home.en.md": "WebSite",
+        "_pages/about.md": "ProfilePage",
+        "_pages/about.en.md": "ProfilePage",
+        "_pages/writing.md": "CollectionPage",
+        "_pages/writing.en.md": "CollectionPage",
+        "_pages/projects.md": "CollectionPage",
+        "_pages/projects.en.md": "CollectionPage",
+        "_pages/publications.md": "CollectionPage",
+        "_pages/publications.en.md": "CollectionPage",
+        "_pages/archives.md": "CollectionPage",
+        "_pages/archives.en.md": "CollectionPage",
+        "_pages/tags.md": "CollectionPage",
+        "_pages/tags.en.md": "CollectionPage",
+        "_pages/categories.md": "CollectionPage",
+        "_pages/categories.en.md": "CollectionPage",
+    }
+
+    assert {
+        path: frontmatter(path).get("schema_type")
+        for path in expected
+    } == expected
+
+    archive_compat = text("_plugins/legacy-post-compat.rb")
+    assert 'page.data["schema_type"] = "CollectionPage"' in archive_compat
+
+
 def test_head_allows_only_used_cdn_fonts_and_production_favicons():
     head = text("_includes/head.liquid")
     favicon_dir = ROOT / "assets" / "img" / "favicons"
@@ -205,14 +262,14 @@ def test_verified_self_contribution_follows_the_owner_name_inline():
     assert "publication-note" not in include
 
 
-def test_only_writing_page_owns_the_root_permalink():
+def test_only_welcome_page_owns_the_root_permalink():
     owners = []
     for path in sorted((ROOT / "_pages").glob("*.md")):
         data = frontmatter(path.relative_to(ROOT))
         if data.get("published", True) and data.get("permalink") == "/":
             owners.append(path.name)
 
-    assert owners == ["writing.md"]
+    assert owners == ["home.md"]
 
 
 def test_workflow_builds_pr_artifact_and_only_deploys_master():

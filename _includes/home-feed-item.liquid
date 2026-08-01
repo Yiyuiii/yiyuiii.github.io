@@ -1,0 +1,29 @@
+{% assign item = include.item %}
+{% assign home = include.home %}
+<article class="home-feed-item" data-home-feed-item data-stable-id="{{ item.id | escape }}">
+  <div class="entry-meta">
+    <span class="home-feed-item__kind" data-home-kind>{{ home.types[item.kind] }}</span>
+    <span class="entry-rule" aria-hidden="true"></span>
+    <time data-home-date datetime="{{ item.feed_date }}">{{ item.feed_date | date: home.date_format }}</time>
+  </div>
+  <div class="home-feed-item__grid{% unless item.thumbnail %} home-feed-item__grid--text-only{% endunless %}" data-home-grid>
+    <div class="home-feed-item__main">
+      <h3>
+        <a
+          data-home-link
+          href="{{ item.url | relative_url }}"
+          {% if item.external %}target="_blank" rel="noopener noreferrer"{% endif %}
+        >
+          <span data-home-title>{{ item.title }}</span>
+          {% if item.external %}<span class="sr-only" data-home-external> — {{ home.external_label }}</span>{% endif %}
+        </a>
+      </h3>
+      <p data-home-summary>{{ item.summary | strip_html | strip }}</p>
+    </div>
+    {% if item.thumbnail %}
+      <a class="entry-thumbnail home-feed-item__thumbnail" data-home-thumbnail-link href="{{ item.url | relative_url }}" tabindex="-1" aria-hidden="true">
+        {% include responsive-thumbnail.liquid thumbnail=item.thumbnail alt="" %}
+      </a>
+    {% endif %}
+  </div>
+</article>

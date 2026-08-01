@@ -11,9 +11,11 @@ def write(path, content):
 
 
 def page(lang, nav, body):
+    home = "/en/" if lang == "en" else "/"
     return f"""<!doctype html>
 <html lang="{lang}">
   <body>
+    <a class="site-brand" href="{home}">yiyuiii</a>
     <nav class="site-nav">{nav}</nav>
     <main>{body}</main>
   </body>
@@ -128,15 +130,46 @@ def about_profile(language):
 def valid_site(root):
     zh_nav = "<a>随笔</a><a>GitHub</a><a>论文</a><a>关于yiyuiii</a>"
     en_nav = "<a>Writing</a><a>GitHub</a><a>Papers</a><a>About yiyuiii</a>"
+    def home_feed(language):
+        guide = "".join(f"<li>Guide {index}</li>" for index in range(5))
+        recent = "".join(
+            '<article class="home-feed-item" data-stable-id="project:p{index}">'
+            '<time data-home-date datetime="2026-07-31">2026-07-31</time>'
+            '<p data-home-summary>Summary</p></article>'.format(index=index)
+            for index in range(8)
+        )
+        return (
+            '<div class="home-shell"><header class="home-welcome"><h1>Welcome</h1>'
+            f'<aside class="home-guide"><ul>{guide}</ul></aside></header>'
+            '<div data-home-rotation><article class="home-feed-item" '
+            'data-stable-id="publication:rotation"><time data-home-date '
+            'datetime="2026-07-30">2026-07-30</time>'
+            '<p data-home-summary>Rotation</p></article></div>'
+            f'<div data-home-recent>{recent}</div></div>'
+        )
+
+    write(root / "index.html", page("zh", zh_nav, home_feed("zh")))
+    write(root / "en" / "index.html", page("en", en_nav, home_feed("en")))
+
     tags = (
         '<article class="writing-entry">'
         '<div class="entry-tags"><a>桌游</a><a>四季物语</a></div>'
         '<time datetime="2023-01-28T12:00:00+00:00">2023年1月28日</time>'
         '<a class="entry-main"><h2>四季物语量化分析攻略</h2>'
-        "<p>完整摘要，不被截断。</p></a></article>"
+        '<p>完整摘要，不被截断。</p></a>'
+        '<a class="entry-thumbnail"><img '
+        'src="/assets/posts/sample/cover-index-v1-160.webp" '
+        'srcset="/assets/posts/sample/cover-index-v1-160.webp 160w, '
+        '/assets/posts/sample/cover-index-v1-320.webp 320w" '
+        'sizes="(max-width: 380px) 88px, (max-width: 640px) 109px, 134px" '
+        'width="160" height="160" decoding="async" '
+        'loading="eager" fetchpriority="high"></a></article>'
     )
-    write(root / "index.html", page("zh", zh_nav, tags))
-    write(root / "en" / "index.html", page("en", en_nav, "<h1>Writing</h1>"))
+    write(root / "writing" / "index.html", page("zh", zh_nav, tags))
+    write(
+        root / "en" / "writing" / "index.html",
+        page("en", en_nav, "<h1>Writing</h1>"),
+    )
 
     def project_entries(route):
         return "".join(
@@ -381,7 +414,7 @@ def test_project_repository_link_requires_a_readme_summary(tmp_path, route):
 
 def test_rendered_tag_frequency_order_is_checked(tmp_path):
     valid_site(tmp_path)
-    path = tmp_path / "index.html"
+    path = tmp_path / "writing" / "index.html"
     source = path.read_text(encoding="utf-8")
     source = source.replace(
         "<a>桌游</a><a>四季物语</a>",
@@ -395,7 +428,7 @@ def test_rendered_tag_frequency_order_is_checked(tmp_path):
 
 def test_writing_summary_must_be_authored_and_bounded(tmp_path):
     valid_site(tmp_path)
-    path = tmp_path / "index.html"
+    path = tmp_path / "writing" / "index.html"
     source = path.read_text(encoding="utf-8")
     source = source.replace(
         "完整摘要，不被截断。",
@@ -409,7 +442,7 @@ def test_writing_summary_must_be_authored_and_bounded(tmp_path):
 
 def test_writing_date_must_use_the_language_display_format(tmp_path):
     valid_site(tmp_path)
-    path = tmp_path / "index.html"
+    path = tmp_path / "writing" / "index.html"
     source = path.read_text(encoding="utf-8")
     source = source.replace(
         "2023年1月28日",
@@ -418,6 +451,20 @@ def test_writing_date_must_use_the_language_display_format(tmp_path):
     path.write_text(source, encoding="utf-8")
 
     with pytest.raises(SiteCheckError, match="date"):
+        check_site(tmp_path)
+
+
+def test_writing_thumbnail_must_use_responsive_derivatives(tmp_path):
+    valid_site(tmp_path)
+    path = tmp_path / "writing" / "index.html"
+    source = path.read_text(encoding="utf-8")
+    source = source.replace(
+        "/assets/posts/sample/cover-index-v1-160.webp 160w",
+        "/assets/posts/sample/cover.webp 160w",
+    )
+    path.write_text(source, encoding="utf-8")
+
+    with pytest.raises(SiteCheckError, match="thumbnail candidates"):
         check_site(tmp_path)
 
 

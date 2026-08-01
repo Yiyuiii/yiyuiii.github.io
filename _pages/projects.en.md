@@ -4,6 +4,7 @@ title: GitHub
 permalink: /en/projects/
 description: Public code repositories
 lang: en
+schema_type: CollectionPage
 nav_key: github
 hide_title: true
 translation_url: /projects/

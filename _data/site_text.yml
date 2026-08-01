@@ -5,11 +5,13 @@ zh:
     papers: 论文
     about: 关于yiyuiii
   urls:
-    writing: /
+    home: /
+    writing: /writing/
     github: /projects/
     papers: /publications/
     about: /about/
   primary_navigation: 主导航
+  home_link: 返回中文欢迎页
   skip_to_content: 跳到正文
   switch_language: 切换为英文
   missing_translation: 这篇内容目前没有中文版本，已回到中文随笔索引。
@@ -20,6 +22,11 @@ zh:
     placeholder: 搜索随笔、项目或论文
     empty: 输入关键词开始搜索。
     no_results: 没有找到匹配内容。
+  sunlight:
+    enable: 开启阳光背景
+    disable: 关闭阳光背景
+    status_on: 阳光背景已开启
+    status_off: 阳光背景已关闭
   project:
     stars: Star
     forks: Fork
@@ -61,11 +68,13 @@ en:
     papers: Papers
     about: About yiyuiii
   urls:
-    writing: /en/
+    home: /en/
+    writing: /en/writing/
     github: /en/projects/
     papers: /en/publications/
     about: /en/about/
   primary_navigation: Primary navigation
+  home_link: Return to the English welcome page
   skip_to_content: Skip to content
   switch_language: Switch to Chinese
   missing_translation: This item has no English version yet. You are viewing the English writing index.
@@ -76,6 +85,11 @@ en:
     placeholder: Search writing, projects, or papers
     empty: Enter a term to start searching.
     no_results: No matching content found.
+  sunlight:
+    enable: Turn on the sunlight background
+    disable: Turn off the sunlight background
+    status_on: Sunlight background is on
+    status_off: Sunlight background is off
   project:
     stars: Stars
     forks: Forks

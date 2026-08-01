@@ -4,6 +4,7 @@ title: Papers
 permalink: /en/publications/
 description: Co-authored papers with public source links
 lang: en
+schema_type: CollectionPage
 nav_key: papers
 hide_title: true
 translation_url: /publications/

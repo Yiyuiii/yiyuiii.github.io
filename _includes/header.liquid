@@ -4,14 +4,14 @@
 {% if page.translation_url %}
   {% assign translation_target = page.translation_url %}
 {% elsif lang_key == 'en' %}
-  {% assign translation_target = '/?missing_translation=1' %}
+  {% assign translation_target = '/writing/?missing_translation=1' %}
 {% else %}
-  {% assign translation_target = '/en/?missing_translation=1' %}
+  {% assign translation_target = '/en/writing/?missing_translation=1' %}
 {% endif %}
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="site-brand" href="{{ text.urls.writing | relative_url }}" aria-label="yiyuiii">
+    <a class="site-brand" href="{{ text.urls.home | relative_url }}" aria-label="{{ text.home_link }}">
       <img
         class="site-brand__avatar"
         src="{{ '/assets/img/favicons/android-chrome-256x256.png' | relative_url }}"
@@ -36,6 +36,24 @@
           <path d="m16 16 4 4"></path>
         </svg>
       </button>
+      <button
+        id="sunlight-toggle"
+        class="icon-button sunlight-toggle"
+        type="button"
+        aria-label="{{ text.sunlight.disable }}"
+        aria-pressed="true"
+        data-enable-label="{{ text.sunlight.enable | escape }}"
+        data-disable-label="{{ text.sunlight.disable | escape }}"
+        data-status-on="{{ text.sunlight.status_on | escape }}"
+        data-status-off="{{ text.sunlight.status_off | escape }}"
+        hidden
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="3.4"></circle>
+          <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path>
+        </svg>
+      </button>
+      <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
       <a class="language-switch" href="{{ translation_target | relative_url }}" aria-label="{{ text.switch_language }}">
         {% if lang_key == 'en' %}中{% else %}EN{% endif %}
       </a>

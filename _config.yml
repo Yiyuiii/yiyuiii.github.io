@@ -55,8 +55,8 @@ socials_in_search: true
 posts_in_search: true
 bib_search: false
 max_width: 960px
-serve_og_meta: true
-serve_schema_org: true
+serve_og_meta: false
+serve_schema_org: false
 og_image: /assets/img/favicons/android-chrome-256x256.png
 analytics:
   google: null

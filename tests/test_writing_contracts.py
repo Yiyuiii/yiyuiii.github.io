@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import yaml
@@ -15,13 +16,98 @@ def frontmatter(path):
     return yaml.safe_load(source.split("---", 2)[1])
 
 
+def markdown_headings(path):
+    """Return headings outside fenced code blocks from a post body."""
+    body = path.read_text(encoding="utf-8").split("---", 2)[2]
+    headings = []
+    in_fence = False
+    fence = None
+
+    for line in body.splitlines():
+        fence_match = re.match(r"^\s*(`{3,}|~{3,})", line)
+        if fence_match:
+            marker = fence_match.group(1)[0]
+            if not in_fence:
+                in_fence = True
+                fence = marker
+            elif marker == fence:
+                in_fence = False
+                fence = None
+            continue
+        if in_fence:
+            continue
+
+        heading = re.match(r"^(#{1,6})\s+(.+?)\s*$", line)
+        if heading:
+            headings.append((len(heading.group(1)), heading.group(2)))
+
+    return headings
+
+
 def test_every_post_has_an_explicit_source_language():
     posts = sorted((ROOT / "_posts").glob("*.md"))
     languages = [frontmatter(path)["lang"] for path in posts]
 
-    assert len(posts) == 11
-    assert languages.count("en") == 2
-    assert languages.count("zh") == 9
+    assert posts
+    assert set(languages) == {"en", "zh"}
+
+
+def test_every_post_body_starts_at_h2_and_never_skips_a_heading_level():
+    posts = sorted((ROOT / "_posts").glob("*.md"))
+
+    for path in posts:
+        headings = markdown_headings(path)
+        assert headings, f"{path.name} has no body headings"
+        assert headings[0][0] == 2, (
+            f"{path.name} must start its body outline at h2: {headings[0]!r}"
+        )
+        assert all(2 <= level <= 4 for level, _ in headings), (
+            f"{path.name} must reserve h1 for the article layout: {headings!r}"
+        )
+        for previous, current in zip(headings, headings[1:]):
+            assert current[0] <= previous[0] + 1, (
+                f"{path.name} skips from h{previous[0]} to h{current[0]}: "
+                f"{previous[1]!r} -> {current[1]!r}"
+            )
+
+
+def test_removed_duplicate_post_title_keeps_its_public_fragment_anchor():
+    body = text("_posts/2021-09-16-build a personal github page.md").split(
+        "---", 2
+    )[2]
+
+    assert "# Building a Personal GitHub Page" not in body
+    assert 'id="building-a-personal-github-page"' in body
+
+
+def test_taxonomy_navigation_returns_to_the_current_language_filter():
+    for path in (
+        "_pages/tags.md",
+        "_pages/tags.en.md",
+        "_pages/categories.md",
+        "_pages/categories.en.md",
+    ):
+        source = text(path)
+        assert "site.data.site_text[lang_key]" in source
+        assert "text.urls.writing" in source
+        assert "?tag=" in source
+        assert "prepend: '/tags/'" not in source
+        assert "prepend: '/categories/'" not in source
+
+    post_list = text("_includes/post-list.liquid")
+    assert "post.tags | concat: post.categories" in post_list
+
+
+def test_generated_legacy_archives_prefer_chinese_but_keep_english_only_routes():
+    archive = text("_layouts/archive.liquid")
+    plugin = text("_plugins/legacy-post-compat.rb")
+
+    assert 'lang_key = page.lang | default: "zh"' in archive
+    assert 'site.data.site_text[lang_key]' in archive
+    assert 'page.documents | where: "lang", lang_key' in archive
+    assert 'page.data["layout"] == "archive"' in plugin
+    assert 'document.data["lang"] == "zh"' in plugin
+    assert '? "zh" : "en"' in plugin
 
 
 def test_every_post_has_a_nonempty_authored_excerpt():
@@ -39,6 +125,7 @@ def test_every_post_has_a_nonempty_authored_excerpt():
 
 def test_writing_index_uses_complete_summaries_and_real_tags():
     include = text("_includes/post-list.liquid")
+    responsive_thumbnail = text("_includes/responsive-thumbnail.liquid")
 
     assert "site.data.site_text[lang_key]" in include
     assert "sorted_tags" in include
@@ -52,6 +139,21 @@ def test_writing_index_uses_complete_summaries_and_real_tags():
     assert "truncate" not in include
     assert "line-clamp" not in include
     assert "thumbnail" in include
+    assert "responsive-thumbnail.liquid" in include
+    assert "priority=forloop.first" in include
+    assert 'srcset="' in responsive_thumbnail
+    assert "160w" in responsive_thumbnail
+    assert "320w" in responsive_thumbnail
+    assert (
+        '(max-width: 380px) 88px, (max-width: 640px) 109px, 134px'
+        in responsive_thumbnail
+    )
+    assert 'width="160"' in responsive_thumbnail
+    assert 'height="160"' in responsive_thumbnail
+    assert 'decoding="async"' in responsive_thumbnail
+    assert 'loading="eager"' in responsive_thumbnail
+    assert 'fetchpriority="high"' in responsive_thumbnail
+    assert 'loading="lazy"' in responsive_thumbnail
 
 
 def test_writing_and_project_indexes_share_one_scoped_filter_protocol():
@@ -86,15 +188,27 @@ def test_tag_frequency_is_language_local_and_ties_are_stable():
     assert "[-" in plugin
 
 
-def test_homepages_are_language_specific_and_blog_redirects_to_root():
+def test_writing_indexes_are_language_specific_and_blog_redirects_to_writing():
     zh = frontmatter(ROOT / "_pages" / "writing.md")
     en = frontmatter(ROOT / "_pages" / "writing.en.md")
     blog = frontmatter(ROOT / "_pages" / "blog.md")
+    page2 = frontmatter(ROOT / "_pages" / "legacy-page2.md")
 
-    assert (zh["permalink"], zh["lang"], zh["hide_title"]) == ("/", "zh", True)
-    assert (en["permalink"], en["lang"], en["hide_title"]) == ("/en/", "en", True)
+    assert (zh["permalink"], zh["lang"], zh["hide_title"]) == (
+        "/writing/",
+        "zh",
+        True,
+    )
+    assert (en["permalink"], en["lang"], en["hide_title"]) == (
+        "/en/writing/",
+        "en",
+        True,
+    )
     assert blog["permalink"] == "/blog/"
-    assert blog["redirect"] == "/"
+    assert blog["redirect"] == "/writing/"
+    assert blog["canonical_url"] == blog["redirect"]
+    assert page2["permalink"] == "/page2/"
+    assert page2["canonical_url"] == page2["redirect"] == "/writing/"
 
 
 def test_post_layout_is_reader_first():
@@ -112,6 +226,17 @@ def test_post_layout_is_reader_first():
     assert "reading-time" not in layout
     assert "post-content" in layout
     assert "<h1" in layout
+    assert layout.count("{% include article-cover.liquid %}") == 1
+    assert layout.index("{% include article-cover.liquid %}") < layout.index(
+        '<div class="post-content"'
+    )
+
+    cover = text("_includes/article-cover.liquid")
+    assert '<figure class="article-cover">' in cover
+    assert 'class="article-cover__image"' in cover
+    assert "page.thumbnail | relative_url" in cover
+    assert "page.article_cover.alt | escape" in cover
+    assert "page.article_cover.caption | markdownify" in cover
 
 
 def test_post_header_orders_tags_before_expandable_revision_history():
@@ -177,7 +302,7 @@ def test_every_post_now_has_a_local_thumbnail():
     posts = sorted((ROOT / "_posts").glob("*.md"))
     thumbnails = [frontmatter(path).get("thumbnail") for path in posts]
 
-    assert len(posts) == 11
+    assert posts
     assert all(
         isinstance(thumbnail, str) and thumbnail.startswith("/assets/posts/")
         for thumbnail in thumbnails
@@ -186,6 +311,23 @@ def test_every_post_now_has_a_local_thumbnail():
         (ROOT / thumbnail.lstrip("/")).is_file()
         for thumbnail in thumbnails
     )
+
+
+def test_every_post_uses_one_explicit_cover_component_without_body_duplication():
+    posts = sorted((ROOT / "_posts").glob("*.md"))
+
+    assert len(posts) == 22
+    for path in posts:
+        data = frontmatter(path)
+        cover = data.get("article_cover")
+        body = path.read_text(encoding="utf-8").split("---", 2)[2]
+
+        assert isinstance(cover, dict) and set(cover) == {"alt", "caption"}, path
+        assert all(
+            isinstance(cover[field], str) and cover[field].strip()
+            for field in ("alt", "caption")
+        ), path
+        assert data["thumbnail"] not in body, path
 
 
 def assert_age_of_innovation_reviewed_conclusions(body):

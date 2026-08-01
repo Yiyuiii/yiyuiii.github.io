@@ -1,22 +1,26 @@
 ---
 title: Reinforcement Learning Issues
+uid: "202109170000"
 author: Yiyu Chen
 date: 2021-09-17 00:00:00 +0800
 lang: en
+permalink: /en/posts/reinforcement-learning-issues/
+translation_key: post-202109170000
+translation_url: /posts/强化学习问题随笔/
 categories: [Reinforcement Learning]
 tags: [Reinforcement Learning]
 math: True
 thumbnail: /assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp
+article_cover:
+  alt: "A typical reinforcement-learning agent–environment loop"
+  caption: >-
+    Cover diagram: [Reinforcement learning diagram](https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg) by Wikimedia Commons user Megajuice, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); square layout prepared for this site.
 excerpt: This article is about Reinforcement Learning issues. 
 ---
 
-![A typical reinforcement-learning agent–environment loop](/assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp)
-
-*Cover diagram: [Reinforcement learning diagram](https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg) by Wikimedia Commons user Megajuice, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); square layout prepared for this site.*
-
 This article takes notes of Reinforcement Learning issues I've seen. Continuously updated.
 
-### Learning
+## Learning
 
 I suggest in the following order:
 
@@ -28,34 +32,34 @@ I suggest in the following order:
 6. Policy Gradient methods (e.g. DDPG, SAC, PPO, TD3)
 7. Advanced works (e.g. AlphaGo, MuZero, Agent57)
 
-#### Python
+### Python
 
 [菜鸟教程](https://www.runoob.com/python3/python3-tutorial.html) (Chinese)
 
-#### Multi-Armed Bandit
+### Multi-Armed Bandit
 
 [The Multi-Armed Bandit Problem and Its Solutions, LiLian Weng](https://lilianweng.github.io/lil-log/2018/01/23/the-multi-armed-bandit-problem-and-its-solutions.html)
 
-#### Deep Reinforcement Learning
+### Deep Reinforcement Learning
 
 [A (Long) Peek into Reinforcement Learning, LiLian Weng](https://lilianweng.github.io/lil-log/2018/02/19/a-long-peek-into-reinforcement-learning.html)
 
 [Policy Gradient Algorithms, LiLian Weng](https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html)
 
-#### Advanced works
+### Advanced works
 
 [MuZero, 知乎](https://zhuanlan.zhihu.com/p/206735209) (Chinese)
 
-### Existing Kits
+## Existing Kits
 
-#### RLlib
+### RLlib
 
 <https://docs.ray.io/en/master/rllib.html>
 
 - The popular all-round open-source library
 - Takes time to learn
 
-#### ElegentRL
+### ElegentRL
 
 <https://github.com/AI4Finance-Foundation/ElegantRL>
 
@@ -63,15 +67,15 @@ I suggest in the following order:
 - Easy to learn
 - Developing and improving
 
-### Environment
+## Environment
 
 Generally an Environment class is deriving **gym.Env**, and following the interface definitions.
 
 Generally the **computational costs** of Environment centers at CPU.
 
-### State
+## State
 
-#### Representation
+### Representation
 
 Many popular CNN structure doesn't fit Reinforcement Learning, including
 
@@ -83,27 +87,27 @@ and sometimes needs
 - Orthogonal normalization at the output layer for deep layers
 - Low Learning Rate or freezing parameters for increasing number of parameters
 
-### Reward
+## Reward
 
-#### Design
+### Design
 
 There's no standard for Reward designing. In principle, learning is faster with denser Reward, and convergence performance depends on the guidance of the Reward.   
 
-### Replay Buffer
+## Replay Buffer
 
 Replay Buffer should be as large as possible to **describe the Environment and Policy**.
 
 While Replay Buffer couldn't be large enough, try lower the Learning Rate.
 
-#### Priority Experience Replay (PER)
+### Priority Experience Replay (PER)
 
 Priority Experience Replay will result in data **distribution shift** for Deep Network, and this has great impact on performance when Rewards are dense. Generally we use PER in early training stage.
 
 As an improvement, try **Self Imitation Learning**.
 
-### Self-Play
+## Self-Play
 
-#### How to evaluate a policy with baseline unavailable?
+### How to evaluate a policy with baseline unavailable?
 
 One idea: manage a baseline policy set composed by policies in history.
 
@@ -111,7 +115,7 @@ One idea: manage a baseline policy set composed by policies in history.
 2. Grade policies by 'domination'. That is, higher level policies suppress lowers.
 3. Draw policies from each level to form the baseline policy set.
 
-### Testing Methods
+## Testing Methods
 
 Reinforcement Learning methods are more complicated than supervised ones. When BUGs arise, it's often clueless to continue. Here are some advices:
 
@@ -119,7 +123,7 @@ Reinforcement Learning methods are more complicated than supervised ones. When B
 - Write **test for each module** in the method such as Replay Buffer.
 - **Learn more** about RL, PyTorch/Tensorflow, Python, etc.
 
-#### Tools
+### Tools
 
 - PyCharm profiler
 - memory_profiler, line_profiler

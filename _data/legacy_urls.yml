@@ -20,10 +20,10 @@
   policy: retained
 - path: /blog/
   policy: redirected
-  target: /
+  target: /writing/
 - path: /page2/
   policy: redirected
-  target: /
+  target: /writing/
 - path: /sw.js
   policy: retirement
 - path: /research/
@@ -34,9 +34,11 @@
   policy: retired
 
 - path: /posts/build-a-personal-github-page/
-  policy: retained
+  policy: redirected
+  target: /en/posts/build-a-personal-github-page/
 - path: /posts/reinforcement-learning-issues/
-  policy: retained
+  policy: redirected
+  target: /en/posts/reinforcement-learning-issues/
 - path: /posts/云服务器折腾随笔/
   policy: retained
 - path: /posts/制作一张匹配形状的字符画/

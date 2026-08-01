@@ -1,0 +1,80 @@
+{% assign seo_lang = page.lang | default: 'zh' %}
+{% if seo_lang == 'zh-CN' %}{% assign seo_lang = 'zh' %}{% endif %}
+{% assign canonical_path = page.canonical_url | default: page.url %}
+{% assign canonical_absolute = canonical_path | replace: 'index.html', '' | absolute_url %}
+{% assign seo_description = page.description | default: site.description %}
+{% assign is_post = false %}
+{% if page.collection == 'posts' %}{% assign is_post = true %}{% endif %}
+{% assign schema_type = page.schema_type | default: 'WebPage' %}
+{% if is_post %}{% assign schema_type = 'BlogPosting' %}{% endif %}
+{% if seo_lang == 'en' %}
+  {% assign schema_language = 'en' %}
+  {% assign og_locale = 'en_US' %}
+  {% assign alternate_locale = 'zh_CN' %}
+{% else %}
+  {% assign schema_language = 'zh-CN' %}
+  {% assign og_locale = 'zh_CN' %}
+  {% assign alternate_locale = 'en_US' %}
+{% endif %}
+
+<link rel="canonical" href="{{ canonical_absolute }}">
+{% if page.translation_url %}
+  {% if seo_lang == 'en' %}
+    {% assign zh_path = page.translation_url %}
+    {% assign en_path = canonical_path %}
+  {% else %}
+    {% assign zh_path = canonical_path %}
+    {% assign en_path = page.translation_url %}
+  {% endif %}
+  <link rel="alternate" hreflang="zh-CN" href="{{ zh_path | absolute_url }}">
+  <link rel="alternate" hreflang="en" href="{{ en_path | absolute_url }}">
+  <link rel="alternate" hreflang="x-default" href="{{ zh_path | absolute_url }}">
+{% endif %}
+
+<meta property="og:site_name" content="{{ site.title | escape }}">
+<meta property="og:type" content="{% if is_post %}article{% else %}website{% endif %}">
+<meta property="og:title" content="{{ page.title | default: site.title | escape }}">
+<meta property="og:url" content="{{ canonical_absolute }}">
+<meta property="og:description" content="{{ seo_description | strip_html | strip | escape }}">
+<meta property="og:locale" content="{{ og_locale }}">
+{% if page.translation_url %}
+  <meta property="og:locale:alternate" content="{{ alternate_locale }}">
+{% endif %}
+{% assign og_image_source = page.og_image | default: page.thumbnail | default: site.og_image %}
+{% if og_image_source %}
+  <meta property="og:image" content="{{ og_image_source | absolute_url }}">
+{% endif %}
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ page.title | default: site.title | escape }}">
+<meta name="twitter:description" content="{{ seo_description | strip_html | strip | escape }}">
+{% if og_image_source %}
+  <meta name="twitter:image" content="{{ og_image_source | absolute_url }}">
+{% endif %}
+
+{% unless page.redirect %}
+  {% assign structured_date = page.date | date_to_xmlschema %}
+  {% if page.revisions %}
+    {% assign last_revision = page.revisions | last %}
+    {% assign structured_modified = last_revision.date | date_to_xmlschema %}
+  {% else %}
+    {% assign structured_modified = structured_date %}
+  {% endif %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": {{ schema_type | jsonify }},
+    "url": {{ canonical_absolute | jsonify }},
+    "headline": {{ page.title | default: site.title | jsonify }},
+    "description": {{ seo_description | strip_html | strip | jsonify }},
+    "inLanguage": {{ schema_language | jsonify }},
+    "author": {
+      "@type": "Person",
+      "name": "{{ site.first_name }} {{ site.last_name }}"
+    }{% if is_post %},
+    "datePublished": {{ structured_date | jsonify }},
+    "dateModified": {{ structured_modified | jsonify }}
+    {% endif %}
+  }
+  </script>
+{% endunless %}

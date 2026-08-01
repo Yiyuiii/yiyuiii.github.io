@@ -212,6 +212,60 @@ def test_article_evidence_is_quieter_than_prose_and_distinct_from_quotations():
     assert "border-left: 5px" not in article
 
 
+def test_article_typography_is_one_global_language_aware_system():
+    article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
+
+    assert ".post-content h1," in article
+    assert ".post-content h2" in article
+    assert "font-size: clamp(1.4rem, 2.4vw, 1.55rem)" in article
+    assert "font-size: 1.275rem" in article
+    assert "font-size: 1.1rem" in article
+    assert "letter-spacing: normal" in article
+    assert "html:lang(en) .article-header h1" in CSS
+    assert "html:lang(en) .post-content h1" in CSS
+    assert "font-weight: 700" in article
+    assert "font-weight: 600" in article
+    assert "_posts" not in article
+
+
+def test_article_lists_code_images_and_dates_have_explicit_shared_rules():
+    article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
+
+    assert "padding-inline-start: 1.6em" in article
+    assert ".post-content li + li" in article
+    assert "margin-top: 0.32em" in article
+    assert ".post-content pre code" in article
+    assert "color: inherit" in article
+    assert ".post-content :not(pre) > code" in article
+    assert "font-size: 0.86em" in article
+    assert "border-radius: 0.42rem" in article
+    assert "font-variant-numeric: tabular-nums" in CSS
+
+    # Reset only the code element's inherited fallback. Pygments token spans
+    # retain their explicit colors from the dedicated highlight stylesheet.
+    assert ".post-content pre span" not in article
+    assert ".post-content .highlight span" not in article
+
+
+def test_article_cover_is_an_uncropped_component_not_a_body_image_heuristic():
+    article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
+    cover = article[article.index(".article-cover {") : article.index(".post-content {")]
+
+    assert ".article-cover__image" in cover
+    assert "max-height: 26rem" in cover
+    assert "max-width: 100%" in cover
+    assert "width: auto" in cover
+    assert "height: auto" in cover
+    assert "object-fit: contain" in cover
+    assert "margin-inline: auto" in cover
+    assert ".article-cover__caption" in cover
+    assert ".post-content" not in cover
+    assert ":first-child" not in cover
+    assert "max-height" not in article[
+        article.index(".post-content img") : article.index(".post-content pre")
+    ]
+
+
 def test_rejected_visual_patterns_are_absent():
     lowered = CSS.lower()
     for forbidden in (
@@ -222,7 +276,16 @@ def test_rejected_visual_patterns_are_absent():
         "hero-links",
         "text-shadow",
         "manrope",
-        "noto sans",
+        "@font-face",
     ):
         assert forbidden not in lowered
     assert 'html[data-theme="dark"]' not in lowered
+
+
+def test_system_font_stack_has_local_cjk_fallbacks_without_font_downloads():
+    body = CSS[CSS.index("body {") : CSS.index("a {")]
+
+    assert '"Noto Sans CJK SC"' in body
+    assert '"Source Han Sans SC"' in body
+    assert '"Noto Sans SC"' in body
+    assert "letter-spacing: normal" in body

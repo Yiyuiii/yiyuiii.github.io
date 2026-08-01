@@ -4,6 +4,7 @@ title: 随笔归档
 permalink: /archives/
 description: 按年份浏览随笔。
 lang: zh
+schema_type: CollectionPage
 translation_url: /en/archives/
 ---
 

@@ -1,7 +1,19 @@
-version: 1
+version: 2
+index_derivatives:
+  version: 1
+  sizes: [160, 320]
+  format: "WEBP"
+  quality: 75
+  method: 6
+  resampling: "LANCZOS"
+  pillow: "12.0.0"
+  libwebp: "1.6.0"
+  strip_metadata: true
 covers:
   - asset: "assets/posts/202109160000/cover-homepage-2026-07-30.webp"
-    post: "_posts/2021-09-16-build a personal github page.md"
+    posts:
+      - "_posts/2021-09-16-build a personal github page.md"
+      - "_posts/2021-09-16-搭建个人-GitHub-主页.md"
     origin_type: "self-produced"
     source_url: null
     author: "Yiyu Chen"
@@ -13,7 +25,9 @@ covers:
     attribution: "screenshot and site content by the author"
 
   - asset: "assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp"
-    post: "_posts/2021-09-17-reinforcement learning issues.md"
+    posts:
+      - "_posts/2021-09-17-reinforcement learning issues.md"
+      - "_posts/2021-09-17-强化学习问题随笔.md"
     origin_type: "external"
     source_url: "https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg"
     author: "Wikimedia Commons user Megajuice"
@@ -25,7 +39,9 @@ covers:
     attribution: "Wikimedia Commons user Megajuice"
 
   - asset: "assets/posts/202208142347/cover-cloud-console-2026-07-30.webp"
-    post: "_posts/2022-08-14-云服务器折腾随笔.md"
+    posts:
+      - "_posts/2022-08-14-云服务器折腾随笔.md"
+      - "_posts/2022-08-14-notes-on-cloud-servers.md"
     origin_type: "self-produced"
     source_url: null
     author: "Yiyu Chen with Codex"
@@ -37,7 +53,9 @@ covers:
     attribution: "云服务器实例控制台示意（自制）"
 
   - asset: "assets/posts/202208171838/cover-site-avatar-ascii-square.webp"
-    post: "_posts/2022-08-17-制作一张匹配形状的字符画.md"
+    posts:
+      - "_posts/2022-08-17-制作一张匹配形状的字符画.md"
+      - "_posts/2022-08-17-building-shape-matched-ascii-art.md"
     origin_type: "self-produced"
     source_url: null
     author: "Yiyu Chen"
@@ -50,7 +68,9 @@ covers:
     attribution: "头像与结果均为本站自有内容"
 
   - asset: "assets/posts/202211110000/cover-generated-2026-07-29.webp"
-    post: "_posts/2022-11-11-装机记录.md"
+    posts:
+      - "_posts/2022-11-11-装机记录.md"
+      - "_posts/2022-11-11-pc-build-log.md"
     origin_type: "generated"
     source_url: null
     author: "Generated under Yiyu Chen's direction"
@@ -77,7 +97,9 @@ covers:
     attribution: "AI-generated index illustration; not a photograph of the 2022 build."
 
   - asset: "assets/posts/202301162233/cover-bgg-2898488-square.webp"
-    post: "_posts/2023-01-18-四季物语量化分析攻略.md"
+    posts:
+      - "_posts/2023-01-18-四季物语量化分析攻略.md"
+      - "_posts/2023-01-18-quantitative-strategy-guide-to-seasons.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/2898488/seasons"
     author: "BoardGameGeek user dodecalouise"
@@ -86,10 +108,12 @@ covers:
     transform: "Cropped the source from (320, 0) to (2240, 1920), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
     sha256: "2138cd3f99ff0c877a336a20be98190496b7d17b2dca252a731601bb0f5ee714"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 dodecalouise"
+    attribution: "dodecalouise"
 
   - asset: "assets/posts/202302032000/cover-bgg-7205453-square.webp"
-    post: "_posts/2023-02-03-逻辑对决桌游攻略.md"
+    posts:
+      - "_posts/2023-02-03-逻辑对决桌游攻略.md"
+      - "_posts/2023-02-03-break-the-code-strategy-guide.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/7205453/break-the-code"
     author: "BoardGameGeek user dizziedobsession"
@@ -98,14 +122,16 @@ covers:
     transform: "Cropped the source from (100, 20) to (920, 840), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
     sha256: "fde95f4357dc8028f609e16a8d15e94017bd4080280d122b312e6099d60d44aa"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 dizziedobsession"
+    attribution: "dizziedobsession"
 
   - asset: "assets/posts/202307232000/cover-breaststroke-square.webp"
-    post: "_posts/2023-07-23-了解游泳.md"
+    posts:
+      - "_posts/2023-07-23-了解游泳.md"
+      - "_posts/2023-07-23-understanding-swimming.md"
     origin_type: "external"
     source_url: "https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg"
     author: "Adrian Pingstone"
-    license: "公有领域"
+    license: "Public domain"
     license_url: "https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg"
     transform: "Cropped the 750 × 536 source with box [107, 0, 643, 536], resized to 640 × 640, and exported as WebP quality 82."
     sha256: "625afdeed0ea79ba667a285b893b7b4dfab6ec46d97d81c65e3007dba3d35b6a"
@@ -113,7 +139,9 @@ covers:
     attribution: "Adrian Pingstone"
 
   - asset: "assets/posts/202404232233/cover-bgg-5194524-square.webp"
-    post: "_posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md"
+    posts:
+      - "_posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md"
+      - "_posts/2024-04-23-quantifying-resource-and-point-values-in-gaia-project.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/5194524/gaia-project"
     author: "BoardGameGeek user magic_erwt"
@@ -122,10 +150,12 @@ covers:
     transform: "Cropped the source from (128, 0) to (896, 768), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
     sha256: "f63895aa3977d0c5bebd97dd661d4b28428acd61d1bbc450c4cf81b7d2bc91de"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 magic_erwt"
+    attribution: "magic_erwt"
 
   - asset: "assets/posts/202407012233/cover-bgg-1091724-square.webp"
-    post: "_posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md"
+    posts:
+      - "_posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md"
+      - "_posts/2024-07-01-quantifying-resource-and-point-values-in-troyes.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/1091724/troyes"
     author: "BoardGameGeek user verminose"
@@ -134,10 +164,12 @@ covers:
     transform: "Cropped the source from (250, 0) to (1250, 1000), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
     sha256: "cfddd3759235ac570455d46aa984d884935a8c3346b10855f0f0cd64cf639462"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 verminose"
+    attribution: "verminose"
 
   - asset: "assets/posts/202510112233/cover-bgg-7712310-square.webp"
-    post: "_posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md"
+    posts:
+      - "_posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md"
+      - "_posts/2025-10-11-quantifying-resource-and-point-values-in-age-of-innovation.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/7712310/age-of-innovation"
     author: "BoardGameGeek user Hipopotam"
@@ -146,4 +178,4 @@ covers:
     transform: "Cropped the source from (473, 0) to (3311, 2838), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82 under the same CC BY-SA 3.0 terms."
     sha256: "c6e4afcf62b37df698f5858326805f8713f8017b676003c404d7e8b40d943dd0"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 Hipopotam"
+    attribution: "Hipopotam"

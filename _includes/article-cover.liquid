@@ -1,0 +1,15 @@
+{% if page.thumbnail and page.article_cover %}
+  <figure class="article-cover">
+    <img
+      class="article-cover__image"
+      src="{{ page.thumbnail | relative_url }}"
+      alt="{{ page.article_cover.alt | escape }}"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    >
+    <figcaption class="article-cover__caption">
+      {{ page.article_cover.caption | markdownify }}
+    </figcaption>
+  </figure>
+{% endif %}
