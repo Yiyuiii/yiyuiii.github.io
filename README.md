@@ -8,7 +8,7 @@ Yiyu Chen 的双语个人站点，发布随笔、公开项目与合作论文。�
 - _pages、_layouts、_includes、_plugins：页面、布局、组件与本站插件。
 - _data：关于页、项目、论文、界面文字与旧 URL 契约。
 - assets：当前生产样式、脚本、favicon 和文章媒体。
-- scripts：项目同步、翻译检查、封面处理与构建产物检查。
+- scripts：项目同步、翻译检查、封面处理、构建产物检查与本地预览。
 - tests：源码、数据、构建结果与浏览器回归。
 - docs/content-editing.md：内容维护流程。
 - docs/asset-provenance.yml：当前文章封面的来源、许可与哈希。
@@ -76,7 +76,7 @@ Ruby production build 使用 Jekyll 4.4.1；精确 CI 流程见 .github/workflow
 
 ### 浏览器回归
 
-下面的 PowerShell 先通过 loopback 端口 0 选择一个当时空闲的本机 TCP 端口，再隐藏启动刚构建的 `_site`，等待服务就绪，运行浏览器测试，并在结束时停止服务和恢复原有 `SITE_URL`。释放端口探针到启动 Python 之间仍存在很短的理论竞态；轮询会同时检查 Python 子进程，若绑定失败并退出则立即报错，避免把固定端口上的旧服务误当成当前预览：
+下面的 PowerShell 先通过 loopback 端口 0 选择一个当时空闲的本机 TCP 端口，再用 `scripts/serve_site.py` 隐藏启动刚构建的 `_site`。该预览服务保留普通静态文件行为，并让缺失路径以 HTTP 404 返回站点自己的 `404.html`，从而覆盖真实的中英文 404 语义。命令会等待服务就绪，运行浏览器测试，并在结束时停止服务和恢复原有 `SITE_URL`。释放端口探针到启动 Python 之间仍存在很短的理论竞态；轮询会同时检查 Python 子进程，若绑定失败并退出则立即报错，避免把其它端口上的旧服务误当成当前预览：
 
 ```powershell
 $hadSiteUrl = Test-Path Env:\SITE_URL
@@ -96,7 +96,7 @@ try {
 
   $env:SITE_URL = "http://127.0.0.1:$sitePort"
   $siteServer = Start-Process python -ArgumentList @(
-    "-m", "http.server", "$sitePort", "--bind", "127.0.0.1", "--directory", "_site"
+    "scripts/serve_site.py", "--site", "_site", "--bind", "127.0.0.1", "--port", "$sitePort"
   ) -PassThru -WindowStyle Hidden
 
   $siteReady = $false

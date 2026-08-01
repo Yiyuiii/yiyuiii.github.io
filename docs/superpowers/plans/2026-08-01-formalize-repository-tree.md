@@ -779,7 +779,7 @@ npm run test:browser
 
 Ruby production build 使用 Ruby 3.3.5 与 Jekyll 4.4.1；精确 CI 流程见 .github/workflows/deploy.yml。
 
-Playwright 默认连接 http://localhost:62091；运行 npm run test:browser 前应先在该地址提供刚构建的 _site，或通过 SITE_URL 指向等价预览。
+Playwright 通过 `SITE_URL` 连接刚构建的 `_site`。本地验证应使用 `scripts/serve_site.py` 和动态 loopback 端口，以保留站点自定义 404 的 HTTP 状态与正文语义；完整的服务生命周期命令见最终 README。
 
 ## 部署
 
@@ -972,55 +972,36 @@ python -m pytest -q
 
 Expected: `180 passed`。
 
-- [ ] **Step 5: 验证目标 tree 数量和体积**
+- [ ] **Step 5: 验证删除检查点的 tree 数量和体积**
 
 Run:
 
 ~~~powershell
 $ErrorActionPreference = "Stop"
-$workingTracked = @(git -c core.quotepath=false ls-files)
-if ($LASTEXITCODE -ne 0) { throw "git ls-files failed" }
-if ($workingTracked.Count -ne 133) {
-  throw "Unexpected tracked file count: $($workingTracked.Count)"
-}
-$workingBytes = [int64]0
-foreach ($file in $workingTracked) {
-  if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
-    throw "Tracked file is missing or unreadable: $file"
-  }
-  $workingBytes += [int64](Get-Item -LiteralPath $file).Length
-}
-if ($workingBytes -ge 16MB) { throw "Physical tracked tree exceeds 16 MiB: $workingBytes" }
-
-$indexEntries = @(git ls-files -s)
-if ($LASTEXITCODE -ne 0) { throw "git ls-files -s failed" }
-if ($indexEntries.Count -ne 133) {
-  throw "Unexpected index entry count: $($indexEntries.Count)"
+$deletionCheckpoint = "3e93158a25979ecc6aa58b429760edf6b76b7f2f"
+$treeEntries = @(git -c core.quotepath=false ls-tree -r -l $deletionCheckpoint)
+if ($LASTEXITCODE -ne 0) { throw "git ls-tree failed" }
+if ($treeEntries.Count -ne 133) {
+  throw "Unexpected deletion-checkpoint file count: $($treeEntries.Count)"
 }
 $blobBytes = [int64]0
-foreach ($entry in $indexEntries) {
-  if ($entry -notmatch '^\d+\s+([0-9a-f]+)\s+\d+\t') {
-    throw "Cannot parse index entry: $entry"
+foreach ($entry in $treeEntries) {
+  if ($entry -notmatch '^\d+\s+blob\s+[0-9a-f]+\s+(\d+)\t') {
+    throw "Cannot parse tree entry: $entry"
   }
-  $blobId = $Matches[1]
-  $sizeText = (git cat-file -s $blobId).Trim()
-  if ($LASTEXITCODE -ne 0 -or $sizeText -notmatch '^\d+$') {
-    throw "Cannot read Git blob size: $blobId"
-  }
-  $blobBytes += [int64]$sizeText
+  $blobBytes += [int64]$Matches[1]
 }
 if ($blobBytes -ge 16MB) { throw "Git blob tree exceeds 16 MiB: $blobBytes" }
 
-"TRACKED_FILES=$($workingTracked.Count)"
-"PHYSICAL_BYTES=$workingBytes"
-"PHYSICAL_MIB=$([math]::Round($workingBytes / 1MB, 3))"
+"CHECKPOINT=$deletionCheckpoint"
+"TRACKED_FILES=$($treeEntries.Count)"
 "GIT_BLOB_BYTES=$blobBytes"
 "GIT_BLOB_MIB=$([math]::Round($blobBytes / 1MB, 3))"
 ~~~
 
-Expected for the current checkout: exactly 133 tracked files，physical tracked bytes below 16 MiB，and Git blob bytes below 16 MiB. The command prints both measured totals without requiring them to equal a self-referential constant；only paths returned by Git are measured, so ignored test and build caches are excluded. The count is `206 baseline + 2 approved design/plan documents + 3 new production-contract files - 70 process files - 8 favicon files = 133`. If the count differs, list the exact added/deleted paths and reconcile them against this plan before committing.
+Expected for deletion checkpoint `3e93158a25979ecc6aa58b429760edf6b76b7f2f`: exactly 133 tracked files and Git blob bytes below 16 MiB. The count is `206 baseline + 2 approved design/plan documents + 3 new production-contract files - 70 process files - 8 favicon files = 133`. This guard is deliberately bound to the deletion checkpoint rather than the evolving current checkout.
 
-Historical execution evidence（non-normative）: immediately after deletion commit `3e93158a25979ecc6aa58b429760edf6b76b7f2f`, the same non-ASCII-safe working-tree measurement reported 16,445,219 physical bytes（15.683 MiB）. A separate `git -c core.quotepath=false ls-tree -r -l 3e93158a25979ecc6aa58b429760edf6b76b7f2f` audit reconfirmed 133 blobs totaling 16,432,335 bytes（15.671 MiB）. These exact values describe that deletion checkpoint only；later commits that edit this plan necessarily change both totals, so they are evidence rather than equality guards for the current HEAD.
+Historical execution evidence（non-normative）: immediately after that deletion commit, the same non-ASCII-safe working-tree measurement reported 16,445,219 physical bytes（15.683 MiB）. The Git tree audit reconfirmed 133 blobs totaling 16,432,335 bytes（15.671 MiB）. These exact values describe that deletion checkpoint only. Task 8 later adds `scripts/serve_site.py` and `tests/test_serve_site.py`，so the intended final current tree has 135 tracked files；its byte total is measured against the 16 MiB ceiling rather than fixed to a self-referential exact value.
 
 - [ ] **Step 6: 提交过程档案删除**
 
@@ -1048,7 +1029,7 @@ Run:
 python -m pytest -q
 ~~~
 
-Expected: `180 passed`。
+Expected: `184 passed`。
 
 - [ ] **Step 2: 运行翻译生产检查**
 
@@ -1342,19 +1323,60 @@ Run:
 
 ~~~powershell
 npm ci
-$server = Start-Process -FilePath python -ArgumentList "-m","http.server","62091","--bind","127.0.0.1","--directory",$prSite -PassThru -WindowStyle Hidden
+$hadSiteUrl = Test-Path Env:\SITE_URL
+$previousSiteUrl = if ($hadSiteUrl) { $env:SITE_URL } else { $null }
+$server = $null
 try {
-  $env:SITE_URL = "http://127.0.0.1:62091"
+  $portProbe = [System.Net.Sockets.TcpListener]::new(
+    [System.Net.IPAddress]::Loopback,
+    0
+  )
+  $portProbe.Start()
+  try {
+    $sitePort = ([System.Net.IPEndPoint]$portProbe.LocalEndpoint).Port
+  } finally {
+    $portProbe.Stop()
+  }
+
+  $env:SITE_URL = "http://127.0.0.1:$sitePort"
+  $server = Start-Process -FilePath python -ArgumentList @(
+    "scripts/serve_site.py", "--site", "$prSite", "--bind", "127.0.0.1", "--port", "$sitePort"
+  ) -PassThru -WindowStyle Hidden
+
+  $siteReady = $false
+  $siteDeadline = (Get-Date).AddSeconds(10)
+  do {
+    if ($server.HasExited) {
+      throw "Local site server exited with code $($server.ExitCode) before becoming ready."
+    }
+    try {
+      Invoke-WebRequest -Uri "$env:SITE_URL/" -UseBasicParsing -TimeoutSec 1 | Out-Null
+      $siteReady = $true
+    } catch {
+      if ($server.HasExited) {
+        throw "Local site server exited with code $($server.ExitCode) before becoming ready."
+      }
+      Start-Sleep -Milliseconds 100
+    }
+  } while (-not $siteReady -and (Get-Date) -lt $siteDeadline)
+  if (-not $siteReady) { throw "Local site server did not become ready within 10 seconds." }
+
   npm run test:browser
   if ($LASTEXITCODE -ne 0) { throw "Playwright failed" }
 }
 finally {
-  Remove-Item Env:\SITE_URL -ErrorAction SilentlyContinue
-  Stop-Process -Id $server.Id -ErrorAction SilentlyContinue
+  if ($null -ne $server -and -not $server.HasExited) {
+    Stop-Process -Id $server.Id -Force
+  }
+  if ($hadSiteUrl) {
+    Set-Item Env:\SITE_URL -Value $previousSiteUrl
+  } else {
+    Remove-Item Env:\SITE_URL -ErrorAction SilentlyContinue
+  }
 }
 ~~~
 
-Expected: all Playwright tests pass；server process is stopped。
+Expected: all 25 Playwright tests pass，including real status-404/custom-body language semantics；the dynamic-port server is stopped and the previous `SITE_URL` is restored。
 
 - [ ] **Step 10: 更新 PR 证据并保持未合并**
 
@@ -1386,10 +1408,21 @@ git status --short --branch
 git ls-files docs/content-revisions docs/content-covers
 git ls-files docs/asset-provenance.yml AGENTS.md README.md docs/content-editing.md
 python -m pytest -q
+$tracked = @(git -c core.quotepath=false ls-files)
+if ($tracked.Count -ne 135) { throw "Unexpected final tracked file count: $($tracked.Count)" }
+$trackedBytes = [int64]0
+foreach ($file in $tracked) {
+  if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
+    throw "Tracked file is missing or unreadable: $file"
+  }
+  $trackedBytes += [int64](Get-Item -LiteralPath $file).Length
+}
+if ($trackedBytes -ge 16MB) { throw "Final tracked tree exceeds 16 MiB: $trackedBytes" }
+"FINAL_TRACKED_BYTES=$trackedBytes"
 git fsck --full
 ~~~
 
-Expected: cleanup worktree clean；历史目录查询为空；正式文档存在；`180 passed`；fsck passes。
+Expected: cleanup worktree clean；历史目录查询为空；正式文档存在；`184 passed`；最终当前树为 135 个 tracked 文件且低于 16 MiB；fsck passes。
 
 - [ ] **Step 2: 证明 master、original 和 archives 边界未破坏**
 
