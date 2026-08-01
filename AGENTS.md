@@ -14,14 +14,14 @@
 
 - 站点使用 Jekyll 4.4.1、Ruby 3.3.5、Python 3.12 与 Node/Playwright。
 - GitHub Actions 工作流为 .github/workflows/deploy.yml；PR 只验证和上传 site-preview，master push 或在 master 上 `workflow_dispatch` 手动触发时，build 成功后 deploy。
-- _posts 保存当前文章；docs/asset-provenance.yml 按唯一正式封面关联中英文文章，并保存来源、许可、处理、SHA-256 与 160/320 px 索引派生规则。派生资产由 scripts/generate_post_thumbnails.py 预生成并提交，正文原图保留。
+- _posts 保存当前文章；每篇文章用共享 `thumbnail` 与本地化 `article_cover.alt/caption` 声明显式阅读页题图，布局通过 `_includes/article-cover.liquid` 在正文前渲染。题图与普通正文图片样式相互独立，维护契约见 docs/article-cover-component.md。docs/asset-provenance.yml 按唯一正式封面关联中英文文章，并保存来源、许可、处理、SHA-256 与 160/320 px 索引派生规则。派生资产由 scripts/generate_post_thumbnails.py 预生成并提交，正文原图保留。
 - _data/legacy_urls.yml、scripts/check_legacy_urls.py 与浏览器测试共同保护旧 URL。
 - `/` 与 `/en/` 是欢迎页，人工文案集中在 `_data/home.yml`；`/writing/` 与 `/en/writing/` 是随笔索引。`_data/home_feed.yml` 只维护三类公开内容的稳定引用与本站实质整理日期，运行时不使用热度或类型配额排序。
 - 除双语 404 外，默认布局页面使用从左上头像圆心发出的静态阳光背景；页眉太阳按钮只以版本化 `localStorage` 键 `yiyuiii.sunlight.v1` 保存严格的 `on` / `off`，无 JavaScript 时效果默认开启而按钮隐藏。
 - docs 已由 _config.yml 排除，不会生成公开页面。
 - 11 篇迁移前旧文已获得稳定 `uid`、`translation_key` 和显式 permalink；2 篇英文源位于 `/en/posts/`，原 URL 通过 legacy 重定向兼容。
 - 11 篇旧文已全部完成双语配对；`_data/translation_exemptions.yml` 现为保留架构的空闭集。新文章必须双语发布，不得新增豁免。
-- `scripts/translation_guard.py` 同时保护翻译 source hash、成对 URL、结构签名和修订日期；普通代码围栏逐字保护，Mermaid 仅允许独立 `ID(可见标签)` 节点的标签本地化，图类型、节点 ID、形状和边仍必须一致。
+- `scripts/translation_guard.py` 同时保护翻译 source hash、成对 URL、结构签名、修订日期与题图元数据；题图 alt/图注可本地化，但共享 thumbnail、图注 Markdown 结构和链接目标／顺序受保护。普通代码围栏逐字保护，Mermaid 仅允许独立 `ID(可见标签)` 节点的标签本地化，图类型、节点 ID、形状和边仍必须一致。
 - 截至 2026-08-01，当前可用的外部审阅渠道只有 Ark Coding Plan 和本地 Kimi，DeepSeek API 暂不可用；这些是动态状态，未来每次使用前必须复核实际可用性。
 
 ## 常用验证
@@ -47,6 +47,7 @@ npm run test:browser
 - 内容维护：docs/content-editing.md
 - 双语随笔基础：docs/superpowers/specs/2026-08-01-bilingual-post-foundation.md
 - 生产封面来源：docs/asset-provenance.yml
+- 随笔题图组件：docs/article-cover-component.md
 - 目录整理设计：docs/superpowers/specs/2026-08-01-formalize-repository-tree-design.md
 - 目录整理实施计划：docs/superpowers/plans/2026-08-01-formalize-repository-tree.md
 - 主页下一阶段实施计划：docs/superpowers/plans/2026-08-01-homepage-refresh.md

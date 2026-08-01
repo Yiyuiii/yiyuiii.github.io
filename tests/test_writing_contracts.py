@@ -222,6 +222,17 @@ def test_post_layout_is_reader_first():
     assert "reading-time" not in layout
     assert "post-content" in layout
     assert "<h1" in layout
+    assert layout.count("{% include article-cover.liquid %}") == 1
+    assert layout.index("{% include article-cover.liquid %}") < layout.index(
+        '<div class="post-content"'
+    )
+
+    cover = text("_includes/article-cover.liquid")
+    assert '<figure class="article-cover">' in cover
+    assert 'class="article-cover__image"' in cover
+    assert "page.thumbnail | relative_url" in cover
+    assert "page.article_cover.alt | escape" in cover
+    assert "page.article_cover.caption | markdownify" in cover
 
 
 def test_post_header_orders_tags_before_expandable_revision_history():
@@ -296,6 +307,23 @@ def test_every_post_now_has_a_local_thumbnail():
         (ROOT / thumbnail.lstrip("/")).is_file()
         for thumbnail in thumbnails
     )
+
+
+def test_every_post_uses_one_explicit_cover_component_without_body_duplication():
+    posts = sorted((ROOT / "_posts").glob("*.md"))
+
+    assert len(posts) == 22
+    for path in posts:
+        data = frontmatter(path)
+        cover = data.get("article_cover")
+        body = path.read_text(encoding="utf-8").split("---", 2)[2]
+
+        assert isinstance(cover, dict) and set(cover) == {"alt", "caption"}, path
+        assert all(
+            isinstance(cover[field], str) and cover[field].strip()
+            for field in ("alt", "caption")
+        ), path
+        assert data["thumbnail"] not in body, path
 
 
 def assert_age_of_innovation_reviewed_conclusions(body):

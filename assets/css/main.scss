@@ -941,6 +941,40 @@ html:lang(en) .article-header h1 {
   left: -0.85rem;
 }
 
+.article-cover {
+  max-width: 72ch;
+  margin: 0 0 2rem;
+}
+
+.article-cover__image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 26rem;
+  margin-inline: auto;
+  border-radius: 0.42rem;
+  object-fit: contain;
+}
+
+.article-cover__caption {
+  max-width: 62ch;
+  margin: 0.65rem auto 0;
+  color: var(--meta);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.article-cover__caption p {
+  margin: 0;
+}
+
+.article-cover__caption a {
+  color: var(--jade);
+  text-underline-offset: 0.14em;
+}
+
 .post-content {
   max-width: 72ch;
   color: var(--body);
@@ -1630,6 +1664,10 @@ html[data-not-found-language="en"] .not-found-page [data-language="zh"] {
 
   .article-header {
     margin-bottom: 1.5rem;
+  }
+
+  .article-cover {
+    margin-bottom: 1.65rem;
   }
 
   .article-header h1 {

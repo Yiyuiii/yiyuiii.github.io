@@ -9,7 +9,7 @@ translation_key: post-202208142347
 translation_url: /posts/云服务器折腾随笔/
 translation_source: _posts/2022-08-14-云服务器折腾随笔.md
 translation_status: current
-source_hash: ff75f02f6152d18d701c05eb8a8ec93943f13e986db12707901b820595f282be
+source_hash: dcce842c555108f1806ccb2a5f4c01e83acbac3d7cc2917d8ce36615fa1b4d40
 aliases: []
 categories:
 - Cloud Servers
@@ -18,12 +18,11 @@ tags:
 from: null
 math: true
 thumbnail: /assets/posts/202208142347/cover-cloud-console-2026-07-30.webp
+article_cover:
+  alt: Illustration of a cloud-server instance console
+  caption: 'Cover: an illustration of a cloud-server instance console (created for this site); it depicts managing a VPS in a browser and does not represent the dashboard of any real cloud provider.'
 excerpt: This article records some of my research into and experiments with cloud servers during the summer of 2022.
 ---
-
-![Illustration of a cloud-server instance console](/assets/posts/202208142347/cover-cloud-console-2026-07-30.webp)
-
-*Cover: an illustration of a cloud-server instance console (created for this site); it depicts managing a VPS in a browser and does not represent the dashboard of any real cloud provider.*
 
 This article records some of my research into and experiments with cloud servers during the summer of 2022.
 

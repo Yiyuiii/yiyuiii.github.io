@@ -9,7 +9,7 @@ translation_key: post-202407012233
 translation_url: /posts/特鲁瓦-资源-分值量化分析攻略/
 translation_source: _posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md
 translation_status: current
-source_hash: 2bbefa02cdfbc576add4eeda2bff555c12bd0b83df4ba178a073b66c221fb91f
+source_hash: 8de8e685cbdbd024fab527dbabb138836d74d90e9ef45faffe5320525071d2cd
 aliases: []
 categories:
 - Board Games
@@ -20,12 +20,11 @@ from: null
 math: true
 mermaid: true
 thumbnail: /assets/posts/202407012233/cover-bgg-1091724-square.webp
+article_cover:
+  alt: A four-player game of Troyes
+  caption: 'Cover image: [Overview of the board. 4 player game.](https://boardgamegeek.com/image/1091724/troyes), photographed by BoardGameGeek user verminose, [CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/); square crop by this site.'
 excerpt: In Troyes, players' actions depend on random die values. The mechanism for buying other players' dice turns what would have been highly random individual output into a shared public supply, balancing randomness and strategy in a novel way.
 ---
-
-![A four-player game of Troyes](/assets/posts/202407012233/cover-bgg-1091724-square.webp)
-
-*Cover image: [Overview of the board. 4 player game.](https://boardgamegeek.com/image/1091724/troyes), photographed by BoardGameGeek user verminose, [CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/); square crop by this site.*
 
 ## Preface
 

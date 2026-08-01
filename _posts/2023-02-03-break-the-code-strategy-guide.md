@@ -9,8 +9,11 @@ translation_key: post-202302032000
 translation_url: /posts/逻辑对决桌游攻略/
 translation_source: _posts/2023-02-03-逻辑对决桌游攻略.md
 translation_status: current
-source_hash: a17684c45bb9ac8227150ecb0ea9680d0fc80c548a53bf00f0c2905878a631f2
+source_hash: 10d54c00b36ef4e39075838c0d45178605239e2d56c4750589f14fd53bee9bda
 thumbnail: /assets/posts/202302032000/cover-bgg-7205453-square.webp
+article_cover:
+  alt: Number tiles, screens, and deduction sheets from Break the Code
+  caption: 'Cover image: [Codebreaking Components](https://boardgamegeek.com/image/7205453/break-the-code), photographed/uploaded by BoardGameGeek user dizziedobsession, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); square crop by this site.'
 aliases: []
 categories:
 - Board Games
@@ -30,10 +33,6 @@ revisions:
 - date: '2026-07-31'
   note: Replaced the old cover whose licensing had not been resolved with a traceably licensed photograph of the actual game components, and tightened the square crop (with Codex assistance)
 ---
-
-![Number tiles, screens, and deduction sheets from Break the Code](/assets/posts/202302032000/cover-bgg-7205453-square.webp)
-
-*Cover image: [Codebreaking Components](https://boardgamegeek.com/image/7205453/break-the-code), photographed/uploaded by BoardGameGeek user dizziedobsession, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); square crop by this site.*
 
 **Break the Code** is a two-to-four-player logic-deduction board game with simple rules, an easy learning curve, and considerable depth. In a two-player game, each player tries to identify the opponent's five tiles; with three or four players, everyone tries to identify the unallocated code in the center. By asking about numbers, colors, positions, and adjacency relationships, players progressively eliminate impossible arrangements.
 

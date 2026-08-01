@@ -9,7 +9,7 @@ translation_key: post-202307232000
 translation_url: /posts/了解游泳/
 translation_source: _posts/2023-07-23-了解游泳.md
 translation_status: current
-source_hash: a55a6da67f10d9f1ca7879c855a7db781ca452de67f8647eed8668a7c96488e5
+source_hash: a61eb8b25c55897f9123c41792f25ac48cba294aa3bb5d5bc362ab4f145c8745
 aliases: []
 categories:
 - Swimming
@@ -19,12 +19,11 @@ from: null
 math: true
 mermaid: true
 thumbnail: /assets/posts/202307232000/cover-breaststroke-square.webp
+article_cover:
+  alt: Breaststroke practice in a regular swimming pool
+  caption: 'Cover: [Swimming.breaststroke.arp.750pix](https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg), photograph by Adrian Pingstone, Public domain; cropped to a square for this site.'
 excerpt: When I wrote this article, I had been teaching myself to swim for several months. I went from being afraid of water, to being unable to float, swim fast, or breathe properly, and finally to swimming 50 metres relatively quickly with a flat breaststroke technique. That was when I felt I had at last got started. Along the way, I gathered scattered instructional texts and videos, experienced how difficult self-teaching can be, made some mistakes, and formed a few impressions. I wanted to record as complete a beginner's path into swimming as I could for anyone who might need it.
 ---
-
-![Breaststroke practice in a regular swimming pool](/assets/posts/202307232000/cover-breaststroke-square.webp)
-
-*Cover: [Swimming.breaststroke.arp.750pix](https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg), photograph by Adrian Pingstone, public domain（公有领域）; cropped to a square for this site.*
 
 ## 0 Preface
 

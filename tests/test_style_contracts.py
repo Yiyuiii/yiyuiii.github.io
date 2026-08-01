@@ -247,6 +247,25 @@ def test_article_lists_code_images_and_dates_have_explicit_shared_rules():
     assert ".post-content .highlight span" not in article
 
 
+def test_article_cover_is_an_uncropped_component_not_a_body_image_heuristic():
+    article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
+    cover = article[article.index(".article-cover {") : article.index(".post-content {")]
+
+    assert ".article-cover__image" in cover
+    assert "max-height: 26rem" in cover
+    assert "max-width: 100%" in cover
+    assert "width: auto" in cover
+    assert "height: auto" in cover
+    assert "object-fit: contain" in cover
+    assert "margin-inline: auto" in cover
+    assert ".article-cover__caption" in cover
+    assert ".post-content" not in cover
+    assert ":first-child" not in cover
+    assert "max-height" not in article[
+        article.index(".post-content img") : article.index(".post-content pre")
+    ]
+
+
 def test_rejected_visual_patterns_are_absent():
     lowered = CSS.lower()
     for forbidden in (

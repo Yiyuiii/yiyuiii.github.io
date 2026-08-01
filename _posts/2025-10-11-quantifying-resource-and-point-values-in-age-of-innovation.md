@@ -9,7 +9,7 @@ translation_key: post-202510112233
 translation_url: /posts/大创造时代-资源-分值量化计算思路/
 translation_source: _posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md
 translation_status: current
-source_hash: 7113936c6d907f0cd3da544668746beedb9b979db091cf4f0e58d277d1fa7799
+source_hash: b5250de0321961e43784885cdc7b84f98395ca7c9ab7c2c4327aaad0469daf93
 aliases: []
 categories:
 - Board Games
@@ -19,6 +19,9 @@ tags:
 from: null
 math: true
 thumbnail: /assets/posts/202510112233/cover-bgg-7712310-square.webp
+article_cover:
+  alt: The end of a five-player game of Age of Innovation
+  caption: 'Cover image: [Five player game.](https://boardgamegeek.com/image/7712310/age-of-innovation), image by BoardGameGeek user Hipopotam, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/); square crop by this site, with the derivative cover distributed under the same license.'
 excerpt: This article attempts to convert the different resources in Age of Innovation onto a common scale and uses a cross-round iterative model to compare their practical value during a game.
 revisions:
 - date: '2025-10-11'
@@ -26,10 +29,6 @@ revisions:
 - date: '2026-07-30'
   note: Reorganized the original text and added the official game positioning and version note while preserving the original valuation and calculation conventions (revised with ChatGPT; notation corrected with Kimi)
 ---
-
-![The end of a five-player game of Age of Innovation](/assets/posts/202510112233/cover-bgg-7712310-square.webp)
-
-*Cover image: [Five player game.](https://boardgamegeek.com/image/7712310/age-of-innovation), image by BoardGameGeek user Hipopotam, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/); square crop by this site, with the derivative cover distributed under the same license.*
 
 ## Preface
 

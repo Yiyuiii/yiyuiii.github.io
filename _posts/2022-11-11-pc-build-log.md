@@ -9,8 +9,11 @@ translation_key: post-202211110000
 translation_url: /posts/装机记录/
 translation_source: _posts/2022-11-11-装机记录.md
 translation_status: current
-source_hash: f690504a13367724fcf22023c74f34129dd7db88338b967b0400f6ea14be3d43
+source_hash: 0b7edc84d84fb2dde700be9090ccf402088a38fcf6f7d6e6d767bbc1be9079e8
 thumbnail: /assets/posts/202211110000/cover-generated-2026-07-29.webp
+article_cover:
+  alt: A desktop PC being assembled on a workbench
+  caption: 'Cover: AI-generated writing-index illustration; not a photograph or factual record of the 2022 PC build.'
 aliases: []
 categories:
 - PC Building

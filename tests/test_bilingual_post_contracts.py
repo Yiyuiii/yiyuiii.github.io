@@ -39,6 +39,13 @@ def source_frontmatter(**updates):
         "permalink": "/posts/source-item/",
         "translation_key": "post-202608010900",
         "thumbnail": "/assets/posts/202608010900/cover.webp",
+        "article_cover": {
+            "alt": "源文章题图",
+            "caption": (
+                "题图：[来源](https://example.com/source)，"
+                "[CC0 1.0](https://example.com/license)。"
+            ),
+        },
         "math": True,
     }
     data.update(updates)
@@ -59,6 +66,13 @@ def translation_frontmatter(source, source_path, **updates):
         "translation_status": "current",
         "source_hash": source_hash(source.hash_input()),
         "thumbnail": source.frontmatter["thumbnail"],
+        "article_cover": {
+            "alt": "Cover image for the translated article",
+            "caption": (
+                "Cover: [source](https://example.com/source), "
+                "[CC0 1.0](https://example.com/license)."
+            ),
+        },
         "math": True,
     }
     data.update(updates)
@@ -355,10 +369,64 @@ def test_internal_post_links_can_map_to_the_same_translation_identity():
 def test_source_hash_tracks_shared_post_metadata_but_not_routing_bookkeeping():
     baseline = source_frontmatter(body="Body")
 
-    for key in ("uid", "date", "author", "thumbnail", "math"):
+    for key in ("uid", "date", "author", "thumbnail", "article_cover", "math"):
         changed = dict(baseline)
-        changed[key] = "changed" if key != "math" else False
+        if key == "math":
+            changed[key] = False
+        elif key == "article_cover":
+            changed[key] = {"alt": "changed", "caption": "changed"}
+        else:
+            changed[key] = "changed"
         assert source_hash(changed) != source_hash(baseline), key
 
     routing = dict(baseline, permalink="/different/", translation_url="/en/different/")
     assert source_hash(routing) == source_hash(baseline)
+
+
+def test_article_cover_allows_localized_copy_with_shared_image_and_link_order(tmp_path):
+    source_path, translation_path = paired_posts(tmp_path)
+
+    check_post_contracts(
+        [parse_document(source_path), parse_document(translation_path)],
+        exemptions={},
+        root=tmp_path,
+        production=True,
+    )
+
+
+def test_article_cover_rejects_caption_link_drift(tmp_path):
+    source_path, translation_path = paired_posts(tmp_path)
+    source = parse_document(source_path)
+    translation = parse_document(translation_path)
+    translation.frontmatter["article_cover"]["caption"] = translation.frontmatter[
+        "article_cover"
+    ]["caption"].replace("https://example.com/license", "https://example.com/other")
+
+    with pytest.raises(TranslationError, match="article cover caption links"):
+        check_post_contracts(
+            [source, translation], exemptions={}, root=tmp_path, production=True
+        )
+
+
+@pytest.mark.parametrize(
+    "cover",
+    [
+        None,
+        {"alt": "", "caption": "Caption"},
+        {"alt": "![unsafe]", "caption": "Caption"},
+        {"alt": "Safe", "caption": "<span>unsafe</span>"},
+        {"alt": "Safe", "caption": "![image](https://example.com/a.webp)"},
+        {"alt": "Safe", "caption": "[source](http://example.com/source)"},
+        {"alt": "Safe", "caption": "Caption", "ignored": "value"},
+    ],
+)
+def test_article_cover_rejects_missing_incomplete_or_unsafe_metadata(tmp_path, cover):
+    source_path, translation_path = paired_posts(tmp_path)
+    source = parse_document(source_path)
+    translation = parse_document(translation_path)
+    translation.frontmatter["article_cover"] = cover
+
+    with pytest.raises(TranslationError, match="article_cover"):
+        check_post_contracts(
+            [source, translation], exemptions={}, root=tmp_path, production=True
+        )

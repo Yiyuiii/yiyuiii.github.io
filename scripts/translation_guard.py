@@ -33,6 +33,7 @@ OPTIONAL_POST_TRACKED_KEYS = (
     "date",
     "author",
     "thumbnail",
+    "article_cover",
     "math",
     "mermaid",
 )
@@ -56,6 +57,7 @@ MATH = re.compile(
     r"|(?<!\\)\$(?!\$)(?:\\.|[^$\r\n])+?(?<!\\)\$"
 )
 MARKDOWN = MarkdownIt("commonmark").enable("table")
+ARTICLE_COVER_KEYS = {"alt", "caption"}
 MERMAID_PAREN_LABEL = re.compile(
     r"^(?P<indent>[ \t]*)(?P<id>[A-Za-z_][A-Za-z0-9_-]*)"
     r"(?P<open>\()(?P<label>[^()\r\n]+)(?P<close>\))(?P<trailing>[ \t]*)$"
@@ -218,6 +220,82 @@ def _normalized_link_target(
     if parsed.fragment:
         normalized += f"#{parsed.fragment}"
     return ("internal", _normalize_string(normalized))
+
+
+def _article_cover_signature(document: Document) -> dict[str, tuple[str, ...]]:
+    """Validate localized cover copy and return its protected Markdown shape."""
+
+    cover = document.frontmatter.get("article_cover")
+    context = f"{document.path}: article_cover"
+    if not isinstance(cover, dict) or set(cover) != ARTICLE_COVER_KEYS:
+        raise TranslationError(
+            f"{context} must contain exactly {sorted(ARTICLE_COVER_KEYS)}"
+        )
+
+    thumbnail = document.frontmatter.get("thumbnail")
+    if (
+        not isinstance(thumbnail, str)
+        or not thumbnail.startswith("/assets/posts/")
+        or "\\" in thumbnail
+        or "?" in thumbnail
+        or "#" in thumbnail
+    ):
+        raise TranslationError(f"{context} requires a safe local post thumbnail")
+
+    alt = cover.get("alt")
+    if not isinstance(alt, str) or not alt.strip() or alt != alt.strip():
+        raise TranslationError(f"{context}.alt must be a non-empty trimmed string")
+    if ABOUT_PLACEHOLDER.search(alt) or any(
+        marker in alt for marker in ("\n", "\r", "<", ">", "[", "]", "`")
+    ):
+        raise TranslationError(f"{context}.alt must be plain safe text")
+
+    caption = cover.get("caption")
+    if (
+        not isinstance(caption, str)
+        or not caption.strip()
+        or caption != caption.strip()
+        or ABOUT_PLACEHOLDER.search(caption)
+    ):
+        raise TranslationError(f"{context}.caption must be a complete trimmed string")
+
+    tokens = MARKDOWN.parse(caption)
+    if [token.type for token in tokens] != [
+        "paragraph_open",
+        "inline",
+        "paragraph_close",
+    ]:
+        raise TranslationError(
+            f"{context}.caption must be one inline Markdown paragraph"
+        )
+
+    allowed = {
+        "text",
+        "link_open",
+        "link_close",
+        "em_open",
+        "em_close",
+        "strong_open",
+        "strong_close",
+    }
+    structure: list[str] = []
+    links: list[str] = []
+    for child in tokens[1].children or ():
+        if child.type not in allowed:
+            raise TranslationError(
+                f"{context}.caption uses unsupported or unsafe Markdown"
+            )
+        structure.append(child.type)
+        if child.type == "link_open":
+            href = child.attrGet("href") or ""
+            parsed = urlsplit(href)
+            if parsed.scheme != "https" or not parsed.netloc or child.attrGet("title"):
+                raise TranslationError(
+                    f"{context}.caption links must be title-free HTTPS URLs"
+                )
+            links.append(_normalize_string(href))
+
+    return {"structure": tuple(structure), "links": tuple(links)}
 
 
 def _table_cell_count(line: str) -> int:
@@ -447,6 +525,7 @@ def check_post_contracts(
     permalinks: dict[str, Path] = {}
     for document in documents:
         data = document.frontmatter
+        _article_cover_signature(document)
         uid = data.get("uid")
         key = data.get("translation_key")
         language = data.get("lang")
@@ -536,6 +615,12 @@ def check_post_contracts(
                 translation.frontmatter.get(field)
             ):
                 raise TranslationError(f"{key}: shared field {field} differs")
+        source_cover = _article_cover_signature(source)
+        translation_cover = _article_cover_signature(translation)
+        if source_cover["structure"] != translation_cover["structure"]:
+            raise TranslationError(f"{key}: bilingual article cover caption structure differs")
+        if source_cover["links"] != translation_cover["links"]:
+            raise TranslationError(f"{key}: bilingual article cover caption links differ")
         if _revision_dates(source) != _revision_dates(translation):
             raise TranslationError(f"{key}: revision dates do not match")
         if production and translation.frontmatter.get("translation_status") != "current":

@@ -108,7 +108,7 @@ covers:
     transform: "Cropped the source from (320, 0) to (2240, 1920), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
     sha256: "2138cd3f99ff0c877a336a20be98190496b7d17b2dca252a731601bb0f5ee714"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 dodecalouise"
+    attribution: "dodecalouise"
 
   - asset: "assets/posts/202302032000/cover-bgg-7205453-square.webp"
     posts:
@@ -131,7 +131,7 @@ covers:
     origin_type: "external"
     source_url: "https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg"
     author: "Adrian Pingstone"
-    license: "公有领域"
+    license: "Public domain"
     license_url: "https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg"
     transform: "Cropped the 750 × 536 source with box [107, 0, 643, 536], resized to 640 × 640, and exported as WebP quality 82."
     sha256: "625afdeed0ea79ba667a285b893b7b4dfab6ec46d97d81c65e3007dba3d35b6a"

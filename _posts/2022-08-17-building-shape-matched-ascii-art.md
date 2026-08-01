@@ -9,7 +9,7 @@ translation_key: post-202208171838
 translation_url: /posts/制作一张匹配形状的字符画/
 translation_source: _posts/2022-08-17-制作一张匹配形状的字符画.md
 translation_status: current
-source_hash: efda45f9c5e8e89d4a022d4a8ca1de154598338160252e4ffa32d2d5e44647db
+source_hash: 219a82e5e02a7c7c27241517a7a11ba36b2ce153d91fb26082004c0bcd9a3c73
 aliases: []
 categories:
 - NoneBot
@@ -20,12 +20,11 @@ tags:
 from: null
 math: true
 thumbnail: /assets/posts/202208171838/cover-site-avatar-ascii-square.webp
+article_cover:
+  alt: ASCII-art result generated from this site's avatar
+  caption: 'Cover image: this site''s avatar regenerated as ASCII art with the shape-matching approach described here; both the avatar and the result are owned by this site.'
 excerpt: I recently started experimenting with ASCII art. Looking through the mainstream generation algorithms, I found that most of them map each image region to a single character using average grayscale as the metric.
 ---
-
-![ASCII-art result generated from this site's avatar](/assets/posts/202208171838/cover-site-avatar-ascii-square.webp)
-
-*Cover image: this site's avatar regenerated as ASCII art with the shape-matching approach described here; both the avatar and the result are owned by this site.*
 
 I recently started experimenting with ASCII art. Looking through the mainstream generation algorithms, I found that most of them map each image region to a single character using **average grayscale** as the metric.
 

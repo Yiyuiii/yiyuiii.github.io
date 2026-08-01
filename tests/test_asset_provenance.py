@@ -1,5 +1,4 @@
 import hashlib
-import re
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
 import yaml
@@ -112,20 +111,6 @@ def resolved_repository_file(record, key, allowed_root):
     )
     assert resolved.is_file(), f"{context} does not resolve to a file: {resolved}"
     return resolved
-
-
-def visible_post_body(path):
-    source = path.read_text(encoding="utf-8")
-    sections = source.split("---", 2)
-    assert len(sections) == 3, f"{path}: expected YAML front matter"
-    body = sections[2]
-    body = re.sub(r"<!--.*?-->", "", body, flags=re.DOTALL)
-    return re.sub(
-        r"{%-?\s*comment\s*-?%}.*?{%-?\s*endcomment\s*-?%}",
-        "",
-        body,
-        flags=re.DOTALL,
-    )
 
 
 def test_every_published_post_thumbnail_has_one_provenance_record():
@@ -289,32 +274,50 @@ def test_provenance_schema_hashes_and_dimensions_match_production_assets():
             ), f"{context}: reference_inputs entries must be non-empty strings"
 
 
-def assert_cover_usage_and_external_rights(record, body):
+def assert_cover_component_and_visible_rights(record, post_path):
     context = record_context(record)
-    asset_url = "/" + record["asset"]
-    if asset_url not in body:
-        purpose = record.get("purpose")
-        assert (
-            record["origin_type"] == "generated"
-            and isinstance(purpose, str)
-            and purpose.strip()
-            and "writing-index cover" in purpose
-        ), f"{context}: visible post body is missing cover asset URL {asset_url!r}"
+    data = frontmatter(post_path)
+    cover = data.get("article_cover")
+    assert isinstance(cover, dict) and set(cover) == {"alt", "caption"}, (
+        f"{context}: post must define the formal article_cover component"
+    )
+    for field in ("alt", "caption"):
+        assert isinstance(cover[field], str) and cover[field].strip(), (
+            f"{context}: article_cover.{field} must be visible non-empty copy"
+        )
+    assert data["thumbnail"] == "/" + record["asset"]
+    caption = cover["caption"]
 
     if record["origin_type"] == "external":
         for key in ("source_url", "attribution", "license"):
-            assert record[key] in body, (
-                f"{context}: visible post body is missing {key}={record[key]!r}"
+            assert record[key] in caption, (
+                f"{context}: article cover caption is missing {key}={record[key]!r}"
             )
         if record["license_url"] != record["source_url"]:
-            assert record["license_url"] in body, (
-                f"{context}: visible post body is missing independent "
+            assert record["license_url"] in caption, (
+                f"{context}: article cover caption is missing independent "
                 f"license_url={record['license_url']!r}"
+            )
+    elif record["origin_type"] == "self-produced":
+        cues = {
+            "zh": ("作者", "自制", "本站自有"),
+            "en": ("author", "created for this site", "owned by this site"),
+        }
+        assert any(cue in caption for cue in cues[data["lang"]]), (
+            f"{context}: localized caption must identify the site-owned origin"
+        )
+    else:
+        if data["lang"] == "zh":
+            assert "AI 生成" in caption and "并非" in caption and "事实记录" in caption
+        else:
+            assert (
+                "AI-generated" in caption
+                and "not a photograph" in caption
+                and "factual record" in caption
             )
 
 
-def test_cover_usage_and_external_rights_are_visible_in_the_production_post():
+def test_cover_component_keeps_origin_and_external_rights_visible():
     for record in records():
         for post_path in record["posts"]:
-            body = visible_post_body(ROOT / post_path)
-            assert_cover_usage_and_external_rights(record, body)
+            assert_cover_component_and_visible_rights(record, ROOT / post_path)

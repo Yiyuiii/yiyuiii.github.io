@@ -11,12 +11,12 @@ categories: [Reinforcement Learning]
 tags: [Reinforcement Learning]
 math: True
 thumbnail: /assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp
+article_cover:
+  alt: "A typical reinforcement-learning agent–environment loop"
+  caption: >-
+    Cover diagram: [Reinforcement learning diagram](https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg) by Wikimedia Commons user Megajuice, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); square layout prepared for this site.
 excerpt: This article is about Reinforcement Learning issues. 
 ---
-
-![A typical reinforcement-learning agent–environment loop](/assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp)
-
-*Cover diagram: [Reinforcement learning diagram](https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg) by Wikimedia Commons user Megajuice, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); square layout prepared for this site.*
 
 This article takes notes of Reinforcement Learning issues I've seen. Continuously updated.
 
