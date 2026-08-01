@@ -172,7 +172,7 @@ python scripts/translation_guard.py --check --production
 
 - 正文：`_posts/*.md`
 - 中文文章使用 `lang: zh`，英文文章使用 `lang: en`
-- 新文章必须同时提供完整中英文版本；当前 11 篇旧文按 `_data/translation_exemptions.yml` 逐篇迁移，不能向清单加入新文章
+- 新文章必须同时提供完整中英文版本；契约建立前的 11 篇旧文正逐篇迁移，只有尚未配对的旧文保留在 `_data/translation_exemptions.yml`，不能向清单加入新文章
 - 每组共用引号包裹的 12 位 `uid` 和 `post-<uid>` 形式的 `translation_key`
 - 中文 URL 位于 `/posts/`，英文 URL 位于 `/en/posts/`，并且全部使用显式 `permalink`
 - `tags` 是文章自己的真实标签；首页会按当前语言中的全局出现频率自动排序

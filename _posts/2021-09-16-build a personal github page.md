@@ -6,6 +6,7 @@ date: 2021-09-16 00:00:00 +0800
 lang: en
 permalink: /en/posts/build-a-personal-github-page/
 translation_key: post-202109160000
+translation_url: /posts/搭建个人-github-主页/
 categories: [Tutorial]
 tags: [GitHub]
 thumbnail: /assets/posts/202109160000/cover-homepage-2026-07-30.webp

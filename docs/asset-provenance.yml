@@ -13,6 +13,7 @@ covers:
   - asset: "assets/posts/202109160000/cover-homepage-2026-07-30.webp"
     posts:
       - "_posts/2021-09-16-build a personal github page.md"
+      - "_posts/2021-09-16-搭建个人-GitHub-主页.md"
     origin_type: "self-produced"
     source_url: null
     author: "Yiyu Chen"
@@ -26,6 +27,7 @@ covers:
   - asset: "assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp"
     posts:
       - "_posts/2021-09-17-reinforcement learning issues.md"
+      - "_posts/2021-09-17-强化学习问题随笔.md"
     origin_type: "external"
     source_url: "https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg"
     author: "Wikimedia Commons user Megajuice"
@@ -39,6 +41,7 @@ covers:
   - asset: "assets/posts/202208142347/cover-cloud-console-2026-07-30.webp"
     posts:
       - "_posts/2022-08-14-云服务器折腾随笔.md"
+      - "_posts/2022-08-14-notes-on-cloud-servers.md"
     origin_type: "self-produced"
     source_url: null
     author: "Yiyu Chen with Codex"

@@ -105,7 +105,7 @@ Keep `inline_token` and [external](https://example.com/reference).
     return source_path, translation_path
 
 
-def test_committed_singletons_have_stable_identity_explicit_urls_and_exact_exemptions():
+def test_committed_posts_have_stable_identity_urls_and_exact_migration_exemptions():
     paths = sorted((ROOT / "_posts").glob("*.md"))
     documents = [parse_document(path) for path in paths]
     exemptions = load_translation_exemptions(
@@ -113,11 +113,14 @@ def test_committed_singletons_have_stable_identity_explicit_urls_and_exact_exemp
         root=ROOT,
     )
 
-    assert len(documents) == 11
-    assert len(exemptions) == 11
-    assert {document.frontmatter["translation_key"] for document in documents} == set(
-        exemptions
-    )
+    groups = {}
+    for document in documents:
+        groups.setdefault(document.frontmatter["translation_key"], []).append(document)
+
+    assert len(groups) == 11
+    assert set(exemptions) == {
+        key for key, members in groups.items() if len(members) == 1
+    }
     for document in documents:
         data = document.frontmatter
         assert isinstance(data["uid"], str) and data["uid"].isdigit()
@@ -126,7 +129,8 @@ def test_committed_singletons_have_stable_identity_explicit_urls_and_exact_exemp
             "/en/posts/" if data["lang"] == "en" else "/posts/"
         )
         assert data["permalink"].endswith("/")
-        assert "translation_url" not in data
+        if len(groups[data["translation_key"]]) == 1:
+            assert "translation_url" not in data
 
     check_post_contracts(documents, exemptions=exemptions, root=ROOT, production=True)
 
