@@ -18,7 +18,7 @@
 - _data/legacy_urls.yml、scripts/check_legacy_urls.py 与浏览器测试共同保护旧 URL。
 - docs 已由 _config.yml 排除，不会生成公开页面。
 - 11 篇迁移前旧文已获得稳定 `uid`、`translation_key` 和显式 permalink；2 篇英文源位于 `/en/posts/`，原 URL 通过 legacy 重定向兼容。
-- 11 篇旧文的迁移范围保持封闭；截至 2026-08-01，`post-202109160000`、`post-202109170000`、`post-202208142347` 已完成双语配对，`_data/translation_exemptions.yml` 仅保留其余 8 篇未完成旧文。新文章必须双语发布，不得新增豁免。
+- 11 篇旧文的迁移范围保持封闭；截至 2026-08-01，已有 9 组完成双语配对，`_data/translation_exemptions.yml` 仅保留《四季物语量化分析攻略》和《了解游泳》两篇未完成旧文。新文章必须双语发布，不得新增豁免。
 - `scripts/translation_guard.py` 同时保护翻译 source hash、成对 URL、结构签名和修订日期；单语旧文不得提前声明不存在的 `translation_url`。
 - 截至 2026-08-01，当前可用的外部审阅渠道只有 Ark Coding Plan 和本地 Kimi，DeepSeek API 暂不可用；这些是动态状态，未来每次使用前必须复核实际可用性。
 

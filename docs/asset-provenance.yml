@@ -112,6 +112,7 @@ covers:
   - asset: "assets/posts/202302032000/cover-bgg-7205453-square.webp"
     posts:
       - "_posts/2023-02-03-逻辑对决桌游攻略.md"
+      - "_posts/2023-02-03-break-the-code-strategy-guide.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/7205453/break-the-code"
     author: "BoardGameGeek user dizziedobsession"
@@ -120,7 +121,7 @@ covers:
     transform: "Cropped the source from (100, 20) to (920, 840), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
     sha256: "fde95f4357dc8028f609e16a8d15e94017bd4080280d122b312e6099d60d44aa"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 dizziedobsession"
+    attribution: "dizziedobsession"
 
   - asset: "assets/posts/202307232000/cover-breaststroke-square.webp"
     posts:
@@ -138,6 +139,7 @@ covers:
   - asset: "assets/posts/202404232233/cover-bgg-5194524-square.webp"
     posts:
       - "_posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md"
+      - "_posts/2024-04-23-quantifying-resource-and-point-values-in-gaia-project.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/5194524/gaia-project"
     author: "BoardGameGeek user magic_erwt"
@@ -146,7 +148,7 @@ covers:
     transform: "Cropped the source from (128, 0) to (896, 768), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
     sha256: "f63895aa3977d0c5bebd97dd661d4b28428acd61d1bbc450c4cf81b7d2bc91de"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 magic_erwt"
+    attribution: "magic_erwt"
 
   - asset: "assets/posts/202407012233/cover-bgg-1091724-square.webp"
     posts:
@@ -165,6 +167,7 @@ covers:
   - asset: "assets/posts/202510112233/cover-bgg-7712310-square.webp"
     posts:
       - "_posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md"
+      - "_posts/2025-10-11-quantifying-resource-and-point-values-in-age-of-innovation.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/7712310/age-of-innovation"
     author: "BoardGameGeek user Hipopotam"
@@ -173,4 +176,4 @@ covers:
     transform: "Cropped the source from (473, 0) to (3311, 2838), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82 under the same CC BY-SA 3.0 terms."
     sha256: "c6e4afcf62b37df698f5858326805f8713f8017b676003c404d7e8b40d943dd0"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 Hipopotam"
+    attribution: "Hipopotam"
