@@ -22,7 +22,7 @@ thumbnail: /assets/posts/202307232000/cover-breaststroke-square.webp
 article_cover:
   alt: Breaststroke practice in a regular swimming pool
   caption: 'Cover: [Swimming.breaststroke.arp.750pix](https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg), photograph by Adrian Pingstone, Public domain; cropped to a square for this site.'
-excerpt: When I wrote this article, I had been teaching myself to swim for several months. I went from being afraid of water, to being unable to float, swim fast, or breathe properly, and finally to swimming 50 metres relatively quickly with a flat breaststroke technique. That was when I felt I had at last got started. Along the way, I gathered scattered instructional texts and videos, experienced how difficult self-teaching can be, made some mistakes, and formed a few impressions. I wanted to record as complete a beginner's path into swimming as I could for anyone who might need it.
+excerpt: After several months of teaching myself to swim, I progressed from fearing the water and struggling to float or breathe to swimming 50 metres of breaststroke with reasonable speed. This essay gathers the lessons, mistakes, instructional resources, and practical impressions from that process into a beginner's route into swimming.
 ---
 
 ## 0 Preface

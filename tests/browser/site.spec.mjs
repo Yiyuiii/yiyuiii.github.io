@@ -870,6 +870,7 @@ for (const viewport of viewports) {
           naturalWidth: image.naturalWidth,
           naturalHeight: image.naturalHeight,
           maxHeight: getComputedStyle(image).maxHeight,
+          borderRadius: Number.parseFloat(getComputedStyle(image).borderRadius),
           overflow: document.documentElement.scrollWidth > innerWidth,
         };
       });
@@ -879,6 +880,7 @@ for (const viewport of viewports) {
         geometry.naturalWidth / geometry.naturalHeight,
         2,
       );
+      expect(geometry.borderRadius).toBeGreaterThanOrEqual(6);
       expect(geometry.overflow).toBe(false);
       if (viewport.width === 1280) expect(geometry.height).toBeGreaterThan(416);
     });
@@ -906,7 +908,6 @@ for (const viewport of viewports) {
       const inlineCode = content.querySelector(":not(pre) > code");
       const pre = content.querySelector("pre");
       const blockCode = pre.querySelector("code");
-      const image = content.querySelector("img");
       const time = document.querySelector(".article-meta time");
       const headings = [...content.querySelectorAll("h2, h3, h4")].map(
         (heading) => Number(heading.tagName.slice(1)),
@@ -922,7 +923,6 @@ for (const viewport of viewports) {
         preColor: getComputedStyle(pre).color,
         blockCodeColor: getComputedStyle(blockCode).color,
         blockCodeBackground: getComputedStyle(blockCode).backgroundColor,
-        imageRadius: Number.parseFloat(getComputedStyle(image).borderRadius),
         dateVariant: getComputedStyle(time).fontVariantNumeric,
         headings,
         overflow: document.documentElement.scrollWidth > innerWidth,
@@ -940,7 +940,6 @@ for (const viewport of viewports) {
     expect(typography.preSize).toBeGreaterThanOrEqual(13.4);
     expect(typography.blockCodeColor).toBe(typography.preColor);
     expect(typography.blockCodeBackground).toBe("rgba(0, 0, 0, 0)");
-    expect(typography.imageRadius).toBeGreaterThanOrEqual(6);
     expect(typography.dateVariant).toContain("tabular-nums");
     expect(typography.headings[0]).toBe(2);
     expect(
@@ -1008,7 +1007,7 @@ for (const viewport of [
   });
 }
 
-test("search, fallback language switch, and article reading controls work", async ({
+test("search, paired language switch, and article reading controls work", async ({
   page,
 }) => {
   // This path verifies the real pinned MathJax CDN integration, so allow the
@@ -1049,11 +1048,14 @@ test("search, fallback language switch, and article reading controls work", asyn
   const languageSwitch = page.getByRole("link", { name: "切换为英文" });
   await expect(languageSwitch).toHaveAttribute(
     "href",
-    "/en/writing/?missing_translation=1",
+    "/en/posts/understanding-swimming/",
   );
   await languageSwitch.click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await expect(page.locator(".translation-notice")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Understanding Swimming" }),
+  ).toBeVisible();
+  await expect(page.locator(".translation-notice")).toHaveCount(0);
 
   await page.goto("/");
   await searchButton.click();
