@@ -2,8 +2,8 @@
 layout: page
 title: Writing
 permalink: /page2/
-redirect: /
+redirect: /writing/
 sitemap: false
 ---
 
-The writing index has moved to the [homepage]({{ '/' | relative_url }}).
+The writing index has moved to its [new address]({{ '/writing/' | relative_url }}).

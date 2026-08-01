@@ -20,10 +20,10 @@
   policy: retained
 - path: /blog/
   policy: redirected
-  target: /
+  target: /writing/
 - path: /page2/
   policy: redirected
-  target: /
+  target: /writing/
 - path: /sw.js
   policy: retirement
 - path: /research/

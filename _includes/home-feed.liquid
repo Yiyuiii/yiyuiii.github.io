@@ -1,0 +1,52 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign home = site.data.home[lang_key] %}
+{% assign text = site.data.site_text[lang_key] %}
+{% assign runtime = site.data.home_feed_runtime[lang_key] %}
+
+<div class="home-shell" data-home-page data-lang="{{ lang_key }}" data-writing-url="{{ text.urls.writing | relative_url }}">
+  <header class="home-welcome">
+    <h1>{{ home.title }}</h1>
+    <div class="home-welcome__introduction">
+      {% for paragraph in home.introduction %}<p>{{ paragraph }}</p>{% endfor %}
+    </div>
+    <aside class="home-guide" aria-labelledby="home-guide-title">
+      <h2 id="home-guide-title">{{ home.guide.label }}</h2>
+      <ul>
+        {% for item in home.guide.items %}
+          <li data-guide-target="{{ item.target | escape }}">{{ item.text }}</li>
+        {% endfor %}
+      </ul>
+    </aside>
+    <noscript>
+      <p class="home-noscript">{{ home.legacy_tag_noscript }} <a href="{{ text.urls.writing | relative_url }}">{{ text.nav.writing }}</a></p>
+    </noscript>
+  </header>
+
+  <section class="home-section home-rotation" aria-labelledby="home-rotation-title">
+    <div class="home-section__heading">
+      <h2 id="home-rotation-title">
+        <span data-rotation-live-title hidden>{{ home.sections.rotation }}</span>
+        <span data-rotation-fallback-title>{{ home.sections.rotation_fallback }}</span>
+      </h2>
+      <p data-rotation-live-note hidden>{{ home.sections.rotation_note }}</p>
+    </div>
+    <div id="home-rotation-item" data-home-rotation data-external-label="{{ home.external_label | escape }}" data-date-format="{{ home.date_format | escape }}">
+      {% include home-feed-item.liquid item=runtime.rotation_fallback home=home %}
+    </div>
+    <script id="home-rotation-data" type="application/json">{{ runtime.rotation | jsonify }}</script>
+    <script id="home-recent-ids" type="application/json">{{ runtime.recent_ids | jsonify }}</script>
+    <script id="home-type-labels" type="application/json">{{ home.types | jsonify }}</script>
+  </section>
+
+  <section class="home-section home-recent" aria-labelledby="home-recent-title">
+    <div class="home-section__heading">
+      <h2 id="home-recent-title">{{ home.sections.recent }}</h2>
+    </div>
+    <div class="home-feed" data-home-recent>
+      {% for item in runtime.recent %}
+        {% include home-feed-item.liquid item=item home=home %}
+      {% endfor %}
+    </div>
+  </section>
+</div>

@@ -5,11 +5,13 @@ zh:
     papers: 论文
     about: 关于yiyuiii
   urls:
-    writing: /
+    home: /
+    writing: /writing/
     github: /projects/
     papers: /publications/
     about: /about/
   primary_navigation: 主导航
+  home_link: 返回中文欢迎页
   skip_to_content: 跳到正文
   switch_language: 切换为英文
   missing_translation: 这篇内容目前没有中文版本，已回到中文随笔索引。
@@ -61,11 +63,13 @@ en:
     papers: Papers
     about: About yiyuiii
   urls:
-    writing: /en/
+    home: /en/
+    writing: /en/writing/
     github: /en/projects/
     papers: /en/publications/
     about: /en/about/
   primary_navigation: Primary navigation
+  home_link: Return to the English welcome page
   skip_to_content: Skip to content
   switch_language: Switch to Chinese
   missing_translation: This item has no English version yet. You are viewing the English writing index.

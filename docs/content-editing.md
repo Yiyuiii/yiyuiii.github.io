@@ -2,6 +2,37 @@
 
 这个站点把长文本、短界面文案、公开仓库数据和论文数据分开保存。修改内容时优先编辑源文件，不要把正文写进布局、样式或脚本。
 
+## 欢迎页与内容流
+
+`/` 与 `/en/` 是中英文欢迎页，所有人工欢迎文案集中在 `_data/home.yml`。这里维护欢迎标题、介绍、页眉功能指引、“今日轮换 / 浏览起点 / 最近整理”等分区文字、内容类型名称和无 JavaScript 说明；不要把这些可见文字写进 `_includes/home-feed.liquid`、`assets/js/home-feed.js` 或 CSS。两种语言必须保持完全相同的键、列表结构和指引目标。
+
+`/writing/` 与 `/en/writing/` 才是随笔索引。左上品牌链接回当前语言欢迎页，页顶“随笔 / Writing”进入对应索引；旧 `/?tag=...` 在 JavaScript 可用时会保留完整 query 与 hash 迁移到随笔索引，无 JavaScript 时欢迎页提供自然入口。
+
+欢迎页的混合内容流只在 `_data/home_feed.yml` 维护稳定引用和 `feed_date`，不重复抄写标题、摘要或 URL。每条记录只能有：
+
+```yaml
+- id: "writing:202302032000"
+  kind: writing
+  ref: "202302032000"
+  feed_date: 2026-07-31
+```
+
+- `writing` 的 `ref` 是文章 `uid`；`project` 是 `owner/repository`；`publication` 是论文 `key`。
+- `id` 必须严格等于 `<kind>:<ref>`，创建后不得改变。
+- `feed_date` 表示内容首次进入本站，或最近一次在本站发生实质整理的日期。普通 GitHub push、Star/Fork 变化、构建更新和只改错别字不得刷新日期。
+- 所有公开来源都必须恰好出现一次；不得增加 `featured`、`priority`、`score`、类型配额或其它隐性排序字段。
+- 运行时严格按 `feed_date` 降序、同日 `id` 升序，显示最近 8 项。同日内容集中属于真实日期与稳定规则的结果，不要为页面观感人工改日期。
+- “今日轮换”只从中英文都有内容、且不在任一语言最近 8 项中的共同身份选择；使用香港日期轮换，不记录访问。
+
+修改欢迎文案或内容流后运行：
+
+```powershell
+python -m pytest -q tests/test_home_contracts.py tests/test_check_site.py
+python scripts/translation_guard.py --write _pages/home.en.md
+python scripts/translation_guard.py --check --production
+node --check assets/js/home-feed.js
+```
+
 ## 关于yiyuiii
 
 日常编辑只需要打开一个文件：
@@ -175,10 +206,10 @@ python scripts/translation_guard.py --check --production
 - 新文章必须同时提供完整中英文版本；契约建立前的 11 篇旧文正逐篇迁移，只有尚未配对的旧文保留在 `_data/translation_exemptions.yml`，不能向清单加入新文章
 - 每组共用引号包裹的 12 位 `uid` 和 `post-<uid>` 形式的 `translation_key`
 - 中文 URL 位于 `/posts/`，英文 URL 位于 `/en/posts/`，并且全部使用显式 `permalink`
-- `tags` 是文章自己的真实标签；首页会按当前语言中的全局出现频率自动排序
+- `tags` 是文章自己的真实标签；随笔索引会按当前语言中的全局出现频率自动排序
 - 只有明确选择图片时才写 `thumbnail: /assets/...`
 
-文章正文和原有永久链接不要为了首页展示而改写。首页摘要来自 `description` 或完整 `excerpt`，不会自动截断。
+文章正文和原有永久链接不要为了索引或欢迎页展示而改写。随笔摘要来自 `description` 或完整 `excerpt`，不会自动截断；欢迎页从同一字段读取，不另存重复摘要。
 
 ### 正文标题与统一排版
 
@@ -364,6 +395,7 @@ python scripts/translation_guard.py --check --production
 node --check assets/js/site-search.js
 node --check assets/js/theme-compat.js
 node --check assets/js/article-navigation.js
+node --check assets/js/home-feed.js
 git diff --check
 ```
 

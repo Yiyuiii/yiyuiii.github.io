@@ -188,15 +188,23 @@ def test_tag_frequency_is_language_local_and_ties_are_stable():
     assert "[-" in plugin
 
 
-def test_homepages_are_language_specific_and_blog_redirects_to_root():
+def test_writing_indexes_are_language_specific_and_blog_redirects_to_writing():
     zh = frontmatter(ROOT / "_pages" / "writing.md")
     en = frontmatter(ROOT / "_pages" / "writing.en.md")
     blog = frontmatter(ROOT / "_pages" / "blog.md")
 
-    assert (zh["permalink"], zh["lang"], zh["hide_title"]) == ("/", "zh", True)
-    assert (en["permalink"], en["lang"], en["hide_title"]) == ("/en/", "en", True)
+    assert (zh["permalink"], zh["lang"], zh["hide_title"]) == (
+        "/writing/",
+        "zh",
+        True,
+    )
+    assert (en["permalink"], en["lang"], en["hide_title"]) == (
+        "/en/writing/",
+        "en",
+        True,
+    )
     assert blog["permalink"] == "/blog/"
-    assert blog["redirect"] == "/"
+    assert blog["redirect"] == "/writing/"
 
 
 def test_post_layout_is_reader_first():

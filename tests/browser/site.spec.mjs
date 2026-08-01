@@ -39,11 +39,104 @@ const contrast = (foreground, background) => {
 };
 
 for (const viewport of viewports) {
+  test(`welcome pages stay readable at ${viewport.width}px`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    for (const [route, heading, recentLabel] of [
+      ["/", "你好，欢迎来到 yiyuiii", "最近整理"],
+      ["/en/", "Hello, welcome to yiyuiii", "Recently curated"],
+    ]) {
+      await page.goto(route);
+      await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
+      await expect(page.locator(".home-guide li")).toHaveCount(5);
+      await expect(page.getByRole("heading", { level: 2, name: recentLabel })).toBeVisible();
+      await expect(page.locator("[data-home-recent] > .home-feed-item")).toHaveCount(8);
+      await expect(page.locator(".home-guide-arrows")).toHaveCount(0);
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+      ).toBe(false);
+      expect(
+        await page.locator("[data-home-recent] > .home-feed-item").evaluateAll(
+          (items) => items.every((item) => (
+            item.querySelector("h3")?.textContent.trim()
+            && item.querySelector("[data-home-summary]")?.textContent.trim()
+          )),
+        ),
+      ).toBe(true);
+      await expect(page.locator("script[src*='mathjax'], script[src*='al_math']")).toHaveCount(0);
+    }
+  });
+}
+
+test("daily rotation is bilingual, stable, and outside recent items", async ({
+  page,
+}) => {
+  const identities = [];
+  for (const route of ["/", "/en/"]) {
+    await page.goto(route);
+    const card = page.locator("[data-home-rotation] [data-home-feed-item]");
+    await expect(page.locator("[data-rotation-live-title]")).toBeVisible();
+    await expect(page.locator("[data-rotation-fallback-title]")).toBeHidden();
+    const identity = await card.getAttribute("data-stable-id");
+    const recent = await page.locator("[data-home-recent] > [data-stable-id]").evaluateAll(
+      (items) => items.map((item) => item.dataset.stableId),
+    );
+    expect(recent).not.toContain(identity);
+    identities.push(identity);
+  }
+  expect(identities[0]).toBeTruthy();
+  expect(identities[1]).toBe(identities[0]);
+});
+
+test("legacy root tag query preserves its complete query and hash", async ({ page }) => {
+  await page.goto("/?tag=%E6%A1%8C%E6%B8%B8&via=legacy#old-filter");
+  await expect(page).toHaveURL(
+    /\/writing\/\?tag=%E6%A1%8C%E6%B8%B8&via=legacy#old-filter$/,
+  );
+  await expect(page.locator(".writing-entry:not([hidden])")).not.toHaveCount(0);
+});
+
+test("welcome page has a complete no-JavaScript fallback", async ({ browser }) => {
+  const context = await browser.newContext({
+    baseURL: process.env.SITE_URL || "http://localhost:62091",
+    javaScriptEnabled: false,
+    viewport: { width: 390, height: 844 },
+  });
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.locator("[data-rotation-fallback-title]")).toBeVisible();
+  await expect(page.locator("[data-rotation-live-title]")).toBeHidden();
+  await expect(page.locator(".home-noscript a")).toHaveAttribute("href", "/writing/");
+  await expect(page.locator("[data-home-recent] > .home-feed-item")).toHaveCount(8);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+  ).toBe(false);
+  await context.close();
+});
+
+test("welcome page never requests an original post cover", async ({ page }) => {
+  const originalCoverRequests = [];
+  page.on("request", (request) => {
+    const pathname = new URL(request.url()).pathname;
+    if (
+      pathname.startsWith("/assets/posts/")
+      && /\.(?:webp|png|jpe?g)$/i.test(pathname)
+      && !/-index-v1-(?:160|320)\.webp$/i.test(pathname)
+    ) {
+      originalCoverRequests.push(pathname);
+    }
+  });
+  await page.goto("/");
+  await page.locator("[data-home-recent]").scrollIntoViewIfNeeded();
+  expect(originalCoverRequests).toEqual([]);
+});
+
+for (const viewport of viewports) {
   test(`writing index adapts at ${viewport.width}x${viewport.height}`, async ({
     page,
   }) => {
     await page.setViewportSize(viewport);
-    await page.goto("/");
+    await page.goto("/writing/");
 
     await expect(page.locator(".site-nav a")).toHaveCount(4);
     const layout = await page.evaluate(() => ({
@@ -147,11 +240,7 @@ test("writing index requests only responsive cover derivatives", async ({
     }
   });
 
-  await page.goto("/");
-  const writingHref = await page.locator(".site-nav a").first().getAttribute("href");
-  if (writingHref && new URL(page.url()).pathname !== writingHref) {
-    await page.goto(writingHref);
-  }
+  await page.goto("/writing/");
 
   const thumbnails = page.locator(".entry-thumbnail img");
   const count = await thumbnails.count();
@@ -285,7 +374,7 @@ for (const viewport of aboutViewports) {
 
 test("light appearance and readable type remain stable", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
-  await page.goto("/");
+  await page.goto("/writing/");
   const lightBackground = await page.locator("body").evaluate(
     (body) => getComputedStyle(body).backgroundColor,
   );
@@ -322,7 +411,7 @@ test("light appearance and readable type remain stable", async ({ page }) => {
 test("tag filtering writes a shareable URL and back restores the index", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/writing/");
   const initialCount = await page.locator(".writing-entry").count();
   await page.getByRole("link", { name: "桌游", exact: true }).first().click();
 
@@ -858,7 +947,7 @@ test("search, fallback language switch, and article reading controls work", asyn
   const languageSwitch = page.getByRole("link", { name: "切换为英文" });
   await expect(languageSwitch).toHaveAttribute(
     "href",
-    "/en/?missing_translation=1",
+    "/en/writing/?missing_translation=1",
   );
   await languageSwitch.click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");

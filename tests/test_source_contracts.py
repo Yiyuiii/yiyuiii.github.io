@@ -131,6 +131,8 @@ def test_site_owned_seo_is_language_aware_and_does_not_advertise_missing_pairs()
 
 def test_index_and_profile_pages_declare_their_schema_semantics():
     expected = {
+        "_pages/home.md": "WebSite",
+        "_pages/home.en.md": "WebSite",
         "_pages/about.md": "ProfilePage",
         "_pages/about.en.md": "ProfilePage",
         "_pages/writing.md": "CollectionPage",
@@ -260,14 +262,14 @@ def test_verified_self_contribution_follows_the_owner_name_inline():
     assert "publication-note" not in include
 
 
-def test_only_writing_page_owns_the_root_permalink():
+def test_only_welcome_page_owns_the_root_permalink():
     owners = []
     for path in sorted((ROOT / "_pages").glob("*.md")):
         data = frontmatter(path.relative_to(ROOT))
         if data.get("published", True) and data.get("permalink") == "/":
             owners.append(path.name)
 
-    assert owners == ["writing.md"]
+    assert owners == ["home.md"]
 
 
 def test_workflow_builds_pr_artifact_and_only_deploys_master():

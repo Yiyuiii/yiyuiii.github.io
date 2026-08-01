@@ -1,0 +1,61 @@
+zh:
+  title: 你好，欢迎来到 yiyuiii
+  introduction:
+    - 这里收录我持续整理的随笔、公开项目和参与发表的论文。
+    - 下方内容按最近整理时间排列；它只是浏览顺序，不代表作品排名。
+  guide:
+    label: 页面指引
+    items:
+      - target: brand
+        text: 左上角头像和 yiyuiii 随时返回这里
+      - target: navigation
+        text: 页顶文字用于切换栏目
+      - target: search
+        text: 放大镜用于搜索全站
+      - target: language
+        text: EN / 中用于切换语言
+      - target: sunlight
+        text: 太阳按钮用于开关背景光效
+  sections:
+    rotation: 今日轮换
+    rotation_note: 按香港日期轮换，不记录访问
+    rotation_fallback: 浏览起点
+    recent: 最近整理
+  types:
+    writing: 随笔
+    project: 项目
+    publication: 论文
+  date_format: "%Y.%m.%d"
+  external_label: 在新窗口打开外部页面
+  legacy_tag_noscript: 旧标签筛选地址需要 JavaScript 自动迁移；你仍可前往随笔索引继续浏览。
+
+en:
+  title: Hello, welcome to yiyuiii
+  introduction:
+    - This site is where I keep my writing, public projects, and papers I have contributed to.
+    - The items below follow the date they were last curated on this site; the order is not a ranking.
+  guide:
+    label: Page guide
+    items:
+      - target: brand
+        text: The avatar and yiyuiii at the top left always return here
+      - target: navigation
+        text: The text links at the top switch sections
+      - target: search
+        text: The magnifying glass searches the whole site
+      - target: language
+        text: EN / 中 switches language
+      - target: sunlight
+        text: The sun button switches the background effect
+  sections:
+    rotation: Today’s rotation
+    rotation_note: Rotates by the Hong Kong date and records no visits
+    rotation_fallback: A place to start
+    recent: Recently curated
+  types:
+    writing: Writing
+    project: Project
+    publication: Paper
+  date_format: "%Y-%m-%d"
+  external_label: Open the external page in a new window
+  legacy_tag_noscript: The old tag-filter URL needs JavaScript to migrate automatically; you can still continue from the Writing index.

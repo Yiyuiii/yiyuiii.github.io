@@ -27,5 +27,6 @@
     <script src="{{ '/assets/js/theme-compat.js' | relative_url | bust_file_cache }}"></script>
     {% include scripts.liquid %}
     <script src="{{ '/assets/js/site-search.js' | relative_url | bust_file_cache }}"></script>
+    {% if page.home %}<script src="{{ '/assets/js/home-feed.js' | relative_url | bust_file_cache }}"></script>{% endif %}
   </body>
 </html>
