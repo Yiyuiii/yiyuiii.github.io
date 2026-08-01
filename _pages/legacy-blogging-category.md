@@ -3,6 +3,7 @@ layout: page
 title: 随笔分类
 permalink: /categories/blogging/
 redirect: /categories/
+canonical_url: /categories/
 lang: zh
 sitemap: false
 ---

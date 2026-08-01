@@ -192,6 +192,7 @@ def test_writing_indexes_are_language_specific_and_blog_redirects_to_writing():
     zh = frontmatter(ROOT / "_pages" / "writing.md")
     en = frontmatter(ROOT / "_pages" / "writing.en.md")
     blog = frontmatter(ROOT / "_pages" / "blog.md")
+    page2 = frontmatter(ROOT / "_pages" / "legacy-page2.md")
 
     assert (zh["permalink"], zh["lang"], zh["hide_title"]) == (
         "/writing/",
@@ -205,6 +206,9 @@ def test_writing_indexes_are_language_specific_and_blog_redirects_to_writing():
     )
     assert blog["permalink"] == "/blog/"
     assert blog["redirect"] == "/writing/"
+    assert blog["canonical_url"] == blog["redirect"]
+    assert page2["permalink"] == "/page2/"
+    assert page2["canonical_url"] == page2["redirect"] == "/writing/"
 
 
 def test_post_layout_is_reader_first():

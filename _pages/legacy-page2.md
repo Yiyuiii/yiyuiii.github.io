@@ -3,6 +3,7 @@ layout: page
 title: Writing
 permalink: /page2/
 redirect: /writing/
+canonical_url: /writing/
 sitemap: false
 ---
 

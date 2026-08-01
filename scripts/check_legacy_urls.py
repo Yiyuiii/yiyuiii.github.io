@@ -46,6 +46,18 @@ def _redirect_target(path: Path) -> str | None:
     return parsed.path or "/"
 
 
+def _canonical_url(soup: BeautifulSoup) -> str | None:
+    link = soup.find("link", rel="canonical")
+    value = link.get("href") if link else None
+    return value.strip() if isinstance(value, str) and value.strip() else None
+
+
+def _open_graph_url(soup: BeautifulSoup) -> str | None:
+    meta = soup.find("meta", attrs={"property": "og:url"})
+    value = meta.get("content") if meta else None
+    return value.strip() if isinstance(value, str) and value.strip() else None
+
+
 def verify_inventory(site: Path, inventory: list[dict]) -> None:
     site = site.resolve()
     seen: set[str] = set()
@@ -79,6 +91,29 @@ def verify_inventory(site: Path, inventory: list[dict]) -> None:
                 errors.append(
                     f"{route}: redirect target {expected} is missing at {target_output}"
                 )
+                continue
+
+            redirect_soup = BeautifulSoup(
+                output.read_text(encoding="utf-8"), "html.parser"
+            )
+            target_soup = BeautifulSoup(
+                target_output.read_text(encoding="utf-8"), "html.parser"
+            )
+            expected_canonical = _canonical_url(target_soup)
+            if expected_canonical is None:
+                errors.append(
+                    f"{route}: redirect target {expected} has no canonical URL"
+                )
+                continue
+
+            for label, value in (
+                ("canonical", _canonical_url(redirect_soup)),
+                ("og:url", _open_graph_url(redirect_soup)),
+            ):
+                if value != expected_canonical:
+                    errors.append(
+                        f"{route}: {label} {value!r}, expected {expected_canonical!r}"
+                    )
         elif policy == "retirement":
             if not output.is_file():
                 errors.append(f"{route}: retirement worker missing")

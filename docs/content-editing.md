@@ -203,11 +203,11 @@ python scripts/translation_guard.py --check --production
 
 - 正文：`_posts/*.md`
 - 中文文章使用 `lang: zh`，英文文章使用 `lang: en`
-- 新文章必须同时提供完整中英文版本；契约建立前的 11 篇旧文正逐篇迁移，只有尚未配对的旧文保留在 `_data/translation_exemptions.yml`，不能向清单加入新文章
+- 新文章必须同时提供完整中英文版本；现有 11 组、22 篇随笔已经全部配对，`_data/translation_exemptions.yml` 必须保持空闭集，不能加入新豁免
 - 每组共用引号包裹的 12 位 `uid` 和 `post-<uid>` 形式的 `translation_key`
 - 中文 URL 位于 `/posts/`，英文 URL 位于 `/en/posts/`，并且全部使用显式 `permalink`
 - `tags` 是文章自己的真实标签；随笔索引会按当前语言中的全局出现频率自动排序
-- 只有明确选择图片时才写 `thumbnail: /assets/...`
+- 每篇已发布随笔都必须声明共享的 `thumbnail: /assets/posts/...`，以及只含本地化 `alt`、`caption` 的 `article_cover`；题图由统一组件渲染，不要在 Markdown 正文重复插入首图和图注
 
 文章正文和原有永久链接不要为了索引或欢迎页展示而改写。随笔摘要来自 `description` 或完整 `excerpt`，不会自动截断；欢迎页从同一字段读取，不另存重复摘要。
 
@@ -231,7 +231,7 @@ python scripts/translation_guard.py --check --production
 
 真实原稿一方不写 `translation_source`；译文用该字段指向原稿，并保存 `translation_status: current` 和 `source_hash`。双方只有在文件都实际存在时才写 `translation_url`，且必须互相指向对方的显式 `permalink`。不要为了统一方向，把两篇英文旧文的中文译文反过来定义为原稿。
 
-完成一组迁移时必须同步删除 `_data/translation_exemptions.yml` 中对应的 `translation_key`。守卫会检查图片目标、公式、代码块、行内代码、外部链接、可映射的站内文章链接、表格行列轮廓、标题层级、显式锚点、脚注、资料说明标记和修订日期是否对应；仍需另行复核自然语言语义，不能只刷新 hash：
+修改原稿后，必须先同步复核并更新译文语义，再刷新译文 `source_hash`；不要通过增加翻译豁免绕过差异。守卫会检查题图字段与来源链接、正文图片目标、公式、代码块、行内代码、外部链接、可映射的站内文章链接、表格行列轮廓、标题层级、显式锚点、脚注、资料说明标记和修订日期是否对应；仍需另行复核自然语言语义，不能只刷新 hash：
 
 ```powershell
 python scripts/translation_guard.py --write "_posts/<译文文件>.md"
@@ -301,7 +301,7 @@ revisions:
 git diff <基准提交>..<当前提交> -- "_posts/<文章文件>.md"
 ```
 
-文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。每篇已发布文章的 `thumbnail` 必须恰好由一条记录覆盖，`asset` 也不得重复；同一内容的中英文文章应列在同一记录的 `posts` 中并共享封面，不要复制图片。更换封面时按以下严格契约同步更新：
+文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。每篇已发布文章的 `thumbnail` 必须恰好由一条记录覆盖，`asset` 也不得重复；同一内容的中英文文章应列在同一记录的 `posts` 中并共享封面，不要复制图片。`article_cover.alt` 与 `article_cover.caption` 按语言人工撰写，但图注的 Markdown 结构、HTTPS 来源链接目标和顺序必须对应；页面统一通过 `_includes/article-cover.liquid` 显示 26rem 内等比、不裁切的正式题图，详细组件契约见 `docs/article-cover-component.md`。更换封面时按以下严格契约同步更新：
 
 - 文件顶层只能包含 `version`、`index_derivatives` 与 `covers`，其中 `version` 为 2，`covers` 为按唯一正式封面组织的记录列表。
 - `index_derivatives` 固化随笔索引派生规则：版本 1、160/320 px、WebP quality 75、method 6、Lanczos、Pillow 12.0.0、libwebp 1.6.0，并清除元数据。编码规则变化时必须升级派生版本和文件名，不能原地覆盖旧缓存 URL。

@@ -4,6 +4,7 @@ permalink: /blog/
 title: 随笔
 lang: zh
 redirect: /writing/
+canonical_url: /writing/
 sitemap: false
 ---
 
