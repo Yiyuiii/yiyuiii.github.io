@@ -1009,9 +1009,7 @@ foreach ($entry in $indexEntries) {
   }
   $blobBytes += [int64]$sizeText
 }
-if ($blobBytes -ne 16432335 -or $blobBytes -ge 16MB) {
-  throw "Unexpected Git blob total: $blobBytes"
-}
+if ($blobBytes -ge 16MB) { throw "Git blob tree exceeds 16 MiB: $blobBytes" }
 
 "TRACKED_FILES=$($workingTracked.Count)"
 "PHYSICAL_BYTES=$workingBytes"
@@ -1020,7 +1018,9 @@ if ($blobBytes -ne 16432335 -or $blobBytes -ge 16MB) {
 "GIT_BLOB_MIB=$([math]::Round($blobBytes / 1MB, 3))"
 ~~~
 
-Expected after all planned additions and deletions: 133 tracked files；the Windows checkout currently reports 16,445,219 physical bytes（15.683 MiB），while the platform-independent Git blob total is exactly 16,432,335 bytes（15.671 MiB）；both are below 16 MiB. Only paths returned by Git are measured, so ignored test and build caches are excluded. The count is `206 baseline + 2 approved design/plan documents + 3 new production-contract files - 70 process files - 8 favicon files = 133`. If the count differs, list the exact added/deleted paths and reconcile them against this plan before committing.
+Expected for the current checkout: exactly 133 tracked files，physical tracked bytes below 16 MiB，and Git blob bytes below 16 MiB. The command prints both measured totals without requiring them to equal a self-referential constant；only paths returned by Git are measured, so ignored test and build caches are excluded. The count is `206 baseline + 2 approved design/plan documents + 3 new production-contract files - 70 process files - 8 favicon files = 133`. If the count differs, list the exact added/deleted paths and reconcile them against this plan before committing.
+
+Historical execution evidence（non-normative）: immediately after deletion commit `3e93158a25979ecc6aa58b429760edf6b76b7f2f`, the same non-ASCII-safe working-tree measurement reported 16,445,219 physical bytes（15.683 MiB）. A separate `git -c core.quotepath=false ls-tree -r -l 3e93158a25979ecc6aa58b429760edf6b76b7f2f` audit reconfirmed 133 blobs totaling 16,432,335 bytes（15.671 MiB）. These exact values describe that deletion checkpoint only；later commits that edit this plan necessarily change both totals, so they are evidence rather than equality guards for the current HEAD.
 
 - [ ] **Step 6: 提交过程档案删除**
 
