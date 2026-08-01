@@ -17,6 +17,7 @@
 - _posts 保存当前文章；docs/asset-provenance.yml 按唯一正式封面关联中英文文章，并保存来源、许可、处理、SHA-256 与 160/320 px 索引派生规则。派生资产由 scripts/generate_post_thumbnails.py 预生成并提交，正文原图保留。
 - _data/legacy_urls.yml、scripts/check_legacy_urls.py 与浏览器测试共同保护旧 URL。
 - `/` 与 `/en/` 是欢迎页，人工文案集中在 `_data/home.yml`；`/writing/` 与 `/en/writing/` 是随笔索引。`_data/home_feed.yml` 只维护三类公开内容的稳定引用与本站实质整理日期，运行时不使用热度或类型配额排序。
+- 除双语 404 外，默认布局页面使用从左上头像圆心发出的静态阳光背景；页眉太阳按钮只以版本化 `localStorage` 键 `yiyuiii.sunlight.v1` 保存严格的 `on` / `off`，无 JavaScript 时效果默认开启而按钮隐藏。
 - docs 已由 _config.yml 排除，不会生成公开页面。
 - 11 篇迁移前旧文已获得稳定 `uid`、`translation_key` 和显式 permalink；2 篇英文源位于 `/en/posts/`，原 URL 通过 legacy 重定向兼容。
 - 11 篇旧文已全部完成双语配对；`_data/translation_exemptions.yml` 现为保留架构的空闭集。新文章必须双语发布，不得新增豁免。
@@ -50,6 +51,7 @@ npm run test:browser
 - 目录整理实施计划：docs/superpowers/plans/2026-08-01-formalize-repository-tree.md
 - 主页下一阶段实施计划：docs/superpowers/plans/2026-08-01-homepage-refresh.md
 - 欢迎页与规范化内容流：docs/superpowers/specs/2026-08-01-welcome-feed.md
+- 阳光背景与开关：docs/superpowers/specs/2026-08-01-sunlight-background.md
 
 ## AI 历史总结
 

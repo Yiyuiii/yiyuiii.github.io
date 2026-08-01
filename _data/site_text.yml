@@ -22,6 +22,11 @@ zh:
     placeholder: 搜索随笔、项目或论文
     empty: 输入关键词开始搜索。
     no_results: 没有找到匹配内容。
+  sunlight:
+    enable: 开启阳光背景
+    disable: 关闭阳光背景
+    status_on: 阳光背景已开启
+    status_off: 阳光背景已关闭
   project:
     stars: Star
     forks: Fork
@@ -80,6 +85,11 @@ en:
     placeholder: Search writing, projects, or papers
     empty: Enter a term to start searching.
     no_results: No matching content found.
+  sunlight:
+    enable: Turn on the sunlight background
+    disable: Turn off the sunlight background
+    status_on: Sunlight background is on
+    status_off: Sunlight background is off
   project:
     stars: Stars
     forks: Forks

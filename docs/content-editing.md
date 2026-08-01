@@ -386,6 +386,12 @@ recognition:
 
 ## 本地检查
 
+### 阳光背景维护
+
+阳光效果的视觉参数集中在 `assets/css/main.scss` 的 `--sunlight-x`、`--sunlight-y` 与 `body::before`；不要按单页复制样式。若改变页眉最大宽度、水平内边距或头像尺寸，必须同步光源公式，并复跑 `tests/browser/sunlight.spec.mjs` 的 1280/390/320 px 对齐检查。
+
+开关文案只维护 `_data/site_text.yml` 的 `sunlight` 中英文并保持字段平行。存储键和值属于兼容接口；更换键必须升级版本，不得复用 `yiyuiii.sunlight.v1` 解释其它值，也不得把访问数据并入该键。404 和无 JavaScript 的降级边界以阳光规格文档与自动化测试为准。
+
 本机无需 Ruby 即可运行：
 
 ```powershell
@@ -396,6 +402,7 @@ node --check assets/js/site-search.js
 node --check assets/js/theme-compat.js
 node --check assets/js/article-navigation.js
 node --check assets/js/home-feed.js
+node --check assets/js/sunlight.js
 git diff --check
 ```
 

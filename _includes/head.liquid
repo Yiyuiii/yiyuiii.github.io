@@ -4,6 +4,20 @@
   http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"
 >
+{% if page.layout != 'not-found' %}
+  <script>
+    (function () {
+      var saved = null;
+      try {
+        saved = localStorage.getItem("yiyuiii.sunlight.v1");
+      } catch (error) {
+        saved = null;
+      }
+      saved = saved === "on" || saved === "off" ? saved : "on";
+      document.documentElement.dataset.sunlight = saved === "off" ? "off" : "on";
+    })();
+  </script>
+{% endif %}
 <link rel="icon" href="{{ '/assets/img/favicons/favicon.ico' | relative_url }}" sizes="any">
 <style>:root { --max-content-width: {{ site.max_width | default: '960px' }}; }</style>
 <link rel="stylesheet" href="{{ '/assets/css/tailwind.css' | relative_url | bust_file_cache }}">

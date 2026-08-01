@@ -36,6 +36,24 @@
           <path d="m16 16 4 4"></path>
         </svg>
       </button>
+      <button
+        id="sunlight-toggle"
+        class="icon-button sunlight-toggle"
+        type="button"
+        aria-label="{{ text.sunlight.disable }}"
+        aria-pressed="true"
+        data-enable-label="{{ text.sunlight.enable | escape }}"
+        data-disable-label="{{ text.sunlight.disable | escape }}"
+        data-status-on="{{ text.sunlight.status_on | escape }}"
+        data-status-off="{{ text.sunlight.status_off | escape }}"
+        hidden
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="3.4"></circle>
+          <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path>
+        </svg>
+      </button>
+      <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
       <a class="language-switch" href="{{ translation_target | relative_url }}" aria-label="{{ text.switch_language }}">
         {% if lang_key == 'en' %}中{% else %}EN{% endif %}
       </a>

@@ -36,6 +36,8 @@
   --global-theme-color: var(--amethyst);
   --global-hover-color: var(--jade);
   --global-divider-color: var(--divider);
+  --sunlight-x: max(2.125rem, calc((100vw - 68rem) / 2 + 1.125rem));
+  --sunlight-y: calc(clamp(1rem, 2.8vw, 1.65rem) + 1.125rem);
 }
 
 *,
@@ -51,13 +53,14 @@ html {
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
   margin: 0;
   overflow-x: clip;
   color: var(--body);
   background:
-    radial-gradient(circle at 12% 3%, rgba(102, 89, 150, 0.055), transparent 24rem),
-    radial-gradient(circle at 88% 16%, rgba(51, 122, 112, 0.045), transparent 22rem),
+    radial-gradient(circle at 88% 16%, rgba(51, 122, 112, 0.03), transparent 22rem),
     var(--page);
   font-family:
     ui-sans-serif,
@@ -77,6 +80,47 @@ body {
   letter-spacing: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 58rem;
+  background:
+    radial-gradient(
+      circle at var(--sunlight-x) var(--sunlight-y),
+      rgba(224, 174, 76, 0.13) 0,
+      rgba(224, 174, 76, 0.065) 10rem,
+      rgba(224, 174, 76, 0.018) 32rem,
+      transparent 52rem
+    ),
+    repeating-conic-gradient(
+      from -11deg at var(--sunlight-x) var(--sunlight-y),
+      rgba(216, 160, 54, 0.024) 0deg 1.35deg,
+      transparent 1.35deg 10deg
+    );
+  -webkit-mask-image: radial-gradient(
+    circle at var(--sunlight-x) var(--sunlight-y),
+    #000 0 15rem,
+    rgba(0, 0, 0, 0.72) 30rem,
+    transparent 58rem
+  );
+  mask-image: radial-gradient(
+    circle at var(--sunlight-x) var(--sunlight-y),
+    #000 0 15rem,
+    rgba(0, 0, 0, 0.72) 30rem,
+    transparent 58rem
+  );
+  pointer-events: none;
+  content: "";
+}
+
+html[data-sunlight="off"] body::before,
+.not-found-page::before {
+  content: none;
 }
 
 a {
@@ -235,6 +279,21 @@ svg {
 .icon-button:hover,
 .language-switch:hover {
   color: var(--jade);
+}
+
+.sunlight-toggle[hidden] {
+  display: none;
+}
+
+.sunlight-toggle[aria-pressed="true"] {
+  color: #9d6d18;
+  background: rgba(224, 174, 76, 0.1);
+  border-radius: 50%;
+}
+
+.sunlight-toggle[aria-pressed="false"] {
+  color: color-mix(in srgb, var(--muted) 72%, transparent);
+  background: transparent;
 }
 
 .icon-button svg {
@@ -1531,6 +1590,10 @@ html[data-not-found-language="en"] .not-found-page [data-language="zh"] {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --sunlight-y: calc(0.85rem + 1.125rem);
+  }
+
   .site-header {
     padding-top: 0.85rem;
   }
