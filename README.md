@@ -76,29 +76,54 @@ Ruby production build 使用 Jekyll 4.4.1；精确 CI 流程见 .github/workflow
 
 ### 浏览器回归
 
-下面的 PowerShell 在 `127.0.0.1:62091` 隐藏启动刚构建的 `_site`，等待服务就绪，运行浏览器测试，并在结束时停止服务和恢复原有 `SITE_URL`：
+下面的 PowerShell 先通过 loopback 端口 0 选择一个当时空闲的本机 TCP 端口，再隐藏启动刚构建的 `_site`，等待服务就绪，运行浏览器测试，并在结束时停止服务和恢复原有 `SITE_URL`。释放端口探针到启动 Python 之间仍存在很短的理论竞态；轮询会同时检查 Python 子进程，若绑定失败并退出则立即报错，避免把固定端口上的旧服务误当成当前预览：
 
 ```powershell
 $hadSiteUrl = Test-Path Env:\SITE_URL
 $previousSiteUrl = if ($hadSiteUrl) { $env:SITE_URL } else { $null }
 $siteServer = $null
 try {
-  $env:SITE_URL = "http://127.0.0.1:62091"
+  $portProbe = [System.Net.Sockets.TcpListener]::new(
+    [System.Net.IPAddress]::Loopback,
+    0
+  )
+  $portProbe.Start()
+  try {
+    $sitePort = ([System.Net.IPEndPoint]$portProbe.LocalEndpoint).Port
+  } finally {
+    $portProbe.Stop()
+  }
+
+  $env:SITE_URL = "http://127.0.0.1:$sitePort"
   $siteServer = Start-Process python -ArgumentList @(
-    "-m", "http.server", "62091", "--bind", "127.0.0.1", "--directory", "_site"
+    "-m", "http.server", "$sitePort", "--bind", "127.0.0.1", "--directory", "_site"
   ) -PassThru -WindowStyle Hidden
 
   $siteReady = $false
   $siteDeadline = (Get-Date).AddSeconds(10)
   do {
+    if ($siteServer.HasExited) {
+      throw "Local site server exited with code $($siteServer.ExitCode) before becoming ready."
+    }
     try {
       Invoke-WebRequest -Uri "$env:SITE_URL/" -UseBasicParsing -TimeoutSec 1 | Out-Null
+      if ($siteServer.HasExited) {
+        throw "Local site server exited with code $($siteServer.ExitCode) during readiness check."
+      }
       $siteReady = $true
     } catch {
+      if ($siteServer.HasExited) {
+        throw "Local site server exited with code $($siteServer.ExitCode) before becoming ready."
+      }
       Start-Sleep -Milliseconds 200
     }
   } until ($siteReady -or (Get-Date) -ge $siteDeadline)
-  if (-not $siteReady) { throw "Local site server did not become ready." }
+  if (-not $siteReady) {
+    if ($siteServer.HasExited) {
+      throw "Local site server exited with code $($siteServer.ExitCode) before becoming ready."
+    }
+    throw "Local site server did not become ready."
+  }
 
   npm run test:browser
   if ($LASTEXITCODE -ne 0) { throw "Browser tests failed with exit code $LASTEXITCODE." }

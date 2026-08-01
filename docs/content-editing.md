@@ -227,7 +227,7 @@ revisions:
 
 ### 使用 Git 保留多轮修订
 
-正式 master 当前树只保存正式文章，不复制完整旧稿、AI 审阅稿或候选稿。普通 Git 历史对长期恢复的承诺，仅限已经进入 master 且提交仍可达的正式版本；临时 worktree 或分支中的中间提交在删除分支或 squash 后不保证可达。需要多轮修改时：
+正式 master 的维护规则是只保存正式文章，不复制完整旧稿、AI 审阅稿或候选稿；本次正式化分支合并前必须移除现有 `docs/content-revisions` 与 `docs/content-covers`。普通 Git 历史对长期恢复的承诺，仅限已经进入 master 且提交仍可达的正式版本；临时 worktree 或分支中的中间提交在删除分支或 squash 后不保证可达。需要多轮修改时：
 
 1. 从最新 master 创建独立分支或临时 worktree。
 2. 修改前先提交或记录基准提交；不要在 docs 下复制整篇文章。
