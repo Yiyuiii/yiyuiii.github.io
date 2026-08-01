@@ -104,15 +104,20 @@ def test_document_language_uses_page_value_and_google_fonts_are_absent():
 def test_head_allows_only_used_cdn_fonts_and_production_favicons():
     head = text("_includes/head.liquid")
     favicon_dir = ROOT / "assets" / "img" / "favicons"
-    tracked_favicons = {
-        path.name for path in favicon_dir.iterdir() if path.is_file()
+    production_favicons = {
+        path.relative_to(favicon_dir).as_posix()
+        for path in favicon_dir.rglob("*")
+        if path.is_file()
+        and not any(
+            component.startswith(".")
+            for component in path.relative_to(favicon_dir).parts
+        )
     }
 
     assert "font-src 'self' data: https://cdn.jsdelivr.net;" in head
     assert "font-src 'self' data: https:;" not in head
-    assert "'/assets/img/favicons/favicon.ico'" in head
-    assert 'rel="icon"' in head
-    assert tracked_favicons == {
+    assert """<link rel="icon" href="{{ '/assets/img/favicons/favicon.ico' | relative_url }}" sizes="any">""" in head
+    assert production_favicons == {
         "android-chrome-256x256.png",
         "favicon.ico",
     }
