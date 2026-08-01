@@ -478,9 +478,11 @@ git commit -m "test: 固化生产封面来源契约"
 - Modify: tests/test_writing_contracts.py:1-43
 - Modify: tests/test_writing_contracts.py:166-915
 - Test: tests/test_writing_contracts.py
-- Test: tests/test_asset_provenance.py
+- Modify/Test: tests/test_asset_provenance.py
 
 本任务处理设计中识别出的七处历史过程依赖：重写一处装机记录测试，使它只验证当前生产行为；完整删除另外六个只能由过程快照支撑的测试函数。生产封面覆盖并未减少，而是转交给 Task 2 新增的结构化来源契约。
+
+执行中质量审查修订：不恢复快照比较；新增 `test_age_of_innovation_keeps_reviewed_production_conclusions`，保护当前文章的关键公式、限定说明和证据标记；扩展 provenance 的正文封面用途检查，其中装机生成图仅因非空 `purpose` 明确包含 `writing-index cover` 而豁免。因此 writing tests 为 14、provenance tests 为 3、Task 3 联合测试为 17，最终全量预期为 180。这落实了设计中“不以减少测试数量为目标”的要求。
 
 - [ ] **Step 1: 先证明新来源契约覆盖当前封面**
 
@@ -579,7 +581,7 @@ Run:
 python -m pytest tests/test_writing_contracts.py tests/test_asset_provenance.py -q
 ~~~
 
-Expected: `16 passed`。
+Expected: `17 passed`。
 
 - [ ] **Step 7: 提交测试去耦**
 
@@ -958,7 +960,7 @@ Run:
 python -m pytest -q
 ~~~
 
-Expected: `179 passed`。
+Expected: `180 passed`。
 
 - [ ] **Step 5: 验证目标 tree 数量和体积**
 
@@ -1002,7 +1004,7 @@ Run:
 python -m pytest -q
 ~~~
 
-Expected: `179 passed`。
+Expected: `180 passed`。
 
 - [ ] **Step 2: 运行翻译生产检查**
 
@@ -1298,7 +1300,7 @@ python -m pytest -q
 git fsck --full
 ~~~
 
-Expected: cleanup worktree clean；历史目录查询为空；正式文档存在；179 tests pass；fsck passes。
+Expected: cleanup worktree clean；历史目录查询为空；正式文档存在；`180 passed`；fsck passes。
 
 - [ ] **Step 2: 证明 master、original 和 archives 边界未破坏**
 
