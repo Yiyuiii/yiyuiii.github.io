@@ -258,13 +258,19 @@ def test_provenance_schema_hashes_and_dimensions_match_production_assets():
             ), f"{context}: reference_inputs entries must be non-empty strings"
 
 
-def test_external_cover_rights_are_visible_in_the_production_post():
-    for record in records():
-        if record["origin_type"] != "external":
-            continue
+def assert_cover_usage_and_external_rights(record, body):
+    context = record_context(record)
+    asset_url = "/" + record["asset"]
+    if asset_url not in body:
+        purpose = record.get("purpose")
+        assert (
+            record["origin_type"] == "generated"
+            and isinstance(purpose, str)
+            and purpose.strip()
+            and "writing-index cover" in purpose
+        ), f"{context}: visible post body is missing cover asset URL {asset_url!r}"
 
-        context = record_context(record)
-        body = visible_post_body(ROOT / record["post"])
+    if record["origin_type"] == "external":
         for key in ("source_url", "attribution", "license"):
             assert record[key] in body, (
                 f"{context}: visible post body is missing {key}={record[key]!r}"
@@ -274,3 +280,9 @@ def test_external_cover_rights_are_visible_in_the_production_post():
                 f"{context}: visible post body is missing independent "
                 f"license_url={record['license_url']!r}"
             )
+
+
+def test_cover_usage_and_external_rights_are_visible_in_the_production_post():
+    for record in records():
+        body = visible_post_body(ROOT / record["post"])
+        assert_cover_usage_and_external_rights(record, body)

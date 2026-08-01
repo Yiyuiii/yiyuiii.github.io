@@ -188,6 +188,42 @@ def test_every_post_now_has_a_local_thumbnail():
     )
 
 
+def assert_age_of_innovation_reviewed_conclusions(body):
+    context = "《大创造时代》生产文章正文"
+    reviewed_conclusions = (
+        r"y \approx 0.19",
+        "1.65+0.81",
+        "T1 的 1c ≈ T6 的 2.72 分",
+        "59.47c + 29.18 分",
+        "1b1 魔产 ≥ 1o1k 产 ≥ 2c3 分产",
+        "`1o = 2 分`",
+        "`3c = 2 分`",
+        "5 金币 = 1 分",
+        "这不是官方的终局兑换规则",
+    )
+
+    for conclusion in reviewed_conclusions:
+        assert conclusion in body, (
+            f"{context}缺少已审阅结论：{conclusion!r}"
+        )
+    assert "(未完工)" not in body, f"{context}仍包含未完工标记"
+    assert body.count("{: .article-evidence}") == 4, (
+        f"{context}应恰有 4 个证据标记"
+    )
+    assert "\n\n{: .article-evidence}" not in body, (
+        f"{context}的证据标记前不应有额外空行"
+    )
+
+
+def test_age_of_innovation_keeps_reviewed_production_conclusions():
+    source = text(
+        "_posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md"
+    )
+    body = source.split("---", 2)[2]
+
+    assert_age_of_innovation_reviewed_conclusions(body)
+
+
 def test_article_navigation_uses_native_dialog_and_progressive_scroll_tracking():
     script = text("assets/js/article-navigation.js")
 
