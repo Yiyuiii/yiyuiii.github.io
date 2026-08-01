@@ -947,10 +947,20 @@ This is a recoverable Git deletion of two previously verified paths. Do not use 
 Run:
 
 ~~~powershell
-rg -n "docs/content-revisions|docs/content-covers" . --glob "!docs/superpowers/**" --glob "!AGENTS.md"
+$activeMatches = @(rg -n "docs/content-revisions|docs/content-covers" . --glob "!docs/superpowers/**" --glob "!README.md" --glob "!AGENTS.md")
+$activeExit = $LASTEXITCODE
+if ($activeExit -ne 1 -or $activeMatches.Count -ne 0) {
+  throw "Unexpected active historical-directory reference: exit=$activeExit matches=$($activeMatches.Count)"
+}
+$readmeMatches = @(rg -n "docs/content-revisions|docs/content-covers" README.md)
+if ($LASTEXITCODE -ne 0 -or $readmeMatches.Count -ne 1 -or
+    $readmeMatches[0] -notmatch '^\d+:git ls-files docs/content-revisions docs/content-covers$') {
+  throw "README must contain only the expected merge guard"
+}
+$readmeMatches
 ~~~
 
-Expected: no matches，exit code 1。
+Expected: the active-tree scan has no output and `rg` exits 1；README prints exactly its single `git ls-files docs/content-revisions docs/content-covers` merge guard. References retained under docs/superpowers are approved audit records, not active dependencies。
 
 - [ ] **Step 4: 运行完整 Python 回归**
 
@@ -967,16 +977,50 @@ Expected: `180 passed`。
 Run:
 
 ~~~powershell
-$workingTracked = @(git ls-files)
-"TRACKED_FILES=$($workingTracked.Count)"
-$bytes = 0
-foreach ($file in $workingTracked) {
-  $bytes += (Get-Item -LiteralPath $file).Length
+$ErrorActionPreference = "Stop"
+$workingTracked = @(git -c core.quotepath=false ls-files)
+if ($LASTEXITCODE -ne 0) { throw "git ls-files failed" }
+if ($workingTracked.Count -ne 133) {
+  throw "Unexpected tracked file count: $($workingTracked.Count)"
 }
-"TRACKED_MIB=$([math]::Round($bytes / 1MB, 3))"
+$workingBytes = [int64]0
+foreach ($file in $workingTracked) {
+  if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
+    throw "Tracked file is missing or unreadable: $file"
+  }
+  $workingBytes += [int64](Get-Item -LiteralPath $file).Length
+}
+if ($workingBytes -ge 16MB) { throw "Physical tracked tree exceeds 16 MiB: $workingBytes" }
+
+$indexEntries = @(git ls-files -s)
+if ($LASTEXITCODE -ne 0) { throw "git ls-files -s failed" }
+if ($indexEntries.Count -ne 133) {
+  throw "Unexpected index entry count: $($indexEntries.Count)"
+}
+$blobBytes = [int64]0
+foreach ($entry in $indexEntries) {
+  if ($entry -notmatch '^\d+\s+([0-9a-f]+)\s+\d+\t') {
+    throw "Cannot parse index entry: $entry"
+  }
+  $blobId = $Matches[1]
+  $sizeText = (git cat-file -s $blobId).Trim()
+  if ($LASTEXITCODE -ne 0 -or $sizeText -notmatch '^\d+$') {
+    throw "Cannot read Git blob size: $blobId"
+  }
+  $blobBytes += [int64]$sizeText
+}
+if ($blobBytes -ne 16432335 -or $blobBytes -ge 16MB) {
+  throw "Unexpected Git blob total: $blobBytes"
+}
+
+"TRACKED_FILES=$($workingTracked.Count)"
+"PHYSICAL_BYTES=$workingBytes"
+"PHYSICAL_MIB=$([math]::Round($workingBytes / 1MB, 3))"
+"GIT_BLOB_BYTES=$blobBytes"
+"GIT_BLOB_MIB=$([math]::Round($blobBytes / 1MB, 3))"
 ~~~
 
-Expected after all planned additions and deletions: 133 tracked files and less than 16 MiB. The count is `206 baseline + 2 approved design/plan documents + 3 new production-contract files - 70 process files - 8 favicon files = 133`. If the count differs, list the exact added/deleted paths and reconcile them against this plan before committing.
+Expected after all planned additions and deletions: 133 tracked files；the Windows checkout currently reports 16,445,219 physical bytes（15.683 MiB），while the platform-independent Git blob total is exactly 16,432,335 bytes（15.671 MiB）；both are below 16 MiB. Only paths returned by Git are measured, so ignored test and build caches are excluded. The count is `206 baseline + 2 approved design/plan documents + 3 new production-contract files - 70 process files - 8 favicon files = 133`. If the count differs, list the exact added/deleted paths and reconcile them against this plan before committing.
 
 - [ ] **Step 6: 提交过程档案删除**
 
