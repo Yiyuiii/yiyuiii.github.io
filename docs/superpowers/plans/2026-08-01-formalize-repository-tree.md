@@ -779,7 +779,7 @@ npm run test:browser
 
 Ruby production build 使用 Ruby 3.3.5 与 Jekyll 4.4.1；精确 CI 流程见 .github/workflows/deploy.yml。
 
-Playwright 通过 `SITE_URL` 连接刚构建的 `_site`。本地验证应使用 `scripts/serve_site.py` 和动态 loopback 端口，以保留站点自定义 404 的 HTTP 状态与正文语义；完整的服务生命周期命令见最终 README。
+Playwright 通过 `SITE_URL` 连接刚构建的 `_site`。本地验证应使用 `scripts/serve_site.py` 和动态 loopback 端口，以保留站点自定义 404 的 HTTP 状态与正文语义；站点路径通过仅属于子进程的 `SITE_PREVIEW_ROOT` 传递，不得改回命令行路径拼接。完整的服务生命周期命令见最终 README。
 
 ## 部署
 
@@ -858,7 +858,9 @@ master 当前树只保存正式文章，不复制完整旧稿、AI 审阅稿或�
 比较文章前后版本：
 
 ~~~powershell
-git diff <基准提交>..<当前提交> -- "_posts/<文章文件>.md"
+$baseCommit = "<基准提交>"
+$currentCommit = "<当前提交>"
+git diff "$baseCommit..$currentCommit" -- "_posts/<文章文件>.md"
 ~~~
 
 文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。更换封面时必须同步更新：
@@ -1029,7 +1031,7 @@ Run:
 python -m pytest -q
 ~~~
 
-Expected: `184 passed`。
+Expected: `191 passed`。
 
 - [ ] **Step 2: 运行翻译生产检查**
 
@@ -1326,6 +1328,7 @@ npm ci
 $hadSiteUrl = Test-Path Env:\SITE_URL
 $previousSiteUrl = if ($hadSiteUrl) { $env:SITE_URL } else { $null }
 $server = $null
+$workflowError = $null
 try {
   $portProbe = [System.Net.Sockets.TcpListener]::new(
     [System.Net.IPAddress]::Loopback,
@@ -1339,9 +1342,20 @@ try {
   }
 
   $env:SITE_URL = "http://127.0.0.1:$sitePort"
-  $server = Start-Process -FilePath python -ArgumentList @(
-    "scripts/serve_site.py", "--site", "$prSite", "--bind", "127.0.0.1", "--port", "$sitePort"
-  ) -PassThru -WindowStyle Hidden
+  $repoRoot = (git rev-parse --show-toplevel).Trim()
+  if ($LASTEXITCODE -ne 0) { throw "Cannot resolve the repository root." }
+  $siteRoot = (Resolve-Path -LiteralPath $prSite -ErrorAction Stop).Path
+  $pythonCommands = @(Get-Command python -CommandType Application -ErrorAction Stop)
+  $pythonPath = $pythonCommands[0].Path
+  $serverStartInfo = [System.Diagnostics.ProcessStartInfo]::new()
+  $serverStartInfo.FileName = $pythonPath
+  $serverStartInfo.WorkingDirectory = $repoRoot
+  $serverStartInfo.UseShellExecute = $false
+  $serverStartInfo.CreateNoWindow = $true
+  $serverStartInfo.Arguments = "scripts/serve_site.py --bind 127.0.0.1 --port $sitePort"
+  $serverStartInfo.EnvironmentVariables["SITE_PREVIEW_ROOT"] = $siteRoot
+  $server = [System.Diagnostics.Process]::Start($serverStartInfo)
+  if ($null -eq $server) { throw "Failed to start the local site server." }
 
   $siteReady = $false
   $siteDeadline = (Get-Date).AddSeconds(10)
@@ -1351,6 +1365,9 @@ try {
     }
     try {
       Invoke-WebRequest -Uri "$env:SITE_URL/" -UseBasicParsing -TimeoutSec 1 | Out-Null
+      if ($server.HasExited) {
+        throw "Local site server exited with code $($server.ExitCode) during readiness check."
+      }
       $siteReady = $true
     } catch {
       if ($server.HasExited) {
@@ -1363,16 +1380,41 @@ try {
 
   npm run test:browser
   if ($LASTEXITCODE -ne 0) { throw "Playwright failed" }
-}
-finally {
-  if ($null -ne $server -and -not $server.HasExited) {
-    Stop-Process -Id $server.Id -Force
+} catch {
+  $workflowError = $_
+} finally {
+  $cleanupFailures = [System.Collections.Generic.List[string]]::new()
+  if ($null -ne $server) {
+    try {
+      if (-not $server.HasExited) { $server.Kill() }
+      if (-not $server.WaitForExit(5000)) {
+        $cleanupFailures.Add("Local site server did not exit within 5000 ms after Kill().")
+      }
+    } catch {
+      $cleanupFailures.Add("Local site server cleanup failed: $($_.Exception.Message)")
+    } finally {
+      try { $server.Dispose() } catch {
+        $cleanupFailures.Add("Local site server disposal failed: $($_.Exception.Message)")
+      }
+    }
   }
-  if ($hadSiteUrl) {
-    Set-Item Env:\SITE_URL -Value $previousSiteUrl
-  } else {
-    Remove-Item Env:\SITE_URL -ErrorAction SilentlyContinue
+  try {
+    if ($hadSiteUrl) {
+      Set-Item Env:\SITE_URL -Value $previousSiteUrl
+    } else {
+      Remove-Item Env:\SITE_URL -ErrorAction Stop
+    }
+  } catch {
+    $cleanupFailures.Add("SITE_URL restoration failed: $($_.Exception.Message)")
   }
+  if ($cleanupFailures.Count -gt 0) {
+    $cleanupMessage = $cleanupFailures -join "; "
+    if ($null -ne $workflowError) {
+      throw "Playwright failed: $($workflowError.Exception.Message); cleanup also failed: $cleanupMessage"
+    }
+    throw "Playwright cleanup failed: $cleanupMessage"
+  }
+  if ($null -ne $workflowError) { throw $workflowError }
 }
 ~~~
 
@@ -1422,7 +1464,7 @@ if ($trackedBytes -ge 16MB) { throw "Final tracked tree exceeds 16 MiB: $tracked
 git fsck --full
 ~~~
 
-Expected: cleanup worktree clean；历史目录查询为空；正式文档存在；`184 passed`；最终当前树为 135 个 tracked 文件且低于 16 MiB；fsck passes。
+Expected: cleanup worktree clean；历史目录查询为空；正式文档存在；`191 passed`；最终当前树为 135 个 tracked 文件且低于 16 MiB；fsck passes。
 
 - [ ] **Step 2: 证明 master、original 和 archives 边界未破坏**
 

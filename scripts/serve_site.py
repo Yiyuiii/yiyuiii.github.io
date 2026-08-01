@@ -3,6 +3,7 @@
 
 import argparse
 import functools
+import os
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -38,13 +39,19 @@ def validate_site(site):
         raise ValueError(f"Site directory does not exist: {site_root}")
 
     error_document = site_root / "404.html"
-    if not error_document.is_file():
+    if not error_document.exists():
         raise ValueError(f"Custom 404.html is missing: {error_document}")
+    if not error_document.is_file():
+        raise ValueError(
+            f"Custom 404.html must be a readable regular file: {error_document}"
+        )
     try:
         with error_document.open("rb"):
             pass
     except OSError as error:
-        raise ValueError(f"Custom 404.html is not readable: {error_document}") from error
+        raise ValueError(
+            f"Custom 404.html must be a readable regular file: {error_document}"
+        ) from error
 
     return site_root, error_document
 
@@ -65,30 +72,57 @@ def create_server(site, bind="127.0.0.1", port=0):
     return ThreadingHTTPServer((bind, port), handler)
 
 
+def port_number(value):
+    try:
+        port = int(value)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("port must be an integer") from error
+    if not 0 <= port <= 65535:
+        raise argparse.ArgumentTypeError("port must be between 0 and 65535")
+    return port
+
+
+def resolve_site(site=None, environ=None):
+    environment = os.environ if environ is None else environ
+    candidate = site or environment.get("SITE_PREVIEW_ROOT")
+    if not candidate:
+        raise ValueError("Provide --site or set SITE_PREVIEW_ROOT")
+    return Path(candidate).resolve()
+
+
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(
         description="Serve a built Jekyll site with its custom 404 semantics.",
     )
-    parser.add_argument("--site", required=True, help="Built site directory")
+    parser.add_argument(
+        "--site",
+        help="Built site directory (defaults to SITE_PREVIEW_ROOT)",
+    )
     parser.add_argument(
         "--bind",
         default="127.0.0.1",
         choices=("127.0.0.1",),
         help="Loopback address (default: 127.0.0.1)",
     )
-    parser.add_argument("--port", type=int, default=0, help="TCP port (default: 0)")
+    parser.add_argument(
+        "--port",
+        type=port_number,
+        default=0,
+        help="TCP port from 0 to 65535 (default: 0)",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv=None):
     args = parse_args(argv)
     try:
-        server = create_server(site=args.site, bind=args.bind, port=args.port)
+        site = resolve_site(args.site)
+        server = create_server(site=site, bind=args.bind, port=args.port)
     except ValueError as error:
         raise SystemExit(str(error)) from error
 
     host, port = server.server_address
-    print(f"Serving {Path(args.site).resolve()} at http://{host}:{port}", flush=True)
+    print(f"Serving {site} at http://{host}:{port}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

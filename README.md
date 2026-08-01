@@ -76,12 +76,13 @@ Ruby production build 使用 Jekyll 4.4.1；精确 CI 流程见 .github/workflow
 
 ### 浏览器回归
 
-下面的 PowerShell 先通过 loopback 端口 0 选择一个当时空闲的本机 TCP 端口，再用 `scripts/serve_site.py` 隐藏启动刚构建的 `_site`。该预览服务保留普通静态文件行为，并让缺失路径以 HTTP 404 返回站点自己的 `404.html`，从而覆盖真实的中英文 404 语义。命令会等待服务就绪，运行浏览器测试，并在结束时停止服务和恢复原有 `SITE_URL`。释放端口探针到启动 Python 之间仍存在很短的理论竞态；轮询会同时检查 Python 子进程，若绑定失败并退出则立即报错，避免把其它端口上的旧服务误当成当前预览：
+下面的 PowerShell 先通过 loopback 端口 0 选择一个当时空闲的本机 TCP 端口，再用 `scripts/serve_site.py` 隐藏启动刚构建的 `_site`。该预览服务保留普通静态文件行为，并让缺失路径以 HTTP 404 返回站点自己的 `404.html`，从而覆盖真实的中英文 404 语义。站点绝对路径只通过专用的子进程环境变量 `SITE_PREVIEW_ROOT` 传递，不拼进命令行参数，因此含空格的路径也不会产生引号歧义。命令会等待服务就绪，运行浏览器测试，并在结束时停止服务和恢复原有 `SITE_URL`。释放端口探针到启动 Python 之间仍存在很短的理论竞态；轮询会同时检查 Python 子进程，若绑定失败并退出则立即报错，避免把其它端口上的旧服务误当成当前预览：
 
 ```powershell
 $hadSiteUrl = Test-Path Env:\SITE_URL
 $previousSiteUrl = if ($hadSiteUrl) { $env:SITE_URL } else { $null }
 $siteServer = $null
+$workflowError = $null
 try {
   $portProbe = [System.Net.Sockets.TcpListener]::new(
     [System.Net.IPAddress]::Loopback,
@@ -95,9 +96,20 @@ try {
   }
 
   $env:SITE_URL = "http://127.0.0.1:$sitePort"
-  $siteServer = Start-Process python -ArgumentList @(
-    "scripts/serve_site.py", "--site", "_site", "--bind", "127.0.0.1", "--port", "$sitePort"
-  ) -PassThru -WindowStyle Hidden
+  $repoRoot = (git rev-parse --show-toplevel).Trim()
+  if ($LASTEXITCODE -ne 0) { throw "Cannot resolve the repository root." }
+  $siteRoot = (Resolve-Path -LiteralPath "_site" -ErrorAction Stop).Path
+  $pythonCommands = @(Get-Command python -CommandType Application -ErrorAction Stop)
+  $pythonPath = $pythonCommands[0].Path
+  $serverStartInfo = [System.Diagnostics.ProcessStartInfo]::new()
+  $serverStartInfo.FileName = $pythonPath
+  $serverStartInfo.WorkingDirectory = $repoRoot
+  $serverStartInfo.UseShellExecute = $false
+  $serverStartInfo.CreateNoWindow = $true
+  $serverStartInfo.Arguments = "scripts/serve_site.py --bind 127.0.0.1 --port $sitePort"
+  $serverStartInfo.EnvironmentVariables["SITE_PREVIEW_ROOT"] = $siteRoot
+  $siteServer = [System.Diagnostics.Process]::Start($serverStartInfo)
+  if ($null -eq $siteServer) { throw "Failed to start the local site server." }
 
   $siteReady = $false
   $siteDeadline = (Get-Date).AddSeconds(10)
@@ -127,15 +139,41 @@ try {
 
   npm run test:browser
   if ($LASTEXITCODE -ne 0) { throw "Browser tests failed with exit code $LASTEXITCODE." }
+} catch {
+  $workflowError = $_
 } finally {
-  if ($null -ne $siteServer -and -not $siteServer.HasExited) {
-    Stop-Process -Id $siteServer.Id -Force
+  $cleanupFailures = [System.Collections.Generic.List[string]]::new()
+  if ($null -ne $siteServer) {
+    try {
+      if (-not $siteServer.HasExited) { $siteServer.Kill() }
+      if (-not $siteServer.WaitForExit(5000)) {
+        $cleanupFailures.Add("Local site server did not exit within 5000 ms after Kill().")
+      }
+    } catch {
+      $cleanupFailures.Add("Local site server cleanup failed: $($_.Exception.Message)")
+    } finally {
+      try { $siteServer.Dispose() } catch {
+        $cleanupFailures.Add("Local site server disposal failed: $($_.Exception.Message)")
+      }
+    }
   }
-  if ($hadSiteUrl) {
-    Set-Item Env:\SITE_URL -Value $previousSiteUrl
-  } else {
-    Remove-Item Env:\SITE_URL -ErrorAction SilentlyContinue
+  try {
+    if ($hadSiteUrl) {
+      Set-Item Env:\SITE_URL -Value $previousSiteUrl
+    } else {
+      Remove-Item Env:\SITE_URL -ErrorAction Stop
+    }
+  } catch {
+    $cleanupFailures.Add("SITE_URL restoration failed: $($_.Exception.Message)")
   }
+  if ($cleanupFailures.Count -gt 0) {
+    $cleanupMessage = $cleanupFailures -join "; "
+    if ($null -ne $workflowError) {
+      throw "Browser regression failed: $($workflowError.Exception.Message); cleanup also failed: $cleanupMessage"
+    }
+    throw "Browser cleanup failed: $cleanupMessage"
+  }
+  if ($null -ne $workflowError) { throw $workflowError }
 }
 ```
 

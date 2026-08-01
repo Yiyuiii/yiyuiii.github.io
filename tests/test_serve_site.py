@@ -4,7 +4,7 @@ import urllib.request
 
 import pytest
 
-from scripts.serve_site import create_server
+from scripts.serve_site import create_server, parse_args, resolve_site
 
 
 def write(path, content):
@@ -79,13 +79,60 @@ def test_missing_head_returns_custom_404_headers_without_body(tmp_path):
         assert response.read() == b""
 
 
-def test_server_requires_a_site_directory_and_readable_custom_404(tmp_path):
+def test_server_requires_a_site_directory(tmp_path):
     site = tmp_path / "site"
 
     with pytest.raises(ValueError, match="Site directory"):
         create_server(site=site, bind="127.0.0.1", port=0)
 
+
+def test_server_requires_a_readable_regular_404_file(tmp_path):
+    site = tmp_path / "site"
     site.mkdir()
 
-    with pytest.raises(ValueError, match="404.html"):
+    with pytest.raises(ValueError, match="404.html is missing"):
         create_server(site=site, bind="127.0.0.1", port=0)
+
+    (site / "404.html").mkdir()
+
+    with pytest.raises(ValueError, match="readable regular file"):
+        create_server(site=site, bind="127.0.0.1", port=0)
+
+
+def test_cli_rejects_non_loopback_bind():
+    with pytest.raises(SystemExit):
+        parse_args(["--site", "site", "--bind", "0.0.0.0"])
+
+
+@pytest.mark.parametrize("port", ("-1", "65536"))
+def test_cli_rejects_invalid_port(port):
+    with pytest.raises(SystemExit):
+        parse_args(["--site", "site", "--port", port])
+
+
+def test_environment_site_supports_spaces_when_cli_omits_site(tmp_path, monkeypatch):
+    site = make_site(tmp_path / "preview root with spaces")
+    monkeypatch.setenv("SITE_PREVIEW_ROOT", str(site))
+
+    args = parse_args([])
+
+    assert resolve_site(args.site) == site.resolve()
+
+
+def test_explicit_site_takes_priority_over_environment(tmp_path, monkeypatch):
+    explicit_site = make_site(tmp_path / "explicit")
+    environment_site = make_site(tmp_path / "environment")
+    monkeypatch.setenv("SITE_PREVIEW_ROOT", str(environment_site))
+
+    args = parse_args(["--site", str(explicit_site)])
+
+    assert resolve_site(args.site) == explicit_site.resolve()
+
+
+def test_site_resolution_requires_cli_or_environment(monkeypatch):
+    monkeypatch.delenv("SITE_PREVIEW_ROOT", raising=False)
+
+    args = parse_args([])
+
+    with pytest.raises(ValueError, match="--site.*SITE_PREVIEW_ROOT"):
+        resolve_site(args.site)
