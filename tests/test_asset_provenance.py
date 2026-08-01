@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROVENANCE = ROOT / "docs" / "asset-provenance.yml"
 REQUIRED_KEYS = {
     "asset",
-    "post",
+    "posts",
     "origin_type",
     "source_url",
     "author",
@@ -23,7 +23,6 @@ REQUIRED_KEYS = {
 }
 COMMON_STRING_KEYS = {
     "asset",
-    "post",
     "origin_type",
     "author",
     "license",
@@ -58,14 +57,25 @@ def published_posts():
 
 def records():
     document = yaml.safe_load(PROVENANCE.read_text(encoding="utf-8"))
-    assert set(document) == {"version", "covers"}
-    assert document["version"] == 1
+    assert set(document) == {"version", "index_derivatives", "covers"}
+    assert document["version"] == 2
+    assert document["index_derivatives"] == {
+        "version": 1,
+        "sizes": [160, 320],
+        "format": "WEBP",
+        "quality": 75,
+        "method": 6,
+        "resampling": "LANCZOS",
+        "pillow": "12.0.0",
+        "libwebp": "1.6.0",
+        "strip_metadata": True,
+    }
     assert isinstance(document["covers"], list)
     return document["covers"]
 
 
 def record_context(record):
-    return f"post={record.get('post')!r}, asset={record.get('asset')!r}"
+    return f"posts={record.get('posts')!r}, asset={record.get('asset')!r}"
 
 
 def assert_nonempty_string(record, key):
@@ -121,13 +131,21 @@ def visible_post_body(path):
 def test_every_published_post_thumbnail_has_one_provenance_record():
     posts = published_posts()
     covers = records()
-    by_post = {record["post"]: record for record in covers}
+    by_post = {}
+    for record in covers:
+        for post_path in record["posts"]:
+            assert post_path not in by_post, (
+                f"post path occurs in multiple provenance records: {post_path}"
+            )
+            by_post[post_path] = record
 
-    assert len(posts) == 11, f"expected 11 published posts, found {len(posts)}"
-    assert len(covers) == len(posts), (
-        f"expected one cover per post: {len(covers)} covers for {len(posts)} posts"
+    published_paths = {
+        post.relative_to(ROOT).as_posix()
+        for post in posts
+    }
+    assert set(by_post) == published_paths, (
+        "provenance posts must exactly cover all published posts"
     )
-    assert len(by_post) == len(covers), "duplicate post paths in provenance records"
 
     for post in posts:
         relative_post = post.relative_to(ROOT).as_posix()
@@ -173,10 +191,23 @@ def test_provenance_schema_hashes_and_dimensions_match_production_assets():
         asset = resolved_repository_file(
             record, "asset", ROOT / "assets" / "posts"
         )
-        assert PurePosixPath(record["post"]).parts[:1] == ("_posts",), (
-            f"{context}: post must be under _posts"
+        post_paths = record["posts"]
+        assert isinstance(post_paths, list) and post_paths, (
+            f"{context}: posts must be a non-empty list"
         )
-        resolved_repository_file(record, "post", ROOT / "_posts")
+        assert len(set(post_paths)) == len(post_paths), (
+            f"{context}: posts must not contain duplicates"
+        )
+        for post_path in post_paths:
+            assert isinstance(post_path, str), (
+                f"{context}: posts entries must be strings"
+            )
+            assert PurePosixPath(post_path).parts[:1] == ("_posts",), (
+                f"{context}: post must be under _posts"
+            )
+            resolved_repository_file(
+                record | {"post": post_path}, "post", ROOT / "_posts"
+            )
 
         dimensions = record["dimensions"]
         assert isinstance(dimensions, list), (
@@ -284,5 +315,6 @@ def assert_cover_usage_and_external_rights(record, body):
 
 def test_cover_usage_and_external_rights_are_visible_in_the_production_post():
     for record in records():
-        body = visible_post_body(ROOT / record["post"])
-        assert_cover_usage_and_external_rights(record, body)
+        for post_path in record["posts"]:
+            body = visible_post_body(ROOT / post_path)
+            assert_cover_usage_and_external_rights(record, body)

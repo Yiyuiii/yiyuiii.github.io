@@ -133,7 +133,14 @@ def valid_site(root):
         '<div class="entry-tags"><a>桌游</a><a>四季物语</a></div>'
         '<time datetime="2023-01-28T12:00:00+00:00">2023年1月28日</time>'
         '<a class="entry-main"><h2>四季物语量化分析攻略</h2>'
-        "<p>完整摘要，不被截断。</p></a></article>"
+        '<p>完整摘要，不被截断。</p></a>'
+        '<a class="entry-thumbnail"><img '
+        'src="/assets/posts/sample/cover-index-v1-160.webp" '
+        'srcset="/assets/posts/sample/cover-index-v1-160.webp 160w, '
+        '/assets/posts/sample/cover-index-v1-320.webp 320w" '
+        'sizes="(max-width: 380px) 88px, (max-width: 640px) 109px, 134px" '
+        'width="160" height="160" decoding="async" '
+        'loading="eager" fetchpriority="high"></a></article>'
     )
     write(root / "index.html", page("zh", zh_nav, tags))
     write(root / "en" / "index.html", page("en", en_nav, "<h1>Writing</h1>"))
@@ -418,6 +425,20 @@ def test_writing_date_must_use_the_language_display_format(tmp_path):
     path.write_text(source, encoding="utf-8")
 
     with pytest.raises(SiteCheckError, match="date"):
+        check_site(tmp_path)
+
+
+def test_writing_thumbnail_must_use_responsive_derivatives(tmp_path):
+    valid_site(tmp_path)
+    path = tmp_path / "index.html"
+    source = path.read_text(encoding="utf-8")
+    source = source.replace(
+        "/assets/posts/sample/cover-index-v1-160.webp 160w",
+        "/assets/posts/sample/cover.webp 160w",
+    )
+    path.write_text(source, encoding="utf-8")
+
+    with pytest.raises(SiteCheckError, match="thumbnail candidates"):
         check_site(tmp_path)
 
 

@@ -14,7 +14,7 @@
 
 - 站点使用 Jekyll 4.4.1、Ruby 3.3.5、Python 3.12 与 Node/Playwright。
 - GitHub Actions 工作流为 .github/workflows/deploy.yml；PR 只验证和上传 site-preview，master push 或在 master 上 `workflow_dispatch` 手动触发时，build 成功后 deploy。
-- _posts 保存当前文章；docs/asset-provenance.yml 保存当前文章封面的来源、许可、处理与 SHA-256。
+- _posts 保存当前文章；docs/asset-provenance.yml 按唯一正式封面关联中英文文章，并保存来源、许可、处理、SHA-256 与 160/320 px 索引派生规则。派生资产由 scripts/generate_post_thumbnails.py 预生成并提交，正文原图保留。
 - _data/legacy_urls.yml、scripts/check_legacy_urls.py 与浏览器测试共同保护旧 URL。
 - docs 已由 _config.yml 排除，不会生成公开页面。
 - 11 篇迁移前旧文已获得稳定 `uid`、`translation_key` 和显式 permalink；2 篇英文源位于 `/en/posts/`，原 URL 通过 legacy 重定向兼容。
@@ -24,12 +24,13 @@
 
 ## 常用验证
 
-环境前提与首次依赖安装以 README.md 的“验证”为准。计划约定的八项命令入口如下；这是入口清单，不是可以脱离各自前提直接串行执行的脚本：
+环境前提与首次依赖安装以 README.md 的“验证”为准。常用命令入口如下；这是入口清单，不是可以脱离各自前提直接串行执行的脚本：
 
 ```powershell
 python -m pytest -q
 python scripts/sync_projects.py
 python scripts/translation_guard.py --check --production
+python scripts/generate_post_thumbnails.py --check
 bundle exec jekyll build --trace
 python scripts/check_site.py --site _site
 python scripts/check_legacy_urls.py --site _site

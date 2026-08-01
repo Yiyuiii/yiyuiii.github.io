@@ -130,6 +130,64 @@ for (const viewport of viewports) {
   });
 }
 
+test("writing index requests only responsive cover derivatives", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    baseURL: process.env.SITE_URL || "http://localhost:62091",
+    viewport: { width: 1280, height: 900 },
+    deviceScaleFactor: 2,
+  });
+  const page = await context.newPage();
+  const requestedCovers = new Set();
+  page.on("response", (response) => {
+    const pathname = new URL(response.url()).pathname;
+    if (pathname.startsWith("/assets/posts/") && pathname.endsWith(".webp")) {
+      requestedCovers.add(pathname);
+    }
+  });
+
+  await page.goto("/");
+  const writingHref = await page.locator(".site-nav a").first().getAttribute("href");
+  if (writingHref && new URL(page.url()).pathname !== writingHref) {
+    await page.goto(writingHref);
+  }
+
+  const thumbnails = page.locator(".entry-thumbnail img");
+  const count = await thumbnails.count();
+  expect(count).toBeGreaterThan(0);
+  await expect(thumbnails.first()).toHaveAttribute("loading", "eager");
+  await expect(thumbnails.first()).toHaveAttribute("fetchpriority", "high");
+  if (count > 1) {
+    await expect(thumbnails.nth(1)).toHaveAttribute("loading", "lazy");
+    await expect(thumbnails.nth(1)).not.toHaveAttribute("fetchpriority");
+  }
+
+  for (let index = 0; index < count; index += 1) {
+    await thumbnails.nth(index).scrollIntoViewIfNeeded();
+  }
+  await expect.poll(() => requestedCovers.size).toBe(count);
+
+  const selected = await thumbnails.evaluateAll((images) => images.map((image) => ({
+    current: new URL(image.currentSrc).pathname,
+    source: new URL(image.src).pathname,
+    candidates: image.srcset,
+  })));
+  expect(selected.every((item) => item.current.endsWith("-index-v1-320.webp"))).toBe(
+    true,
+  );
+  expect(selected.every((item) => item.source.endsWith("-index-v1-160.webp"))).toBe(
+    true,
+  );
+  expect(selected.every((item) => item.candidates.includes("160w")
+    && item.candidates.includes("320w"))).toBe(true);
+  expect([...requestedCovers].every((pathname) => (
+    /-index-v1-(160|320)\.webp$/.test(pathname)
+  ))).toBe(true);
+
+  await context.close();
+});
+
 for (const viewport of aboutViewports) {
   for (const profile of [
     {

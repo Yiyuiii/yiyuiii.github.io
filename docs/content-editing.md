@@ -270,18 +270,28 @@ revisions:
 git diff <基准提交>..<当前提交> -- "_posts/<文章文件>.md"
 ```
 
-文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。每篇已发布文章的 `thumbnail` 必须恰好对应一条记录，`asset` 也不得重复。更换封面时按以下严格契约同步更新：
+文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。每篇已发布文章的 `thumbnail` 必须恰好由一条记录覆盖，`asset` 也不得重复；同一内容的中英文文章应列在同一记录的 `posts` 中并共享封面，不要复制图片。更换封面时按以下严格契约同步更新：
 
-- 文件顶层只能包含 `version` 与 `covers`，其中 `version` 为 1，`covers` 为记录列表。
-- 公共必填字段为 `asset`、`post`、`origin_type`、`source_url`、`author`、`license`、`license_url`、`transform`、`sha256`、`dimensions` 与 `attribution`；`origin_type` 只能是 `external`、`self-produced` 或 `generated`，除按类型要求为 null 的 URL 外，公共字符串字段必须非空。
-- `asset` 与 `post` 必须使用规范的仓库相对 POSIX 路径，不得含反斜线、绝对路径、空段、`.` 或 `..`；前者位于 `assets/posts`，后者位于 `_posts`，且两者必须实际存在。`asset` 必须等于文章 `thumbnail` 去掉开头 `/` 后的值。
+- 文件顶层只能包含 `version`、`index_derivatives` 与 `covers`，其中 `version` 为 2，`covers` 为按唯一正式封面组织的记录列表。
+- `index_derivatives` 固化随笔索引派生规则：版本 1、160/320 px、WebP quality 75、method 6、Lanczos、Pillow 12.0.0、libwebp 1.6.0，并清除元数据。编码规则变化时必须升级派生版本和文件名，不能原地覆盖旧缓存 URL。
+- 公共必填字段为 `asset`、`posts`、`origin_type`、`source_url`、`author`、`license`、`license_url`、`transform`、`sha256`、`dimensions` 与 `attribution`；`posts` 是非空、无重复的文章路径列表；`origin_type` 只能是 `external`、`self-produced` 或 `generated`，除按类型要求为 null 的 URL 外，公共字符串字段必须非空。
+- `asset` 与 `posts` 中的路径必须使用规范的仓库相对 POSIX 路径，不得含反斜线、绝对路径、空段、`.` 或 `..`；前者位于 `assets/posts`，后者位于 `_posts`，且都必须实际存在。每篇文章的 `thumbnail` 去掉开头 `/` 后必须等于所属记录的 `asset`。
 - 生产资产必须是 WebP；`dimensions` 是 `[宽, 高]` 两个正整数并与文件一致，`sha256` 必须与当前生产文件一致。
 - `external`：`source_url` 与 `license_url` 都必须是 HTTPS，`author`、`license` 与 `attribution` 必须非空；不得包含生成图专用字段或 `source_asset`。
 - `self-produced`：`source_url` 与 `license_url` 必须为 null，`license` 必须为 `project-owned`；可选 `source_asset`，但它只允许用于此类型，并且必须是 `assets` 下实际存在的规范仓库相对 POSIX 路径；不得包含生成图专用字段。
 - `generated`：`source_url` 与 `license_url` 必须为 null，`license` 必须为 `project-use-rights`，不得包含 `source_asset`；必须提供非空的 `generator`、`generated_at`、`source_description`、`purpose`、完整 `prompt` 与 `approval`，以及由非空字符串组成的非空 `reference_inputs` 列表。
 - 正文必须满足生产封面的使用与外部可见署名要求：通常应能看到对应资产 URL；仅 `purpose` 明确标为 `writing-index cover` 的生成图可只用于文章索引。外部封面的正文必须公开显示 `source_url`、`attribution` 与 `license`，`license_url` 与来源页不同时也必须显示。
 
-上述字段、路径、文件内容和正文可见性要求以 tests/test_asset_provenance.py 为权威可执行契约。
+上述字段、路径、文件内容和正文可见性要求以 tests/test_asset_provenance.py 与 tests/test_generate_post_thumbnails.py 为权威可执行契约。
+
+正式封面生成或更换后，在仓库根目录生成并检查索引派生图：
+
+```powershell
+python scripts/generate_post_thumbnails.py --write
+python scripts/generate_post_thumbnails.py --check
+```
+
+派生图与原图同目录，命名为 `<原文件名去扩展名>-index-v1-160.webp` 和 `-index-v1-320.webp`；原分辨率正式封面继续供文章正文使用，不得被派生图替换。派生图不在清单中重复保存 22 组路径和 SHA-256：每张原图已有受检 SHA-256，`index_derivatives` 又完整固定了尺寸、编码参数、Pillow 与 libwebp 版本，`--check` 和测试会从原图重新编码并逐字节比较提交文件。这条“原图哈希 + 固定编码器与策略 + 逐字节重算”链路是派生文件哈希的单一等价证据，避免两份清单失步。编码器版本不一致时脚本会在处理前明确失败。
 
 计算当前文件 SHA-256：
 

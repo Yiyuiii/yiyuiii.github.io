@@ -1,7 +1,18 @@
-version: 1
+version: 2
+index_derivatives:
+  version: 1
+  sizes: [160, 320]
+  format: "WEBP"
+  quality: 75
+  method: 6
+  resampling: "LANCZOS"
+  pillow: "12.0.0"
+  libwebp: "1.6.0"
+  strip_metadata: true
 covers:
   - asset: "assets/posts/202109160000/cover-homepage-2026-07-30.webp"
-    post: "_posts/2021-09-16-build a personal github page.md"
+    posts:
+      - "_posts/2021-09-16-build a personal github page.md"
     origin_type: "self-produced"
     source_url: null
     author: "Yiyu Chen"
@@ -13,7 +24,8 @@ covers:
     attribution: "screenshot and site content by the author"
 
   - asset: "assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp"
-    post: "_posts/2021-09-17-reinforcement learning issues.md"
+    posts:
+      - "_posts/2021-09-17-reinforcement learning issues.md"
     origin_type: "external"
     source_url: "https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg"
     author: "Wikimedia Commons user Megajuice"
@@ -25,7 +37,8 @@ covers:
     attribution: "Wikimedia Commons user Megajuice"
 
   - asset: "assets/posts/202208142347/cover-cloud-console-2026-07-30.webp"
-    post: "_posts/2022-08-14-云服务器折腾随笔.md"
+    posts:
+      - "_posts/2022-08-14-云服务器折腾随笔.md"
     origin_type: "self-produced"
     source_url: null
     author: "Yiyu Chen with Codex"
@@ -37,7 +50,8 @@ covers:
     attribution: "云服务器实例控制台示意（自制）"
 
   - asset: "assets/posts/202208171838/cover-site-avatar-ascii-square.webp"
-    post: "_posts/2022-08-17-制作一张匹配形状的字符画.md"
+    posts:
+      - "_posts/2022-08-17-制作一张匹配形状的字符画.md"
     origin_type: "self-produced"
     source_url: null
     author: "Yiyu Chen"
@@ -50,7 +64,8 @@ covers:
     attribution: "头像与结果均为本站自有内容"
 
   - asset: "assets/posts/202211110000/cover-generated-2026-07-29.webp"
-    post: "_posts/2022-11-11-装机记录.md"
+    posts:
+      - "_posts/2022-11-11-装机记录.md"
     origin_type: "generated"
     source_url: null
     author: "Generated under Yiyu Chen's direction"
@@ -77,7 +92,8 @@ covers:
     attribution: "AI-generated index illustration; not a photograph of the 2022 build."
 
   - asset: "assets/posts/202301162233/cover-bgg-2898488-square.webp"
-    post: "_posts/2023-01-18-四季物语量化分析攻略.md"
+    posts:
+      - "_posts/2023-01-18-四季物语量化分析攻略.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/2898488/seasons"
     author: "BoardGameGeek user dodecalouise"
@@ -89,7 +105,8 @@ covers:
     attribution: "BoardGameGeek 用户 dodecalouise"
 
   - asset: "assets/posts/202302032000/cover-bgg-7205453-square.webp"
-    post: "_posts/2023-02-03-逻辑对决桌游攻略.md"
+    posts:
+      - "_posts/2023-02-03-逻辑对决桌游攻略.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/7205453/break-the-code"
     author: "BoardGameGeek user dizziedobsession"
@@ -101,7 +118,8 @@ covers:
     attribution: "BoardGameGeek 用户 dizziedobsession"
 
   - asset: "assets/posts/202307232000/cover-breaststroke-square.webp"
-    post: "_posts/2023-07-23-了解游泳.md"
+    posts:
+      - "_posts/2023-07-23-了解游泳.md"
     origin_type: "external"
     source_url: "https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg"
     author: "Adrian Pingstone"
@@ -113,7 +131,8 @@ covers:
     attribution: "Adrian Pingstone"
 
   - asset: "assets/posts/202404232233/cover-bgg-5194524-square.webp"
-    post: "_posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md"
+    posts:
+      - "_posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/5194524/gaia-project"
     author: "BoardGameGeek user magic_erwt"
@@ -125,7 +144,8 @@ covers:
     attribution: "BoardGameGeek 用户 magic_erwt"
 
   - asset: "assets/posts/202407012233/cover-bgg-1091724-square.webp"
-    post: "_posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md"
+    posts:
+      - "_posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/1091724/troyes"
     author: "BoardGameGeek user verminose"
@@ -137,7 +157,8 @@ covers:
     attribution: "BoardGameGeek 用户 verminose"
 
   - asset: "assets/posts/202510112233/cover-bgg-7712310-square.webp"
-    post: "_posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md"
+    posts:
+      - "_posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/7712310/age-of-innovation"
     author: "BoardGameGeek user Hipopotam"

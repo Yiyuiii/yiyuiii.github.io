@@ -437,7 +437,10 @@ def _check_writing_entries(
         if language == "zh"
         else re.compile(r"^\d{4}-\d{2}-\d{2}$")
     )
-    for entry in soup.select(".writing-entry"):
+    expected_sizes = (
+        "(max-width: 380px) 88px, (max-width: 640px) 109px, 134px"
+    )
+    for index, entry in enumerate(soup.select(".writing-entry")):
         heading = entry.find("h2")
         title = heading.get_text(" ", strip=True) if heading else "(untitled)"
         summary = entry.select_one(".entry-main > p")
@@ -453,6 +456,48 @@ def _check_writing_entries(
             raise SiteCheckError(
                 f"{route}: date for {title!r} uses invalid display format "
                 f"{date_text!r}"
+            )
+        thumbnail = entry.select_one(".entry-thumbnail img")
+        if thumbnail is None:
+            raise SiteCheckError(f"{route}: thumbnail for {title!r} is missing")
+        source = thumbnail.get("src", "")
+        candidates = [
+            item.rsplit(" ", 1)
+            for item in thumbnail.get("srcset", "").split(", ")
+            if item
+        ]
+        if not source.endswith("-index-v1-160.webp"):
+            raise SiteCheckError(
+                f"{route}: thumbnail src for {title!r} is not the 160px derivative"
+            )
+        if (
+            len(candidates) != 2
+            or candidates[0] != [source, "160w"]
+            or candidates[1][1] != "320w"
+            or not candidates[1][0].endswith("-index-v1-320.webp")
+            or candidates[1][0].removesuffix("-index-v1-320.webp")
+            != source.removesuffix("-index-v1-160.webp")
+        ):
+            raise SiteCheckError(
+                f"{route}: thumbnail candidates for {title!r} are invalid"
+            )
+        expected_attributes = {
+            "sizes": expected_sizes,
+            "width": "160",
+            "height": "160",
+            "decoding": "async",
+            "loading": "eager" if index == 0 else "lazy",
+        }
+        for attribute, expected in expected_attributes.items():
+            if thumbnail.get(attribute) != expected:
+                raise SiteCheckError(
+                    f"{route}: thumbnail {attribute} for {title!r} must be "
+                    f"{expected!r}"
+                )
+        expected_priority = "high" if index == 0 else None
+        if thumbnail.get("fetchpriority") != expected_priority:
+            raise SiteCheckError(
+                f"{route}: thumbnail priority for {title!r} is invalid"
             )
 
 

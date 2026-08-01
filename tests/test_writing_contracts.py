@@ -126,6 +126,7 @@ def test_every_post_has_a_nonempty_authored_excerpt():
 
 def test_writing_index_uses_complete_summaries_and_real_tags():
     include = text("_includes/post-list.liquid")
+    responsive_thumbnail = text("_includes/responsive-thumbnail.liquid")
 
     assert "site.data.site_text[lang_key]" in include
     assert "sorted_tags" in include
@@ -139,6 +140,21 @@ def test_writing_index_uses_complete_summaries_and_real_tags():
     assert "truncate" not in include
     assert "line-clamp" not in include
     assert "thumbnail" in include
+    assert "responsive-thumbnail.liquid" in include
+    assert "priority=forloop.first" in include
+    assert 'srcset="' in responsive_thumbnail
+    assert "160w" in responsive_thumbnail
+    assert "320w" in responsive_thumbnail
+    assert (
+        '(max-width: 380px) 88px, (max-width: 640px) 109px, 134px'
+        in responsive_thumbnail
+    )
+    assert 'width="160"' in responsive_thumbnail
+    assert 'height="160"' in responsive_thumbnail
+    assert 'decoding="async"' in responsive_thumbnail
+    assert 'loading="eager"' in responsive_thumbnail
+    assert 'fetchpriority="high"' in responsive_thumbnail
+    assert 'loading="lazy"' in responsive_thumbnail
 
 
 def test_writing_and_project_indexes_share_one_scoped_filter_protocol():

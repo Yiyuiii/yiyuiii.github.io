@@ -27,7 +27,7 @@
         </a>
         {% if post.thumbnail %}
           <a class="entry-thumbnail" href="{{ post.url | relative_url }}" tabindex="-1" aria-hidden="true">
-            <img src="{{ post.thumbnail | relative_url }}" alt="" loading="lazy">
+            {% include responsive-thumbnail.liquid thumbnail=post.thumbnail alt="" priority=forloop.first %}
           </a>
         {% endif %}
       </div>
