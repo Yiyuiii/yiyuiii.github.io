@@ -211,7 +211,7 @@ def charpic(img: BuildImage = UserImg(), arg: str = Arg()):
                 l2loss = np.square(bias).mean(2).mean(1)
                 loss = grayscaleloss + l2loss
                 img_[p_h:p_h + char_h, p_w:p_w + char_w] = charpic_char_img[loss.argmin()]
-                
+
                 p_w = p_w + char_w
             p_h = p_h + char_h
         img_ = Image.fromarray(img_)
