@@ -20,14 +20,20 @@
 
 ## 常用验证
 
-环境前提与首次依赖安装以 README.md 的“验证”为准。快速源码检查：
+环境前提与首次依赖安装以 README.md 的“验证”为准。计划约定的八项命令入口如下；这是入口清单，不是可以脱离各自前提直接串行执行的脚本：
 
 ```powershell
 python -m pytest -q
+python scripts/sync_projects.py
 python scripts/translation_guard.py --check --production
+bundle exec jekyll build --trace
+python scripts/check_site.py --site _site
+python scripts/check_legacy_urls.py --site _site
+npm ci
+npm run test:browser
 ```
 
-项目同步检查需要设置可用的 `GITHUB_TOKEN`；若使用 GitHub CLI，应先 `gh auth login`，再用 `gh auth token` 设置该环境变量，CI 会自动提供凭据。完整验证按 README.md 的“Production 构建”和“浏览器回归”执行：构建命令必须临时设置并在 `finally` 中恢复 `JEKYLL_ENV`，浏览器测试必须针对刚构建的 `_site` 启动隐藏本地服务器，并在 `finally` 中停止服务器和恢复 `SITE_URL`；不要直接运行缺少这些前提的裸命令。
+项目同步检查需要设置可用的 `GITHUB_TOKEN`；若使用 GitHub CLI，应先 `gh auth login`，再用 `gh auth token` 设置该环境变量，CI 会自动提供凭据。`npm ci` 属于首次准备。完整验证按 README.md 的“Production 构建”和“浏览器回归”执行：Jekyll 构建必须临时设置并在 `finally` 中恢复 `JEKYLL_ENV`，两个站点检查只能针对成功生成的 `_site`，浏览器测试必须针对刚构建的 `_site` 启动隐藏本地服务器，并在 `finally` 中停止服务器和恢复 `SITE_URL`；不要直接运行缺少这些前提的裸命令。
 
 ## 关键文档
 
