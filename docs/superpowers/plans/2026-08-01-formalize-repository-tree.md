@@ -1224,11 +1224,13 @@ Expected: both directories contain index.html。
 Run:
 
 ~~~powershell
-$baselinePaths = Get-ChildItem -LiteralPath $baselineSite -Recurse -File | ForEach-Object {
-  $_.FullName.Substring($baselineSite.Length + 1).Replace("\", "/")
+$baselineSiteFull = (Get-Item -LiteralPath $baselineSite).FullName.TrimEnd("\")
+$prSiteFull = (Get-Item -LiteralPath $prSite).FullName.TrimEnd("\")
+$baselinePaths = Get-ChildItem -LiteralPath $baselineSiteFull -Recurse -File | ForEach-Object {
+  $_.FullName.Substring($baselineSiteFull.Length + 1).Replace("\", "/")
 }
-$prPaths = Get-ChildItem -LiteralPath $prSite -Recurse -File | ForEach-Object {
-  $_.FullName.Substring($prSite.Length + 1).Replace("\", "/")
+$prPaths = Get-ChildItem -LiteralPath $prSiteFull -Recurse -File | ForEach-Object {
+  $_.FullName.Substring($prSiteFull.Length + 1).Replace("\", "/")
 }
 $pathDiff = Compare-Object $baselinePaths $prPaths
 $pathDiff | Sort-Object InputObject | Format-Table -AutoSize
@@ -1266,19 +1268,62 @@ if ($prOnly.Count -ne 0 -or @(Compare-Object $expectedBaselineOnly $baselineOnly
 
 Expected: the guard passes. There are no PR-only paths, and the 23 baseline-only paths are exactly the eight deleted source assets plus 15 WebP variants that Jekyll image tooling generated for the five deleted PNG files.
 
-Then compare hashes of every common file:
+Then require raw SHA-256 equality for every common file except `feed.xml`, whose Atom root-level build timestamp is handled by a narrow structural comparison:
 
 ~~~powershell
-$common = $baselinePaths | Where-Object { $prPaths -contains $_ }
-$contentDiff = foreach ($relative in $common) {
-  $before = (Get-FileHash -Algorithm SHA256 (Join-Path $baselineSite $relative)).Hash
-  $after = (Get-FileHash -Algorithm SHA256 (Join-Path $prSite $relative)).Hash
+$common = @($baselinePaths | Where-Object { $prPaths -contains $_ })
+if ($common -notcontains "feed.xml") { throw "Common feed.xml is missing" }
+
+$nonFeedCommon = @($common | Where-Object { $_ -cne "feed.xml" })
+$contentDiff = @(foreach ($relative in $nonFeedCommon) {
+  $before = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $baselineSiteFull $relative)).Hash
+  $after = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $prSiteFull $relative)).Hash
   if ($before -ne $after) { $relative }
+})
+if ($contentDiff.Count -ne 0) {
+  $contentDiff
+  throw "Non-feed common-file hash differences found"
 }
-$contentDiff
+
+function Get-NormalizedAtomFeed([string]$Path) {
+  [xml]$document = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+  $root = $document.DocumentElement
+  $atomNamespace = "http://www.w3.org/2005/Atom"
+  if ($root.LocalName -ne "feed" -or $root.NamespaceURI -ne $atomNamespace) {
+    throw "Unexpected Atom feed root: $Path"
+  }
+
+  # ChildNodes is deliberate: entry/updated descendants must never be normalized.
+  $rootUpdated = @($root.ChildNodes | Where-Object {
+    $_.NodeType -eq [System.Xml.XmlNodeType]::Element -and
+    $_.LocalName -eq "updated" -and
+    $_.NamespaceURI -eq $atomNamespace
+  })
+  if ($rootUpdated.Count -ne 1) { throw "Expected exactly one Atom root updated node: $Path" }
+  try {
+    $null = [DateTimeOffset]::Parse($rootUpdated[0].InnerText, [Globalization.CultureInfo]::InvariantCulture)
+  }
+  catch {
+    throw "Atom root updated is not a timestamp: $Path"
+  }
+
+  $buildTimestamp = $rootUpdated[0].InnerText
+  $rootUpdated[0].InnerText = "__JEKYLL_BUILD_TIMESTAMP__"
+  [pscustomobject]@{ BuildTimestamp = $buildTimestamp; Xml = $document.OuterXml }
+}
+
+$baselineFeed = Get-NormalizedAtomFeed (Join-Path $baselineSiteFull "feed.xml")
+$prFeed = Get-NormalizedAtomFeed (Join-Path $prSiteFull "feed.xml")
+if ($baselineFeed.Xml -cne $prFeed.Xml) {
+  throw "feed.xml differs beyond the Atom root-level updated build timestamp"
+}
+
+"NON_FEED_COMMON=$($nonFeedCommon.Count)"
+"BASELINE_FEED_UPDATED=$($baselineFeed.BuildTimestamp)"
+"PR_FEED_UPDATED=$($prFeed.BuildTimestamp)"
 ~~~
 
-Expected: no common-file hash differences. Any difference is a blocker until explained and approved.
+Expected: all 138 non-feed common files have identical raw SHA-256 hashes. `feed.xml` may differ only in the single `updated` element that is a direct child of the Atom `feed` root, because Jekyll records each build time there. The command parses both documents, validates that value as a timestamp, replaces only that direct child in memory, and then requires the complete normalized XML (including every `entry/updated`, entry body and all other nodes) to be identical. Any path difference, non-feed hash difference, additional/missing root `updated`, invalid timestamp, or post-normalization feed difference is a blocker.
 
 - [ ] **Step 8: 对 PR 工件重跑站点与旧 URL 检查**
 
@@ -1318,7 +1363,7 @@ Update the PR body or add one concise comment with:
 - exact Python test count;
 - translation and project sync results;
 - PR run ID and artifact ID;
-- path-set and common-hash comparison results;
+- exact 23/0 path-set result, 138 non-feed common-file raw-hash result, and normalized root-only `feed/updated` comparison result;
 - site, legacy URL and Playwright results;
 - Kimi PASS or resolved findings;
 - archive SHA-256 and master clone status.
