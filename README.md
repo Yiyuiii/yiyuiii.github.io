@@ -14,30 +14,111 @@ Yiyu Chen 的双语个人站点，发布随笔、公开项目与合作论文。�
 - docs/asset-provenance.yml：当前文章封面的来源、许可与哈希。
 - docs/superpowers：已批准的设计与实施计划。
 
-完整历史稿、AI 审阅稿、封面候选和原始大图不保存在 master 当前树；Git 历史负责版本恢复，当前生产资源的法律与处理信息由 asset-provenance.yml 维护。
+正式 master 当前树不得保存完整历史稿、AI 审阅稿、封面候选或原始大图。合并正式化分支前，下面的命令必须无输出：
+
+```powershell
+git ls-files docs/content-revisions docs/content-covers
+```
+
+只有已经进入 master 且提交仍可达的正式版本，才承诺可由普通 Git 历史长期恢复。临时 worktree 或分支的中间提交在删除分支或 squash 后不保证可达；确需长期保留时，应使用经批准的受保护 tag、归档分支、仓库外 git bundle 或专门资产库，不要把过程档案放回 master 当前树。当前生产资源的法律与处理信息由 docs/asset-provenance.yml 维护。
 
 ## 验证
 
+### 环境前提
+
+- Python 3.12。
+- Ruby 3.3.5 与 Bundler。
+- ImageMagick，且命令已加入 PATH。
+- Node.js 20 或更高版本。
+- Google Chrome。
+
+### 首次准备
+
 ```powershell
-pip install -r scripts/requirements.txt
-python -m pytest -q
-python scripts/translation_guard.py --check --production
-$env:JEKYLL_ENV = "production"
-bundle exec jekyll build --trace
-Remove-Item Env:\JEKYLL_ENV
-python scripts/check_site.py --site _site
-python scripts/check_legacy_urls.py --site _site
+python -m pip install -r scripts/requirements.txt
+bundle install
 npm ci
-npm run test:browser
 ```
 
-Ruby production build 使用 Ruby 3.3.5 与 Jekyll 4.4.1；精确 CI 流程见 .github/workflows/deploy.yml。
+### 源码与数据检查
 
-Playwright 默认连接 http://localhost:62091；运行 npm run test:browser 前应先在该地址提供刚构建的 _site，或通过 SITE_URL 指向等价预览。
+```powershell
+python -m pytest -q
+python scripts/translation_guard.py --check --production
+```
+
+CI 还会运行 `python scripts/sync_projects.py`；本地执行该联网检查前必须设置可用的 `GITHUB_TOKEN`。若使用 GitHub CLI，可先完成 `gh auth login`，再执行 `$env:GITHUB_TOKEN = gh auth token`；不要配置宽权限个人令牌。
+
+### Production 构建
+
+下面的 PowerShell 会保存并精确恢复调用者原有的 `JEKYLL_ENV`；原变量不存在时才在结束后删除。
+
+```powershell
+$hadJekyllEnv = Test-Path Env:\JEKYLL_ENV
+$previousJekyllEnv = if ($hadJekyllEnv) { $env:JEKYLL_ENV } else { $null }
+try {
+  $env:JEKYLL_ENV = "production"
+  bundle exec jekyll build --trace
+  if ($LASTEXITCODE -ne 0) { throw "Jekyll build failed with exit code $LASTEXITCODE." }
+} finally {
+  if ($hadJekyllEnv) {
+    Set-Item Env:\JEKYLL_ENV -Value $previousJekyllEnv
+  } else {
+    Remove-Item Env:\JEKYLL_ENV -ErrorAction SilentlyContinue
+  }
+}
+
+python scripts/check_site.py --site _site
+python scripts/check_legacy_urls.py --site _site
+```
+
+Ruby production build 使用 Jekyll 4.4.1；精确 CI 流程见 .github/workflows/deploy.yml。
+
+### 浏览器回归
+
+下面的 PowerShell 在 `127.0.0.1:62091` 隐藏启动刚构建的 `_site`，等待服务就绪，运行浏览器测试，并在结束时停止服务和恢复原有 `SITE_URL`：
+
+```powershell
+$hadSiteUrl = Test-Path Env:\SITE_URL
+$previousSiteUrl = if ($hadSiteUrl) { $env:SITE_URL } else { $null }
+$siteServer = $null
+try {
+  $env:SITE_URL = "http://127.0.0.1:62091"
+  $siteServer = Start-Process python -ArgumentList @(
+    "-m", "http.server", "62091", "--bind", "127.0.0.1", "--directory", "_site"
+  ) -PassThru -WindowStyle Hidden
+
+  $siteReady = $false
+  $siteDeadline = (Get-Date).AddSeconds(10)
+  do {
+    try {
+      Invoke-WebRequest -Uri "$env:SITE_URL/" -UseBasicParsing -TimeoutSec 1 | Out-Null
+      $siteReady = $true
+    } catch {
+      Start-Sleep -Milliseconds 200
+    }
+  } until ($siteReady -or (Get-Date) -ge $siteDeadline)
+  if (-not $siteReady) { throw "Local site server did not become ready." }
+
+  npm run test:browser
+  if ($LASTEXITCODE -ne 0) { throw "Browser tests failed with exit code $LASTEXITCODE." }
+} finally {
+  if ($null -ne $siteServer -and -not $siteServer.HasExited) {
+    Stop-Process -Id $siteServer.Id -Force
+  }
+  if ($hadSiteUrl) {
+    Set-Item Env:\SITE_URL -Value $previousSiteUrl
+  } else {
+    Remove-Item Env:\SITE_URL -ErrorAction SilentlyContinue
+  }
+}
+```
+
+也可通过 `SITE_URL` 指向另一个等价的 `_site` 预览；此时应自行确保服务生命周期和构建内容一致。
 
 ## 部署
 
-Pull request 只执行验证并上传 site-preview。只有 master 的 push 在验证通过后部署 _site；不要直接把生成目录提交到 master。
+Pull request 只执行验证并上传 site-preview。master 的 push，或在 master 上通过 `workflow_dispatch` 手动触发工作流时，build 成功后才会部署 `_site`；不要直接把生成目录提交到 master。
 
 ## 许可
 

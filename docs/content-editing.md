@@ -227,13 +227,14 @@ revisions:
 
 ### 使用 Git 保留多轮修订
 
-master 当前树只保存正式文章，不复制完整旧稿、AI 审阅稿或候选稿。需要多轮修改时：
+正式 master 当前树只保存正式文章，不复制完整旧稿、AI 审阅稿或候选稿。普通 Git 历史对长期恢复的承诺，仅限已经进入 master 且提交仍可达的正式版本；临时 worktree 或分支中的中间提交在删除分支或 squash 后不保证可达。需要多轮修改时：
 
 1. 从最新 master 创建独立分支或临时 worktree。
 2. 修改前先提交或记录基准提交；不要在 docs 下复制整篇文章。
 3. 在 _posts 中实施经批准的当前稿，每一轮用独立 Git 提交标记边界。
 4. 使用 git diff 比较任意提交；需要恢复时从 Git 历史读取旧版本。
-5. 只把具有长期维护价值的结构化事实保留在当前树。
+5. 中间版本确需长期保留时，使用经批准的受保护 tag、归档分支、仓库外 git bundle 或专门资产库；不要把过程档案放回 master 当前树。
+6. 只把具有长期维护价值的结构化事实保留在当前树。
 
 比较文章前后版本：
 
@@ -241,13 +242,18 @@ master 当前树只保存正式文章，不复制完整旧稿、AI 审阅稿或�
 git diff <基准提交>..<当前提交> -- "_posts/<文章文件>.md"
 ```
 
-文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。更换封面时必须同步更新：
+文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。每篇已发布文章的 `thumbnail` 必须恰好对应一条记录，`asset` 也不得重复。更换封面时按以下严格契约同步更新：
 
-- asset 与 post 路径。
-- 来源页面、作者、许可与许可链接。
-- 裁切、缩放、格式转换或生成说明。
-- 当前生产文件的 dimensions 与 sha256。
-- 正文中需要公开显示的来源或署名。
+- 文件顶层只能包含 `version` 与 `covers`，其中 `version` 为 1，`covers` 为记录列表。
+- 公共必填字段为 `asset`、`post`、`origin_type`、`source_url`、`author`、`license`、`license_url`、`transform`、`sha256`、`dimensions` 与 `attribution`；`origin_type` 只能是 `external`、`self-produced` 或 `generated`，除按类型要求为 null 的 URL 外，公共字符串字段必须非空。
+- `asset` 与 `post` 必须使用规范的仓库相对 POSIX 路径，不得含反斜线、绝对路径、空段、`.` 或 `..`；前者位于 `assets/posts`，后者位于 `_posts`，且两者必须实际存在。`asset` 必须等于文章 `thumbnail` 去掉开头 `/` 后的值。
+- 生产资产必须是 WebP；`dimensions` 是 `[宽, 高]` 两个正整数并与文件一致，`sha256` 必须与当前生产文件一致。
+- `external`：`source_url` 与 `license_url` 都必须是 HTTPS，`author`、`license` 与 `attribution` 必须非空；不得包含生成图专用字段或 `source_asset`。
+- `self-produced`：`source_url` 与 `license_url` 必须为 null，`license` 必须为 `project-owned`；可选 `source_asset`，但它只允许用于此类型，并且必须是 `assets` 下实际存在的规范仓库相对 POSIX 路径；不得包含生成图专用字段。
+- `generated`：`source_url` 与 `license_url` 必须为 null，`license` 必须为 `project-use-rights`，不得包含 `source_asset`；必须提供非空的 `generator`、`generated_at`、`source_description`、`purpose`、完整 `prompt` 与 `approval`，以及由非空字符串组成的非空 `reference_inputs` 列表。
+- 正文必须满足生产封面的使用与外部可见署名要求：通常应能看到对应资产 URL；仅 `purpose` 明确标为 `writing-index cover` 的生成图可只用于文章索引。外部封面的正文必须公开显示 `source_url`、`attribution` 与 `license`，`license_url` 与来源页不同时也必须显示。
+
+上述字段、路径、文件内容和正文可见性要求以 tests/test_asset_provenance.py 为权威可执行契约。
 
 计算当前文件 SHA-256：
 
@@ -255,7 +261,7 @@ git diff <基准提交>..<当前提交> -- "_posts/<文章文件>.md"
 (Get-FileHash -Algorithm SHA256 "assets/posts/<目录>/<封面文件>").Hash.ToLowerInvariant()
 ```
 
-当前生产使用的生成图必须在 docs/asset-provenance.yml 保存生成日期、生成器、完整提示词、参考输入边界、用途和批准状态。未采用候选的原图、生成源和提示词只在确有长期法律或再生成需求时进入专门资产库；不要默认放进站点 master。
+当前生产使用的生成图必须按上述契约保存生成日期、生成器、完整提示词、参考输入边界、用途和批准状态。未采用候选的原图、生成源和提示词只在确有长期法律或再生成需求时进入专门资产库；不要默认放进站点 master。
 
 ## GitHub 仓库
 
