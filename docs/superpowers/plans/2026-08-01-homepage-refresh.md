@@ -93,4 +93,6 @@ en:
 - 双语基础：`D:\Codes\yiyuiii.github.io-worktrees\bilingual-foundation` / `feature/bilingual-foundation`
 - 正文排版：`D:\Codes\yiyuiii.github.io-worktrees\typography` / `feature/article-typography`
 - 缩略图：`D:\Codes\yiyuiii.github.io-worktrees\thumbnails` / `feature/post-thumbnails`
-
+- 欢迎页与内容流：`D:\Codes\yiyuiii.github.io-worktrees\welcome` / `feature/welcome-feed`
+- 随笔翻译批次 A：`D:\Codes\yiyuiii.github.io-worktrees\translations-a` / `feature/translations-a`
+- 随笔翻译批次 B：`D:\Codes\yiyuiii.github.io-worktrees\translations-b` / `feature/translations-b`
