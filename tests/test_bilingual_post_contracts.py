@@ -119,7 +119,7 @@ Keep `inline_token` and [external](https://example.com/reference).
     return source_path, translation_path
 
 
-def test_committed_posts_have_stable_identity_urls_and_exact_migration_exemptions():
+def test_committed_posts_have_stable_identity_urls_and_no_translation_exemptions():
     paths = sorted((ROOT / "_posts").glob("*.md"))
     documents = [parse_document(path) for path in paths]
     exemptions = load_translation_exemptions(
@@ -133,8 +133,9 @@ def test_committed_posts_have_stable_identity_urls_and_exact_migration_exemption
 
     assert len(groups) == 11
     singleton_keys = {key for key, members in groups.items() if len(members) == 1}
-    assert set(exemptions) == singleton_keys
-    assert any(len(members) == 2 for members in groups.values())
+    assert exemptions == {}
+    assert singleton_keys == set()
+    assert all(len(members) == 2 for members in groups.values())
     for document in documents:
         data = document.frontmatter
         assert isinstance(data["uid"], str) and data["uid"].isdigit()
@@ -152,7 +153,7 @@ def test_committed_posts_have_stable_identity_urls_and_exact_migration_exemption
     check_post_contracts(documents, exemptions=exemptions, root=ROOT, production=True)
 
 
-def test_new_singleton_is_rejected_but_an_exact_legacy_exemption_is_allowed(tmp_path):
+def test_production_rejects_a_new_singleton_even_with_an_exact_exemption(tmp_path):
     source_path = write_post(tmp_path, "2026-08-01-new.md", source_frontmatter())
     source = parse_document(source_path)
 
@@ -166,11 +167,20 @@ def test_new_singleton_is_rejected_but_an_exact_legacy_exemption_is_allowed(tmp_
             "missing_language": "en",
         }
     }
+    with pytest.raises(
+        TranslationError, match="production translation exemptions must remain empty"
+    ):
+        check_post_contracts(
+            [source],
+            exemptions=exemption,
+            root=tmp_path,
+            production=True,
+        )
+
+    # Non-production tooling may still parse a historically shaped record,
+    # but the release gate above can never use it to publish a singleton.
     check_post_contracts(
-        [source],
-        exemptions=exemption,
-        root=tmp_path,
-        production=True,
+        [source], exemptions=exemption, root=tmp_path, production=False
     )
 
 
@@ -192,7 +202,7 @@ def test_completed_pair_requires_reciprocal_urls_and_removes_legacy_exemption(tm
             documents,
             exemptions=stale_exemption,
             root=tmp_path,
-            production=True,
+            production=False,
         )
 
     broken = parse_document(translation_path)

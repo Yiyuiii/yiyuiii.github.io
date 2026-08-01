@@ -549,6 +549,11 @@ def check_post_contracts(
         permalinks[permalink] = document.path
         groups.setdefault(key, []).append(document)
 
+    if production and exemptions:
+        raise TranslationError(
+            "production translation exemptions must remain empty"
+        )
+
     unknown_exemptions = set(exemptions) - set(groups)
     if unknown_exemptions:
         raise TranslationError(f"translation exemptions reference missing posts: {sorted(unknown_exemptions)}")
