@@ -1,0 +1,149 @@
+version: 1
+covers:
+  - asset: "assets/posts/202109160000/cover-homepage-2026-07-30.webp"
+    post: "_posts/2021-09-16-build a personal github page.md"
+    origin_type: "self-produced"
+    source_url: null
+    author: "Yiyu Chen"
+    license: "project-owned"
+    license_url: null
+    transform: "A 640 × 640 screenshot of this site's Chinese writing index, copied unchanged into production."
+    sha256: "80de76f63298f7e5b914a53e53e9233f9b8fbd3829691bc2f8447d95053ef71b"
+    dimensions: [640, 640]
+    attribution: "screenshot and site content by the author"
+
+  - asset: "assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp"
+    post: "_posts/2021-09-17-reinforcement learning issues.md"
+    origin_type: "external"
+    source_url: "https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg"
+    author: "Wikimedia Commons user Megajuice"
+    license: "CC0 1.0"
+    license_url: "https://creativecommons.org/publicdomain/zero/1.0/"
+    transform: "Placed the 960 × 928 transparent preview on a light square canvas, resized to 640 × 640, and exported as WebP without changing labels."
+    sha256: "a4c2961865207299e43a205d125a28e055456662c641b6b756d75eb68a9d532e"
+    dimensions: [640, 640]
+    attribution: "Wikimedia Commons user Megajuice"
+
+  - asset: "assets/posts/202208142347/cover-cloud-console-2026-07-30.webp"
+    post: "_posts/2022-08-14-云服务器折腾随笔.md"
+    origin_type: "self-produced"
+    source_url: null
+    author: "Yiyu Chen with Codex"
+    license: "project-owned"
+    license_url: null
+    transform: "A locally code-drawn 720 × 720 generic cloud-console illustration with fictional data; no third-party interface assets."
+    sha256: "c1cbcce997663247009967199e4e89d55a5e84a1be39459ac8a76a6ef9b1f8fc"
+    dimensions: [720, 720]
+    attribution: "云服务器实例控制台示意（自制）"
+
+  - asset: "assets/posts/202208171838/cover-site-avatar-ascii-square.webp"
+    post: "_posts/2022-08-17-制作一张匹配形状的字符画.md"
+    origin_type: "self-produced"
+    source_url: null
+    author: "Yiyu Chen"
+    license: "project-owned"
+    license_url: null
+    source_asset: "assets/img/favicons/android-chrome-256x256.png"
+    transform: "Derived the site-owned 256 × 256 avatar into an ASCII shape-matching image on a 640 × 640 light canvas."
+    sha256: "5ccd61775fc75b81937c10042b6d437ab8d6a837524e59839855ed900055fee7"
+    dimensions: [640, 640]
+    attribution: "头像与结果均为本站自有内容"
+
+  - asset: "assets/posts/202211110000/cover-generated-2026-07-29.webp"
+    post: "_posts/2022-11-11-装机记录.md"
+    origin_type: "generated"
+    source_url: null
+    author: "Generated under Yiyu Chen's direction"
+    license: "project-use-rights"
+    license_url: null
+    generator: "OpenAI image_gen via Codex"
+    generated_at: "2026-07-29"
+    source_description: "AI-original generation; no third-party network image was used."
+    reference_inputs:
+      - "Two alternatives generated in the same session were used only as composition, texture, palette, and PC-building atmosphere references."
+    purpose: "Square writing-index cover; not a photograph or factual record of the 2022 PC build."
+    approval: "Approved by the user on 2026-07-29 with the reply 'ok，继续吧' before site integration."
+    prompt: |-
+      将输入图片仅作为质感、配色和装机现场氛围参考，重新生成一张真正独立的正方形 1:1 单幅图片，用作中文个人博客文章《装机记录》的封面。不要保留输入图的双栏结构，不要拼图、候选对照或接触表。
+
+      画面主体是一台正在组装中的黑色中塔或紧凑型中塔台式机机箱，采用略高的三分之四视角，可综合参考输入图右侧清楚的“装机进行中”视角与左侧完整的机箱轮廓。整台机箱及其完整轮廓必须全部收进正方形画面，四周保留适量呼吸空间；侧板已取下，既能看清完整机箱外形，也能看见内部硬件。内部应真实、比例正确地呈现 mATX/ATX 主板、CPU 风冷散热器、内存、双风扇显卡、电源、机箱风扇与少量尚在整理的线缆。体现“装机进行中”而非成品广告：旁边自然放一把螺丝刀、少量分类放好的螺丝和简洁理线工具，但不要把零件平铺成主角。
+
+      场景是温暖的珍珠灰色家庭工作台，柔和自然日光，低饱和中性色为主，金属与玻璃表面可有非常克制的紫水晶色和翡翠色微弱反光，呼应网站的宝石色审美，但不要炫目 RGB、不要赛博霓虹灯带。整体简洁、安静、可信，像个人真实记录而非商业产品摄影；细节清楚，缩成首页方形缩略图时仍能一眼认出是完整机箱装机。
+
+      不要人物或手，不要文字、字母、品牌 logo、产品标签、水印；不要竖幅构图，不要裁掉机箱边缘，不要零件散落平铺，不要畸形硬件，不要双图、拼贴、接触表或分割线。
+    transform: "Generated as an original 1254 × 1254 square illustration, then resized to 1024 × 1024 and exported as WebP quality 86; it is not evidence of the 2022 build."
+    sha256: "08edfd8d77d2e78306916fa25008d90b044ed10d3dc97359570f2666092b11f3"
+    dimensions: [1024, 1024]
+    attribution: "AI-generated index illustration; not a photograph of the 2022 build."
+
+  - asset: "assets/posts/202301162233/cover-bgg-2898488-square.webp"
+    post: "_posts/2023-01-18-四季物语量化分析攻略.md"
+    origin_type: "external"
+    source_url: "https://boardgamegeek.com/image/2898488/seasons"
+    author: "BoardGameGeek user dodecalouise"
+    license: "CC0 1.0"
+    license_url: "https://creativecommons.org/publicdomain/zero/1.0/"
+    transform: "Cropped the source from (320, 0) to (2240, 1920), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
+    sha256: "2138cd3f99ff0c877a336a20be98190496b7d17b2dca252a731601bb0f5ee714"
+    dimensions: [1024, 1024]
+    attribution: "BoardGameGeek 用户 dodecalouise"
+
+  - asset: "assets/posts/202302032000/cover-bgg-7205453-square.webp"
+    post: "_posts/2023-02-03-逻辑对决桌游攻略.md"
+    origin_type: "external"
+    source_url: "https://boardgamegeek.com/image/7205453/break-the-code"
+    author: "BoardGameGeek user dizziedobsession"
+    license: "CC0 1.0"
+    license_url: "https://creativecommons.org/publicdomain/zero/1.0/"
+    transform: "Cropped the source from (100, 20) to (920, 840), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
+    sha256: "fde95f4357dc8028f609e16a8d15e94017bd4080280d122b312e6099d60d44aa"
+    dimensions: [1024, 1024]
+    attribution: "BoardGameGeek 用户 dizziedobsession"
+
+  - asset: "assets/posts/202307232000/cover-breaststroke-square.webp"
+    post: "_posts/2023-07-23-了解游泳.md"
+    origin_type: "external"
+    source_url: "https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg"
+    author: "Adrian Pingstone"
+    license: "公有领域"
+    license_url: "https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg"
+    transform: "Cropped the 750 × 536 source with box [107, 0, 643, 536], resized to 640 × 640, and exported as WebP quality 82."
+    sha256: "625afdeed0ea79ba667a285b893b7b4dfab6ec46d97d81c65e3007dba3d35b6a"
+    dimensions: [640, 640]
+    attribution: "Adrian Pingstone"
+
+  - asset: "assets/posts/202404232233/cover-bgg-5194524-square.webp"
+    post: "_posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md"
+    origin_type: "external"
+    source_url: "https://boardgamegeek.com/image/5194524/gaia-project"
+    author: "BoardGameGeek user magic_erwt"
+    license: "CC0 1.0"
+    license_url: "https://creativecommons.org/publicdomain/zero/1.0/"
+    transform: "Cropped the source from (128, 0) to (896, 768), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
+    sha256: "f63895aa3977d0c5bebd97dd661d4b28428acd61d1bbc450c4cf81b7d2bc91de"
+    dimensions: [1024, 1024]
+    attribution: "BoardGameGeek 用户 magic_erwt"
+
+  - asset: "assets/posts/202407012233/cover-bgg-1091724-square.webp"
+    post: "_posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md"
+    origin_type: "external"
+    source_url: "https://boardgamegeek.com/image/1091724/troyes"
+    author: "BoardGameGeek user verminose"
+    license: "CC BY-NC 3.0"
+    license_url: "https://creativecommons.org/licenses/by-nc/3.0/"
+    transform: "Cropped the source from (250, 0) to (1250, 1000), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
+    sha256: "cfddd3759235ac570455d46aa984d884935a8c3346b10855f0f0cd64cf639462"
+    dimensions: [1024, 1024]
+    attribution: "BoardGameGeek 用户 verminose"
+
+  - asset: "assets/posts/202510112233/cover-bgg-7712310-square.webp"
+    post: "_posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md"
+    origin_type: "external"
+    source_url: "https://boardgamegeek.com/image/7712310/age-of-innovation"
+    author: "BoardGameGeek user Hipopotam"
+    license: "CC BY-SA 3.0"
+    license_url: "https://creativecommons.org/licenses/by-sa/3.0/"
+    transform: "Cropped the source from (473, 0) to (3311, 2838), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82 under the same CC BY-SA 3.0 terms."
+    sha256: "c6e4afcf62b37df698f5858326805f8713f8017b676003c404d7e8b40d943dd0"
+    dimensions: [1024, 1024]
+    attribution: "BoardGameGeek 用户 Hipopotam"
