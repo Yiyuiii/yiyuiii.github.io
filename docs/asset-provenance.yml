@@ -55,6 +55,7 @@ covers:
   - asset: "assets/posts/202208171838/cover-site-avatar-ascii-square.webp"
     posts:
       - "_posts/2022-08-17-制作一张匹配形状的字符画.md"
+      - "_posts/2022-08-17-building-shape-matched-ascii-art.md"
     origin_type: "self-produced"
     source_url: null
     author: "Yiyu Chen"
@@ -69,6 +70,7 @@ covers:
   - asset: "assets/posts/202211110000/cover-generated-2026-07-29.webp"
     posts:
       - "_posts/2022-11-11-装机记录.md"
+      - "_posts/2022-11-11-pc-build-log.md"
     origin_type: "generated"
     source_url: null
     author: "Generated under Yiyu Chen's direction"
@@ -149,6 +151,7 @@ covers:
   - asset: "assets/posts/202407012233/cover-bgg-1091724-square.webp"
     posts:
       - "_posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md"
+      - "_posts/2024-07-01-quantifying-resource-and-point-values-in-troyes.md"
     origin_type: "external"
     source_url: "https://boardgamegeek.com/image/1091724/troyes"
     author: "BoardGameGeek user verminose"
@@ -157,7 +160,7 @@ covers:
     transform: "Cropped the source from (250, 0) to (1250, 1000), resized to 1024 × 1024 with Lanczos, and exported as WebP quality 82."
     sha256: "cfddd3759235ac570455d46aa984d884935a8c3346b10855f0f0cd64cf639462"
     dimensions: [1024, 1024]
-    attribution: "BoardGameGeek 用户 verminose"
+    attribution: "verminose"
 
   - asset: "assets/posts/202510112233/cover-bgg-7712310-square.webp"
     posts:

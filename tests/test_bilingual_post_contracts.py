@@ -118,9 +118,9 @@ def test_committed_posts_have_stable_identity_urls_and_exact_migration_exemption
         groups.setdefault(document.frontmatter["translation_key"], []).append(document)
 
     assert len(groups) == 11
-    assert set(exemptions) == {
-        key for key, members in groups.items() if len(members) == 1
-    }
+    singleton_keys = {key for key, members in groups.items() if len(members) == 1}
+    assert set(exemptions) == singleton_keys
+    assert any(len(members) == 2 for members in groups.values())
     for document in documents:
         data = document.frontmatter
         assert isinstance(data["uid"], str) and data["uid"].isdigit()
@@ -131,6 +131,9 @@ def test_committed_posts_have_stable_identity_urls_and_exact_migration_exemption
         assert data["permalink"].endswith("/")
         if len(groups[data["translation_key"]]) == 1:
             assert "translation_url" not in data
+        else:
+            assert data["translation_url"].startswith("/")
+            assert data["translation_url"].endswith("/")
 
     check_post_contracts(documents, exemptions=exemptions, root=ROOT, production=True)
 
