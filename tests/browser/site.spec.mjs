@@ -243,7 +243,18 @@ for (const viewport of viewports) {
     await page.setViewportSize(viewport);
     await page.goto("/writing/");
 
-    await expect(page.locator(".site-nav a")).toHaveCount(4);
+    await expect(page.locator(".site-nav a")).toHaveCount(6);
+    await expect(page.locator(".site-nav a")).toHaveText([
+      "欢迎",
+      "随笔",
+      "GitHub",
+      "论文",
+      "小玩意",
+      "关于yiyuiii",
+    ]);
+    await expect(
+      page.locator('.site-nav a[aria-current="page"]'),
+    ).toHaveAttribute("href", "/writing/");
     const layout = await page.evaluate(() => ({
       overflow: document.documentElement.scrollWidth > innerWidth,
       navVisible: [...document.querySelectorAll(".site-nav a")].every((link) => {
@@ -327,6 +338,34 @@ for (const viewport of viewports) {
     }
   });
 }
+
+test("localized toy indexes expose only live lightweight interactions", async ({
+  page,
+}) => {
+  for (const [route, heading, homeHref] of [
+    ["/toys/", "小玩意", "/"],
+    ["/en/toys/", "Toys", "/en/"],
+  ]) {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(route);
+    await expect(page.locator(".page-header")).toHaveCount(0);
+    await expect(
+      page.getByRole("heading", { level: 1, name: heading, exact: true }),
+    ).toBeVisible();
+    expect(await page.locator(".toy-grid > .toy-card").count()).toBeGreaterThanOrEqual(2);
+    await expect(page.locator("#random-discovery .toy-card__action")).toHaveAttribute(
+      "href",
+      homeHref,
+    );
+    await expect(page.locator("#theme-and-light a")).toHaveCount(0);
+    await expect(
+      page.locator('.site-nav a[aria-current="page"]'),
+    ).toHaveAttribute("href", route);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+    ).toBe(false);
+  }
+});
 
 test("writing index requests only responsive cover derivatives", async ({
   browser,
@@ -1164,6 +1203,13 @@ test("search, paired language switch, and article reading controls work", async 
 
   await page.goto("/");
   await searchButton.click();
+  await input.fill("月光");
+  await expect(page.locator("#search-results a")).toHaveCount(1);
+  await expect(page.locator("#search-results a")).toHaveAttribute(
+    "href",
+    "/toys/#theme-and-light",
+  );
+  await input.fill("");
   await input.press("Escape");
   await expect(searchButton).toBeFocused();
   expect(errors).toEqual([]);

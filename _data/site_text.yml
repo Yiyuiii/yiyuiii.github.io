@@ -1,14 +1,17 @@
 zh:
   nav:
+    home: 欢迎
     writing: 随笔
     github: GitHub
     papers: 论文
+    toys: 小玩意
     about: 关于yiyuiii
   urls:
     home: /
     writing: /writing/
     github: /projects/
     papers: /publications/
+    toys: /toys/
     about: /about/
   primary_navigation: 主导航
   home_link: 返回中文欢迎页
@@ -19,7 +22,7 @@ zh:
     open: 搜索
     close: 关闭搜索
     label: 搜索本站
-    placeholder: 搜索随笔、项目或论文
+    placeholder: 搜索随笔、项目、论文或小玩意
     empty: 输入关键词开始搜索。
     no_results: 没有找到匹配内容。
   sunlight:
@@ -72,15 +75,18 @@ zh:
 
 en:
   nav:
+    home: Welcome
     writing: Writing
     github: GitHub
     papers: Papers
+    toys: Toys
     about: About yiyuiii
   urls:
     home: /en/
     writing: /en/writing/
     github: /en/projects/
     papers: /en/publications/
+    toys: /en/toys/
     about: /en/about/
   primary_navigation: Primary navigation
   home_link: Return to the English welcome page
@@ -91,7 +97,7 @@ en:
     open: Search
     close: Close search
     label: Search this site
-    placeholder: Search writing, projects, or papers
+    placeholder: Search writing, projects, papers, or toys
     empty: Enter a term to start searching.
     no_results: No matching content found.
   sunlight:

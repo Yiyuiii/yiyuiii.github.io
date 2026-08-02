@@ -55,9 +55,11 @@
     </span>
 
     <nav class="site-nav" aria-label="{{ text.primary_navigation }}">
+      <a href="{{ text.urls.home | relative_url }}"{% if page.nav_key == 'home' %} aria-current="page"{% endif %}>{{ text.nav.home }}</a>
       <a href="{{ text.urls.writing | relative_url }}"{% if page.nav_key == 'writing' %} aria-current="page"{% endif %}>{{ text.nav.writing }}</a>
       <a href="{{ text.urls.github | relative_url }}"{% if page.nav_key == 'github' %} aria-current="page"{% endif %}>{{ text.nav.github }}</a>
       <a href="{{ text.urls.papers | relative_url }}"{% if page.nav_key == 'papers' %} aria-current="page"{% endif %}>{{ text.nav.papers }}</a>
+      <a href="{{ text.urls.toys | relative_url }}"{% if page.nav_key == 'toys' %} aria-current="page"{% endif %}>{{ text.nav.toys }}</a>
       <a href="{{ text.urls.about | relative_url }}"{% if page.nav_key == 'about' %} aria-current="page"{% endif %}>{{ text.nav.about }}</a>
     </nav>
 

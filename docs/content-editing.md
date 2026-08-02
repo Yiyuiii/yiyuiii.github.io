@@ -195,11 +195,55 @@ git diff --check
 
 中文与英文短文案都在 `_data/site_text.yml`。两种语言必须保留完全相同的键：
 
+主导航固定按“欢迎｜随笔｜GitHub｜论文｜小玩意｜关于yiyuiii”的顺序展示；英文使用同样的六项结构。欢迎页和“小玩意”都是正式导航目的地，因此对应中英文页面必须分别声明 `nav_key: home` 与 `nav_key: toys`，让当前页只标记一个 `aria-current="page"`。修改导航后要同时检查 820、640、390 与 320 像素宽度，不能让链接横向溢出。
+
 ```powershell
 python scripts/translation_guard.py --check --production
 ```
 
 404 页的中英文标题、说明和返回链接也在这里维护。`_pages/404.md` 只声明公开路径，`_layouts/not-found.liquid` 会根据缺失 URL 是否以 `/en/` 开头选择一种语言显示；不要恢复自动跳转，否则英文缺失路径会被带回中文首页。
+
+## 小玩意索引
+
+`/toys/` 与 `/en/toys/` 共用 `_includes/toy-index.liquid`，所有可见内容集中在 `_data/toys.yml`。页面只收录已经能在生产站使用的轻量互动；尚未实现、依赖接口仍在评估或只有想法的条目不要先写成“可用”。其中 `page.zh/en` 保存页标题、引言和状态文案，`items` 保存同一份语言无关顺序下的双语条目。
+
+新增条目时复制一个完整记录，并维护以下字段：
+
+```yaml
+- id: example-toy
+  kind:
+    zh: 轻量实验
+    en: Lightweight experiment
+  title:
+    zh: 示例小玩意
+    en: Example toy
+  description:
+    zh: 准确说明它现在能做什么。
+    en: Describe exactly what it can do now.
+  action:
+    zh: 打开小玩意
+    en: Open the toy
+  keywords:
+    zh: [示例, 互动]
+    en: [example, interactive]
+  href:
+    zh: /toys/example/
+    en: /en/toys/example/
+  external: false
+```
+
+- `id` 只用小写英文、数字与连字符，创建后保持稳定；它同时是页面锚点和搜索结果目标。
+- `kind`、`title`、`description`、`action`、`keywords` 必须完整提供中英文，两个页面始终按同一 `items` 顺序渲染。
+- 站内功能用根路径开头的本地 URL，并设置 `external: false`。无需跳转、直接在页眉操作的功能可把 `href` 写成 `null`。
+- 外部功能必须使用 HTTPS，并设置 `external: true`；渲染器会自动增加新窗口和隔离属性。不要填入需要泄露本站访问数据、密钥或私人信息的地址。
+- 搜索索引会自动读取每条记录的标题、说明和关键词，不要在搜索模板里重复抄写。
+
+修改后运行：
+
+```powershell
+python -m pytest -q tests/test_toys_contracts.py tests/test_source_contracts.py tests/test_check_site.py
+python scripts/translation_guard.py --check --production
+```
 
 ## 随笔
 
