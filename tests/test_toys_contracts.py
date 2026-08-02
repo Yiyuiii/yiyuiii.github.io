@@ -34,10 +34,11 @@ def test_toy_manifest_is_bilingual_editable_and_contains_only_live_features():
     )
 
     items = data["items"]
-    assert len(items) >= 2
+    assert len(items) >= 3
     assert {item["id"] for item in items} >= {
         "random-discovery",
         "theme-and-light",
+        "moegirl-quiz",
     }
     assert len({item["id"] for item in items}) == len(items)
 
@@ -108,12 +109,28 @@ def test_toy_renderer_supports_safe_internal_external_and_instruction_entries():
     assert 'target="_blank" rel="noopener noreferrer"' in include
     assert "toy-card__action--hint" in include
     assert 'id="{{ toy.id | escape }}"' in include
+    assert "{% include toy-moegirl-quiz.liquid %}" in include
+    assert include.index("{% include toy-moegirl-quiz.liquid %}") > include.index("toy-grid")
+
+
+def test_moegirl_quiz_card_links_to_the_component_without_duplicate_ids():
+    data = yaml.safe_load(text("_data/toys.yml"))
+    item = next(item for item in data["items"] if item["id"] == "moegirl-quiz")
+    component = text("_includes/toy-moegirl-quiz.liquid")
+
+    assert item["href"] == {
+        "zh": "/toys/#moegirl-quiz-title",
+        "en": "/en/toys/#moegirl-quiz-title",
+    }
+    assert 'id="moegirl-quiz-title"' in component
+    assert 'id="moegirl-quiz"' not in component
 
 
 def test_toy_cards_and_six_item_navigation_have_bounded_mobile_layouts():
     css = text("assets/css/main.scss")
 
     assert ".toy-grid" in css
+    assert ".toy-grid + .moegirl-quiz" in css
     assert "grid-template-columns: repeat(2, minmax(0, 1fr))" in css
     assert "@media (max-width: 820px)" in css
     tablet = css.split("@media (max-width: 820px)", 1)[1].split(

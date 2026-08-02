@@ -683,6 +683,10 @@ html:lang(en) .article-header h1 {
   gap: clamp(1rem, 3vw, 1.4rem);
 }
 
+.toy-grid + .moegirl-quiz {
+  margin-top: clamp(2rem, 5vw, 3.2rem);
+}
+
 .toy-card {
   display: flex;
   min-width: 0;

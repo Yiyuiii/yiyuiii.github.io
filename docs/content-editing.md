@@ -243,10 +243,12 @@ python scripts/translation_guard.py --check --production
 - 外部功能必须使用 HTTPS，并设置 `external: true`；渲染器会自动增加新窗口和隔离属性。不要填入需要泄露本站访问数据、密钥或私人信息的地址。
 - 搜索索引会自动读取每条记录的标题、说明和关键词，不要在搜索模板里重复抄写。
 
+萌娘百科猜图是索引页中的渐进增强组件：条目卡片的稳定锚点是 `#moegirl-quiz`，卡片动作指向实际组件标题 `#moegirl-quiz-title`。角色白名单与双语界面文案维护在 `_data/moegirl_quiz.yml`，组件边界、第三方请求时机、来源与图片权利说明见 `docs/moegirl-quiz-component.md`。打开页面不会访问萌娘百科；只有用户点击开始后才可发起题目所需请求。不要改成页面预载、后台预取、本地复制外部图片或静默追踪。
+
 修改后运行：
 
 ```powershell
-python -m pytest -q tests/test_toys_contracts.py tests/test_source_contracts.py tests/test_check_site.py
+python -m pytest -q tests/test_toys_contracts.py tests/test_moegirl_quiz_contracts.py tests/test_source_contracts.py tests/test_check_site.py
 python scripts/translation_guard.py --check --production
 ```
 

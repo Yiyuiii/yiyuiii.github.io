@@ -165,6 +165,26 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         raise SiteCheckError(
             f"{route}: random discovery does not link to the localized welcome page"
         )
+
+    quiz = soup.select(".moegirl-quiz[data-moegirl-quiz]")
+    if len(quiz) != 1:
+        raise SiteCheckError(f"{route}: expected exactly one Moegirl quiz component")
+    quiz_title = soup.select("#moegirl-quiz-title")
+    expected_quiz_title = "猜猜她是谁？" if language == "zh" else "Who is she?"
+    if (
+        len(quiz_title) != 1
+        or quiz_title[0].get_text(" ", strip=True) != expected_quiz_title
+    ):
+        raise SiteCheckError(f"{route}: Moegirl quiz title is missing or not localized")
+    quiz_card = soup.select_one("#moegirl-quiz")
+    quiz_action = quiz_card.select_one("a.toy-card__action") if quiz_card else None
+    expected_quiz_href = f"{route}#moegirl-quiz-title"
+    if not quiz_action or quiz_action.get("href") != expected_quiz_href:
+        raise SiteCheckError(f"{route}: Moegirl quiz card does not link to its component")
+    if quiz[0].select_one("img[data-quiz-image][src]"):
+        raise SiteCheckError(f"{route}: Moegirl quiz image must not preload remotely")
+    if len(soup.select('[id="moegirl-quiz"]')) != 1:
+        raise SiteCheckError(f"{route}: Moegirl quiz card id must be unique")
     return ids
 
 

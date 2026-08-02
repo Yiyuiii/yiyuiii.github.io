@@ -342,6 +342,12 @@ for (const viewport of viewports) {
 test("localized toy indexes expose only live lightweight interactions", async ({
   page,
 }) => {
+  const thirdPartyRequests = [];
+  page.on("request", (request) => {
+    if (new URL(request.url()).hostname.endsWith("moegirl.org.cn")) {
+      thirdPartyRequests.push(request.url());
+    }
+  });
   for (const [route, heading, homeHref] of [
     ["/toys/", "小玩意", "/"],
     ["/en/toys/", "Toys", "/en/"],
@@ -352,12 +358,25 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     await expect(
       page.getByRole("heading", { level: 1, name: heading, exact: true }),
     ).toBeVisible();
-    expect(await page.locator(".toy-grid > .toy-card").count()).toBeGreaterThanOrEqual(2);
+    expect(await page.locator(".toy-grid > .toy-card").count()).toBeGreaterThanOrEqual(3);
     await expect(page.locator("#random-discovery .toy-card__action")).toHaveAttribute(
       "href",
       homeHref,
     );
     await expect(page.locator("#theme-and-light a")).toHaveCount(0);
+    await expect(page.locator(".moegirl-quiz[data-moegirl-quiz]")).toHaveCount(1);
+    await expect(page.locator("#moegirl-quiz .toy-card__action")).toHaveAttribute(
+      "href",
+      `${route}#moegirl-quiz-title`,
+    );
+    await expect(page.locator("[data-quiz-image]")).not.toHaveAttribute("src", /.+/);
+    expect(thirdPartyRequests).toEqual([]);
+    const moegirlResourceHints = page.locator(
+      'link[rel="preconnect"][href*="moegirl.org.cn"], '
+      + 'link[rel="dns-prefetch"][href*="moegirl.org.cn"], '
+      + 'link[rel="prefetch"][href*="moegirl.org.cn"]',
+    );
+    await expect(moegirlResourceHints).toHaveCount(0);
     await expect(
       page.locator('.site-nav a[aria-current="page"]'),
     ).toHaveAttribute("href", route);
@@ -1208,6 +1227,12 @@ test("search, paired language switch, and article reading controls work", async 
   await expect(page.locator("#search-results a")).toHaveAttribute(
     "href",
     "/toys/#theme-and-light",
+  );
+  await input.fill("萌娘百科");
+  await expect(page.locator("#search-results a")).toHaveCount(1);
+  await expect(page.locator("#search-results a")).toHaveAttribute(
+    "href",
+    "/toys/#moegirl-quiz",
   );
   await input.fill("");
   await input.press("Escape");
