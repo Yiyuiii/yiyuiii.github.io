@@ -74,35 +74,12 @@ layout: default
     </header>
 
     {% if has_article_toc %}
-      <button
-        class="article-section-trigger"
-        type="button"
-        aria-controls="article-section-dialog"
-        aria-expanded="false"
-        data-article-section-trigger
-      >
-        {{ text.sections.trigger }}
-      </button>
-      <dialog
-        class="article-section-dialog"
-        id="article-section-dialog"
-        aria-labelledby="article-section-dialog-title"
-        data-article-section-dialog
-      >
-        <div class="article-section-dialog__header">
-          <strong id="article-section-dialog-title">{{ text.sections.label }}</strong>
-          <button
-            type="button"
-            aria-label="{{ text.sections.close }}"
-            data-article-section-close
-          >
-            ×
-          </button>
-        </div>
+      <details class="article-inline-toc">
+        <summary>{{ text.sections.trigger }}</summary>
         <nav aria-label="{{ text.sections.label }}" data-article-navigation>
           {{ article_toc_markup }}
         </nav>
-      </dialog>
+      </details>
     {% endif %}
 
     {% include article-cover.liquid %}

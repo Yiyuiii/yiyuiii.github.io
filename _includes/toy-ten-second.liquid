@@ -1,0 +1,76 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% if lang_key == 'en' %}
+  {% assign challenge_label = 'Estimate ten seconds' %}
+  {% assign instructions = 'Start, count ten seconds in your head, then stop. No running clock is shown.' %}
+  {% assign local_note = 'Only this attempt is measured; there is no ranking or saved history.' %}
+  {% assign start = 'Start' %}
+  {% assign stop = 'Stop' %}
+  {% assign again = 'Try again' %}
+  {% assign restart = 'Restart now' %}
+  {% assign running = 'Timing has started. Stop when you think ten seconds have passed.' %}
+  {% assign result = 'You estimated {elapsed} seconds, {direction} by {difference} seconds.' %}
+  {% assign early = 'early' %}
+  {% assign late = 'late' %}
+  {% assign exact = 'You estimated {elapsed} seconds, with less than 0.01 seconds of error.' %}
+  {% assign cancelled = 'The attempt was cancelled because this challenge was hidden.' %}
+  {% assign unavailable = 'This browser cannot start the local timer, so this challenge has been disabled.' %}
+  {% assign no_js = 'JavaScript is required to measure this challenge locally. No result is sent or stored.' %}
+{% else %}
+  {% assign challenge_label = '盲估十秒' %}
+  {% assign instructions = '点击开始后在心里默数十秒，再点击停止；过程中不会显示实时计时。' %}
+  {% assign local_note = '只测量当前设备上的这一次尝试，不排名，也不保存历史。' %}
+  {% assign start = '开始' %}
+  {% assign stop = '停止' %}
+  {% assign again = '再试一次' %}
+  {% assign restart = '立即重来' %}
+  {% assign running = '计时已经开始；当你认为十秒到了，就点击停止。' %}
+  {% assign result = '你估计了 {elapsed} 秒，{direction}{difference} 秒。' %}
+  {% assign early = '提前了' %}
+  {% assign late = '超出了' %}
+  {% assign exact = '你估计了 {elapsed} 秒，误差不到 0.01 秒。' %}
+  {% assign cancelled = '页面或挑战被隐藏，本次计时已经取消。' %}
+  {% assign unavailable = '当前浏览器无法启动本地计时，因此这项挑战已停用。' %}
+  {% assign no_js = '这项挑战需要 JavaScript 在本地计时；结果不会被发送或保存。' %}
+{% endif %}
+
+<section
+  class="toy-challenge toy-ten-second"
+  data-toy-ten-second
+  aria-label="{{ challenge_label | escape }}"
+>
+  <p class="toy-challenge__instructions">{{ instructions }}</p>
+  <p class="toy-challenge__note">{{ local_note }}</p>
+
+  <div class="toy-challenge__interactive" data-challenge-interactive hidden>
+    <div class="toy-challenge__actions">
+      <button type="button" data-ten-primary>{{ start }}</button>
+      <button type="button" data-ten-restart hidden>{{ restart }}</button>
+    </div>
+    <p
+      class="toy-challenge__status"
+      data-challenge-status
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+  </div>
+
+  <p class="toy-challenge__unavailable" data-challenge-unavailable hidden>{{ unavailable }}</p>
+  <noscript><p class="toy-challenge__noscript">{{ no_js }}</p></noscript>
+
+  <script type="application/json" data-challenge-copy>
+    {
+      "start": {{ start | jsonify }},
+      "stop": {{ stop | jsonify }},
+      "again": {{ again | jsonify }},
+      "restart": {{ restart | jsonify }},
+      "running": {{ running | jsonify }},
+      "result": {{ result | jsonify }},
+      "early": {{ early | jsonify }},
+      "late": {{ late | jsonify }},
+      "exact": {{ exact | jsonify }},
+      "cancelled": {{ cancelled | jsonify }},
+      "unavailable": {{ unavailable | jsonify }}
+    }
+  </script>
+</section>

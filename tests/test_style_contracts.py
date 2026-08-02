@@ -135,23 +135,24 @@ def test_publication_contribution_is_quiet_inline_metadata():
     assert ".publication-note" not in CSS
 
 
-def test_article_keeps_centered_reading_width_with_a_readable_left_sticky_navigation():
+def test_article_uses_prose_and_wide_content_widths_with_a_sticky_navigation():
     article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
-    desktop = article[article.index("@media (min-width: 1180px)") :]
+    desktop = article[article.index("@media (min-width: 1536px)") :]
     side = desktop[
         desktop.index(".article-side-toc") :
         desktop.index(".article-side-toc nav")
     ]
     side_nav = desktop[
         desktop.index(".article-side-toc nav") :
-        desktop.index(".article-section-trigger")
     ]
 
     assert ".article-column" in article
-    assert "max-width: 72ch" in article
-    assert "@media (min-width: 1180px)" in CSS
-    assert "grid-template-columns: minmax(0, 1fr) minmax(0, 72ch) minmax(0, 1fr)" in CSS
-    assert "max-width: calc(72ch + 32rem)" in article
+    assert "--article-prose-width: 50rem" in article
+    assert "--article-wide-width: 72rem" in article
+    assert "--article-toc-width: 13rem" in article
+    assert "--article-toc-gap: 2rem" in article
+    assert "@media (min-width: 1536px)" in CSS
+    assert "grid-template-columns: var(--article-toc-width) minmax(0, var(--article-wide-width))" in CSS
     assert ".article-side-toc" in article
     assert "grid-column: 1" in side
     assert "grid-row: 1" in side
@@ -175,15 +176,29 @@ def test_page_root_clips_horizontal_overflow_without_becoming_a_scroll_container
     assert "overflow-x: hidden" not in root
 
 
-def test_article_mobile_sections_use_a_native_dialog_not_an_inline_panel():
+def test_article_sections_use_a_native_inline_disclosure_below_the_side_rail_breakpoint():
     article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
 
-    assert ".article-section-trigger" in article
-    assert "position: fixed" in article
-    assert "env(safe-area-inset-bottom)" in article
-    assert ".article-section-dialog" in article
-    assert ".article-section-dialog::backdrop" in article
-    assert ".article-section-dialog[open]" in article
+    assert ".article-inline-toc" in article
+    assert ".article-inline-toc summary" in article
+    assert ".article-inline-toc nav" in article
+    assert "max-height: min(56vh, 32rem)" in article
+    assert ".article-section-trigger" not in article
+    assert ".article-section-dialog" not in article
+
+
+def test_article_wide_content_is_progressive_and_locally_scrollable():
+    article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
+
+    assert "> :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote, hr, .footnotes)" in article
+    assert "> :where(pre, .highlight, .highlighter-rouge, figure, .mermaid, .article-wide)" in article
+    assert ".post-content > p:has(> img:only-child)" in article
+    assert ".post-content > p:has(> a:only-child > img:only-child)" in article
+    assert ".post-content > .article-prose" in article
+    table = article[article.index(".post-content table") :]
+    assert "width: max-content" in table
+    assert "overflow-x: auto" in table
+    assert "overscroll-behavior-inline: contain" in table
 
 
 def test_article_history_preserves_marker_space_and_uses_a_compact_focus_ring():

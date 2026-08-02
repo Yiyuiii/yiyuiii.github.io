@@ -1,0 +1,70 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% if lang_key == 'en' %}
+  {% assign challenge_label = 'Find the different color' %}
+  {% assign instructions = 'Find the one tile whose lightness differs from the rest. Two consecutive correct answers increase the difficulty.' %}
+  {% assign disclaimer = 'This is a visual game, not a color-vision test or medical assessment.' %}
+  {% assign group_label = 'Sixteen color tiles' %}
+  {% assign cell_label = 'Tile {number}' %}
+  {% assign next_label = 'Next round' %}
+  {% assign correct = 'Correct.' %}
+  {% assign incorrect = 'Not quite. The different tile is marked.' %}
+  {% assign level_label = 'Difficulty: {level}.' %}
+  {% assign levels_json = '["easy","medium","hard"]' %}
+  {% assign unavailable = 'Secure local randomness is unavailable in this browser, so this challenge has been disabled.' %}
+  {% assign no_js = 'JavaScript is required for this local challenge. No result is sent or stored.' %}
+{% else %}
+  {% assign challenge_label = '找出不一样的颜色' %}
+  {% assign instructions = '找出亮度与其它色块不同的一格；连续答对两题后难度会提高。' %}
+  {% assign disclaimer = '这是视觉小游戏，不是色觉检查或医学评估。' %}
+  {% assign group_label = '十六个色块' %}
+  {% assign cell_label = '第 {number} 格' %}
+  {% assign next_label = '下一题' %}
+  {% assign correct = '答对了。' %}
+  {% assign incorrect = '这次没有猜中；不同的色块已经标出。' %}
+  {% assign level_label = '当前难度：{level}。' %}
+  {% assign levels_json = '["简单","适中","困难"]' %}
+  {% assign unavailable = '当前浏览器无法提供安全的本地随机源，因此这项挑战已停用。' %}
+  {% assign no_js = '这项本地挑战需要 JavaScript；结果不会被发送或保存。' %}
+{% endif %}
+
+<section
+  class="toy-challenge toy-color-challenge"
+  data-toy-color-challenge
+  aria-label="{{ challenge_label | escape }}"
+>
+  <p class="toy-challenge__instructions">{{ instructions }}</p>
+  <p class="toy-challenge__note">{{ disclaimer }}</p>
+
+  <div class="toy-challenge__interactive" data-challenge-interactive hidden>
+    <div
+      class="toy-color-challenge__grid"
+      data-color-grid
+      role="group"
+      aria-label="{{ group_label | escape }}"
+    ></div>
+    <div class="toy-challenge__actions">
+      <button type="button" data-color-next>{{ next_label }}</button>
+    </div>
+    <p
+      class="toy-challenge__status"
+      data-challenge-status
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+  </div>
+
+  <p class="toy-challenge__unavailable" data-challenge-unavailable hidden>{{ unavailable }}</p>
+  <noscript><p class="toy-challenge__noscript">{{ no_js }}</p></noscript>
+
+  <script type="application/json" data-challenge-copy>
+    {
+      "cellLabel": {{ cell_label | jsonify }},
+      "correct": {{ correct | jsonify }},
+      "incorrect": {{ incorrect | jsonify }},
+      "levelLabel": {{ level_label | jsonify }},
+      "levels": {{ levels_json }},
+      "unavailable": {{ unavailable | jsonify }}
+    }
+  </script>
+</section>

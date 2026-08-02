@@ -4,7 +4,7 @@
 
 ## 欢迎页与内容流
 
-`/` 与 `/en/` 是中英文欢迎页，所有人工欢迎文案集中在 `_data/home.yml`。这里维护欢迎标题、介绍、页眉功能指引、“随机发现 / 浏览起点 / 近期内容”等分区文字、内容类型名称和无 JavaScript 说明；不要把这些可见文字写进 `_includes/home-feed.liquid`、`assets/js/home-feed.js` 或 CSS。两种语言必须保持完全相同的键、列表结构和指引目标。
+`/` 与 `/en/` 是中英文欢迎页，所有人工欢迎文案集中在 `_data/home.yml`。这里维护欢迎标题、介绍、页眉功能指引、“随机发现 / 浏览起点 / 最近更新”等分区文字、内容类型名称和无 JavaScript 说明；不要把这些可见文字写进 `_includes/home-feed.liquid`、`assets/js/home-feed.js` 或 CSS。两种语言必须保持完全相同的键、列表结构和指引目标。
 
 `/writing/` 与 `/en/writing/` 才是随笔索引。左上品牌链接回当前语言欢迎页，页顶“随笔 / Writing”进入对应索引；旧 `/?tag=...` 在 JavaScript 可用时会保留完整 query 与 hash 迁移到随笔索引，无 JavaScript 时欢迎页提供自然入口。
 
@@ -28,7 +28,7 @@
 - “随机发现”（英文 “Random discovery”）只从中英文都有内容、且不在任一语言最近 8 项中的共同身份抽取。每次载入或刷新欢迎页都会重新抽取；页面从浏览器 BFCache 恢复时也会重新抽取。中英文页面各自独立抽取，不承诺相同身份，连续两次也可能合理地抽到同一项。
 - 抽样使用浏览器 `crypto.getRandomValues()` 产生 32 位无符号整数，并通过拒绝采样消除直接取模的偏差。不要改用 `Math.random`，也不要使用日期、手写随机表或访问历史影响结果。
 - 随机发现只读取构建产物中的候选列表，不记录访问，不使用 Cookie、`localStorage`、`sessionStorage` 或外部请求。禁用 JavaScript、候选为空或随机源不可用时显示预渲染的固定“浏览起点”，不伪装成随机结果。
-- 后续修订、GitHub push、Star/Fork、本站构建与整理日期都不得改变“近期内容”顺序或随机候选边界。
+- 后续修订、GitHub push、Star/Fork、本站构建与整理日期都不得改变“最近更新”顺序或随机候选边界。
 - 当前 25 条日期及其来源见 `docs/home-feed-date-sources.md`；修改日期字段时必须同步复核该清单与契约测试。
 
 修改欢迎文案或内容流后运行：
@@ -210,46 +210,44 @@ python scripts/translation_guard.py --check --production
 
 ## 小玩意索引
 
-`/toys/` 与 `/en/toys/` 共用 `_includes/toy-index.liquid`，所有可见内容集中在 `_data/toys.yml`。页面只收录已经能在生产站使用的轻量互动；尚未实现、依赖接口仍在评估或只有想法的条目不要先写成“可用”。其中 `page.zh/en` 保存页标题、引言和状态文案，`items` 保存同一份语言无关顺序下的双语条目。
+`/toys/` 与 `/en/toys/` 共用 `_includes/toy-index.liquid`，条目标题、说明、关键词、分组和页首短引言集中在 `_data/toys.yml`。页面视觉上不重复显示“小玩意 / Toys”大标题，但保留一个仅供语义和无障碍使用的一级标题。全部功能按单栏原生 `details` 排列；简单功能直接在条目内展开，未来只有确实复杂、适合独立页面的功能才跳转。页面只收录已经能在生产站使用的轻量互动，尚未实现、依赖接口仍在评估或只有想法的条目不要先写成“可用”。
 
-新增条目时复制一个完整记录，并维护以下字段：
+数据先按 `groups` 分组；不需要可见分组标题时把 `title` 设为 `null`。新增条目时复制一个完整记录，并维护以下字段：
 
 ```yaml
-- id: example-toy
-  kind:
-    zh: 轻量实验
-    en: Lightweight experiment
+- id: example-group
   title:
-    zh: 示例小玩意
-    en: Example toy
-  description:
-    zh: 准确说明它现在能做什么。
-    en: Describe exactly what it can do now.
-  action:
-    zh: 打开小玩意
-    en: Open the toy
-  keywords:
-    zh: [示例, 互动]
-    en: [example, interactive]
-  href:
-    zh: /toys/example/
-    en: /en/toys/example/
-  external: false
+    zh: 示例分组
+    en: Example group
+  items:
+    - id: example-toy
+      title:
+        zh: 示例小玩意
+        en: Example toy
+      description:
+        zh: 准确说明它现在能做什么。
+        en: Describe exactly what it can do now.
+      keywords:
+        zh: [示例, 互动]
+        en: [example, interactive]
 ```
 
-- `id` 只用小写英文、数字与连字符，创建后保持稳定；它同时是页面锚点和搜索结果目标。
-- `kind`、`title`、`description`、`action`、`keywords` 必须完整提供中英文，两个页面始终按同一 `items` 顺序渲染。
-- 站内功能用根路径开头的本地 URL，并设置 `external: false`。无需跳转、直接在页眉操作的功能可把 `href` 写成 `null`。
-- 外部功能必须使用 HTTPS，并设置 `external: true`；渲染器会自动增加新窗口和隔离属性。不要填入需要泄露本站访问数据、密钥或私人信息的地址。
-- 搜索索引会自动读取每条记录的标题、说明和关键词，不要在搜索模板里重复抄写。
+- 分组和条目的 `id` 只用小写英文、数字与连字符，创建后保持稳定；条目 ID 同时是页面锚点和搜索结果目标。
+- `title`、`description`、`keywords` 必须完整提供中英文，两个页面始终按同一 `groups → items` 顺序渲染。
+- 新增内嵌功能时还必须在 `_includes/toy-index.liquid` 的显式 `case` 白名单中增加组件 include；不要根据数据拼接任意模板名。
+- 搜索索引会遍历每个分组下的条目并读取标题、说明和关键词，不要在搜索模板里重复抄写。
+- 当前不提供随机名字。随机密码和随机数字的文案维护在 `_data/toy_generators.yml`；实现、安全边界和验证见 `docs/toy-generators.md`。
+- 色差挑战、盲估十秒和反应时间的组件边界见 `docs/toy-challenges.md`。它们不联网、不记录结果，折叠条目或隐藏页面时会取消正在进行的计时。
+- 猜图类功能不得自行维护一个固定小数据集。只有能接入庞大、许可和接口稳定性可核验的外部数据集时才立项，否则不做。
 
-萌娘百科角色问答是索引页中的渐进增强组件：条目卡片的稳定锚点是 `#moegirl-quiz`，卡片动作指向实际组件标题 `#moegirl-quiz-title`。角色白名单、别名与双语界面文案维护在 `_data/moegirl_quiz.yml`，匿名化规则、请求时机、来源和许可说明见 `docs/moegirl-quiz-component.md`。打开页面不会访问萌娘百科；只有用户点击开始后才发起一次纯文本 API 请求。不要改成页面预载、后台预取、远程题图、图片复制或静默追踪。
+萌娘百科角色问答是索引页中的渐进增强组件：稳定折叠锚点是 `#moegirl-quiz`，可见标题和说明由统一清单提供，组件自身不重复标题。角色候选白名单、别名与双语界面文案维护在 `_data/moegirl_quiz.yml`，匿名化规则、请求时机、来源和许可说明见 `docs/moegirl-quiz-component.md`。打开页面不会访问萌娘百科；只有用户点击开始后才发起一次官方 API 纯文本请求。不要改成页面预载、后台预取、远程题图、图片复制或静默追踪。
 
 修改后运行：
 
 ```powershell
-python -m pytest -q tests/test_toys_contracts.py tests/test_moegirl_quiz_contracts.py tests/test_source_contracts.py tests/test_check_site.py
+python -m pytest -q tests/test_toys_contracts.py tests/test_moegirl_quiz_contracts.py tests/test_toy_generators_contracts.py tests/test_toy_challenges_contracts.py tests/test_source_contracts.py tests/test_check_site.py
 python scripts/translation_guard.py --check --production
+node --test tests/toy_challenges.logic.test.mjs
 ```
 
 ## 随笔
@@ -276,7 +274,7 @@ python scripts/translation_guard.py --check --production
 #### 更细的说明
 ```
 
-不要在正文重复文章标题，不要从二级标题直接跳到四级标题，也不要用加粗段落代替标题。新增、翻译或重排章节时，应同时检查侧边章节导航与手机端章节对话框；标题文字会参与生成公开片段锚点，已发布标题不要只为视觉效果改名。
+不要在正文重复文章标题，不要从二级标题直接跳到四级标题，也不要用加粗段落代替标题。新增、翻译或重排章节时，应同时检查宽屏侧边目录与较窄视口中的正文内折叠目录；标题文字会参与生成公开片段锚点，已发布标题不要只为视觉效果改名。
 
 所有随笔共用 `assets/css/main.scss` 中唯一一套 `.post-content` 排版。文章不得添加仅供自己使用的 CSS class、ID 或样式文件来调整字号、字距、列表、代码块和图片。中英文可以通过页面 `lang` 使用同一系统内的语言级规则，但不得按文章分叉。
 
@@ -313,7 +311,7 @@ revisions:
 
 ### 章节导航与资料说明
 
-阅读页会根据正文中的二级、三级标题自动生成导航：宽屏显示为正文左侧随阅读滚动保持可见的目录，手机端显示为“章节”按钮和对话框。正文里不要再手写“目录”小节，也不要为了凑目录强迫文章采用固定结构；没有足够标题时，导航会自动省略。
+阅读页会根据正文中的二级、三级标题自动生成导航：小于 `1536px` 时显示正文内原生折叠目录，从 `1536px` 起显示 `13rem` 的左侧粘性目录，并与 `72rem` 宽内容画布保持 `2rem` 间隔。标题、普通段落、列表、引用和脚注保持在 `50rem` 可读宽度内；题图、独立图片、表格、代码块、`figure` 与 Mermaid 最多使用 `72rem`。图片不会被强制放大超过自然尺寸，宽表格只在自身横向滚动，页面不得横向溢出。正文里不要再手写“目录”小节，也不要为了凑目录强迫文章采用固定结构；没有足够标题时，导航会自动省略。
 
 普通引用继续使用标准 Markdown 引用。只有补充资料、技术规格或来源说明才在引用块后加一行属性：
 
@@ -477,4 +475,4 @@ $env:SITE_URL='http://localhost:62091'
 npm run test:browser
 ```
 
-脚本覆盖桌面、641/640 响应式断点与两种手机宽度，以及中英文、搜索与标签交互、文章侧栏目录、移动端章节对话框、修订历史和公式、项目/论文/个人介绍索引、双语 404、对比度与旧 service worker 退役。
+脚本覆盖桌面、1536px 目录断点、641/640 导航断点与两种手机宽度，以及中英文、搜索与标签交互、文章宽度和折叠/侧栏目录、修订历史和公式、本地小玩意、项目/论文/个人介绍索引、双语 404、对比度与旧 service worker 退役。

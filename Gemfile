@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 gem 'jekyll', '= 4.4.1'
 
+# Windows does not ship an IANA zoneinfo directory. Keep Jekyll's configured
+# timezone available for local production builds without affecting Linux CI.
+gem 'tzinfo-data', platforms: %i[mingw x64_mingw mswin]
+
 # Core plugins that directly affect site building
 group :jekyll_plugins do
     gem 'jekyll-3rd-party-libraries'

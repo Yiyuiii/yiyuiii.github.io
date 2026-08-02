@@ -1,7 +1,5 @@
 (() => {
-  const trigger = document.querySelector("[data-article-section-trigger]");
-  const dialog = document.querySelector("[data-article-section-dialog]");
-  const closeButton = document.querySelector("[data-article-section-close]");
+  const inlineDisclosure = document.querySelector(".article-inline-toc");
   const navigations = Array.from(
     document.querySelectorAll("[data-article-navigation]"),
   );
@@ -11,8 +9,6 @@
     ),
   );
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const wideLayout = window.matchMedia("(min-width: 1180px)");
-  let sectionNavigationPending = false;
 
   const decodeHash = (value) => {
     if (!value || !value.startsWith("#")) return "";
@@ -51,34 +47,8 @@
     }
   };
 
-  if (trigger && dialog && closeButton) {
-    trigger.addEventListener("click", () => {
-      sectionNavigationPending = false;
-      dialog.showModal();
-      trigger.setAttribute("aria-expanded", "true");
-    });
-
-    closeButton.addEventListener("click", () => {
-      sectionNavigationPending = false;
-      dialog.close();
-    });
-
-    dialog.addEventListener("close", () => {
-      trigger.setAttribute("aria-expanded", "false");
-      if (!sectionNavigationPending) {
-        trigger.focus({ preventScroll: true });
-      }
-      sectionNavigationPending = false;
-    });
-
-    wideLayout.addEventListener("change", (event) => {
-      if (event.matches && dialog.open) {
-        sectionNavigationPending = true;
-        dialog.close();
-      }
-    });
-
-    for (const link of dialog.querySelectorAll('a[href^="#"]')) {
+  if (inlineDisclosure) {
+    for (const link of inlineDisclosure.querySelectorAll('a[href^="#"]')) {
       link.addEventListener("click", (event) => {
         const href = link.getAttribute("href");
         const targetId = decodeHash(href);
@@ -86,8 +56,7 @@
         if (!target) return;
 
         event.preventDefault();
-        sectionNavigationPending = true;
-        dialog.close();
+        inlineDisclosure.open = false;
         window.requestAnimationFrame(() => {
           window.history.pushState(null, "", href);
           target.scrollIntoView({

@@ -39,16 +39,15 @@ def test_home_copy_is_bilingual_structured_and_not_hardcoded_in_runtime_files():
         assert len(copy["guide"]["items"]) == 5
         assert set(copy["sections"]) == {
             "rotation",
-            "rotation_note",
             "rotation_fallback",
             "recent",
         }
     assert home["zh"]["sections"]["rotation"] == "随机发现"
     assert home["en"]["sections"]["rotation"] == "Random discovery"
-    assert home["zh"]["sections"]["rotation_note"] == "每次进入随机抽取，不记录访问"
-    assert home["en"]["sections"]["rotation_note"] == (
-        "Drawn at random on each visit, with no visit tracking"
-    )
+    assert home["zh"]["sections"]["recent"] == "最近更新"
+    assert home["en"]["sections"]["recent"] == "Recent updates"
+    assert "rotation_note" not in home["zh"]["sections"]
+    assert "rotation_note" not in home["en"]["sections"]
 
     runtime = "\n".join(
         text(path)
@@ -288,6 +287,7 @@ def test_home_template_keeps_semantics_without_javascript_and_uses_small_images(
     assert "home-feed.js" in layout
     assert "page.home" in layout
     assert "post.thumbnail | relative_url" not in include + item_include
+    assert "data-rotation-live-note" not in include
 
 
 def test_home_script_uses_unbiased_crypto_random_discovery_marker_dates_and_old_tag_urls():
@@ -302,6 +302,7 @@ def test_home_script_uses_unbiased_crypto_random_discovery_marker_dates_and_old_
     assert 'window.addEventListener("pageshow"' in script
     assert "event.persisted" in script
     assert "renderRandomCandidate()" in script
+    assert "data-rotation-live-note" not in script
     assert "recentIds" in script
     assert "selected.marker_date" in script
     assert "selected.marker_precision" in script

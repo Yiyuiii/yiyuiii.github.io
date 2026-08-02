@@ -13,12 +13,12 @@
 
 ## 当前事实状态
 
-- 站点使用 Jekyll 4.4.1、Ruby 3.3.5、Python 3.12 与 Node/Playwright。
+- 站点使用 Jekyll 4.4.1、Ruby 3.3.5、Python 3.12 与 Node/Playwright；Gemfile 在 Windows 平台显式启用 `tzinfo-data`，保证配置时区的本地生产构建不依赖系统 zoneinfo 目录。
 - GitHub Actions 工作流为 .github/workflows/deploy.yml；PR 只验证和上传 site-preview，master push 或在 master 上 `workflow_dispatch` 手动触发时，build 成功后 deploy。
-- _posts 保存当前文章；每篇文章用共享 `thumbnail` 与本地化 `article_cover.alt/caption` 声明显式阅读页题图，布局通过 `_includes/article-cover.liquid` 在正文前渲染。题图与普通正文图片样式相互独立，维护契约见 docs/article-cover-component.md。docs/asset-provenance.yml 按唯一正式封面关联中英文文章，并保存来源、许可、处理、SHA-256 与 160/320 px 索引派生规则。派生资产由 scripts/generate_post_thumbnails.py 预生成并提交，正文原图保留。
+- _posts 保存当前文章；每篇文章用共享 `thumbnail` 与本地化 `article_cover.alt/caption` 声明显式阅读页题图，布局通过 `_includes/article-cover.liquid` 在正文前渲染。题图与普通正文图片样式相互独立，维护契约见 docs/article-cover-component.md。阅读页正文使用 `50rem` 可读宽度，独立图片、表格、代码与题图最多使用 `72rem`；小于 `1536px` 使用正文内原生折叠目录，从 `1536px` 起使用 `13rem` 左侧粘性目录。docs/asset-provenance.yml 按唯一正式封面关联中英文文章，并保存来源、许可、处理、SHA-256 与 160/320 px 索引派生规则。派生资产由 scripts/generate_post_thumbnails.py 预生成并提交，正文原图保留。
 - _data/legacy_urls.yml、scripts/check_legacy_urls.py 与浏览器测试共同保护旧 URL。
 - `/` 与 `/en/` 是欢迎页，人工文案集中在 `_data/home.yml`；`/writing/` 与 `/en/writing/` 是随笔索引。`_data/home_feed.yml` 只维护三类内容的稳定引用，运行时按分类型标志日期排序：随笔取初稿日，项目取经 CI 对照的 GitHub `created_at` 香港自然日（只表示仓库创建，不声称创建时已公开），论文取带权威来源的最早公开记录；后续修订、本站整理、push、Star/Fork 不刷新日期，也不使用热度或类型配额排序。“随机发现”（英文 “Random discovery”）在每次载入、刷新或从 BFCache 恢复欢迎页时，从中英文共同存在且位于最近 8 项之外的候选中独立均匀抽取一项；中英文不承诺相同结果。抽样使用 `crypto.getRandomValues()` 和拒绝采样，不使用 `Math.random`、日期、访问历史、Cookie、存储或网络；无 JavaScript 或随机源不可用时保留预渲染的固定“浏览起点”。
-- `/toys/` 与 `/en/toys/` 是双语“小玩意”索引，人工内容集中在 `_data/toys.yml` 并由 `_includes/toy-index.liquid` 统一渲染。清单只列已经可用的轻量互动，允许安全 HTTPS 外链；未实现或外部接口仍在评估的想法不得伪装为现有功能。条目会自动进入当前语言站内搜索。萌娘百科角色问答从本地白名单随机出题；初始页面不得连接萌娘百科，只有用户明确点击后才请求一次官方 API 纯文本导言，并拒绝 HTTP 网络重定向。线索必须屏蔽候选标题片段、简称、外文名、罗马字与已知别称，并在作答后显示来源和许可说明；禁止恢复萌娘共享远程题图或本地复制图片。
+- `/toys/` 与 `/en/toys/` 是双语“小玩意”索引，人工标题、说明、关键词与分组集中在 `_data/toys.yml`，由 `_includes/toy-index.liquid` 渲染为单栏原生 `details` 清单；页面一级标题仅供语义与无障碍使用，不在视觉上重复显示。当前六项为萌娘百科角色猜猜、色差挑战、盲估十秒、反应时间、随机密码与随机数字；随机名字已移除。三个挑战和两个生成器只在当前页面本地运行，不联网、不保存结果；共同随机接口只接受 `crypto.getRandomValues()` 并用拒绝采样消除取模偏差，不得降级到 `Math.random`。未来的名画或角色猜猜若不能接入庞大、许可与稳定性可核验的外部数据集，就不要用手工固定小样本伪装为完整功能。萌娘百科问答是当前例外：从经人工核验的本地候选白名单构造四个选项，初始页面不连接萌娘百科，只有用户明确点击后才请求一次官方 API 的庞大外部条目库纯文本导言，并拒绝 HTTP 网络重定向；线索必须屏蔽候选标题片段、简称、外文名、罗马字与已知别称，作答后显示来源和许可说明，禁止恢复萌娘共享远程题图或本地复制图片。
 - 除双语 404 外，默认布局页面具有独立的明亮/夜晚主题与环境光：页眉外观按钮用 `yiyuiii.theme.v1` 保存严格的 `light` / `dark`；JavaScript 可用时左上头像用 `yiyuiii.sunlight.v1` 保存严格的环境光 `on` / `off`，明亮样式显示极慢旋转的暖日光，夜晚样式即时换为冷月晕与稀疏月光束，reduced-motion 停止旋转但保留静态光。两个偏好互不覆盖；无 JavaScript 时头像仍返回当前语言首页，外观/环境光按钮隐藏。
 - docs 已由 _config.yml 排除，不会生成公开页面。
 - 11 篇迁移前旧文已获得稳定 `uid`、`translation_key` 和显式 permalink；2 篇英文源位于 `/en/posts/`，原 URL 通过 legacy 重定向兼容。
@@ -57,6 +57,8 @@ npm run test:browser
 - 明暗主题、日光/月光背景与开关：docs/superpowers/specs/2026-08-01-sunlight-background.md
 - 首页标志日期证据：docs/home-feed-date-sources.md
 - 萌娘百科角色问答组件：docs/moegirl-quiz-component.md
+- 本地轻量挑战：docs/toy-challenges.md
+- 随机生成器：docs/toy-generators.md
 
 ## AI 历史总结
 

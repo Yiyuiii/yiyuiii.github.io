@@ -68,14 +68,23 @@ for (const viewport of viewports) {
   test(`welcome pages stay readable at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
     for (const [route, heading, pickLabel, recentLabel] of [
-      ["/", "你好，欢迎来到 yiyuiii", "随机发现", "近期内容"],
-      ["/en/", "Hello, welcome to yiyuiii", "Random discovery", "Recent items"],
+      ["/", "你好，欢迎来到 yiyuiii", "随机发现", "最近更新"],
+      ["/en/", "Hello, welcome to yiyuiii", "Random discovery", "Recent updates"],
     ]) {
       await page.goto(route);
       await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
       await expect(page.locator(".home-guide li")).toHaveCount(5);
       await expect(page.getByRole("heading", { level: 2, name: pickLabel })).toBeVisible();
       await expect(page.getByRole("heading", { level: 2, name: recentLabel })).toBeVisible();
+      await expect(page.locator("[data-rotation-live-note]")).toHaveCount(0);
+      expect(
+        await page.locator(".home-section__heading").evaluateAll(
+          (headings) => headings.every((node) => (
+            getComputedStyle(node).borderBottomStyle === "none"
+            || getComputedStyle(node).borderBottomWidth === "0px"
+          )),
+        ),
+      ).toBe(true);
       await expect(page.locator("[data-home-recent] > .home-feed-item")).toHaveCount(8);
       await expect(page.locator(".home-guide-arrows")).toHaveCount(0);
       expect(
@@ -348,27 +357,42 @@ test("localized toy indexes expose only live lightweight interactions", async ({
       moegirlRequests.push(request.url());
     }
   });
-  for (const [route, heading, homeHref] of [
-    ["/toys/", "小玩意", "/"],
-    ["/en/toys/", "Toys", "/en/"],
+  for (const [route, heading, groupHeadings] of [
+    ["/toys/", "小玩意", ["轻松挑战", "随机生成"]],
+    ["/en/toys/", "Toys", ["Quick challenges", "Random generators"]],
   ]) {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(route);
     await expect(page.locator(".page-header")).toHaveCount(0);
-    await expect(
-      page.getByRole("heading", { level: 1, name: heading, exact: true }),
-    ).toBeVisible();
-    expect(await page.locator(".toy-grid > .toy-card").count()).toBeGreaterThanOrEqual(3);
-    await expect(page.locator("#random-discovery .toy-card__action")).toHaveAttribute(
-      "href",
-      homeHref,
-    );
-    await expect(page.locator("#theme-and-light a")).toHaveCount(0);
+    const pageTitle = page.locator(".toy-index__header > h1.sr-only");
+    await expect(pageTitle).toHaveText(heading);
+    expect(
+      await pageTitle.evaluate((node) => {
+        const style = getComputedStyle(node);
+        const box = node.getBoundingClientRect();
+        return style.position === "absolute" && box.width <= 1 && box.height <= 1;
+      }),
+    ).toBe(true);
+    await expect(page.locator(".toy-group__title")).toHaveText(groupHeadings);
+    const disclosures = page.locator(".toy-group__items > details.toy-entry");
+    await expect(disclosures).toHaveCount(6);
+    expect(await disclosures.evaluateAll((items) => items.map((item) => item.id))).toEqual([
+      "moegirl-quiz",
+      "color-challenge",
+      "ten-second",
+      "reaction-time",
+      "random-password",
+      "random-number",
+    ]);
+    expect(
+      await disclosures.evaluateAll((items) => {
+        const boxes = items.map((item) => item.getBoundingClientRect());
+        return boxes.every((box, index) => index === 0 || box.top > boxes[index - 1].top);
+      }),
+    ).toBe(true);
+    await expect(page.locator(".toy-grid, .toy-card")).toHaveCount(0);
+    expect(await disclosures.evaluateAll((items) => items.every((item) => !item.open))).toBe(true);
     await expect(page.locator(".moegirl-quiz[data-moegirl-quiz]")).toHaveCount(1);
-    await expect(page.locator("#moegirl-quiz .toy-card__action")).toHaveAttribute(
-      "href",
-      `${route}#moegirl-quiz-title`,
-    );
     await expect(page.locator(".moegirl-quiz img")).toHaveCount(0);
     await expect(page.locator("[data-quiz-clue]")).toBeHidden();
     await expect(page.locator("script[src*='mathjax'], script[src*='al_math']")).toHaveCount(0);
@@ -382,6 +406,12 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     await expect(
       page.locator('.site-nav a[aria-current="page"]'),
     ).toHaveAttribute("href", route);
+
+    await page.evaluate(() => {
+      window.location.hash = "random-password";
+    });
+    await expect(page.locator("#random-password")).toHaveAttribute("open", "");
+
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
     ).toBe(false);
@@ -831,7 +861,7 @@ test("publication recognition wraps without horizontal overflow at 320px", async
 test("article desktop left rail stays sticky and readable while article controls work", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.setViewportSize({ width: 1536, height: 900 });
   await page.goto(
     "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
   );
@@ -840,7 +870,7 @@ test("article desktop left rail stays sticky and readable while article controls
   await expect(page.locator(".article-side-toc")).toBeVisible();
   await expect(page.locator(".article-side-toc .toc-h2")).toHaveCount(3);
   await expect(page.locator(".article-side-toc .toc-h3")).toHaveCount(10);
-  await expect(page.locator(".article-section-trigger")).toBeHidden();
+  await expect(page.locator(".article-inline-toc")).toBeHidden();
 
   const desktopRail = await page.evaluate(() => {
     const rail = document.querySelector(".article-side-toc");
@@ -931,19 +961,22 @@ test("article desktop left rail stays sticky and readable while article controls
     .toBe(stickyTop);
   await expect(
     page.locator(
-      '.article-section-dialog .toc-h3 a[aria-current="location"]',
+      '.article-inline-toc .toc-h3 a[aria-current="location"]',
     ),
   ).toHaveCount(1);
 
   const readingWidth = await page.locator(".post-content").evaluate((node) => {
     const box = node.getBoundingClientRect();
+    const columnBox = node.closest(".article-column").getBoundingClientRect();
     return {
       width: box.width,
-      centerDelta: Math.abs(box.left + box.width / 2 - innerWidth / 2),
+      centerDelta: Math.abs(
+        box.left + box.width / 2 - (columnBox.left + columnBox.width / 2)
+      ),
       overflow: document.documentElement.scrollWidth > innerWidth,
     };
   });
-  expect(readingWidth.width).toBeGreaterThan(570);
+  expect(readingWidth.width).toBeGreaterThanOrEqual(1150);
   expect(readingWidth.centerDelta).toBeLessThanOrEqual(1);
   expect(readingWidth.overflow).toBe(false);
 });
@@ -1132,7 +1165,7 @@ for (const viewport of [
   { width: 390, height: 844 },
   { width: 320, height: 800 },
 ]) {
-  test(`article mobile sections dialog works at ${viewport.width}px`, async ({
+  test(`article inline sections disclosure works at ${viewport.width}px`, async ({
     page,
   }) => {
     await page.setViewportSize(viewport);
@@ -1141,23 +1174,19 @@ for (const viewport of [
     );
 
     await expect(page.locator(".article-side-toc")).toBeHidden();
-    const trigger = page.locator("[data-article-section-trigger]");
-    const dialog = page.locator("[data-article-section-dialog]");
-    await expect(trigger).toBeVisible();
-    await trigger.click();
-    await expect(dialog).toHaveAttribute("open", "");
-    await expect(dialog.locator(".toc-h2")).toHaveCount(3);
-    await expect(dialog.locator(".toc-h3")).toHaveCount(10);
+    const disclosure = page.locator(".article-inline-toc");
+    const summary = disclosure.locator("summary");
+    await expect(disclosure).toBeVisible();
+    await expect(disclosure).not.toHaveAttribute("open", "");
+    await summary.click();
+    await expect(disclosure).toHaveAttribute("open", "");
+    await expect(disclosure.locator(".toc-h2")).toHaveCount(3);
+    await expect(disclosure.locator(".toc-h3")).toHaveCount(10);
 
-    await page.keyboard.press("Escape");
-    await expect(dialog).not.toHaveAttribute("open", "");
-    await expect(trigger).toBeFocused();
-
-    await trigger.click();
-    const subsection = dialog.locator(".toc-h3 a").first();
+    const subsection = disclosure.locator(".toc-h3 a").first();
     const targetId = await subsection.getAttribute("href");
     await subsection.click();
-    await expect(dialog).not.toHaveAttribute("open", "");
+    await expect(disclosure).not.toHaveAttribute("open", "");
     expect(
       await page.evaluate((hash) => {
         const target = document.getElementById(
@@ -1224,11 +1253,11 @@ test("search, paired language switch, and article reading controls work", async 
 
   await page.goto("/");
   await searchButton.click();
-  await input.fill("月光");
+  await input.fill("随机密码");
   await expect(page.locator("#search-results a")).toHaveCount(1);
   await expect(page.locator("#search-results a")).toHaveAttribute(
     "href",
-    "/toys/#theme-and-light",
+    "/toys/#random-password",
   );
   await input.fill("萌娘百科");
   await expect(page.locator("#search-results a")).toHaveCount(1);

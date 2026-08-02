@@ -165,6 +165,70 @@ def valid_site(root):
             f'<div data-home-recent>{recent}</div></div>'
         )
 
+    def toy_index(language):
+        localized = {
+            "zh": {
+                "page": "小玩意",
+                "quick": "轻松挑战",
+                "random": "随机生成",
+                "items": [
+                    ("moegirl-quiz", "萌娘百科角色猜猜"),
+                    ("color-challenge", "色差挑战"),
+                    ("ten-second", "盲估十秒"),
+                    ("reaction-time", "反应时间"),
+                    ("random-password", "随机密码"),
+                    ("random-number", "随机数字"),
+                ],
+            },
+            "en": {
+                "page": "Toys",
+                "quick": "Quick challenges",
+                "random": "Random generators",
+                "items": [
+                    ("moegirl-quiz", "Moegirlpedia character quiz"),
+                    ("color-challenge", "Color difference challenge"),
+                    ("ten-second", "Ten-second estimate"),
+                    ("reaction-time", "Reaction time"),
+                    ("random-password", "Random password"),
+                    ("random-number", "Random numbers"),
+                ],
+            },
+        }[language]
+
+        entries = []
+        for index, (item_id, title) in enumerate(localized["items"]):
+            level = 2 if index == 0 else 3
+            component = (
+                '<div class="moegirl-quiz" data-moegirl-quiz>'
+                '<p data-quiz-clue-text></p></div>'
+                if item_id == "moegirl-quiz"
+                else "<div>Ready.</div>"
+            )
+            entries.append(
+                f'<details id="{item_id}" class="toy-entry">'
+                f'<summary><h{level} id="{item_id}-title">'
+                f'<span class="toy-entry__title">{title}</span>'
+                '<small class="toy-entry__description">Description.</small>'
+                f'</h{level}></summary><div class="toy-entry__body">'
+                f'{component}</div></details>'
+            )
+
+        return (
+            '<div class="toy-index"><header class="toy-index__header">'
+            f'<h1 class="sr-only">{localized["page"]}</h1>'
+            '<p class="toy-index__introduction">Introduction.</p></header>'
+            '<div class="toy-list">'
+            '<section class="toy-group" data-toy-group="ungrouped">'
+            f'<div class="toy-group__items">{entries[0]}</div></section>'
+            '<section class="toy-group" data-toy-group="quick-challenges">'
+            f'<h2 class="toy-group__title">{localized["quick"]}</h2>'
+            f'<div class="toy-group__items">{"".join(entries[1:4])}</div></section>'
+            '<section class="toy-group" data-toy-group="random-generators">'
+            f'<h2 class="toy-group__title">{localized["random"]}</h2>'
+            f'<div class="toy-group__items">{"".join(entries[4:])}</div></section>'
+            "</div></div>"
+        )
+
     write(root / "index.html", page("zh", zh_nav, home_feed("zh"), "/"))
     write(root / "en" / "index.html", page("en", en_nav, home_feed("en"), "/en/"))
 
@@ -254,41 +318,8 @@ def valid_site(root):
         root / "en" / "about" / "index.html",
         page("en", en_nav, about_profile("en"), "/en/about/"),
     )
-    zh_toys = (
-        '<div class="toy-index"><header class="toy-index__header">'
-        '<h1>小玩意</h1></header><div class="toy-grid">'
-        '<article id="random-discovery" class="toy-card">'
-        '<div class="toy-card__meta">站内发现</div><h2>随机发现</h2>'
-        '<p>每次进入随机抽取。</p><a class="toy-card__action" href="/">去欢迎页</a>'
-        '</article><article id="theme-and-light" class="toy-card">'
-        '<div class="toy-card__meta">页面氛围</div><h2>明暗主题与日月光效</h2>'
-        '<p>切换主题和环境光。</p><p class="toy-card__action">在页眉试试</p>'
-        '</article><article id="moegirl-quiz" class="toy-card">'
-        '<div class="toy-card__meta">角色问答</div><h2>萌娘百科角色猜猜</h2>'
-        '<p>点击后开始问答。</p><a class="toy-card__action" '
-        'href="/toys/#moegirl-quiz-title">开始猜猜</a></article></div>'
-        '<section class="moegirl-quiz" data-moegirl-quiz>'
-        '<h2 id="moegirl-quiz-title">根据线索，猜猜这是谁？</h2>'
-        '<p data-quiz-clue-text></p></section></div>'
-    )
-    en_toys = (
-        '<div class="toy-index"><header class="toy-index__header">'
-        '<h1>Toys</h1></header><div class="toy-grid">'
-        '<article id="random-discovery" class="toy-card">'
-        '<div class="toy-card__meta">Site discovery</div><h2>Random discovery</h2>'
-        '<p>Draw on every visit.</p><a class="toy-card__action" href="/en/">'
-        'Go to welcome</a></article>'
-        '<article id="theme-and-light" class="toy-card">'
-        '<div class="toy-card__meta">Page ambience</div><h2>Light and dark</h2>'
-        '<p>Switch theme and ambience.</p><p class="toy-card__action">Try the header</p>'
-        '</article><article id="moegirl-quiz" class="toy-card">'
-        '<div class="toy-card__meta">Character quiz</div><h2>Moegirlpedia character quiz</h2>'
-        '<p>Start a character quiz.</p><a class="toy-card__action" '
-        'href="/en/toys/#moegirl-quiz-title">Start guessing</a></article></div>'
-        '<section class="moegirl-quiz" data-moegirl-quiz>'
-        '<h2 id="moegirl-quiz-title">Who is this character?</h2>'
-        '<p data-quiz-clue-text></p></section></div>'
-    )
+    zh_toys = toy_index("zh")
+    en_toys = toy_index("en")
     write(root / "toys" / "index.html", page("zh", zh_nav, zh_toys, "/toys/"))
     write(
         root / "en" / "toys" / "index.html",

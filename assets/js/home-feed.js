@@ -63,7 +63,6 @@
     const selected = candidates[selectedIndex];
 
     document.querySelector("[data-rotation-live-title]")?.removeAttribute("hidden");
-    document.querySelector("[data-rotation-live-note]")?.removeAttribute("hidden");
     document.querySelector("[data-rotation-fallback-title]")?.setAttribute("hidden", "");
 
     card.dataset.stableId = selected.id;

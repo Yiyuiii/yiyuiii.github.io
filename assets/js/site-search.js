@@ -86,8 +86,30 @@
       }
     };
 
+    const followResult = (event) => {
+      const link = event.target.closest("a[href]");
+      if (!link || !results.contains(link) || link.target === "_blank") return;
+
+      const destination = new URL(link.href, window.location.href);
+      const sameDocument = destination.origin === window.location.origin
+        && destination.pathname === window.location.pathname
+        && destination.search === window.location.search;
+      close();
+      if (!sameDocument || !destination.hash) return;
+
+      event.preventDefault();
+      if (window.location.hash !== destination.hash) {
+        window.history.pushState(null, "", destination);
+      }
+      window.dispatchEvent(new CustomEvent("yiyuiii:open-hash-target", {
+        detail: { hash: destination.hash },
+      }));
+      document.getElementById(decodeURIComponent(destination.hash.slice(1)))?.scrollIntoView();
+    };
+
     toggle.addEventListener("click", open);
     closeButton.addEventListener("click", close);
+    results.addEventListener("click", followResult);
     input.addEventListener("input", render);
     input.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {

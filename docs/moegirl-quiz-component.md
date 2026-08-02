@@ -2,7 +2,7 @@
 
 ## 组件边界
 
-`_includes/toy-moegirl-quiz.liquid` 是嵌入双语“小玩意”页面的渐进增强组件，自己加载 `assets/js/moegirl-quiz.js`。文案、API 地址、超时和白名单集中在 `_data/moegirl_quiz.yml`；中英文界面必须同步修改。
+`_includes/toy-moegirl-quiz.liquid` 是嵌入双语“小玩意”单栏折叠清单的渐进增强组件，自己加载 `assets/js/moegirl-quiz.js`。折叠条目的可见标题和简述由 `_data/toys.yml` 统一提供，组件自身不重复标题；组件文案、API 地址、超时和候选白名单集中在 `_data/moegirl_quiz.yml`，中英文界面必须同步修改。
 
 ## 出题与网络行为
 

@@ -1,0 +1,97 @@
+password:
+  zh:
+    local_note: 密码只在当前页面中生成，不会发送、保存或记录。真实账户仍建议交给可信的密码管理器保管。
+    length_label: 长度
+    length_help: 可选 8–128；少于 16 位时会提示偏短。
+    groups_label: 使用的字符
+    lowercase: 小写字母
+    uppercase: 大写字母
+    digits: 数字
+    symbols: 常用符号
+    exclude_ambiguous: 排除容易混淆的字符
+    generate: 生成密码
+    regenerate: 重新生成
+    show: 显示密码
+    hide: 隐藏密码
+    copy: 复制
+    output_label: 生成的密码
+    generated: 已生成一个新密码。
+    copied: 已复制密码。
+    copy_failed: 无法写入剪贴板，已选中密码，请手动复制。
+    short_warning: 这个长度偏短；建议至少使用 16 位。
+    group_error: 请至少选择一种字符。
+    length_error: 长度必须是 8–128 之间的整数，且不能少于所选字符组数量。
+    random_error: 当前浏览器无法提供安全随机数，因此没有生成密码。
+    no_js: 这个生成器需要 JavaScript；本站不会为此加载外部脚本。
+  en:
+    local_note: The password is generated only in this page and is never sent, saved, or logged. A trusted password manager is still the better place to keep real account passwords.
+    length_label: Length
+    length_help: Choose 8–128 characters; lengths below 16 are flagged as short.
+    groups_label: Character groups
+    lowercase: Lowercase letters
+    uppercase: Uppercase letters
+    digits: Numbers
+    symbols: Common symbols
+    exclude_ambiguous: Exclude easily confused characters
+    generate: Generate password
+    regenerate: Generate again
+    show: Show password
+    hide: Hide password
+    copy: Copy
+    output_label: Generated password
+    generated: A new password has been generated.
+    copied: Password copied.
+    copy_failed: Clipboard access failed. The password is selected for manual copying.
+    short_warning: This length is short; at least 16 characters is recommended.
+    group_error: Select at least one character group.
+    length_error: Length must be an integer from 8 to 128 and at least the number of selected groups.
+    random_error: This browser cannot provide secure randomness, so no password was generated.
+    no_js: This generator needs JavaScript; no external script is loaded for it.
+
+number:
+  zh:
+    local_note: 生成结果是闭区间内的均匀随机整数，只在当前页面中计算。
+    minimum: 最小值
+    maximum: 最大值
+    count: 数量
+    unique: 结果不重复
+    sort: 按从小到大排列
+    presets_label: 快捷范围
+    coin: 硬币（0–1）
+    d6: D6
+    d20: D20
+    generate: 生成数字
+    regenerate: 重新生成
+    copy: 复制全部
+    output_label: 生成的随机数字
+    generated: 已生成 {count} 个随机数字。
+    copied: 已复制全部结果。
+    copy_failed: 无法写入剪贴板，已选中结果，请手动复制。
+    range_error: 最小值和最大值必须是安全整数，且闭区间长度不能超过安全整数范围。
+    count_error: 数量必须是 1–100 之间的整数。
+    unique_error: 选择不重复时，数量不能大于区间内可用数字的数量。
+    random_error: 当前浏览器无法提供安全随机数，因此没有生成数字。
+    no_js: 这个生成器需要 JavaScript；本站不会为此加载外部脚本。
+  en:
+    local_note: Results are uniformly sampled integers from the inclusive range and are calculated only in this page.
+    minimum: Minimum
+    maximum: Maximum
+    count: Count
+    unique: No repeated results
+    sort: Sort from low to high
+    presets_label: Quick ranges
+    coin: Coin (0–1)
+    d6: D6
+    d20: D20
+    generate: Generate numbers
+    regenerate: Generate again
+    copy: Copy all
+    output_label: Generated random numbers
+    generated: Generated {count} random numbers.
+    copied: All results copied.
+    copy_failed: Clipboard access failed. The results are selected for manual copying.
+    range_error: Minimum and maximum must be safe integers, and the inclusive range must fit within the safe-integer range.
+    count_error: Count must be an integer from 1 to 100.
+    unique_error: With unique results enabled, count cannot exceed the number of integers in the range.
+    random_error: This browser cannot provide secure randomness, so no numbers were generated.
+    no_js: This generator needs JavaScript; no external script is loaded for it.
