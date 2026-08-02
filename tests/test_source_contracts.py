@@ -38,15 +38,19 @@ def test_site_text_is_parallel_and_contains_approved_navigation():
 
     validate_site_text(data)
     assert data["zh"]["nav"] == {
+        "home": "欢迎",
         "writing": "随笔",
         "github": "GitHub",
         "papers": "论文",
+        "toys": "小玩意",
         "about": "关于yiyuiii",
     }
     assert data["en"]["nav"] == {
+        "home": "Welcome",
         "writing": "Writing",
         "github": "GitHub",
         "papers": "Papers",
+        "toys": "Toys",
         "about": "About yiyuiii",
     }
     assert data["zh"]["revision"] == {
@@ -75,19 +79,23 @@ def test_site_text_is_parallel_and_contains_approved_navigation():
     assert "about_links" not in data["en"]
 
 
-def test_header_has_avatar_centered_navigation_search_and_language_action():
+def test_header_has_avatar_centered_navigation_search_theme_and_language_actions():
     header = text("_includes/header.liquid")
 
     assert "site-brand__avatar" in header
     assert "android-chrome-256x256.png" in header
     assert "<nav" in header and "site-nav" in header
+    assert "text.nav.home" in header
     assert "text.nav.writing" in header
     assert "text.nav.github" in header
     assert "text.nav.papers" in header
+    assert "text.nav.toys" in header
     assert "text.nav.about" in header
     assert 'id="search-toggle"' in header
     assert "language-switch" in header
-    assert "theme-toggle" not in header
+    assert 'id="theme-toggle"' in header
+    assert "site-brand__avatar-toggle" in header
+    assert "site-brand__name" in header
 
 
 def test_document_language_uses_page_value_and_google_fonts_are_absent():
@@ -141,6 +149,8 @@ def test_index_and_profile_pages_declare_their_schema_semantics():
         "_pages/projects.en.md": "CollectionPage",
         "_pages/publications.md": "CollectionPage",
         "_pages/publications.en.md": "CollectionPage",
+        "_pages/toys.md": "CollectionPage",
+        "_pages/toys.en.md": "CollectionPage",
         "_pages/archives.md": "CollectionPage",
         "_pages/archives.en.md": "CollectionPage",
         "_pages/tags.md": "CollectionPage",
@@ -180,14 +190,14 @@ def test_head_allows_only_used_cdn_fonts_and_production_favicons():
     }
 
 
-def test_fixed_light_shell_provides_the_theme_api_required_by_mermaid():
+def test_site_theme_shell_provides_the_dynamic_api_required_by_mermaid():
     layout = text("_layouts/default.liquid")
     compatibility = text("assets/js/theme-compat.js")
 
     assert "theme-compat.js" in layout
     assert layout.index("theme-compat.js") < layout.index("scripts.liquid")
     assert "window.determineComputedTheme" in compatibility
-    assert 'return "light"' in compatibility
+    assert 'dataset.theme === "dark" ? "dark" : "light"' in compatibility
 
 
 def test_nested_content_includes_bind_their_page_language_locally():
@@ -230,6 +240,10 @@ def test_search_uses_the_current_publication_language():
     assert "publication.authors[lang_key]" in include
     assert "publication.venue[lang_key]" in include
     assert "publication.recognition.label[lang_key]" in include
+    assert "site.data.toys.items" in include
+    assert "toy.title[lang_key]" in include
+    assert "toy.keywords[lang_key]" in include
+    assert "text.urls.toys" in include
 
 
 def test_verified_publication_recognition_follows_the_venue():

@@ -7,14 +7,19 @@
 {% if page.layout != 'not-found' %}
   <script>
     (function () {
-      var saved = null;
+      var sunlight = null;
+      var theme = null;
       try {
-        saved = localStorage.getItem("yiyuiii.sunlight.v1");
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
       } catch (error) {
-        saved = null;
+        sunlight = null;
+        theme = null;
       }
-      saved = saved === "on" || saved === "off" ? saved : "on";
-      document.documentElement.dataset.sunlight = saved === "off" ? "off" : "on";
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
     })();
   </script>
 {% endif %}

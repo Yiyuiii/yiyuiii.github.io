@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Callable, Mapping
+from zoneinfo import ZoneInfo
 
 import yaml
 from markdown_it import MarkdownIt
@@ -27,6 +28,8 @@ ALLOWLIST_PATH = ROOT / "_data" / "project_repositories.yml"
 CACHE_PATH = ROOT / "_data" / "project_cache.yml"
 RUNTIME_PATH = ROOT / "_data" / "project_runtime.yml"
 RETRYABLE_STATUS = {403, 429, 500, 502, 503, 504}
+HONG_KONG = ZoneInfo("Asia/Hong_Kong")
+DATE_MARKER_KEYS = {"date", "precision", "source_url", "source_field"}
 Transport = Callable[[str, Mapping[str, str]], "GitHubResponse"]
 
 
@@ -259,20 +262,54 @@ def _valid_translations(
     return descriptions
 
 
-def _parse_updated_at(value) -> datetime:
+def _parse_github_timestamp(value, field: str) -> datetime:
     if not isinstance(value, str) or not value:
-        raise PublicRepositoryError("repository updated_at is missing")
+        raise PublicRepositoryError(f"repository {field} is missing")
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError as error:
         raise PublicRepositoryError(
-            f"repository updated_at is invalid: {value}"
+            f"repository {field} is invalid: {value}"
         ) from error
     if parsed.tzinfo is None:
         raise PublicRepositoryError(
-            f"repository updated_at has no timezone: {value}"
+            f"repository {field} has no timezone: {value}"
         )
     return parsed
+
+
+def _parse_updated_at(value) -> datetime:
+    return _parse_github_timestamp(value, "updated_at")
+
+
+def validate_created_marker(config: Mapping, metadata: Mapping) -> None:
+    """Verify a committed repository-created marker against GitHub created_at."""
+
+    record = config.get("created")
+    if record is None:
+        return
+    if not isinstance(record, Mapping) or set(record) != DATE_MARKER_KEYS:
+        raise PublicRepositoryError(
+            "repository created must contain exactly "
+            + ", ".join(sorted(DATE_MARKER_KEYS))
+        )
+
+    repository = config["repository"]
+    expected_url = f"{API_ROOT}/repos/{repository}"
+    if record.get("precision") != "day":
+        raise PublicRepositoryError("GitHub repository created precision must be day")
+    if record.get("source_url") != expected_url or record.get("source_field") != "created_at":
+        raise PublicRepositoryError(
+            "GitHub repository created source must be its API created_at"
+        )
+
+    created_at = _parse_github_timestamp(metadata.get("created_at"), "created_at")
+    expected_date = created_at.astimezone(HONG_KONG).date().isoformat()
+    if str(record.get("date")) != expected_date:
+        raise PublicRepositoryError(
+            f"{repository} created date {record.get('date')} does not match "
+            f"created_at in Asia/Hong_Kong ({expected_date})"
+        )
 
 
 def sort_runtime_projects(items: list[dict]) -> list[dict]:
@@ -352,6 +389,7 @@ def sync_records(
             transport=transport,
         )
         validate_repository(metadata)
+        validate_created_marker(config, metadata)
         readme_payload = request_json(
             _readme_url(repository, readme_path),
             token=token,

@@ -1,0 +1,38 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign toys = site.data.toys %}
+{% assign copy = toys.page[lang_key] %}
+
+<div class="toy-index">
+  <header class="toy-index__header">
+    <p class="toy-index__eyebrow">{{ copy.eyebrow }}</p>
+    <h1>{{ copy.title }}</h1>
+    <p>{{ copy.introduction }}</p>
+  </header>
+
+  <div class="toy-grid">
+    {% for toy in toys.items %}
+      {% assign toy_href = nil %}
+      {% if toy.href %}{% assign toy_href = toy.href[lang_key] %}{% endif %}
+      <article id="{{ toy.id | escape }}" class="toy-card">
+        <div class="toy-card__meta">
+          <span>{{ toy.kind[lang_key] }}</span>
+          <span>{{ copy.available }}</span>
+        </div>
+        <h2>{{ toy.title[lang_key] }}</h2>
+        <p>{{ toy.description[lang_key] }}</p>
+        {% if toy_href %}
+          <a
+            class="toy-card__action"
+            href="{% if toy.external %}{{ toy_href }}{% else %}{{ toy_href | relative_url }}{% endif %}"
+            {% if toy.external %}target="_blank" rel="noopener noreferrer"{% endif %}
+          >{{ toy.action[lang_key] }} <span aria-hidden="true">→</span></a>
+        {% else %}
+          <p class="toy-card__action toy-card__action--hint">{{ toy.action[lang_key] }}</p>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+
+  {% include toy-moegirl-quiz.liquid %}
+</div>

@@ -4,25 +4,32 @@
 
 ## 欢迎页与内容流
 
-`/` 与 `/en/` 是中英文欢迎页，所有人工欢迎文案集中在 `_data/home.yml`。这里维护欢迎标题、介绍、页眉功能指引、“今日轮换 / 浏览起点 / 最近整理”等分区文字、内容类型名称和无 JavaScript 说明；不要把这些可见文字写进 `_includes/home-feed.liquid`、`assets/js/home-feed.js` 或 CSS。两种语言必须保持完全相同的键、列表结构和指引目标。
+`/` 与 `/en/` 是中英文欢迎页，所有人工欢迎文案集中在 `_data/home.yml`。这里维护欢迎标题、介绍、页眉功能指引、“随机发现 / 浏览起点 / 近期内容”等分区文字、内容类型名称和无 JavaScript 说明；不要把这些可见文字写进 `_includes/home-feed.liquid`、`assets/js/home-feed.js` 或 CSS。两种语言必须保持完全相同的键、列表结构和指引目标。
 
 `/writing/` 与 `/en/writing/` 才是随笔索引。左上品牌链接回当前语言欢迎页，页顶“随笔 / Writing”进入对应索引；旧 `/?tag=...` 在 JavaScript 可用时会保留完整 query 与 hash 迁移到随笔索引，无 JavaScript 时欢迎页提供自然入口。
 
-欢迎页的混合内容流只在 `_data/home_feed.yml` 维护稳定引用和 `feed_date`，不重复抄写标题、摘要或 URL。每条记录只能有：
+欢迎页的混合内容流只在 `_data/home_feed.yml` 维护稳定引用，不重复抄写标题、摘要、URL 或日期。每条记录只能有：
 
 ```yaml
 - id: "writing:202302032000"
   kind: writing
   ref: "202302032000"
-  feed_date: 2026-07-31
 ```
 
 - `writing` 的 `ref` 是文章 `uid`；`project` 是 `owner/repository`；`publication` 是论文 `key`。
 - `id` 必须严格等于 `<kind>:<ref>`，创建后不得改变。
-- `feed_date` 表示内容首次进入本站，或最近一次在本站发生实质整理的日期。普通 GitHub push、Star/Fork 变化、构建更新和只改错别字不得刷新日期。
+- 首页统一显示并按 `marker_date` 排序；这个运行时标志日期从内容自己的来源解析，不在首页清单手填：
+  - 随笔：有 `revisions` 时取第一条初稿日期，否则取文章 `date`；第一条修订日期必须和 `date` 相同。`uid` 只是稳定身份，不承载日期语义，不能从 UID 或文件名推算日期。
+  - 项目：取 `_data/project_repositories.yml` 的 `created`，其日期由 `scripts/sync_projects.py` 在每次 CI 中和当前公开仓库的 GitHub API `created_at` 对照，再换算为香港自然日；它只表示仓库创建，不证明创建时已经公开。
+  - 论文：取 `_data/publications.yml` 的 `first_public`；日期、精度、权威来源 URL 和来源字段必须一起维护。
+- `created` 与 `first_public` 记录都固定包含 `date`、`precision`、`source_url`、`source_field`。当前条目都具有到日证据并使用 `precision: day`。若未来权威来源只能确认年份，必须用 `precision: year` 和 `YYYY`，页面只显示年份；不得伪造 1 月 1 日。
 - 所有公开来源都必须恰好出现一次；不得增加 `featured`、`priority`、`score`、类型配额或其它隐性排序字段。
-- 运行时严格按 `feed_date` 降序、同日 `id` 升序，显示最近 8 项。同日内容集中属于真实日期与稳定规则的结果，不要为页面观感人工改日期。
-- “今日轮换”只从中英文都有内容、且不在任一语言最近 8 项中的共同身份选择；使用香港日期轮换，不记录访问。
+- 运行时严格按标志日期降序、同日 `id` 升序，显示最近 8 项。年精度条目排在同年所有已知到日条目之后，再按 `id` 稳定排序；这个位置只代表日期精度不足，不暗示 1 月 1 日。
+- “随机发现”（英文 “Random discovery”）只从中英文都有内容、且不在任一语言最近 8 项中的共同身份抽取。每次载入或刷新欢迎页都会重新抽取；页面从浏览器 BFCache 恢复时也会重新抽取。中英文页面各自独立抽取，不承诺相同身份，连续两次也可能合理地抽到同一项。
+- 抽样使用浏览器 `crypto.getRandomValues()` 产生 32 位无符号整数，并通过拒绝采样消除直接取模的偏差。不要改用 `Math.random`，也不要使用日期、手写随机表或访问历史影响结果。
+- 随机发现只读取构建产物中的候选列表，不记录访问，不使用 Cookie、`localStorage`、`sessionStorage` 或外部请求。禁用 JavaScript、候选为空或随机源不可用时显示预渲染的固定“浏览起点”，不伪装成随机结果。
+- 后续修订、GitHub push、Star/Fork、本站构建与整理日期都不得改变“近期内容”顺序或随机候选边界。
+- 当前 25 条日期及其来源见 `docs/home-feed-date-sources.md`；修改日期字段时必须同步复核该清单与契约测试。
 
 修改欢迎文案或内容流后运行：
 
@@ -193,11 +200,57 @@ git diff --check
 
 中文与英文短文案都在 `_data/site_text.yml`。两种语言必须保留完全相同的键：
 
+主导航固定按“欢迎｜随笔｜GitHub｜论文｜小玩意｜关于yiyuiii”的顺序展示；英文使用同样的六项结构。欢迎页和“小玩意”都是正式导航目的地，因此对应中英文页面必须分别声明 `nav_key: home` 与 `nav_key: toys`，让当前页只标记一个 `aria-current="page"`。修改导航后要同时检查 820、640、390 与 320 像素宽度，不能让链接横向溢出。
+
 ```powershell
 python scripts/translation_guard.py --check --production
 ```
 
 404 页的中英文标题、说明和返回链接也在这里维护。`_pages/404.md` 只声明公开路径，`_layouts/not-found.liquid` 会根据缺失 URL 是否以 `/en/` 开头选择一种语言显示；不要恢复自动跳转，否则英文缺失路径会被带回中文首页。
+
+## 小玩意索引
+
+`/toys/` 与 `/en/toys/` 共用 `_includes/toy-index.liquid`，所有可见内容集中在 `_data/toys.yml`。页面只收录已经能在生产站使用的轻量互动；尚未实现、依赖接口仍在评估或只有想法的条目不要先写成“可用”。其中 `page.zh/en` 保存页标题、引言和状态文案，`items` 保存同一份语言无关顺序下的双语条目。
+
+新增条目时复制一个完整记录，并维护以下字段：
+
+```yaml
+- id: example-toy
+  kind:
+    zh: 轻量实验
+    en: Lightweight experiment
+  title:
+    zh: 示例小玩意
+    en: Example toy
+  description:
+    zh: 准确说明它现在能做什么。
+    en: Describe exactly what it can do now.
+  action:
+    zh: 打开小玩意
+    en: Open the toy
+  keywords:
+    zh: [示例, 互动]
+    en: [example, interactive]
+  href:
+    zh: /toys/example/
+    en: /en/toys/example/
+  external: false
+```
+
+- `id` 只用小写英文、数字与连字符，创建后保持稳定；它同时是页面锚点和搜索结果目标。
+- `kind`、`title`、`description`、`action`、`keywords` 必须完整提供中英文，两个页面始终按同一 `items` 顺序渲染。
+- 站内功能用根路径开头的本地 URL，并设置 `external: false`。无需跳转、直接在页眉操作的功能可把 `href` 写成 `null`。
+- 外部功能必须使用 HTTPS，并设置 `external: true`；渲染器会自动增加新窗口和隔离属性。不要填入需要泄露本站访问数据、密钥或私人信息的地址。
+- 搜索索引会自动读取每条记录的标题、说明和关键词，不要在搜索模板里重复抄写。
+
+萌娘百科角色问答是索引页中的渐进增强组件：条目卡片的稳定锚点是 `#moegirl-quiz`，卡片动作指向实际组件标题 `#moegirl-quiz-title`。角色白名单、别名与双语界面文案维护在 `_data/moegirl_quiz.yml`，匿名化规则、请求时机、来源和许可说明见 `docs/moegirl-quiz-component.md`。打开页面不会访问萌娘百科；只有用户点击开始后才发起一次纯文本 API 请求。不要改成页面预载、后台预取、远程题图、图片复制或静默追踪。
+
+修改后运行：
+
+```powershell
+python -m pytest -q tests/test_toys_contracts.py tests/test_moegirl_quiz_contracts.py tests/test_source_contracts.py tests/test_check_site.py
+python scripts/translation_guard.py --check --production
+```
 
 ## 随笔
 
@@ -336,11 +389,14 @@ python scripts/generate_post_thumbnails.py --check
 
 - 人工公开仓库清单：`_data/project_repositories.yml`
 - README 来源、Git 对象版本与翻译：`_data/project_cache.yml`
+- 仓库创建日期及 GitHub API 证据：`_data/project_repositories.yml` 的 `created`
 - star、fork、主要语言、许可证、`updated_at`：每次构建从 GitHub API 获取，不手填
 
 仓库展示顺序不是人工配置：先按 star 降序，同 star 再按 `updated_at` 降序，完全相同时按仓库名稳定排序。`updated_at` 只用于排序，不显示在页面上；人工清单中不要添加 `order`。
 
 主要语言和许可证会自动显示为站内筛选标签，值分别来自 GitHub API 的 `language` 与许可证 SPDX 标识。不要另写项目分类或手工标签。点击标题或 README 摘要才会打开仓库；语言、许可证、star 和 fork 都不属于仓库外链。
+
+`created` 的 `source_url` 必须是该仓库的 GitHub API URL，`source_field` 必须是 `created_at`。脚本会把这个 UTC 时间换算为香港自然日后与提交值比较；不要用 `updated_at`、第一次进入本站的日期或最近 push 日期替代，也不要把仓库创建时间表述为已证实的首次公开时间。
 
 README 更新后：
 
@@ -359,6 +415,8 @@ python scripts/sync_projects.py
 ## 论文
 
 论文清单在 `_data/publications.yml`。身份消歧、投稿状态与来源审计材料保存在仓库外的私有项目档案中，不进入公开仓库；新增或修改论文前仍需人工核验作者身份、发表状态和权威公开链接。
+
+每篇论文必须包含 `first_public`。优先使用最早可核验的公开版本：公开预印本 v1 早于正式出版时取预印本日期；期刊有在线优先日期时取在线日期；没有预印本或在线优先记录时才取出版社或正式论文集的公开日期。`source_url` 必须直达支持该日期的出版社、论文集、期刊或可信预印本页面，`source_field` 说明读取了哪个日期字段。本站录入、修订或重新构建的日期不能作为论文日期。
 
 每条论文的 `title`、`authors`、`venue` 都有 `zh` 与 `en` 两组显示值。优先抄录出版社提供的正式双语元数据；原论文只有一种语言时，可以在两组中保留相同的官方题名和作者姓名，不要为了页面观感擅自翻译或改写。中文论文的英文页必须使用出版社给出的英文题名、作者拼写和期刊名。
 
@@ -386,11 +444,13 @@ recognition:
 
 ## 本地检查
 
-### 阳光背景维护
+### 明暗主题与环境光维护
 
-阳光效果的视觉参数集中在 `assets/css/main.scss` 的 `--sunlight-x`、`--sunlight-y` 与 `body::before`；不要按单页复制样式。若改变页眉最大宽度、水平内边距或头像尺寸，必须同步光源公式，并复跑 `tests/browser/sunlight.spec.mjs` 的 1280/390/320 px 对齐检查。
+日光/月光参数集中在 `assets/css/main.scss` 的主题变量、`--sunlight-x`、`--sunlight-y`、`body::before` 与 `body::after`；不要按单页复制样式。`body::before` 是静态光晕，`body::after` 是 `360s` 极慢旋转光束；旋转层必须继续使用响应式半径而非固定超大纹理，`prefers-reduced-motion` 必须停转但保留静态光。若改变页眉最大宽度、水平内边距或头像尺寸，必须同步光源公式，并复跑 `tests/browser/sunlight.spec.mjs` 的 1280/390/320 px 对齐与旋转层上限检查。
 
-开关文案只维护 `_data/site_text.yml` 的 `sunlight` 中英文并保持字段平行。存储键和值属于兼容接口；更换键必须升级版本，不得复用 `yiyuiii.sunlight.v1` 解释其它值，也不得把访问数据并入该键。404 和无 JavaScript 的降级边界以阳光规格文档与自动化测试为准。
+两个控件的文案分别只维护 `_data/site_text.yml` 的 `sunlight` 与 `theme` 中英文并保持字段平行。`yiyuiii.sunlight.v1` 只保存环境光 `on` / `off`，`yiyuiii.theme.v1` 只保存 `light` / `dark`；它们是互不覆盖的兼容接口。更换键必须升级版本，不得加入访问数据。明暗样式切换后，同一头像按钮的日光/月光文案与视觉必须即时联动；关闭环境光时两层都必须消失。
+
+头像旁的 `yiyuiii` 始终返回当前语言欢迎页。JavaScript 可用时头像渐进增强为环境光开关；不可用时头像必须保留为首页链接。404、无 JavaScript、reduced-motion 与暗色搜索框的边界以实施规格和自动化测试为准。
 
 本机无需 Ruby 即可运行：
 
@@ -400,6 +460,7 @@ python scripts/sync_projects.py
 python scripts/translation_guard.py --check --production
 node --check assets/js/site-search.js
 node --check assets/js/theme-compat.js
+node --check assets/js/theme.js
 node --check assets/js/article-navigation.js
 node --check assets/js/home-feed.js
 node --check assets/js/sunlight.js

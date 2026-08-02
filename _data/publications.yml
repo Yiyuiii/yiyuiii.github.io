@@ -1,4 +1,9 @@
 - key: hdbo-b-ijcnn-2025
+  first_public:
+    date: '2025-06-30'
+    precision: day
+    source_url: https://api.crossref.org/works/10.1109/IJCNN64981.2025.11228765
+    source_field: published
   title:
     zh: "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization"
     en: "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization"
@@ -30,6 +35,11 @@
       url: https://doi.org/10.1109/IJCNN64981.2025.11228765
 
 - key: hdbo-survey-2025
+  first_public:
+    date: '2025-03-05'
+    precision: day
+    source_url: https://www.jos.org.cn/jos/article/abstract/7304
+    source_field: online publication date
   title:
     zh: 高维贝叶斯优化研究综述
     en: Survey on High-dimensional Bayesian Optimization
@@ -66,6 +76,11 @@
       url: https://doi.org/10.13328/j.cnki.jos.007304
 
 - key: trust-region-newton-ecai-2025
+  first_public:
+    date: '2025-08-25'
+    precision: day
+    source_url: https://arxiv.org/abs/2508.18423v1
+    source_field: v1 submission date
   title:
     zh: Enhancing Trust-Region Bayesian Optimization via Newton Methods
     en: Enhancing Trust-Region Bayesian Optimization via Newton Methods
@@ -97,6 +112,11 @@
       url: https://doi.org/10.3233/FAIA251168
 
 - key: meta-rl-survey-2024
+  first_public:
+    date: '2023-09-11'
+    precision: day
+    source_url: https://www.jos.org.cn/jos/article/abstract/7011
+    source_field: online publication date
   title:
     zh: 元强化学习研究综述
     en: Survey of Meta-reinforcement Learning Research
@@ -129,6 +149,11 @@
       url: https://doi.org/10.13328/j.cnki.jos.007011
 
 - key: supervised-dr-ppsn-2024
+  first_public:
+    date: '2024-09-07'
+    precision: day
+    source_url: https://link.springer.com/chapter/10.1007/978-3-031-70068-2_22
+    source_field: published online
   title:
     zh: Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization
     en: Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization
@@ -160,6 +185,11 @@
       url: https://doi.org/10.1007/978-3-031-70068-2_22
 
 - key: casil-aamas-2024
+  first_public:
+    date: '2023-09-28'
+    precision: day
+    source_url: https://arxiv.org/abs/2309.16299
+    source_field: arXiv v1 submitted
   title:
     zh: Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture
     en: Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture
@@ -189,6 +219,11 @@
       url: https://www.ifaamas.org/Proceedings/aamas2024/pdfs/p2204.pdf
 
 - key: radar-rl-2023
+  first_public:
+    date: '2023-08-03'
+    precision: day
+    source_url: https://www.zte.com.cn/content/dam/zte-site/res-www-zte-com-cn/mediares/magazine/publication/com_en/pdf/en202303-.pdf
+    source_field: published online
   title:
     zh: A Practical Reinforcement Learning Framework for Automatic Radar Detection
     en: A Practical Reinforcement Learning Framework for Automatic Radar Detection
@@ -215,6 +250,11 @@
       url: https://doi.org/10.12142/ZTECOM.202303004
 
 - key: tild-aamas-2023
+  first_public:
+    date: '2023-05-30'
+    precision: day
+    source_url: https://www.ifaamas.org/AAMAS/aamas2023/news.html
+    source_field: proceedings available
   title:
     zh: "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations"
     en: "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations"

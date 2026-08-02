@@ -1,14 +1,17 @@
 zh:
   nav:
+    home: 欢迎
     writing: 随笔
     github: GitHub
     papers: 论文
+    toys: 小玩意
     about: 关于yiyuiii
   urls:
     home: /
     writing: /writing/
     github: /projects/
     papers: /publications/
+    toys: /toys/
     about: /about/
   primary_navigation: 主导航
   home_link: 返回中文欢迎页
@@ -19,14 +22,23 @@ zh:
     open: 搜索
     close: 关闭搜索
     label: 搜索本站
-    placeholder: 搜索随笔、项目或论文
+    placeholder: 搜索随笔、项目、论文或小玩意
     empty: 输入关键词开始搜索。
     no_results: 没有找到匹配内容。
   sunlight:
-    enable: 开启阳光背景
-    disable: 关闭阳光背景
-    status_on: 阳光背景已开启
-    status_off: 阳光背景已关闭
+    enable_light: 开启日光背景
+    disable_light: 关闭日光背景
+    status_light_on: 日光背景已开启
+    status_light_off: 日光背景已关闭
+    enable_dark: 开启月光背景
+    disable_dark: 关闭月光背景
+    status_dark_on: 月光背景已开启
+    status_dark_off: 月光背景已关闭
+  theme:
+    enable_light: 切换到明亮样式
+    enable_dark: 切换到夜晚样式
+    status_light: 已切换到明亮样式
+    status_dark: 已切换到夜晚样式
   project:
     stars: Star
     forks: Fork
@@ -63,15 +75,18 @@ zh:
 
 en:
   nav:
+    home: Welcome
     writing: Writing
     github: GitHub
     papers: Papers
+    toys: Toys
     about: About yiyuiii
   urls:
     home: /en/
     writing: /en/writing/
     github: /en/projects/
     papers: /en/publications/
+    toys: /en/toys/
     about: /en/about/
   primary_navigation: Primary navigation
   home_link: Return to the English welcome page
@@ -82,14 +97,23 @@ en:
     open: Search
     close: Close search
     label: Search this site
-    placeholder: Search writing, projects, or papers
+    placeholder: Search writing, projects, papers, or toys
     empty: Enter a term to start searching.
     no_results: No matching content found.
   sunlight:
-    enable: Turn on the sunlight background
-    disable: Turn off the sunlight background
-    status_on: Sunlight background is on
-    status_off: Sunlight background is off
+    enable_light: Turn on the sunlight background
+    disable_light: Turn off the sunlight background
+    status_light_on: Sunlight background is on
+    status_light_off: Sunlight background is off
+    enable_dark: Turn on the moonlight background
+    disable_dark: Turn off the moonlight background
+    status_dark_on: Moonlight background is on
+    status_dark_off: Moonlight background is off
+  theme:
+    enable_light: Switch to the light appearance
+    enable_dark: Switch to the night appearance
+    status_light: Light appearance is on
+    status_dark: Night appearance is on
   project:
     stars: Stars
     forks: Forks

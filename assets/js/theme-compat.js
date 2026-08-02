@@ -1,7 +1,7 @@
 (() => {
   if (typeof window.determineComputedTheme !== "function") {
     window.determineComputedTheme = function () {
-      return "light";
+      return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
     };
   }
 })();

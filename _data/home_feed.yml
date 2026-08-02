@@ -1,36 +1,36 @@
-# feed_date is the date on which an item was first added to this site or last
-# received a substantive editorial revision here. It is not a GitHub activity
-# timestamp and must not change for ordinary pushes, Star/Fork changes, build
-# churn, or typo-only corrections.
+# Dates are resolved from each content source instead of being duplicated here:
+# - writing: the first revision date, or the post date when no revision list exists;
+# - project: GitHub repository created_at, verified by scripts/sync_projects.py;
+# - publication: the first_public evidence record in publications.yml.
 date_semantics: >-
-  The date when an item was added to this site or last received a substantive
-  editorial revision here; ordinary repository activity and typo-only fixes do
-  not refresh it.
+  The type-defined marker date of each item: writing initial draft, GitHub
+  repository creation, or publication first public record. Later revisions,
+  repository activity, site curation, and typo-only fixes never refresh it.
 items:
-  - {id: "writing:202109160000", kind: writing, ref: "202109160000", feed_date: 2021-09-16}
-  - {id: "writing:202109170000", kind: writing, ref: "202109170000", feed_date: 2021-09-17}
-  - {id: "writing:202208142347", kind: writing, ref: "202208142347", feed_date: 2022-08-14}
-  - {id: "writing:202208171838", kind: writing, ref: "202208171838", feed_date: 2022-08-17}
-  - {id: "writing:202211110000", kind: writing, ref: "202211110000", feed_date: 2026-07-30}
-  - {id: "writing:202301162233", kind: writing, ref: "202301162233", feed_date: 2023-01-28}
-  - {id: "writing:202302032000", kind: writing, ref: "202302032000", feed_date: 2026-07-31}
-  - {id: "writing:202307232000", kind: writing, ref: "202307232000", feed_date: 2023-07-23}
-  - {id: "writing:202404232233", kind: writing, ref: "202404232233", feed_date: 2024-04-23}
-  - {id: "writing:202407012233", kind: writing, ref: "202407012233", feed_date: 2024-07-01}
-  - {id: "writing:202510112233", kind: writing, ref: "202510112233", feed_date: 2026-07-30}
+  - {id: "writing:202109160000", kind: writing, ref: "202109160000"}
+  - {id: "writing:202109170000", kind: writing, ref: "202109170000"}
+  - {id: "writing:202208142347", kind: writing, ref: "202208142347"}
+  - {id: "writing:202208171838", kind: writing, ref: "202208171838"}
+  - {id: "writing:202211110000", kind: writing, ref: "202211110000"}
+  - {id: "writing:202301162233", kind: writing, ref: "202301162233"}
+  - {id: "writing:202302032000", kind: writing, ref: "202302032000"}
+  - {id: "writing:202307232000", kind: writing, ref: "202307232000"}
+  - {id: "writing:202404232233", kind: writing, ref: "202404232233"}
+  - {id: "writing:202407012233", kind: writing, ref: "202407012233"}
+  - {id: "writing:202510112233", kind: writing, ref: "202510112233"}
 
-  - {id: "project:Yiyuiii/codex-cc-tools", kind: project, ref: "Yiyuiii/codex-cc-tools", feed_date: 2026-07-31}
-  - {id: "project:Yiyuiii/HDBO-B", kind: project, ref: "Yiyuiii/HDBO-B", feed_date: 2026-07-31}
-  - {id: "project:Yiyuiii/nonebot-plugin-moegoe", kind: project, ref: "Yiyuiii/nonebot-plugin-moegoe", feed_date: 2026-07-31}
-  - {id: "project:Yiyuiii/simple_asr_llm_tts", kind: project, ref: "Yiyuiii/simple_asr_llm_tts", feed_date: 2026-07-31}
-  - {id: "project:Yiyuiii/solver4turingmachine", kind: project, ref: "Yiyuiii/solver4turingmachine", feed_date: 2026-07-31}
-  - {id: "project:Yiyuiii/taco", kind: project, ref: "Yiyuiii/taco", feed_date: 2026-07-31}
+  - {id: "project:Yiyuiii/codex-cc-tools", kind: project, ref: "Yiyuiii/codex-cc-tools"}
+  - {id: "project:Yiyuiii/HDBO-B", kind: project, ref: "Yiyuiii/HDBO-B"}
+  - {id: "project:Yiyuiii/nonebot-plugin-moegoe", kind: project, ref: "Yiyuiii/nonebot-plugin-moegoe"}
+  - {id: "project:Yiyuiii/simple_asr_llm_tts", kind: project, ref: "Yiyuiii/simple_asr_llm_tts"}
+  - {id: "project:Yiyuiii/solver4turingmachine", kind: project, ref: "Yiyuiii/solver4turingmachine"}
+  - {id: "project:Yiyuiii/taco", kind: project, ref: "Yiyuiii/taco"}
 
-  - {id: "publication:hdbo-b-ijcnn-2025", kind: publication, ref: hdbo-b-ijcnn-2025, feed_date: 2026-07-31}
-  - {id: "publication:hdbo-survey-2025", kind: publication, ref: hdbo-survey-2025, feed_date: 2026-07-31}
-  - {id: "publication:trust-region-newton-ecai-2025", kind: publication, ref: trust-region-newton-ecai-2025, feed_date: 2026-07-31}
-  - {id: "publication:meta-rl-survey-2024", kind: publication, ref: meta-rl-survey-2024, feed_date: 2026-07-31}
-  - {id: "publication:supervised-dr-ppsn-2024", kind: publication, ref: supervised-dr-ppsn-2024, feed_date: 2026-07-31}
-  - {id: "publication:casil-aamas-2024", kind: publication, ref: casil-aamas-2024, feed_date: 2026-07-31}
-  - {id: "publication:radar-rl-2023", kind: publication, ref: radar-rl-2023, feed_date: 2026-07-31}
-  - {id: "publication:tild-aamas-2023", kind: publication, ref: tild-aamas-2023, feed_date: 2026-07-31}
+  - {id: "publication:hdbo-b-ijcnn-2025", kind: publication, ref: hdbo-b-ijcnn-2025}
+  - {id: "publication:hdbo-survey-2025", kind: publication, ref: hdbo-survey-2025}
+  - {id: "publication:trust-region-newton-ecai-2025", kind: publication, ref: trust-region-newton-ecai-2025}
+  - {id: "publication:meta-rl-survey-2024", kind: publication, ref: meta-rl-survey-2024}
+  - {id: "publication:supervised-dr-ppsn-2024", kind: publication, ref: supervised-dr-ppsn-2024}
+  - {id: "publication:casil-aamas-2024", kind: publication, ref: casil-aamas-2024}
+  - {id: "publication:radar-rl-2023", kind: publication, ref: radar-rl-2023}
+  - {id: "publication:tild-aamas-2023", kind: publication, ref: tild-aamas-2023}

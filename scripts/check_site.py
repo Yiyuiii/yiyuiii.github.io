@@ -26,6 +26,8 @@ REQUIRED = (
     "/en/projects/",
     "/publications/",
     "/en/publications/",
+    "/toys/",
+    "/en/toys/",
     "/about/",
     "/en/about/",
     "/archives/",
@@ -41,10 +43,23 @@ INDEX_ROUTES = {
     "/en/projects/",
     "/publications/",
     "/en/publications/",
+    "/toys/",
+    "/en/toys/",
 }
 EXPECTED_NAV = {
-    "zh": ["随笔", "GitHub", "论文", "关于yiyuiii"],
-    "en": ["Writing", "GitHub", "Papers", "About yiyuiii"],
+    "zh": ["欢迎", "随笔", "GitHub", "论文", "小玩意", "关于yiyuiii"],
+    "en": ["Welcome", "Writing", "GitHub", "Papers", "Toys", "About yiyuiii"],
+}
+EXPECTED_NAV_HREFS = {
+    "zh": ["/", "/writing/", "/projects/", "/publications/", "/toys/", "/about/"],
+    "en": [
+        "/en/",
+        "/en/writing/",
+        "/en/projects/",
+        "/en/publications/",
+        "/en/toys/",
+        "/en/about/",
+    ],
 }
 GITHUB_UPDATED_AT_RE = re.compile(
     r"\b20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z\b"
@@ -83,11 +98,101 @@ def _check_nav(soup: BeautifulSoup, *, route: str, language: str) -> None:
         raise SiteCheckError(
             f"{route}: navigation labels {labels!r}, expected {EXPECTED_NAV[language]!r}"
         )
+    hrefs = [link.get("href", "") for link in nav.find_all("a")]
+    if hrefs != EXPECTED_NAV_HREFS[language]:
+        raise SiteCheckError(
+            f"{route}: navigation routes {hrefs!r}, "
+            f"expected {EXPECTED_NAV_HREFS[language]!r}"
+        )
+
+    if route in EXPECTED_NAV_HREFS[language]:
+        current = nav.select('a[aria-current="page"]')
+        if len(current) != 1 or current[0].get("href") != route:
+            raise SiteCheckError(
+                f"{route}: navigation must mark exactly the current route"
+            )
 
 
 def _check_index_shell(soup: BeautifulSoup, route: str) -> None:
     if soup.select_one(".page-header"):
         raise SiteCheckError(f"{route}: redundant page-header is present")
+
+
+def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
+    heading = soup.select(".toy-index__header > h1")
+    expected_heading = "小玩意" if language == "zh" else "Toys"
+    if len(heading) != 1 or heading[0].get_text(" ", strip=True) != expected_heading:
+        raise SiteCheckError(f"{route}: toys heading is missing or not localized")
+
+    cards = soup.select(".toy-grid > article.toy-card[id]")
+    if len(cards) < 2:
+        raise SiteCheckError(f"{route}: expected at least two usable toy entries")
+    ids = [str(card.get("id", "")) for card in cards]
+    if len(set(ids)) != len(ids) or any(not item_id for item_id in ids):
+        raise SiteCheckError(f"{route}: toy identities must be non-empty and unique")
+
+    for card in cards:
+        if not card.select_one(".toy-card__meta"):
+            raise SiteCheckError(f"{route}: toy {card.get('id')} lacks metadata")
+        heading_node = card.find("h2")
+        description = card.select_one("p:not(.toy-card__action)")
+        action = card.select_one(".toy-card__action")
+        if (
+            not heading_node
+            or not heading_node.get_text(" ", strip=True)
+            or not description
+            or not description.get_text(" ", strip=True)
+            or not action
+            or not action.get_text(" ", strip=True)
+        ):
+            raise SiteCheckError(f"{route}: toy {card.get('id')} is incomplete")
+        for link in card.find_all("a", href=True):
+            parsed = urlparse(link.get("href", ""))
+            if parsed.scheme or parsed.netloc:
+                if (
+                    parsed.scheme != "https"
+                    or link.get("target") != "_blank"
+                    or "noopener" not in (link.get("rel") or [])
+                    or "noreferrer" not in (link.get("rel") or [])
+                ):
+                    raise SiteCheckError(
+                        f"{route}: toy external link is not HTTPS and safely isolated"
+                    )
+
+    random_card = soup.select_one("#random-discovery a.toy-card__action")
+    expected_home = "/en/" if language == "en" else "/"
+    if not random_card or random_card.get("href") != expected_home:
+        raise SiteCheckError(
+            f"{route}: random discovery does not link to the localized welcome page"
+        )
+
+    quiz = soup.select(".moegirl-quiz[data-moegirl-quiz]")
+    if len(quiz) != 1:
+        raise SiteCheckError(f"{route}: expected exactly one Moegirl quiz component")
+    quiz_title = soup.select("#moegirl-quiz-title")
+    expected_quiz_title = (
+        "根据线索，猜猜这是谁？" if language == "zh" else "Who is this character?"
+    )
+    if (
+        len(quiz_title) != 1
+        or quiz_title[0].get_text(" ", strip=True) != expected_quiz_title
+    ):
+        raise SiteCheckError(f"{route}: Moegirl quiz title is missing or not localized")
+    quiz_card = soup.select_one("#moegirl-quiz")
+    quiz_action = quiz_card.select_one("a.toy-card__action") if quiz_card else None
+    expected_quiz_href = f"{route}#moegirl-quiz-title"
+    if not quiz_action or quiz_action.get("href") != expected_quiz_href:
+        raise SiteCheckError(f"{route}: Moegirl quiz card does not link to its component")
+    if quiz[0].find("img") or not quiz[0].select_one("[data-quiz-clue-text]"):
+        raise SiteCheckError(
+            f"{route}: Moegirl quiz must use a text clue without embedded images"
+        )
+    if len(soup.select('[id="moegirl-quiz"]')) != 1:
+        raise SiteCheckError(f"{route}: Moegirl quiz card id must be unique")
+    source = str(soup).lower()
+    if "mathjax" in source or "al_math" in source:
+        raise SiteCheckError(f"{route}: toys page loads math assets")
+    return ids
 
 
 def _check_home(soup: BeautifulSoup, route: str, language: str) -> None:
@@ -111,7 +216,9 @@ def _check_home(soup: BeautifulSoup, route: str, language: str) -> None:
     expected = sorted(ordered, key=lambda item: item[1])
     expected.sort(key=lambda item: item[0], reverse=True)
     if ordered != expected:
-        raise SiteCheckError(f"{route}: recent home items are not feed_date desc/id asc")
+        raise SiteCheckError(
+            f"{route}: recent home items are not marker date desc/id asc"
+        )
 
     rotation = soup.select("[data-home-rotation] > .home-feed-item")
     if len(rotation) != 1:
@@ -129,9 +236,15 @@ def _check_home(soup: BeautifulSoup, route: str, language: str) -> None:
         raise SiteCheckError(f"{route}: welcome page loads math assets")
 
     expected_brand = "/en/" if language == "en" else "/"
-    brand = soup.select_one("a.site-brand")
-    if not brand or brand.get("href") != expected_brand:
-        raise SiteCheckError(f"{route}: brand does not return to the localized welcome page")
+    brand_links = soup.select(
+        ".site-brand a.site-brand__avatar-home, .site-brand a.site-brand__name"
+    )
+    if len(brand_links) != 2 or any(
+        link.get("href") != expected_brand for link in brand_links
+    ):
+        raise SiteCheckError(
+            f"{route}: avatar fallback and brand name must return to the localized welcome page"
+        )
 
 
 def _check_projects(soup: BeautifulSoup, route: str) -> None:
@@ -596,8 +709,23 @@ def check_site(site: Path, *, external_links: bool = False) -> None:
     if errors:
         raise SiteCheckError("\n".join(errors))
 
-    zh_routes = ("/", "/writing/", "/projects/", "/publications/", "/about/", "/archives/")
-    en_routes = ("/en/", "/en/writing/", "/en/projects/", "/en/publications/", "/en/about/")
+    zh_routes = (
+        "/",
+        "/writing/",
+        "/projects/",
+        "/publications/",
+        "/toys/",
+        "/about/",
+        "/archives/",
+    )
+    en_routes = (
+        "/en/",
+        "/en/writing/",
+        "/en/projects/",
+        "/en/publications/",
+        "/en/toys/",
+        "/en/about/",
+    )
     for route in zh_routes:
         _check_nav(_soup(site, route), route=route, language="zh")
     for route in en_routes:
@@ -615,6 +743,10 @@ def check_site(site: Path, *, external_links: bool = False) -> None:
     )
     _check_about(_soup(site, "/about/"), "/about/", "zh")
     _check_about(_soup(site, "/en/about/"), "/en/about/", "en")
+    zh_toys = _check_toys(_soup(site, "/toys/"), "/toys/", "zh")
+    en_toys = _check_toys(_soup(site, "/en/toys/"), "/en/toys/", "en")
+    if zh_toys != en_toys:
+        raise SiteCheckError("toy identities or ordering differ between languages")
     _check_not_found(_soup(site, "/404.html"))
     _check_home(_soup(site, "/"), "/", "zh")
     _check_home(_soup(site, "/en/"), "/en/", "en")

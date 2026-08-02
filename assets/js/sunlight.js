@@ -4,9 +4,10 @@
   const STORAGE_KEY = "yiyuiii.sunlight.v1";
   const root = document.documentElement;
   const button = document.getElementById("sunlight-toggle");
+  const fallbackLink = document.getElementById("sunlight-fallback-link");
   const status = document.getElementById("sunlight-status");
 
-  if (!button || !status) return;
+  if (!button || !fallbackLink || !status) return;
 
   const readPreference = () => {
     try {
@@ -20,15 +21,18 @@
   const render = (enabled, announce) => {
     root.dataset.sunlight = enabled ? "on" : "off";
     button.setAttribute("aria-pressed", String(enabled));
+    const theme = root.dataset.theme === "dark" ? "dark" : "light";
+    const mode = theme === "dark" ? "Dark" : "Light";
     button.setAttribute(
       "aria-label",
-      enabled ? button.dataset.disableLabel : button.dataset.enableLabel,
+      enabled
+        ? button.dataset[`disable${mode}Label`]
+        : button.dataset[`enable${mode}Label`],
     );
+    fallbackLink.hidden = true;
     button.hidden = false;
     if (announce) {
-      status.textContent = enabled
-        ? button.dataset.statusOn
-        : button.dataset.statusOff;
+      status.textContent = button.dataset[`status${mode}${enabled ? "On" : "Off"}`];
     }
   };
 
@@ -42,5 +46,9 @@
     } catch (error) {
       // The visual choice still applies for this page when storage is blocked.
     }
+  });
+
+  window.addEventListener("yiyuiii:themechange", () => {
+    render(button.getAttribute("aria-pressed") === "true", false);
   });
 })();

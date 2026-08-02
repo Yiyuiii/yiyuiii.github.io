@@ -38,16 +38,43 @@ const contrast = (foreground, background) => {
   return (lighter + 0.05) / (darker + 0.05);
 };
 
+const createStubbedRandomContext = async (browser, samples) => {
+  const context = await browser.newContext({
+    baseURL: process.env.SITE_URL || "http://localhost:62091",
+  });
+  await context.addInitScript((stubbedSamples) => {
+    const nativeGetRandomValues = Crypto.prototype.getRandomValues;
+    let nextSample = Number.parseInt(window.name, 10);
+    if (!Number.isInteger(nextSample) || nextSample < 0) nextSample = 0;
+    Object.defineProperty(Crypto.prototype, "getRandomValues", {
+      configurable: true,
+      value(array) {
+        if (array instanceof Uint32Array && array.length === 1) {
+          const sample = stubbedSamples[Math.min(nextSample, stubbedSamples.length - 1)];
+          array[0] = sample;
+          nextSample += 1;
+          window.name = String(nextSample);
+          globalThis.__cryptoDrawCount = nextSample;
+          return array;
+        }
+        return nativeGetRandomValues.call(this, array);
+      },
+    });
+  }, samples);
+  return context;
+};
+
 for (const viewport of viewports) {
   test(`welcome pages stay readable at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    for (const [route, heading, recentLabel] of [
-      ["/", "你好，欢迎来到 yiyuiii", "最近整理"],
-      ["/en/", "Hello, welcome to yiyuiii", "Recently curated"],
+    for (const [route, heading, pickLabel, recentLabel] of [
+      ["/", "你好，欢迎来到 yiyuiii", "随机发现", "近期内容"],
+      ["/en/", "Hello, welcome to yiyuiii", "Random discovery", "Recent items"],
     ]) {
       await page.goto(route);
       await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
       await expect(page.locator(".home-guide li")).toHaveCount(5);
+      await expect(page.getByRole("heading", { level: 2, name: pickLabel })).toBeVisible();
       await expect(page.getByRole("heading", { level: 2, name: recentLabel })).toBeVisible();
       await expect(page.locator("[data-home-recent] > .home-feed-item")).toHaveCount(8);
       await expect(page.locator(".home-guide-arrows")).toHaveCount(0);
@@ -67,24 +94,102 @@ for (const viewport of viewports) {
   });
 }
 
-test("daily rotation is bilingual, stable, and outside recent items", async ({
-  page,
+test("random discovery draws independently within eligible candidates", async ({
+  browser,
 }) => {
   const identities = [];
-  for (const route of ["/", "/en/"]) {
+  for (const [route, sample] of [["/", 0], ["/en/", 1]]) {
+    const context = await createStubbedRandomContext(browser, [sample]);
+    const page = await context.newPage();
     await page.goto(route);
     const card = page.locator("[data-home-rotation] [data-home-feed-item]");
     await expect(page.locator("[data-rotation-live-title]")).toBeVisible();
     await expect(page.locator("[data-rotation-fallback-title]")).toBeHidden();
     const identity = await card.getAttribute("data-stable-id");
+    const candidates = await page.locator("#home-rotation-data").evaluate(
+      (element) => JSON.parse(element.textContent || "[]").map((item) => item.id),
+    );
     const recent = await page.locator("[data-home-recent] > [data-stable-id]").evaluateAll(
       (items) => items.map((item) => item.dataset.stableId),
     );
+    const eligible = candidates.filter((candidate) => !recent.includes(candidate));
+    expect(identity).toBe(eligible[sample]);
     expect(recent).not.toContain(identity);
     identities.push(identity);
+    await context.close();
   }
-  expect(identities[0]).toBeTruthy();
-  expect(identities[1]).toBe(identities[0]);
+  expect(identities[0]).not.toBe(identities[1]);
+});
+
+test("random discovery redraws on reload and BFCache restoration", async ({
+  browser,
+}) => {
+  const context = await createStubbedRandomContext(browser, [0, 1, 2]);
+  const page = await context.newPage();
+  await page.goto("/");
+  const card = page.locator("[data-home-rotation] [data-home-feed-item]");
+  const candidates = await page.locator("#home-rotation-data").evaluate(
+    (element) => JSON.parse(element.textContent || "[]").map((item) => item.id),
+  );
+  const recent = await page.locator("[data-home-recent] > [data-stable-id]").evaluateAll(
+    (items) => items.map((item) => item.dataset.stableId),
+  );
+  const eligible = candidates.filter((candidate) => !recent.includes(candidate));
+
+  await expect(card).toHaveAttribute("data-stable-id", eligible[0]);
+  await page.reload();
+  await expect(card).toHaveAttribute("data-stable-id", eligible[1]);
+  await page.evaluate(() => {
+    window.dispatchEvent(new PageTransitionEvent("pageshow", { persisted: true }));
+  });
+  await expect(card).toHaveAttribute("data-stable-id", eligible[2]);
+  await context.close();
+});
+
+test("random discovery rejects the biased uint32 tail before taking modulo", async ({
+  browser,
+}) => {
+  const context = await createStubbedRandomContext(browser, [0xffffffff, 0]);
+  const page = await context.newPage();
+  await page.goto("/");
+  const candidates = await page.locator("#home-rotation-data").evaluate(
+    (element) => JSON.parse(element.textContent || "[]").map((item) => item.id),
+  );
+  const recent = await page.locator("[data-home-recent] > [data-stable-id]").evaluateAll(
+    (items) => items.map((item) => item.dataset.stableId),
+  );
+  const eligible = candidates.filter((candidate) => !recent.includes(candidate));
+  expect(0x1_0000_0000 % eligible.length).not.toBe(0);
+  await expect(page.locator("[data-home-rotation] [data-home-feed-item]")).toHaveAttribute(
+    "data-stable-id",
+    eligible[0],
+  );
+  expect(await page.evaluate(() => globalThis.__cryptoDrawCount)).toBe(2);
+  await context.close();
+});
+
+test("random discovery quietly keeps the browsing fallback when crypto fails", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    baseURL: process.env.SITE_URL || "http://localhost:62091",
+  });
+  await context.addInitScript(() => {
+    Object.defineProperty(Crypto.prototype, "getRandomValues", {
+      configurable: true,
+      value() {
+        throw new Error("stubbed random source failure");
+      },
+    });
+  });
+  const page = await context.newPage();
+  const pageErrors = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  await page.goto("/");
+  await expect(page.locator("[data-rotation-fallback-title]")).toBeVisible();
+  await expect(page.locator("[data-rotation-live-title]")).toBeHidden();
+  expect(pageErrors).toEqual([]);
+  await context.close();
 });
 
 test("legacy root tag query preserves its complete query and hash", async ({ page }) => {
@@ -138,7 +243,18 @@ for (const viewport of viewports) {
     await page.setViewportSize(viewport);
     await page.goto("/writing/");
 
-    await expect(page.locator(".site-nav a")).toHaveCount(4);
+    await expect(page.locator(".site-nav a")).toHaveCount(6);
+    await expect(page.locator(".site-nav a")).toHaveText([
+      "欢迎",
+      "随笔",
+      "GitHub",
+      "论文",
+      "小玩意",
+      "关于yiyuiii",
+    ]);
+    await expect(
+      page.locator('.site-nav a[aria-current="page"]'),
+    ).toHaveAttribute("href", "/writing/");
     const layout = await page.evaluate(() => ({
       overflow: document.documentElement.scrollWidth > innerWidth,
       navVisible: [...document.querySelectorAll(".site-nav a")].every((link) => {
@@ -222,6 +338,55 @@ for (const viewport of viewports) {
     }
   });
 }
+
+test("localized toy indexes expose only live lightweight interactions", async ({
+  page,
+}) => {
+  const moegirlRequests = [];
+  page.on("request", (request) => {
+    if (new URL(request.url()).hostname.endsWith("moegirl.org.cn")) {
+      moegirlRequests.push(request.url());
+    }
+  });
+  for (const [route, heading, homeHref] of [
+    ["/toys/", "小玩意", "/"],
+    ["/en/toys/", "Toys", "/en/"],
+  ]) {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(route);
+    await expect(page.locator(".page-header")).toHaveCount(0);
+    await expect(
+      page.getByRole("heading", { level: 1, name: heading, exact: true }),
+    ).toBeVisible();
+    expect(await page.locator(".toy-grid > .toy-card").count()).toBeGreaterThanOrEqual(3);
+    await expect(page.locator("#random-discovery .toy-card__action")).toHaveAttribute(
+      "href",
+      homeHref,
+    );
+    await expect(page.locator("#theme-and-light a")).toHaveCount(0);
+    await expect(page.locator(".moegirl-quiz[data-moegirl-quiz]")).toHaveCount(1);
+    await expect(page.locator("#moegirl-quiz .toy-card__action")).toHaveAttribute(
+      "href",
+      `${route}#moegirl-quiz-title`,
+    );
+    await expect(page.locator(".moegirl-quiz img")).toHaveCount(0);
+    await expect(page.locator("[data-quiz-clue]")).toBeHidden();
+    await expect(page.locator("script[src*='mathjax'], script[src*='al_math']")).toHaveCount(0);
+    expect(moegirlRequests).toEqual([]);
+    const moegirlResourceHints = page.locator(
+      'link[rel="preconnect"][href*="moegirl.org.cn"], '
+      + 'link[rel="dns-prefetch"][href*="moegirl.org.cn"], '
+      + 'link[rel="prefetch"][href*="moegirl.org.cn"]',
+    );
+    await expect(moegirlResourceHints).toHaveCount(0);
+    await expect(
+      page.locator('.site-nav a[aria-current="page"]'),
+    ).toHaveAttribute("href", route);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+    ).toBe(false);
+  }
+});
 
 test("writing index requests only responsive cover derivatives", async ({
   browser,
@@ -857,7 +1022,7 @@ for (const viewport of viewports) {
       page,
     }) => {
       await page.setViewportSize(viewport);
-      await page.goto(route);
+      await page.goto(route, { waitUntil: "domcontentloaded" });
 
       const bodyImage = page.locator('.post-content img[src$="/bigcards.jpg"]');
       await bodyImage.scrollIntoViewIfNeeded();
@@ -1059,6 +1224,19 @@ test("search, paired language switch, and article reading controls work", async 
 
   await page.goto("/");
   await searchButton.click();
+  await input.fill("月光");
+  await expect(page.locator("#search-results a")).toHaveCount(1);
+  await expect(page.locator("#search-results a")).toHaveAttribute(
+    "href",
+    "/toys/#theme-and-light",
+  );
+  await input.fill("萌娘百科");
+  await expect(page.locator("#search-results a")).toHaveCount(1);
+  await expect(page.locator("#search-results a")).toHaveAttribute(
+    "href",
+    "/toys/#moegirl-quiz",
+  );
+  await input.fill("");
   await input.press("Escape");
   await expect(searchButton).toBeFocused();
   expect(errors).toEqual([]);

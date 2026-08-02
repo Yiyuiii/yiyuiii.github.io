@@ -10,12 +10,21 @@ def write(path, content):
     path.write_text(content, encoding="utf-8")
 
 
-def page(lang, nav, body):
+def page(lang, nav, body, current=None):
     home = "/en/" if lang == "en" else "/"
+    if current:
+        nav = nav.replace(
+            f'<a href="{current}">',
+            f'<a href="{current}" aria-current="page">',
+            1,
+        )
     return f"""<!doctype html>
 <html lang="{lang}">
   <body>
-    <a class="site-brand" href="{home}">yiyuiii</a>
+    <span class="site-brand">
+      <a class="site-brand__avatar-home" href="{home}">avatar</a>
+      <a class="site-brand__name" href="{home}">yiyuiii</a>
+    </span>
     <nav class="site-nav">{nav}</nav>
     <main>{body}</main>
   </body>
@@ -128,8 +137,16 @@ def about_profile(language):
 
 
 def valid_site(root):
-    zh_nav = "<a>随笔</a><a>GitHub</a><a>论文</a><a>关于yiyuiii</a>"
-    en_nav = "<a>Writing</a><a>GitHub</a><a>Papers</a><a>About yiyuiii</a>"
+    zh_nav = (
+        '<a href="/">欢迎</a><a href="/writing/">随笔</a>'
+        '<a href="/projects/">GitHub</a><a href="/publications/">论文</a>'
+        '<a href="/toys/">小玩意</a><a href="/about/">关于yiyuiii</a>'
+    )
+    en_nav = (
+        '<a href="/en/">Welcome</a><a href="/en/writing/">Writing</a>'
+        '<a href="/en/projects/">GitHub</a><a href="/en/publications/">Papers</a>'
+        '<a href="/en/toys/">Toys</a><a href="/en/about/">About yiyuiii</a>'
+    )
     def home_feed(language):
         guide = "".join(f"<li>Guide {index}</li>" for index in range(5))
         recent = "".join(
@@ -148,8 +165,8 @@ def valid_site(root):
             f'<div data-home-recent>{recent}</div></div>'
         )
 
-    write(root / "index.html", page("zh", zh_nav, home_feed("zh")))
-    write(root / "en" / "index.html", page("en", en_nav, home_feed("en")))
+    write(root / "index.html", page("zh", zh_nav, home_feed("zh"), "/"))
+    write(root / "en" / "index.html", page("en", en_nav, home_feed("en"), "/en/"))
 
     tags = (
         '<article class="writing-entry">'
@@ -165,10 +182,10 @@ def valid_site(root):
         'width="160" height="160" decoding="async" '
         'loading="eager" fetchpriority="high"></a></article>'
     )
-    write(root / "writing" / "index.html", page("zh", zh_nav, tags))
+    write(root / "writing" / "index.html", page("zh", zh_nav, tags, "/writing/"))
     write(
         root / "en" / "writing" / "index.html",
-        page("en", en_nav, "<h1>Writing</h1>"),
+        page("en", en_nav, "<h1>Writing</h1>", "/en/writing/"),
     )
 
     def project_entries(route):
@@ -191,11 +208,11 @@ def valid_site(root):
 
     write(
         root / "projects" / "index.html",
-        page("zh", zh_nav, project_entries("/projects/")),
+        page("zh", zh_nav, project_entries("/projects/"), "/projects/"),
     )
     write(
         root / "en" / "projects" / "index.html",
-        page("en", en_nav, project_entries("/en/projects/")),
+        page("en", en_nav, project_entries("/en/projects/"), "/en/projects/"),
     )
 
     def publication_entries(language):
@@ -222,17 +239,60 @@ def valid_site(root):
 
     write(
         root / "publications" / "index.html",
-        page("zh", zh_nav, publication_entries("zh")),
+        page("zh", zh_nav, publication_entries("zh"), "/publications/"),
     )
     write(
         root / "en" / "publications" / "index.html",
-        page("en", en_nav, publication_entries("en")),
+        page("en", en_nav, publication_entries("en"), "/en/publications/"),
     )
 
-    write(root / "about" / "index.html", page("zh", zh_nav, about_profile("zh")))
+    write(
+        root / "about" / "index.html",
+        page("zh", zh_nav, about_profile("zh"), "/about/"),
+    )
     write(
         root / "en" / "about" / "index.html",
-        page("en", en_nav, about_profile("en")),
+        page("en", en_nav, about_profile("en"), "/en/about/"),
+    )
+    zh_toys = (
+        '<div class="toy-index"><header class="toy-index__header">'
+        '<h1>小玩意</h1></header><div class="toy-grid">'
+        '<article id="random-discovery" class="toy-card">'
+        '<div class="toy-card__meta">站内发现</div><h2>随机发现</h2>'
+        '<p>每次进入随机抽取。</p><a class="toy-card__action" href="/">去欢迎页</a>'
+        '</article><article id="theme-and-light" class="toy-card">'
+        '<div class="toy-card__meta">页面氛围</div><h2>明暗主题与日月光效</h2>'
+        '<p>切换主题和环境光。</p><p class="toy-card__action">在页眉试试</p>'
+        '</article><article id="moegirl-quiz" class="toy-card">'
+        '<div class="toy-card__meta">角色问答</div><h2>萌娘百科角色猜猜</h2>'
+        '<p>点击后开始问答。</p><a class="toy-card__action" '
+        'href="/toys/#moegirl-quiz-title">开始猜猜</a></article></div>'
+        '<section class="moegirl-quiz" data-moegirl-quiz>'
+        '<h2 id="moegirl-quiz-title">根据线索，猜猜这是谁？</h2>'
+        '<p data-quiz-clue-text></p></section></div>'
+    )
+    en_toys = (
+        '<div class="toy-index"><header class="toy-index__header">'
+        '<h1>Toys</h1></header><div class="toy-grid">'
+        '<article id="random-discovery" class="toy-card">'
+        '<div class="toy-card__meta">Site discovery</div><h2>Random discovery</h2>'
+        '<p>Draw on every visit.</p><a class="toy-card__action" href="/en/">'
+        'Go to welcome</a></article>'
+        '<article id="theme-and-light" class="toy-card">'
+        '<div class="toy-card__meta">Page ambience</div><h2>Light and dark</h2>'
+        '<p>Switch theme and ambience.</p><p class="toy-card__action">Try the header</p>'
+        '</article><article id="moegirl-quiz" class="toy-card">'
+        '<div class="toy-card__meta">Character quiz</div><h2>Moegirlpedia character quiz</h2>'
+        '<p>Start a character quiz.</p><a class="toy-card__action" '
+        'href="/en/toys/#moegirl-quiz-title">Start guessing</a></article></div>'
+        '<section class="moegirl-quiz" data-moegirl-quiz>'
+        '<h2 id="moegirl-quiz-title">Who is this character?</h2>'
+        '<p data-quiz-clue-text></p></section></div>'
+    )
+    write(root / "toys" / "index.html", page("zh", zh_nav, zh_toys, "/toys/"))
+    write(
+        root / "en" / "toys" / "index.html",
+        page("en", en_nav, en_toys, "/en/toys/"),
     )
     write(root / "archives" / "index.html", page("zh", zh_nav, "<h1>随笔归档</h1>"))
     write(root / "feed.xml", "<feed></feed>")

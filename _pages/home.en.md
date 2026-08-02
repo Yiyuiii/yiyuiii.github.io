@@ -5,6 +5,7 @@ description: Writing, public projects, and co-authored papers by Yiyu Chen.
 permalink: /en/
 lang: en
 schema_type: WebSite
+nav_key: home
 hide_title: true
 translation_url: /
 translation_key: home

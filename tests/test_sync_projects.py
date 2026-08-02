@@ -15,6 +15,7 @@ from scripts.sync_projects import (
     merge_runtime,
     request_json,
     sync_records,
+    validate_created_marker,
     validate_repository,
 )
 
@@ -109,6 +110,55 @@ def test_archived_public_repository_remains_eligible():
     metadata = load_json("repo-public.json")
 
     validate_repository(metadata)
+
+
+def test_project_created_marker_is_verified_from_created_at_in_hong_kong():
+    config = {
+        "repository": "Yiyuiii/example",
+        "created": {
+            "date": "2024-06-04",
+            "precision": "day",
+            "source_url": "https://api.github.com/repos/Yiyuiii/example",
+            "source_field": "created_at",
+        },
+    }
+    metadata = load_json("repo-public.json")
+
+    validate_created_marker(config, metadata)
+
+    with pytest.raises(PublicRepositoryError, match="does not match created_at"):
+        validate_created_marker(
+            config | {"created": config["created"] | {"date": "2024-06-03"}},
+            metadata,
+        )
+
+
+def test_project_created_marker_rejects_unverifiable_source_or_precision():
+    metadata = load_json("repo-public.json")
+    base = {
+        "repository": "Yiyuiii/example",
+        "created": {
+            "date": "2024-06-04",
+            "precision": "day",
+            "source_url": "https://api.github.com/repos/Yiyuiii/example",
+            "source_field": "created_at",
+        },
+    }
+
+    with pytest.raises(PublicRepositoryError, match="precision must be day"):
+        validate_created_marker(
+            base | {"created": base["created"] | {"precision": "year"}},
+            metadata,
+        )
+    with pytest.raises(PublicRepositoryError, match="API created_at"):
+        validate_created_marker(
+            base
+            | {
+                "created": base["created"]
+                | {"source_field": "updated_at"}
+            },
+            metadata,
+        )
 
 
 def test_runtime_uses_api_stats_not_cache():
