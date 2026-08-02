@@ -68,8 +68,8 @@ for (const viewport of viewports) {
   test(`welcome pages stay readable at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
     for (const [route, heading, pickLabel, recentLabel] of [
-      ["/", "你好，欢迎来到 yiyuiii", "随机发现", "近期公开"],
-      ["/en/", "Hello, welcome to yiyuiii", "Random discovery", "Recently published"],
+      ["/", "你好，欢迎来到 yiyuiii", "随机发现", "近期内容"],
+      ["/en/", "Hello, welcome to yiyuiii", "Random discovery", "Recent items"],
     ]) {
       await page.goto(route);
       await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
@@ -342,10 +342,10 @@ for (const viewport of viewports) {
 test("localized toy indexes expose only live lightweight interactions", async ({
   page,
 }) => {
-  const thirdPartyRequests = [];
+  const moegirlRequests = [];
   page.on("request", (request) => {
     if (new URL(request.url()).hostname.endsWith("moegirl.org.cn")) {
-      thirdPartyRequests.push(request.url());
+      moegirlRequests.push(request.url());
     }
   });
   for (const [route, heading, homeHref] of [
@@ -369,8 +369,10 @@ test("localized toy indexes expose only live lightweight interactions", async ({
       "href",
       `${route}#moegirl-quiz-title`,
     );
-    await expect(page.locator("[data-quiz-image]")).not.toHaveAttribute("src", /.+/);
-    expect(thirdPartyRequests).toEqual([]);
+    await expect(page.locator(".moegirl-quiz img")).toHaveCount(0);
+    await expect(page.locator("[data-quiz-clue]")).toBeHidden();
+    await expect(page.locator("script[src*='mathjax'], script[src*='al_math']")).toHaveCount(0);
+    expect(moegirlRequests).toEqual([]);
     const moegirlResourceHints = page.locator(
       'link[rel="preconnect"][href*="moegirl.org.cn"], '
       + 'link[rel="dns-prefetch"][href*="moegirl.org.cn"], '
@@ -1020,7 +1022,7 @@ for (const viewport of viewports) {
       page,
     }) => {
       await page.setViewportSize(viewport);
-      await page.goto(route);
+      await page.goto(route, { waitUntil: "domcontentloaded" });
 
       const bodyImage = page.locator('.post-content img[src$="/bigcards.jpg"]');
       await bodyImage.scrollIntoViewIfNeeded();

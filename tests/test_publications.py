@@ -92,9 +92,9 @@ def test_publication_first_public_sources_are_not_site_curation_dates():
             "published online",
         ),
         "casil-aamas-2024": (
-            "2024-05-06",
-            "https://www.ifaamas.org/Proceedings/aamas2024/pdfs/p2204.pdf",
-            "proceedings date (first day)",
+            "2023-09-28",
+            "https://arxiv.org/abs/2309.16299",
+            "arXiv v1 submitted",
         ),
         "radar-rl-2023": (
             "2023-08-03",

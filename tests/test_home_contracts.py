@@ -1,3 +1,4 @@
+import re
 from datetime import date, datetime
 from pathlib import Path
 
@@ -87,7 +88,7 @@ def test_home_feed_manifest_is_complete_stable_and_has_no_duplicated_dates():
     assert manifest["date_semantics"].strip()
     assert len(items) == 25
     assert len({item["id"] for item in items}) == len(items)
-    assert "first verifiable public date" in manifest["date_semantics"]
+    assert "type-defined marker date" in manifest["date_semantics"]
     assert all(set(item) == {"id", "kind", "ref"} for item in items)
     assert {item["kind"] for item in items} == {
         "writing",
@@ -119,7 +120,7 @@ def test_home_feed_manifest_is_complete_stable_and_has_no_duplicated_dates():
     } == publication_refs
 
 
-def test_all_first_public_dates_have_explicit_sources_and_expected_values():
+def test_all_marker_dates_have_explicit_sources_and_expected_values():
     posts = [frontmatter(path.relative_to(ROOT)) for path in (ROOT / "_posts").glob("*.md")]
     dates_by_uid = {}
     for post in posts:
@@ -130,10 +131,14 @@ def test_all_first_public_dates_have_explicit_sources_and_expected_values():
 
     projects = yaml.safe_load(text("_data/project_repositories.yml"))
     publications = yaml.safe_load(text("_data/publications.yml"))
-    for item in [*projects, *publications]:
-        marker = item["first_public"]
+    for item, field in [
+        *((item, "created") for item in projects),
+        *((item, "first_public") for item in publications),
+    ]:
+        marker = item[field]
         assert set(marker) == {"date", "precision", "source_url", "source_field"}
         assert marker["precision"] == "day"
+        assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", marker["date"])
         assert date.fromisoformat(marker["date"])
         assert marker["source_url"].startswith("https://")
         assert marker["source_field"].strip()
@@ -141,7 +146,7 @@ def test_all_first_public_dates_have_explicit_sources_and_expected_values():
     actual = {
         **{f"writing:{uid}": next(iter(values)) for uid, values in dates_by_uid.items()},
         **{
-            f"project:{item['repository']}": item["first_public"]["date"]
+            f"project:{item['repository']}": item["created"]["date"]
             for item in projects
         },
         **{
@@ -172,7 +177,7 @@ def test_all_first_public_dates_have_explicit_sources_and_expected_values():
         "publication:trust-region-newton-ecai-2025": "2025-08-25",
         "publication:meta-rl-survey-2024": "2023-09-11",
         "publication:supervised-dr-ppsn-2024": "2024-09-07",
-        "publication:casil-aamas-2024": "2024-05-06",
+        "publication:casil-aamas-2024": "2023-09-28",
         "publication:radar-rl-2023": "2023-08-03",
         "publication:tild-aamas-2023": "2023-05-30",
     }
@@ -196,8 +201,9 @@ def test_home_feed_builder_enforces_resolution_and_objective_sorting():
 
     assert "HomeFeed" in plugin
     assert 'site.data["home_feed_runtime"]' in plugin
-    assert "first_public_date" in plugin
-    assert "writing_first_public" in plugin
+    assert "marker_date" in plugin
+    assert "writing_marker" in plugin
+    assert 'raw.match?(/\\A\\d{4}-\\d{2}-\\d{2}\\z/)' in plugin
     assert 'fetch("project_repositories")' in plugin
     assert "sort_by" in plugin and "item.fetch(\"id\")" in plugin
     assert "first(8)" in plugin
@@ -217,18 +223,18 @@ def test_home_rotation_candidates_are_shared_ordered_and_outside_both_recent_lis
         for data in [frontmatter(path.relative_to(ROOT))]
     }
     projects = {
-        f"project:{item['repository']}": item["first_public"]["date"]
+        f"project:{item['repository']}": item["created"]["date"]
         for item in yaml.safe_load(text("_data/project_repositories.yml"))
     }
     publications = {
         f"publication:{item['key']}": item["first_public"]["date"]
         for item in yaml.safe_load(text("_data/publications.yml"))
     }
-    first_public_days = {**posts, **projects, **publications}
+    marker_days = {**posts, **projects, **publications}
     ordered = sorted(
         items,
         key=lambda item: (
-            -date.fromisoformat(first_public_days[item["id"]]).toordinal(),
+            -date.fromisoformat(marker_days[item["id"]]).toordinal(),
             item["id"],
         ),
     )
@@ -284,7 +290,7 @@ def test_home_template_keeps_semantics_without_javascript_and_uses_small_images(
     assert "post.thumbnail | relative_url" not in include + item_include
 
 
-def test_home_script_uses_unbiased_crypto_random_discovery_first_public_dates_and_old_tag_urls():
+def test_home_script_uses_unbiased_crypto_random_discovery_marker_dates_and_old_tag_urls():
     script = text("assets/js/home-feed.js")
 
     assert "window.crypto.getRandomValues(sample)" in script
@@ -297,7 +303,9 @@ def test_home_script_uses_unbiased_crypto_random_discovery_first_public_dates_an
     assert "event.persisted" in script
     assert "renderRandomCandidate()" in script
     assert "recentIds" in script
-    assert "selected.first_public_date" in script
+    assert "selected.marker_date" in script
+    assert "selected.marker_precision" in script
+    assert "selected.first_public_date" not in script
     assert "selected.feed_date" not in script
     assert "location.replace" in script
     assert "URLSearchParams" in script

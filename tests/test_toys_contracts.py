@@ -91,6 +91,7 @@ def test_toy_routes_are_a_complete_localized_pair_and_use_the_shared_renderer():
         assert (data["permalink"], data["lang"], data["translation_url"]) == values
         assert data["schema_type"] == "CollectionPage"
         assert data["nav_key"] == "toys"
+        assert data["math"] is False
         assert data["translation_key"] == "toys-index"
         assert "{% include toy-index.liquid %}" in text(path)
 

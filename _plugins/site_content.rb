@@ -6,7 +6,7 @@ module Yiyuiii
   module HomeFeed
     LANGUAGES = %w[zh en].freeze
     ITEM_KEYS = %w[id kind ref].freeze
-    FIRST_PUBLIC_KEYS = %w[date precision source_field source_url].freeze
+    DATE_MARKER_KEYS = %w[date precision source_field source_url].freeze
     DATE_PRECISIONS = %w[day year].freeze
     KINDS = %w[writing project publication].freeze
 
@@ -94,7 +94,7 @@ module Yiyuiii
         return unless post
 
         base.merge(
-          writing_first_public(post),
+          writing_marker(post),
           "title" => post.data.fetch("title"),
           "summary" => post.data["description"] || post.data.fetch("excerpt"),
           "url" => post.url,
@@ -113,7 +113,7 @@ module Yiyuiii
         return unless description
 
         base.merge(
-          normalize_first_public(project_record.fetch("first_public"), entry.fetch("id")),
+          normalize_marker(project_record.fetch("created"), entry.fetch("id"), "created"),
           "title" => entry.fetch("ref").split("/").last,
           "summary" => description,
           "url" => "https://github.com/#{entry.fetch('ref')}",
@@ -126,7 +126,7 @@ module Yiyuiii
         authors = publication.fetch("authors").fetch(language).join(", ")
         venue = publication.fetch("venue").fetch(language)
         base.merge(
-          normalize_first_public(publication.fetch("first_public"), entry.fetch("id")),
+          normalize_marker(publication.fetch("first_public"), entry.fetch("id"), "first_public"),
           "title" => title,
           "summary" => "#{authors} · #{venue} · #{publication.fetch('year')}",
           "url" => "#{language == 'en' ? '/en' : ''}/publications/##{entry.fetch('ref')}",
@@ -138,7 +138,7 @@ module Yiyuiii
       raise ArgumentError, "cannot resolve #{entry.fetch('id')} for #{language}: #{error.message}"
     end
 
-    def writing_first_public(post)
+    def writing_marker(post)
       post_date = exact_day(post.data.fetch("date"), "writing:#{post.data.fetch('uid')}")
       revisions = post.data["revisions"]
       return runtime_date(post_date, "day") if revisions.nil?
@@ -161,19 +161,19 @@ module Yiyuiii
       runtime_date(first_date, "day")
     end
 
-    def normalize_first_public(record, item_id)
-      unless record.is_a?(Hash) && record.keys.sort == FIRST_PUBLIC_KEYS.sort
+    def normalize_marker(record, item_id, field_name)
+      unless record.is_a?(Hash) && record.keys.sort == DATE_MARKER_KEYS.sort
         raise ArgumentError,
-              "#{item_id} first_public must contain exactly #{FIRST_PUBLIC_KEYS.join(', ')}"
+              "#{item_id} #{field_name} must contain exactly #{DATE_MARKER_KEYS.join(', ')}"
       end
 
       precision = record.fetch("precision").to_s
       unless DATE_PRECISIONS.include?(precision)
-        raise ArgumentError, "#{item_id} has unknown first-public precision: #{precision}"
+        raise ArgumentError, "#{item_id} has unknown marker precision: #{precision}"
       end
       unless record.fetch("source_url").to_s.start_with?("https://") &&
              !record.fetch("source_field").to_s.strip.empty?
-        raise ArgumentError, "#{item_id} first_public needs an HTTPS source and source field"
+        raise ArgumentError, "#{item_id} #{field_name} needs an HTTPS source and source field"
       end
 
       raw_date = record.fetch("date").to_s
@@ -187,22 +187,23 @@ module Yiyuiii
 
     def runtime_date(value, precision)
       {
-        "first_public_date" => value,
-        "first_public_precision" => precision,
+        "marker_date" => value,
+        "marker_precision" => precision,
       }
     end
 
     def exact_day(value, item_id)
       raw = value.respond_to?(:strftime) ? value.strftime("%Y-%m-%d") : value.to_s
+      raise Date::Error unless raw.match?(/\A\d{4}-\d{2}-\d{2}\z/)
       Date.iso8601(raw).iso8601
     rescue Date::Error
-      raise ArgumentError, "invalid first-public date for #{item_id}: #{raw}"
+      raise ArgumentError, "invalid marker date for #{item_id}: #{raw}"
     end
 
     def sort_items(items)
       items.sort_by do |item|
-        value = item.fetch("first_public_date")
-        components = if item.fetch("first_public_precision") == "day"
+        value = item.fetch("marker_date")
+        components = if item.fetch("marker_precision") == "day"
                        date = Date.iso8601(value)
                        [date.year, date.month, date.day]
                      else

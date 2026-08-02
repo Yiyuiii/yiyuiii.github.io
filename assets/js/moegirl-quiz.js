@@ -3,11 +3,10 @@
 
   const UINT32_RANGE = 0x1_0000_0000;
   const API_HOST = "zh.moegirl.org.cn";
-  const IMAGE_HOSTS = new Set([
-    "storage.moegirl.org.cn",
-    "img.moegirl.org.cn",
-    "zh.moegirl.org.cn",
-  ]);
+  const API_PATH = "/api.php";
+  const MAX_RESPONSE_CHARS = 262_144;
+  const MIN_CLUE_LENGTH = 60;
+  const MAX_CLUE_LENGTH = 420;
 
   const secureRandomIndex = (maximum) => {
     if (
@@ -51,10 +50,16 @@
 
   const interpolate = (template, title) => String(template).replace("{title}", title);
 
-  const safeHttpsUrl = (value, permittedHosts) => {
+  const safeMoegirlUrl = (value) => {
     try {
       const parsed = new URL(value);
-      if (parsed.protocol !== "https:" || !permittedHosts.has(parsed.hostname)) return null;
+      if (
+        parsed.protocol !== "https:"
+        || parsed.hostname !== API_HOST
+        || parsed.port
+        || parsed.username
+        || parsed.password
+      ) return null;
       return parsed.href;
     } catch (error) {
       return null;
@@ -63,15 +68,23 @@
 
   const buildApiUrl = (endpoint, titles) => {
     const parsed = new URL(endpoint);
-    if (parsed.protocol !== "https:" || parsed.hostname !== API_HOST) {
+    if (
+      parsed.protocol !== "https:"
+      || parsed.hostname !== API_HOST
+      || parsed.pathname !== API_PATH
+      || parsed.port
+      || parsed.username
+      || parsed.password
+    ) {
       throw new Error("unexpected quiz API endpoint");
     }
     parsed.search = new URLSearchParams({
       action: "query",
       titles: titles.join("|"),
-      prop: "pageimages|info",
-      piprop: "name|thumbnail",
-      pithumbsize: "480",
+      prop: "extracts|info",
+      exintro: "1",
+      explaintext: "1",
+      exchars: "900",
       inprop: "url",
       redirects: "1",
       format: "json",
@@ -79,6 +92,50 @@
       origin: "*",
     }).toString();
     return parsed.href;
+  };
+
+  const normalizeText = (value) => String(value || "")
+    .normalize("NFKC")
+    .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/gu, " ")
+    .replace(/[\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff]/gu, "")
+    .replace(/\s+/gu, " ")
+    .trim();
+
+  const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+
+  const expandTitleFragments = (value) => {
+    const title = normalizeText(value);
+    const symbols = [...title];
+    const fragments = [title];
+    if (!/\p{Script=Han}/u.test(title)) return fragments;
+    for (let start = 0; start < symbols.length; start += 1) {
+      for (let length = 2; length <= symbols.length - start; length += 1) {
+        const fragment = symbols.slice(start, start + length).join("").trim();
+        if (/\p{Script=Han}/u.test(fragment)) fragments.push(fragment);
+      }
+    }
+    return fragments;
+  };
+
+  const anonymizeClue = (extract, terms, replacement) => {
+    let clue = normalizeText(extract);
+    const masks = [...new Set(terms.map(normalizeText))]
+      .filter((term) => term.length >= 1 && term.length <= 80)
+      .sort((left, right) => right.length - left.length)
+      .slice(0, 512);
+    for (const term of masks) {
+      clue = clue.replace(new RegExp(escapeRegExp(term), "giu"), replacement);
+    }
+    clue = clue.replace(/(?:\s*〔角色名已隐藏〕\s*){2,}/gu, "〔角色名已隐藏〕");
+    if (clue.length < MIN_CLUE_LENGTH) return null;
+    if (clue.length <= MAX_CLUE_LENGTH) return clue;
+
+    const draft = clue.slice(0, MAX_CLUE_LENGTH + 1);
+    const boundaries = ["。", "！", "？", ".", "!", "?"]
+      .map((marker) => draft.lastIndexOf(marker))
+      .filter((index) => index >= Math.floor(MAX_CLUE_LENGTH * 0.55));
+    const end = boundaries.length ? Math.max(...boundaries) + 1 : MAX_CLUE_LENGTH;
+    return `${draft.slice(0, end).trim()}…`;
   };
 
   const initQuiz = (root) => {
@@ -96,8 +153,8 @@
     const interactive = root.querySelector("[data-quiz-interactive]");
     const startButton = root.querySelector("[data-quiz-start]");
     const round = root.querySelector("[data-quiz-round]");
-    const figure = root.querySelector("[data-quiz-figure]");
-    const image = root.querySelector("[data-quiz-image]");
+    const clue = root.querySelector("[data-quiz-clue]");
+    const clueText = root.querySelector("[data-quiz-clue-text]");
     const options = root.querySelector("[data-quiz-options]");
     const status = root.querySelector("[data-quiz-status]");
     const source = root.querySelector("[data-quiz-source]");
@@ -107,8 +164,8 @@
       !interactive
       || !startButton
       || !round
-      || !figure
-      || !image
+      || !clue
+      || !clueText
       || !options
       || !status
       || !source
@@ -124,14 +181,10 @@
 
     const resetRound = () => {
       activeRound += 1;
-      image.onload = null;
-      image.onerror = null;
-      image.removeAttribute("src");
-      image.removeAttribute("data-loaded");
-      figure.hidden = true;
+      clue.hidden = true;
+      clueText.textContent = "";
       options.hidden = true;
       options.replaceChildren();
-      round.removeAttribute("data-preparing");
       round.removeAttribute("aria-hidden");
       source.hidden = true;
       sourceLink.removeAttribute("href");
@@ -145,6 +198,7 @@
       startButton.disabled = false;
       startButton.textContent = copy.retry;
       status.textContent = message;
+      startButton.focus();
     };
 
     const renderOptions = (selected, answer, roundToken) => {
@@ -206,12 +260,19 @@
             mode: "cors",
             credentials: "omit",
             cache: "no-store",
+            redirect: "error",
             referrerPolicy: "no-referrer",
             signal: controller.signal,
           },
         );
         if (!response.ok) throw new Error(`quiz API returned ${response.status}`);
-        payload = await response.json();
+        const declaredLength = Number.parseInt(response.headers.get("content-length") || "", 10);
+        if (Number.isFinite(declaredLength) && declaredLength > MAX_RESPONSE_CHARS) {
+          throw new Error("quiz API response is too large");
+        }
+        const body = await response.text();
+        if (body.length > MAX_RESPONSE_CHARS) throw new Error("quiz API response is too large");
+        payload = JSON.parse(body);
       } catch (error) {
         globalThis.clearTimeout(timeout);
         if (roundToken === activeRound) showFailure(copy.network_error);
@@ -223,11 +284,13 @@
       const canonicalByOriginal = new Map(
         selected.map((entry) => [entry.title, entry.title]),
       );
+      const responseTitles = [];
       for (const relation of [
         ...(Array.isArray(payload?.query?.normalized) ? payload.query.normalized : []),
         ...(Array.isArray(payload?.query?.redirects) ? payload.query.redirects : []),
       ]) {
         if (!relation?.from || !relation?.to) continue;
+        responseTitles.push(relation.from, relation.to);
         for (const [original, canonical] of canonicalByOriginal) {
           if (canonical === relation.from) canonicalByOriginal.set(original, relation.to);
         }
@@ -240,24 +303,34 @@
           displayByCanonical.set(canonical, original);
         }
       }
+
+      const sharedMasks = selected.flatMap((entry) => [
+        ...expandTitleFragments(entry.title),
+        ...(Array.isArray(entry.aliases) ? entry.aliases : []),
+      ]).concat(responseTitles);
       const pages = Array.isArray(payload?.query?.pages) ? payload.query.pages : [];
       const eligible = pages.flatMap((page) => {
         const displayTitle = displayByCanonical.get(page?.title);
         if (
           !page
           || page.missing
+          || (page.ns !== undefined && page.ns !== 0)
           || !displayTitle
           || !selectedTitles.has(displayTitle)
         ) return [];
-        const thumbnail = safeHttpsUrl(page.thumbnail?.source, IMAGE_HOSTS);
-        const fullurl = safeHttpsUrl(page.fullurl, new Set([API_HOST]));
-        if (!thumbnail || !fullurl) return [];
-        return [{ title: displayTitle, thumbnail, fullurl }];
+        const fullurl = safeMoegirlUrl(page.fullurl);
+        const anonymized = anonymizeClue(
+          page.extract,
+          [...sharedMasks, page.title],
+          copy.redaction || "〔角色名已隐藏〕",
+        );
+        if (!fullurl || !anonymized) return [];
+        return [{ title: displayTitle, clue: anonymized, fullurl }];
       });
 
       if (roundToken !== activeRound) return;
       if (eligible.length === 0) {
-        showFailure(copy.no_image_error);
+        showFailure(copy.no_clue_error);
         return;
       }
 
@@ -270,32 +343,15 @@
       }
 
       renderOptions(selected, answer, roundToken);
+      clueText.textContent = answer.clue;
       round.hidden = false;
-      round.dataset.preparing = "true";
-      round.setAttribute("aria-hidden", "true");
-      figure.hidden = false;
-      options.hidden = true;
-      const imageTimeout = globalThis.setTimeout(() => {
-        if (roundToken === activeRound) showFailure(copy.image_error);
-      }, timeoutMs);
-      image.onload = () => {
-        globalThis.clearTimeout(imageTimeout);
-        if (roundToken !== activeRound) return;
-        image.dataset.loaded = "true";
-        round.removeAttribute("data-preparing");
-        round.removeAttribute("aria-hidden");
-        options.hidden = false;
-        root.removeAttribute("aria-busy");
-        startButton.disabled = false;
-        startButton.textContent = copy.again;
-        status.textContent = "";
-        options.querySelector("button")?.focus();
-      };
-      image.onerror = () => {
-        globalThis.clearTimeout(imageTimeout);
-        if (roundToken === activeRound) showFailure(copy.image_error);
-      };
-      image.src = answer.thumbnail;
+      clue.hidden = false;
+      options.hidden = false;
+      root.removeAttribute("aria-busy");
+      startButton.disabled = false;
+      startButton.textContent = copy.again;
+      status.textContent = "";
+      clue.focus();
     };
 
     root.dataset.quizReady = "true";

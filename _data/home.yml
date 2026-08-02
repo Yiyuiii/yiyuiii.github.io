@@ -2,7 +2,7 @@ zh:
   title: 你好，欢迎来到 yiyuiii
   introduction:
     - 这里收录我持续整理的随笔、公开项目和参与发表的论文。
-    - 下方内容按首次公开日期排列；随笔以初稿日期为准，后续修订不会改变顺序。
+    - "下方内容按标志日期排列：随笔取初稿日，GitHub 项目取仓库创建日，论文取最早公开日；后续修订不会改变顺序。"
   guide:
     label: 页面指引
     items:
@@ -20,7 +20,7 @@ zh:
     rotation: 随机发现
     rotation_note: 每次进入随机抽取，不记录访问
     rotation_fallback: 浏览起点
-    recent: 近期公开
+    recent: 近期内容
   types:
     writing: 随笔
     project: 项目
@@ -33,7 +33,7 @@ en:
   title: Hello, welcome to yiyuiii
   introduction:
     - This site is where I keep my writing, public projects, and papers I have contributed to.
-    - The items below follow their first public dates; writing keeps its initial-draft date when later revisions are made.
+    - "Items below use type-specific marker dates: initial drafts for writing, repository creation for GitHub projects, and earliest public records for papers. Later revisions do not change the order."
   guide:
     label: Page guide
     items:
@@ -51,7 +51,7 @@ en:
     rotation: Random discovery
     rotation_note: Drawn at random on each visit, with no visit tracking
     rotation_fallback: A place to start
-    recent: Recently published
+    recent: Recent items
   types:
     writing: Writing
     project: Project

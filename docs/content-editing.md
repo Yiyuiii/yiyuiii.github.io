@@ -4,7 +4,7 @@
 
 ## 欢迎页与内容流
 
-`/` 与 `/en/` 是中英文欢迎页，所有人工欢迎文案集中在 `_data/home.yml`。这里维护欢迎标题、介绍、页眉功能指引、“随机发现 / 浏览起点 / 近期公开”等分区文字、内容类型名称和无 JavaScript 说明；不要把这些可见文字写进 `_includes/home-feed.liquid`、`assets/js/home-feed.js` 或 CSS。两种语言必须保持完全相同的键、列表结构和指引目标。
+`/` 与 `/en/` 是中英文欢迎页，所有人工欢迎文案集中在 `_data/home.yml`。这里维护欢迎标题、介绍、页眉功能指引、“随机发现 / 浏览起点 / 近期内容”等分区文字、内容类型名称和无 JavaScript 说明；不要把这些可见文字写进 `_includes/home-feed.liquid`、`assets/js/home-feed.js` 或 CSS。两种语言必须保持完全相同的键、列表结构和指引目标。
 
 `/writing/` 与 `/en/writing/` 才是随笔索引。左上品牌链接回当前语言欢迎页，页顶“随笔 / Writing”进入对应索引；旧 `/?tag=...` 在 JavaScript 可用时会保留完整 query 与 hash 迁移到随笔索引，无 JavaScript 时欢迎页提供自然入口。
 
@@ -18,17 +18,17 @@
 
 - `writing` 的 `ref` 是文章 `uid`；`project` 是 `owner/repository`；`publication` 是论文 `key`。
 - `id` 必须严格等于 `<kind>:<ref>`，创建后不得改变。
-- 首页统一显示并按 `first_public_date` 排序；这个运行时字段从内容自己的权威来源解析，不在首页清单手填：
+- 首页统一显示并按 `marker_date` 排序；这个运行时标志日期从内容自己的来源解析，不在首页清单手填：
   - 随笔：有 `revisions` 时取第一条初稿日期，否则取文章 `date`；第一条修订日期必须和 `date` 相同。`uid` 只是稳定身份，不承载日期语义，不能从 UID 或文件名推算日期。
-  - 项目：取 `_data/project_repositories.yml` 的 `first_public`，其日期由 `scripts/sync_projects.py` 在每次 CI 中和当前公开仓库的 GitHub API `created_at` 对照，再换算为香港自然日。
+  - 项目：取 `_data/project_repositories.yml` 的 `created`，其日期由 `scripts/sync_projects.py` 在每次 CI 中和当前公开仓库的 GitHub API `created_at` 对照，再换算为香港自然日；它只表示仓库创建，不证明创建时已经公开。
   - 论文：取 `_data/publications.yml` 的 `first_public`；日期、精度、权威来源 URL 和来源字段必须一起维护。
-- `first_public` 固定包含 `date`、`precision`、`source_url`、`source_field`。当前条目都具有到日证据并使用 `precision: day`。若未来权威来源只能确认年份，必须用 `precision: year` 和 `YYYY`，页面只显示年份；不得伪造 1 月 1 日。
+- `created` 与 `first_public` 记录都固定包含 `date`、`precision`、`source_url`、`source_field`。当前条目都具有到日证据并使用 `precision: day`。若未来权威来源只能确认年份，必须用 `precision: year` 和 `YYYY`，页面只显示年份；不得伪造 1 月 1 日。
 - 所有公开来源都必须恰好出现一次；不得增加 `featured`、`priority`、`score`、类型配额或其它隐性排序字段。
-- 运行时严格按首次公开日期降序、同日 `id` 升序，显示最近 8 项。年精度条目排在同年所有已知到日条目之后，再按 `id` 稳定排序；这个位置只代表日期精度不足，不暗示 1 月 1 日。
+- 运行时严格按标志日期降序、同日 `id` 升序，显示最近 8 项。年精度条目排在同年所有已知到日条目之后，再按 `id` 稳定排序；这个位置只代表日期精度不足，不暗示 1 月 1 日。
 - “随机发现”（英文 “Random discovery”）只从中英文都有内容、且不在任一语言最近 8 项中的共同身份抽取。每次载入或刷新欢迎页都会重新抽取；页面从浏览器 BFCache 恢复时也会重新抽取。中英文页面各自独立抽取，不承诺相同身份，连续两次也可能合理地抽到同一项。
 - 抽样使用浏览器 `crypto.getRandomValues()` 产生 32 位无符号整数，并通过拒绝采样消除直接取模的偏差。不要改用 `Math.random`，也不要使用日期、手写随机表或访问历史影响结果。
 - 随机发现只读取构建产物中的候选列表，不记录访问，不使用 Cookie、`localStorage`、`sessionStorage` 或外部请求。禁用 JavaScript、候选为空或随机源不可用时显示预渲染的固定“浏览起点”，不伪装成随机结果。
-- 后续修订、GitHub push、Star/Fork、本站构建与整理日期都不得改变“近期公开”顺序或随机候选边界。
+- 后续修订、GitHub push、Star/Fork、本站构建与整理日期都不得改变“近期内容”顺序或随机候选边界。
 - 当前 25 条日期及其来源见 `docs/home-feed-date-sources.md`；修改日期字段时必须同步复核该清单与契约测试。
 
 修改欢迎文案或内容流后运行：
@@ -243,7 +243,7 @@ python scripts/translation_guard.py --check --production
 - 外部功能必须使用 HTTPS，并设置 `external: true`；渲染器会自动增加新窗口和隔离属性。不要填入需要泄露本站访问数据、密钥或私人信息的地址。
 - 搜索索引会自动读取每条记录的标题、说明和关键词，不要在搜索模板里重复抄写。
 
-萌娘百科猜图是索引页中的渐进增强组件：条目卡片的稳定锚点是 `#moegirl-quiz`，卡片动作指向实际组件标题 `#moegirl-quiz-title`。角色白名单与双语界面文案维护在 `_data/moegirl_quiz.yml`，组件边界、第三方请求时机、来源与图片权利说明见 `docs/moegirl-quiz-component.md`。打开页面不会访问萌娘百科；只有用户点击开始后才可发起题目所需请求。不要改成页面预载、后台预取、本地复制外部图片或静默追踪。
+萌娘百科角色问答是索引页中的渐进增强组件：条目卡片的稳定锚点是 `#moegirl-quiz`，卡片动作指向实际组件标题 `#moegirl-quiz-title`。角色白名单、别名与双语界面文案维护在 `_data/moegirl_quiz.yml`，匿名化规则、请求时机、来源和许可说明见 `docs/moegirl-quiz-component.md`。打开页面不会访问萌娘百科；只有用户点击开始后才发起一次纯文本 API 请求。不要改成页面预载、后台预取、远程题图、图片复制或静默追踪。
 
 修改后运行：
 
@@ -389,14 +389,14 @@ python scripts/generate_post_thumbnails.py --check
 
 - 人工公开仓库清单：`_data/project_repositories.yml`
 - README 来源、Git 对象版本与翻译：`_data/project_cache.yml`
-- 首次公开日期及 GitHub API 证据：`_data/project_repositories.yml` 的 `first_public`
+- 仓库创建日期及 GitHub API 证据：`_data/project_repositories.yml` 的 `created`
 - star、fork、主要语言、许可证、`updated_at`：每次构建从 GitHub API 获取，不手填
 
 仓库展示顺序不是人工配置：先按 star 降序，同 star 再按 `updated_at` 降序，完全相同时按仓库名稳定排序。`updated_at` 只用于排序，不显示在页面上；人工清单中不要添加 `order`。
 
 主要语言和许可证会自动显示为站内筛选标签，值分别来自 GitHub API 的 `language` 与许可证 SPDX 标识。不要另写项目分类或手工标签。点击标题或 README 摘要才会打开仓库；语言、许可证、star 和 fork 都不属于仓库外链。
 
-`first_public` 的 `source_url` 必须是该仓库的 GitHub API URL，`source_field` 必须是 `created_at`。脚本会把这个 UTC 时间换算为香港自然日后与提交值比较；不要用 `updated_at`、第一次进入本站的日期或最近 push 日期替代。
+`created` 的 `source_url` 必须是该仓库的 GitHub API URL，`source_field` 必须是 `created_at`。脚本会把这个 UTC 时间换算为香港自然日后与提交值比较；不要用 `updated_at`、第一次进入本站的日期或最近 push 日期替代，也不要把仓库创建时间表述为已证实的首次公开时间。
 
 README 更新后：
 

@@ -186,10 +186,10 @@
 
 - key: casil-aamas-2024
   first_public:
-    date: '2024-05-06'
+    date: '2023-09-28'
     precision: day
-    source_url: https://www.ifaamas.org/Proceedings/aamas2024/pdfs/p2204.pdf
-    source_field: proceedings date (first day)
+    source_url: https://arxiv.org/abs/2309.16299
+    source_field: arXiv v1 submitted
   title:
     zh: Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture
     en: Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture

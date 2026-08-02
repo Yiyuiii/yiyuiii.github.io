@@ -29,7 +29,7 @@ CACHE_PATH = ROOT / "_data" / "project_cache.yml"
 RUNTIME_PATH = ROOT / "_data" / "project_runtime.yml"
 RETRYABLE_STATUS = {403, 429, 500, 502, 503, 504}
 HONG_KONG = ZoneInfo("Asia/Hong_Kong")
-FIRST_PUBLIC_KEYS = {"date", "precision", "source_url", "source_field"}
+DATE_MARKER_KEYS = {"date", "precision", "source_url", "source_field"}
 Transport = Callable[[str, Mapping[str, str]], "GitHubResponse"]
 
 
@@ -282,32 +282,32 @@ def _parse_updated_at(value) -> datetime:
     return _parse_github_timestamp(value, "updated_at")
 
 
-def validate_first_public(config: Mapping, metadata: Mapping) -> None:
-    """Verify a committed first-public marker against GitHub created_at."""
+def validate_created_marker(config: Mapping, metadata: Mapping) -> None:
+    """Verify a committed repository-created marker against GitHub created_at."""
 
-    record = config.get("first_public")
+    record = config.get("created")
     if record is None:
         return
-    if not isinstance(record, Mapping) or set(record) != FIRST_PUBLIC_KEYS:
+    if not isinstance(record, Mapping) or set(record) != DATE_MARKER_KEYS:
         raise PublicRepositoryError(
-            "repository first_public must contain exactly "
-            + ", ".join(sorted(FIRST_PUBLIC_KEYS))
+            "repository created must contain exactly "
+            + ", ".join(sorted(DATE_MARKER_KEYS))
         )
 
     repository = config["repository"]
     expected_url = f"{API_ROOT}/repos/{repository}"
     if record.get("precision") != "day":
-        raise PublicRepositoryError("GitHub repository first_public precision must be day")
+        raise PublicRepositoryError("GitHub repository created precision must be day")
     if record.get("source_url") != expected_url or record.get("source_field") != "created_at":
         raise PublicRepositoryError(
-            "GitHub repository first_public source must be its API created_at"
+            "GitHub repository created source must be its API created_at"
         )
 
     created_at = _parse_github_timestamp(metadata.get("created_at"), "created_at")
     expected_date = created_at.astimezone(HONG_KONG).date().isoformat()
     if str(record.get("date")) != expected_date:
         raise PublicRepositoryError(
-            f"{repository} first_public date {record.get('date')} does not match "
+            f"{repository} created date {record.get('date')} does not match "
             f"created_at in Asia/Hong_Kong ({expected_date})"
         )
 
@@ -389,7 +389,7 @@ def sync_records(
             transport=transport,
         )
         validate_repository(metadata)
-        validate_first_public(config, metadata)
+        validate_created_marker(config, metadata)
         readme_payload = request_json(
             _readme_url(repository, readme_path),
             token=token,

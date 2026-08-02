@@ -53,20 +53,20 @@ items:
 
   - id: moegirl-quiz
     kind:
-      zh: 趣味猜图
-      en: Image quiz
+      zh: 角色问答
+      en: Character quiz
     title:
-      zh: 萌娘百科猜图
-      en: Moegirl image quiz
+      zh: 萌娘百科角色猜猜
+      en: Moegirlpedia character quiz
     description:
-      zh: 从已核验的角色池随机组成四个选项，点击开始后才向萌娘百科请求一张题图，看看你能不能认出她是谁。
-      en: Draw four choices from a reviewed character pool, then request one image from Moegirl only after you start and see whether you recognize the character.
+      zh: 从已核验的角色池随机组成四个选项，点击开始后才向萌娘百科请求一段匿名化文字线索；不请求图片，也不记录访问。
+      en: Draw four choices from a reviewed character pool, then request one anonymized text clue from Moegirlpedia only after you start. No image or visit history is used.
     action:
       zh: 开始猜猜看
       en: Start guessing
     keywords:
-      zh: [萌娘百科, 角色, 猜图, 动漫, 游戏]
-      en: [Moegirl, character, image quiz, anime, games]
+      zh: [萌娘百科, 角色, 问答, 动漫, 游戏]
+      en: [Moegirlpedia, character, quiz, anime, games]
     href:
       zh: /toys/#moegirl-quiz-title
       en: /en/toys/#moegirl-quiz-title

@@ -264,12 +264,12 @@ def valid_site(root):
         '<div class="toy-card__meta">页面氛围</div><h2>明暗主题与日月光效</h2>'
         '<p>切换主题和环境光。</p><p class="toy-card__action">在页眉试试</p>'
         '</article><article id="moegirl-quiz" class="toy-card">'
-        '<div class="toy-card__meta">趣味猜图</div><h2>萌娘百科猜图</h2>'
-        '<p>点击后开始猜图。</p><a class="toy-card__action" '
-        'href="/toys/#moegirl-quiz-title">开始猜图</a></article></div>'
+        '<div class="toy-card__meta">角色问答</div><h2>萌娘百科角色猜猜</h2>'
+        '<p>点击后开始问答。</p><a class="toy-card__action" '
+        'href="/toys/#moegirl-quiz-title">开始猜猜</a></article></div>'
         '<section class="moegirl-quiz" data-moegirl-quiz>'
-        '<h2 id="moegirl-quiz-title">猜猜她是谁？</h2>'
-        '<img data-quiz-image></section></div>'
+        '<h2 id="moegirl-quiz-title">根据线索，猜猜这是谁？</h2>'
+        '<p data-quiz-clue-text></p></section></div>'
     )
     en_toys = (
         '<div class="toy-index"><header class="toy-index__header">'
@@ -282,12 +282,12 @@ def valid_site(root):
         '<div class="toy-card__meta">Page ambience</div><h2>Light and dark</h2>'
         '<p>Switch theme and ambience.</p><p class="toy-card__action">Try the header</p>'
         '</article><article id="moegirl-quiz" class="toy-card">'
-        '<div class="toy-card__meta">Image quiz</div><h2>Moegirl image quiz</h2>'
-        '<p>Start an image quiz.</p><a class="toy-card__action" '
+        '<div class="toy-card__meta">Character quiz</div><h2>Moegirlpedia character quiz</h2>'
+        '<p>Start a character quiz.</p><a class="toy-card__action" '
         'href="/en/toys/#moegirl-quiz-title">Start guessing</a></article></div>'
         '<section class="moegirl-quiz" data-moegirl-quiz>'
-        '<h2 id="moegirl-quiz-title">Who is she?</h2>'
-        '<img data-quiz-image></section></div>'
+        '<h2 id="moegirl-quiz-title">Who is this character?</h2>'
+        '<p data-quiz-clue-text></p></section></div>'
     )
     write(root / "toys" / "index.html", page("zh", zh_nav, zh_toys, "/toys/"))
     write(

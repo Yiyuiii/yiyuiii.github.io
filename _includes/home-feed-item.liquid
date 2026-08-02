@@ -4,8 +4,8 @@
   <div class="entry-meta">
     <span class="home-feed-item__kind" data-home-kind>{{ home.types[item.kind] }}</span>
     <span class="entry-rule" aria-hidden="true"></span>
-    <time data-home-date datetime="{{ item.first_public_date }}">
-      {% if item.first_public_precision == 'year' %}{{ item.first_public_date }}{% else %}{{ item.first_public_date | date: home.date_format }}{% endif %}
+    <time data-home-date datetime="{{ item.marker_date }}">
+      {% if item.marker_precision == 'year' %}{{ item.marker_date }}{% else %}{{ item.marker_date | date: home.date_format }}{% endif %}
     </time>
   </div>
   <div class="home-feed-item__grid{% unless item.thumbnail %} home-feed-item__grid--text-only{% endunless %}" data-home-grid>

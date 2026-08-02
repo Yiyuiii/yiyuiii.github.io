@@ -1,8 +1,8 @@
-# 首页首次公开日期来源
+# 首页标志日期来源
 
 ## 语义与边界
 
-首页用“首次可核验公开日期”作为 25 条内容的统一标志日期和排序依据。它不表示最近修订、最近 push、最近获得 Star、最近进入本站或最近由本站整理的时间。
+首页用分类型“标志日期”作为 25 条内容的排序依据。三类日期语义不同，页面会明确说明；它们都不表示最近修订、最近 push、最近获得 Star、最近进入本站或最近由本站整理的时间。
 
 - 随笔取 front matter 的初稿日：有 `revisions` 时取 `revisions[0].date`，否则取 `date`。两种语言必须相同。
 - 项目取当前公开 GitHub 仓库 API 的 `created_at`，并换算为 `Asia/Hong_Kong` 自然日。GitHub API 不提供公开／私有可见性变更历史，因此它是当前公开仓库可统一核验的最早仓库标记，不额外声称仓库从创建瞬间起始终公开。
@@ -47,10 +47,10 @@
 | `publication:trust-region-newton-ecai-2025` | 2025-08-25 | arXiv v1 submission date：`https://arxiv.org/abs/2508.18423v1` |
 | `publication:meta-rl-survey-2024` | 2023-09-11 | 《软件学报》条目“在线发布日期”：`https://www.jos.org.cn/jos/article/abstract/7011` |
 | `publication:supervised-dr-ppsn-2024` | 2024-09-07 | Springer “Published online”：`https://link.springer.com/chapter/10.1007/978-3-031-70068-2_22` |
-| `publication:casil-aamas-2024` | 2024-05-06 | IFAAMAS 正式论文集所列 AAMAS 2024 日期范围的首日：`https://www.ifaamas.org/Proceedings/aamas2024/pdfs/p2204.pdf` |
+| `publication:casil-aamas-2024` | 2023-09-28 | arXiv v1 提交日；题名、方法与六位作者对应正式 AAMAS 版本：`https://arxiv.org/abs/2309.16299` |
 | `publication:radar-rl-2023` | 2023-08-03 | ZTE Communications 正式期刊 PDF “published online”：`https://www.zte.com.cn/content/dam/zte-site/res-www-zte-com-cn/mediares/magazine/publication/com_en/pdf/en202303-.pdf` |
 | `publication:tild-aamas-2023` | 2023-05-30 | AAMAS 2023 官方新闻“Proceedings now available”：`https://www.ifaamas.org/AAMAS/aamas2023/news.html` |
 
 ## 当前排序结果
 
-按日期降序、同日稳定 ID 升序，当前“近期公开”前 8 条依次为：`codex-cc-tools`、`taco`、《大创造时代》随笔、Newton trust-region 论文、HDBO-B 论文、`simple_asr_llm_tts`、高维贝叶斯优化综述、PPSN 降维论文。推荐候选必须排除这 8 个身份；后续修订不会把旧随笔重新推入这里。
+按标志日期降序、同日稳定 ID 升序，当前“近期内容”前 8 条依次为：`codex-cc-tools`、`taco`、《大创造时代》随笔、Newton trust-region 论文、HDBO-B 论文、`simple_asr_llm_tts`、高维贝叶斯优化综述、PPSN 降维论文。推荐候选必须排除这 8 个身份；后续修订不会把旧随笔重新推入这里。

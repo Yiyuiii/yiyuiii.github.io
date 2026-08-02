@@ -69,10 +69,10 @@
     card.dataset.stableId = selected.id;
     card.querySelector("[data-home-kind]").textContent = typeLabels[selected.kind] || selected.kind;
     const time = card.querySelector("[data-home-date]");
-    time.dateTime = selected.first_public_date;
-    time.textContent = selected.first_public_precision === "year"
-      ? selected.first_public_date
-      : selected.first_public_date.replaceAll("-", rotation.dataset.dateFormat.includes("%Y.") ? "." : "-");
+    time.dateTime = selected.marker_date;
+    time.textContent = selected.marker_precision === "year"
+      ? selected.marker_date
+      : selected.marker_date.replaceAll("-", rotation.dataset.dateFormat.includes("%Y.") ? "." : "-");
     card.querySelector("[data-home-title]").textContent = selected.title;
     card.querySelector("[data-home-summary]").textContent = selected.summary;
 

@@ -6,6 +6,7 @@ permalink: /toys/
 lang: zh
 schema_type: CollectionPage
 nav_key: toys
+math: false
 hide_title: true
 translation_url: /en/toys/
 translation_key: toys-index

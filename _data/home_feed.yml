@@ -3,8 +3,9 @@
 # - project: GitHub repository created_at, verified by scripts/sync_projects.py;
 # - publication: the first_public evidence record in publications.yml.
 date_semantics: >-
-  The first verifiable public date of each item. Later revisions, repository
-  activity, site curation, and typo-only fixes never refresh it.
+  The type-defined marker date of each item: writing initial draft, GitHub
+  repository creation, or publication first public record. Later revisions,
+  repository activity, site curation, and typo-only fixes never refresh it.
 items:
   - {id: "writing:202109160000", kind: writing, ref: "202109160000"}
   - {id: "writing:202109170000", kind: writing, ref: "202109170000"}

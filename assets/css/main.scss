@@ -1948,7 +1948,7 @@ html[data-theme="dark"] .moegirl-quiz {
 
 .moegirl-quiz__interactive[hidden],
 .moegirl-quiz__round[hidden],
-.moegirl-quiz__figure[hidden],
+.moegirl-quiz__clue[hidden],
 .moegirl-quiz__options[hidden],
 .moegirl-quiz__source[hidden] {
   display: none;
@@ -1989,36 +1989,39 @@ html[data-theme="dark"] .moegirl-quiz {
   margin-top: 1.1rem;
 }
 
-.moegirl-quiz__round[data-preparing="true"] {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.moegirl-quiz__figure {
-  display: grid;
-  width: min(100%, 22rem);
-  aspect-ratio: 1;
-  margin: 0;
-  place-items: center;
-  overflow: hidden;
+.moegirl-quiz__clue {
+  min-width: 0;
+  padding: clamp(0.85rem, 2.5vw, 1.1rem);
   border: 1px solid color-mix(in srgb, var(--divider) 74%, transparent);
   border-radius: 0.55rem;
   background: color-mix(in srgb, var(--page) 82%, var(--amethyst-soft));
 }
 
-.moegirl-quiz__figure img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1;
-  border-radius: 0;
-  object-fit: contain;
+.moegirl-quiz__clue:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--jade) 72%, transparent);
+  outline-offset: 3px;
+}
+
+.moegirl-quiz__clue-label {
+  margin: 0 0 0.48rem;
+  color: var(--amethyst);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.moegirl-quiz__clue-text {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.98rem;
+  line-height: 1.8;
+}
+
+.moegirl-quiz__clue-origin {
+  margin: 0.65rem 0 0;
+  color: var(--meta);
+  font-size: 0.76rem;
+  line-height: 1.6;
 }
 
 .moegirl-quiz__options {
@@ -2081,11 +2084,6 @@ html[data-theme="dark"] .moegirl-quiz {
 @media (max-width: 560px) {
   .moegirl-quiz__round {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .moegirl-quiz__figure {
-    width: min(100%, 19rem);
-    margin-inline: auto;
   }
 }
 

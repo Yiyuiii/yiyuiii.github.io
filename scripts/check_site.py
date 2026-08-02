@@ -170,7 +170,9 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
     if len(quiz) != 1:
         raise SiteCheckError(f"{route}: expected exactly one Moegirl quiz component")
     quiz_title = soup.select("#moegirl-quiz-title")
-    expected_quiz_title = "猜猜她是谁？" if language == "zh" else "Who is she?"
+    expected_quiz_title = (
+        "根据线索，猜猜这是谁？" if language == "zh" else "Who is this character?"
+    )
     if (
         len(quiz_title) != 1
         or quiz_title[0].get_text(" ", strip=True) != expected_quiz_title
@@ -181,10 +183,15 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
     expected_quiz_href = f"{route}#moegirl-quiz-title"
     if not quiz_action or quiz_action.get("href") != expected_quiz_href:
         raise SiteCheckError(f"{route}: Moegirl quiz card does not link to its component")
-    if quiz[0].select_one("img[data-quiz-image][src]"):
-        raise SiteCheckError(f"{route}: Moegirl quiz image must not preload remotely")
+    if quiz[0].find("img") or not quiz[0].select_one("[data-quiz-clue-text]"):
+        raise SiteCheckError(
+            f"{route}: Moegirl quiz must use a text clue without embedded images"
+        )
     if len(soup.select('[id="moegirl-quiz"]')) != 1:
         raise SiteCheckError(f"{route}: Moegirl quiz card id must be unique")
+    source = str(soup).lower()
+    if "mathjax" in source or "al_math" in source:
+        raise SiteCheckError(f"{route}: toys page loads math assets")
     return ids
 
 
@@ -210,7 +217,7 @@ def _check_home(soup: BeautifulSoup, route: str, language: str) -> None:
     expected.sort(key=lambda item: item[0], reverse=True)
     if ordered != expected:
         raise SiteCheckError(
-            f"{route}: recent home items are not first-public date desc/id asc"
+            f"{route}: recent home items are not marker date desc/id asc"
         )
 
     rotation = soup.select("[data-home-rotation] > .home-feed-item")
