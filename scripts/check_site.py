@@ -229,9 +229,15 @@ def _check_home(soup: BeautifulSoup, route: str, language: str) -> None:
         raise SiteCheckError(f"{route}: welcome page loads math assets")
 
     expected_brand = "/en/" if language == "en" else "/"
-    brand = soup.select_one("a.site-brand")
-    if not brand or brand.get("href") != expected_brand:
-        raise SiteCheckError(f"{route}: brand does not return to the localized welcome page")
+    brand_links = soup.select(
+        ".site-brand a.site-brand__avatar-home, .site-brand a.site-brand__name"
+    )
+    if len(brand_links) != 2 or any(
+        link.get("href") != expected_brand for link in brand_links
+    ):
+        raise SiteCheckError(
+            f"{route}: avatar fallback and brand name must return to the localized welcome page"
+        )
 
 
 def _check_projects(soup: BeautifulSoup, route: str) -> None:

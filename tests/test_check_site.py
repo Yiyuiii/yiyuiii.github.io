@@ -21,7 +21,10 @@ def page(lang, nav, body, current=None):
     return f"""<!doctype html>
 <html lang="{lang}">
   <body>
-    <a class="site-brand" href="{home}">yiyuiii</a>
+    <span class="site-brand">
+      <a class="site-brand__avatar-home" href="{home}">avatar</a>
+      <a class="site-brand__name" href="{home}">yiyuiii</a>
+    </span>
     <nav class="site-nav">{nav}</nav>
     <main>{body}</main>
   </body>
