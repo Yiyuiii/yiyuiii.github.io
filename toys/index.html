@@ -1,0 +1,388 @@
+<!DOCTYPE html> <html lang="zh"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 小玩意 | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="几秒钟就能上手的站内功能与轻量实验。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/toys/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/toys/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/toys/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/toys/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="website"> <meta property="og:title" content="小玩意"> <meta property="og:url" content="https://yiyuiii.github.io/toys/"> <meta property="og:description" content="几秒钟就能上手的站内功能与轻量实验。"> <meta property="og:locale" content="zh_CN"> <meta property="og:locale:alternate" content="en_US"> <meta property="og:image" content="https://yiyuiii.github.io/assets/img/favicons/android-chrome-256x256.png"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="小玩意"> <meta name="twitter:description" content="几秒钟就能上手的站内功能与轻量实验。"> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/img/favicons/android-chrome-256x256.png"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "url": "https://yiyuiii.github.io/toys/",
+    "headline": "小玩意",
+    "description": "几秒钟就能上手的站内功能与轻量实验。",
+    "inLanguage": "zh-CN",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    }
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="关闭日光背景" aria-pressed="true" data-enable-light-label="开启日光背景" data-disable-light-label="关闭日光背景" data-enable-dark-label="开启月光背景" data-disable-dark-label="关闭月光背景" data-status-light-on="日光背景已开启" data-status-light-off="日光背景已关闭" data-status-dark-on="月光背景已开启" data-status-dark-off="月光背景已关闭" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="主导航"> <a href="/">欢迎</a> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/toys/" aria-current="page">小玩意</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到夜晚样式" aria-pressed="false" data-enable-light-label="切换到明亮样式" data-enable-dark-label="切换到夜晚样式" data-status-light="已切换到明亮样式" data-status-dark="已切换到夜晚样式" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/toys/" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="page-shell"> <article class="page-content"> <div class="toy-index"> <header class="toy-index__header"> <p class="toy-index__eyebrow">轻量互动</p> <h1>小玩意</h1> <p>这里收纳几秒钟就能上手的站内功能与轻量实验。首批只列出已经可以使用的互动；以后新增内容时，继续在这份清单中维护。</p> </header> <div class="toy-grid"> <article id="random-discovery" class="toy-card"> <div class="toy-card__meta"> <span>站内发现</span> <span>现在可用</span> </div> <h2>随机发现</h2> <p>每次进入欢迎页时，从最近发布之外的双语随笔、项目和论文中等概率抽出一项；不记录访问，也不请求外部服务。</p> <a class="toy-card__action" href="/">去欢迎页抽一次 <span aria-hidden="true">→</span></a> </article> <article id="theme-and-light" class="toy-card"> <div class="toy-card__meta"> <span>页面氛围</span> <span>现在可用</span> </div> <h2>明暗主题与日月光效</h2> <p>用页眉按钮切换明亮或夜晚主题，点击左上头像独立开关随主题变化的日光或月光；你的选择只保存在当前浏览器。</p> <p class="toy-card__action toy-card__action--hint">在页眉中直接试试</p> </article> <article id="moegirl-quiz" class="toy-card"> <div class="toy-card__meta"> <span>角色问答</span> <span>现在可用</span> </div> <h2>萌娘百科角色猜猜</h2> <p>从已核验的角色池随机组成四个选项，点击开始后才向萌娘百科请求一段匿名化文字线索；不请求图片，也不记录访问。</p> <a class="toy-card__action" href="/toys/#moegirl-quiz-title">开始猜猜看 <span aria-hidden="true">→</span></a> </article> </div> <section class="moegirl-quiz" data-moegirl-quiz="" data-api-endpoint="https://zh.moegirl.org.cn/api.php" data-timeout-ms="10000" aria-labelledby="moegirl-quiz-title"> <header class="moegirl-quiz__header"> <p class="moegirl-quiz__eyebrow">萌娘百科角色猜猜</p> <h2 id="moegirl-quiz-title">根据线索，猜猜这是谁？</h2> <p>阅读一段匿名化的条目导言，从四个候选中找出角色。</p> </header> <p class="moegirl-quiz__privacy">点击开始后，本页只会向萌娘百科 API 请求一次四个候选的文字导言；第三方可看到本次请求和你的 IP 地址。本站不使用 Cookie、存储或跟踪，也不请求图片。</p> <div class="moegirl-quiz__interactive" data-quiz-interactive="" hidden=""> <button class="moegirl-quiz__start" type="button" data-quiz-start=""> 开始一题 </button> <div class="moegirl-quiz__round" data-quiz-round="" hidden=""> <div class="moegirl-quiz__clue" data-quiz-clue="" tabindex="-1" hidden=""> <p class="moegirl-quiz__clue-label">匿名线索</p> <p class="moegirl-quiz__clue-text" data-quiz-clue-text=""></p> <p class="moegirl-quiz__clue-origin">线索取自一个候选条目的导言，候选名与已知别名已被屏蔽。</p> </div> <div class="moegirl-quiz__options" data-quiz-options="" role="group" aria-label="角色选项" hidden=""></div> </div> <p class="moegirl-quiz__status" data-quiz-status="" aria-live="polite" aria-atomic="true"></p> <p class="moegirl-quiz__source" data-quiz-source="" hidden=""> <a data-quiz-source-link="" href="" target="_blank" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer"></a> <span>线索是上方来源条目的匿名化节选；条目文本按来源页标示的许可协议提供，再次使用时请保留来源与署名。</span> <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer">查看 CC BY-NC-SA 3.0 协议</a> </p> </div> <noscript> <p class="moegirl-quiz__noscript">此小玩意需要 JavaScript；未启用时不会连接萌娘百科。</p> </noscript> <script type="application/json" data-quiz-pool="">[{"title":"初音未来","aliases":["初音ミク","Hatsune Miku","Miku","ミク","初音"]},{"title":"洛天依","aliases":["Luo Tianyi","Tianyi Luo","LuoTianyi","Tianyi"]},{"title":"博丽灵梦","aliases":["博麗霊夢","Hakurei Reimu","Reimu Hakurei","Reimu","灵梦","霊夢"]},{"title":"琪露诺","aliases":["Cirno","⑨"]},{"title":"蕾米莉亚·斯卡蕾特","aliases":["Remilia Scarlet","Remilia","蕾咪","大小姐"]},{"title":"御坂美琴","aliases":["Misaka Mikoto","Mikoto Misaka","美琴","炮姐"]},{"title":"初春饰利","aliases":["Uiharu Kazari","Kazari Uiharu","初春","饰利"]},{"title":"阿尔托莉雅·潘德拉贡","aliases":["Saber","Artoria Pendragon","Altria Pendragon","Artoria","Altria","亚瑟王","骑士王","呆毛王"]},{"title":"远坂凛","aliases":["Tohsaka Rin","Rin Tohsaka","凛"]},{"title":"伊莉雅丝菲尔·冯·爱因兹贝伦","aliases":["Illyasviel von Einzbern","Illyasviel","Illya","Ilya","伊莉雅"]},{"title":"晓美焰","aliases":["Akemi Homura","Homura Akemi","Homura","小焰"]},{"title":"四宫辉夜","aliases":["四宮辉夜","四宮かぐや","Kaguya Shinomiya","Shinomiya Kaguya","Kaguya","辉夜"]}]</script> <script type="application/json" data-quiz-copy="">{"eyebrow":"萌娘百科角色猜猜","title":"根据线索，猜猜这是谁？","description":"阅读一段匿名化的条目导言，从四个候选中找出角色。","privacy":"点击开始后，本页只会向萌娘百科 API 请求一次四个候选的文字导言；第三方可看到本次请求和你的 IP 地址。本站不使用 Cookie、存储或跟踪，也不请求图片。","start":"开始一题","again":"再来一题","retry":"重试","loading":"正在向萌娘百科请求本题文字线索……","options_label":"角色选项","clue_label":"匿名线索","clue_origin":"线索取自一个候选条目的导言，候选名与已知别名已被屏蔽。","redaction":"〔角色名已隐藏〕","correct":"答对了！这是 {title}。","incorrect":"没猜中；答案是 {title}。","network_error":"暂时没能取得文字线索，请稍后重试。","no_clue_error":"这组选项暂时没有足够的匿名线索，请再试一次。","random_error":"浏览器无法提供可靠随机数，暂时不能出题。","source_label":"查看萌娘百科来源条目：{title}","license":"线索是上方来源条目的匿名化节选；条目文本按来源页标示的许可协议提供，再次使用时请保留来源与署名。","license_label":"查看 CC BY-NC-SA 3.0 协议","no_js":"此小玩意需要 JavaScript；未启用时不会连接萌娘百科。"}</script> <script src="/assets/js/moegirl-quiz.js?v=30a4cf49de449a703bb9c02f7574cbd0" defer></script> </section> </div> </article> </div> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目、论文或小玩意"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+      
+      {
+        "title": "《大创造时代》资源-分值量化计算思路",
+        "description": "本文尝试把《大创造时代》中的不同资源换算到同一尺度，并用跨轮迭代模型比较资源在局中的实际价值。",
+        "tags": ["大创造时代","桌游"],
+        "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《特鲁瓦》资源-分值量化分析攻略",
+        "description": "在《特鲁瓦》桌游中，玩家的行动依赖随机的骰子点数，而购买其他人骰子的机制使得原本高随机性的个人产出变为所有人共享的公共产出，以新颖的方式平衡了随机性和策略性。",
+        "tags": ["特鲁瓦","桌游"],
+        "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《盖亚计划》资源-分值量化计算思路",
+        "description": "本文给出《盖亚计划》桌游中各类资源到价值的近似量化思路，为玩家的发展规划提供基础的宏观参考。",
+        "tags": ["盖亚计划","桌游"],
+        "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "了解游泳",
+        "description": "我写这个文章的时候已经自学了几个月的游泳。我从一开始害怕水，到后来浮不起来、游不快、不会换气，到现在能比较快速地用平蛙姿势游50米，终于算是入门了。这期间零散搜集了很多教学文字和视频，深深体会到自学的不易，踩了一些坑也有一些感悟，希望在这里记录尽可能全面的游泳入门流程，给正好有需要的人们看看。",
+        "tags": ["游泳"],
+        "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "逻辑对决桌游攻略",
+        "description": "截至 2023 年 2 月，我在 BGA 上玩了近 500 场《逻辑对决》。这篇攻略从数字推理、问题价值和终局攻防出发，整理我当时形成的一套实战思路。",
+        "tags": ["逻辑对决","桌游"],
+        "url": "/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四季物语量化分析攻略",
+        "description": "《四季物语》以魔法和自然为主题，美术风格轻快，游戏节奏紧凑，规则简单而不失深度，是一款热度很高的2~4人桌游。",
+        "tags": ["四季物语","桌游"],
+        "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "装机记录",
+        "description": "2022 年双 11，笔记本开始频繁蓝屏，GTX 1060 Ti 也逐渐跟不上新显示器；我决定趁活动装一台 R5 5600 + RX 6600 XT 主机，顺手记录这次选型、预算和踩坑。",
+        "tags": ["装机"],
+        "url": "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "制作一张匹配形状的字符画",
+        "description": "最近玩字符画，查了一下主流的字符画算法，基本采用平均灰度这一指标将图片区域映射到单个字符。",
+        "tags": ["NoneBot","Python","字符画"],
+        "url": "/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "云服务器折腾随笔",
+        "description": "这篇文章记录了我2022年暑假期间调研、尝试云服务器的一些情况。",
+        "tags": ["云服务器"],
+        "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "强化学习问题随笔",
+        "description": "本文记录了我见到的一些强化学习问题。",
+        "tags": ["强化学习"],
+        "url": "/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "搭建个人 GitHub 主页",
+        "description": "本文记录了我如何成功搭建个人 GitHub 网站的经验。",
+        "tags": ["GitHub"],
+        "url": "/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "用API让原神角色说话！",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "HDBO-B 是一个通用、统一的高维贝叶斯优化基准，包含测试函数、示例算法及更多实例。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "一个简单的端到端语音大模型聊天仓库；全部组件免费且轻量。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "这是桌游《图灵机》的求解器。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "Codex 通过 MCP 调用的 Claude Code 任务工具。",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "TACO 在基于大语言模型的贝叶斯优化框架 LLAMBO 上加入主动跨任务迁移。每轮贝叶斯优化只需一次大语言模型调用，即可同时提出目标超参数候选并选择辅助查询；累积的跨任务证据会反馈到后续轮次中。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/publications/#hdbo-b-ijcnn-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "高维贝叶斯优化研究综述",
+      "description": "陈泉霖, 陈奕宇, 霍静, 曹宏业, 高阳, 李栋, 郝建业 · 软件学报",
+      "tags": [2025],
+      "url": "/publications/#hdbo-survey-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/publications/#trust-region-newton-ecai-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "元强化学习研究综述",
+      "description": "陈奕宇, 霍静, 丁天雨, 高阳 · 软件学报 · 2024年高被关注综述论文",
+      "tags": [2024],
+      "url": "/publications/#meta-rl-survey-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/publications/#supervised-dr-ppsn-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/publications/#casil-aamas-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/publications/#radar-rl-2023",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/publications/#tild-aamas-2023",
+      "kind": "论文"
+    }
+    
+  
+  
+    ,
+    {
+      "title": "随机发现",
+      "description": "每次进入欢迎页时，从最近发布之外的双语随笔、项目和论文中等概率抽出一项；不记录访问，也不请求外部服务。",
+      "tags": ["随机","推荐","内容发现"],
+      "url": "/toys/#random-discovery",
+      "kind": "小玩意"
+    }
+    
+  
+    ,
+    {
+      "title": "明暗主题与日月光效",
+      "description": "用页眉按钮切换明亮或夜晚主题，点击左上头像独立开关随主题变化的日光或月光；你的选择只保存在当前浏览器。",
+      "tags": ["主题","阳光","月光","背景"],
+      "url": "/toys/#theme-and-light",
+      "kind": "小玩意"
+    }
+    
+  
+    ,
+    {
+      "title": "萌娘百科角色猜猜",
+      "description": "从已核验的角色池随机组成四个选项，点击开始后才向萌娘百科请求一段匿名化文字线索；不请求图片，也不记录访问。",
+      "tags": ["萌娘百科","角色","问答","动漫","游戏"],
+      "url": "/toys/#moegirl-quiz",
+      "kind": "小玩意"
+    }
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script src="/assets/js/site-search.js?v=af3dcf1d63c7ba529e2230dc6aae0477"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>
