@@ -1,0 +1,69 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign quiz = site.data.moegirl_quiz %}
+{% assign copy = quiz.copy[lang_key] | default: quiz.copy.zh %}
+
+<section
+  class="moegirl-quiz"
+  data-moegirl-quiz
+  data-api-endpoint="{{ quiz.api_endpoint | escape }}"
+  data-timeout-ms="{{ quiz.timeout_ms }}"
+  aria-labelledby="moegirl-quiz-title"
+>
+  <header class="moegirl-quiz__header">
+    <p class="moegirl-quiz__eyebrow">{{ copy.eyebrow }}</p>
+    <h2 id="moegirl-quiz-title">{{ copy.title }}</h2>
+    <p>{{ copy.description }}</p>
+  </header>
+
+  <p class="moegirl-quiz__privacy">{{ copy.privacy }}</p>
+
+  <div class="moegirl-quiz__interactive" data-quiz-interactive hidden>
+    <button class="moegirl-quiz__start" type="button" data-quiz-start>
+      {{ copy.start }}
+    </button>
+
+    <div class="moegirl-quiz__round" data-quiz-round hidden>
+      <figure class="moegirl-quiz__figure" data-quiz-figure hidden>
+        <img
+          data-quiz-image
+          alt="{{ copy.image_alt | escape }}"
+          width="480"
+          height="480"
+          loading="lazy"
+          decoding="async"
+          referrerpolicy="no-referrer"
+        >
+      </figure>
+
+      <div
+        class="moegirl-quiz__options"
+        data-quiz-options
+        role="group"
+        aria-label="{{ copy.options_label | escape }}"
+        hidden
+      ></div>
+    </div>
+
+    <p class="moegirl-quiz__status" data-quiz-status aria-live="polite" aria-atomic="true"></p>
+
+    <p class="moegirl-quiz__source" data-quiz-source hidden>
+      <a
+        data-quiz-source-link
+        href=""
+        target="_blank"
+        rel="external nofollow noopener noreferrer"
+        referrerpolicy="no-referrer"
+      ></a>
+      <span>{{ copy.copyright }}</span>
+    </p>
+  </div>
+
+  <noscript>
+    <p class="moegirl-quiz__noscript">{{ copy.no_js }}</p>
+  </noscript>
+
+  <script type="application/json" data-quiz-pool>{{ quiz.entries | jsonify }}</script>
+  <script type="application/json" data-quiz-copy>{{ copy | jsonify }}</script>
+  <script src="{{ '/assets/js/moegirl-quiz.js' | relative_url | bust_file_cache }}" defer></script>
+</section>
