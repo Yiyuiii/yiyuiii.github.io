@@ -388,11 +388,13 @@ recognition:
 
 ## 本地检查
 
-### 阳光背景维护
+### 明暗主题与环境光维护
 
-阳光效果的视觉参数集中在 `assets/css/main.scss` 的 `--sunlight-x`、`--sunlight-y` 与 `body::before`；不要按单页复制样式。若改变页眉最大宽度、水平内边距或头像尺寸，必须同步光源公式，并复跑 `tests/browser/sunlight.spec.mjs` 的 1280/390/320 px 对齐检查。
+日光/月光参数集中在 `assets/css/main.scss` 的主题变量、`--sunlight-x`、`--sunlight-y`、`body::before` 与 `body::after`；不要按单页复制样式。`body::before` 是静态光晕，`body::after` 是 `360s` 极慢旋转光束；旋转层必须继续使用响应式半径而非固定超大纹理，`prefers-reduced-motion` 必须停转但保留静态光。若改变页眉最大宽度、水平内边距或头像尺寸，必须同步光源公式，并复跑 `tests/browser/sunlight.spec.mjs` 的 1280/390/320 px 对齐与旋转层上限检查。
 
-开关文案只维护 `_data/site_text.yml` 的 `sunlight` 中英文并保持字段平行。存储键和值属于兼容接口；更换键必须升级版本，不得复用 `yiyuiii.sunlight.v1` 解释其它值，也不得把访问数据并入该键。404 和无 JavaScript 的降级边界以阳光规格文档与自动化测试为准。
+两个控件的文案分别只维护 `_data/site_text.yml` 的 `sunlight` 与 `theme` 中英文并保持字段平行。`yiyuiii.sunlight.v1` 只保存环境光 `on` / `off`，`yiyuiii.theme.v1` 只保存 `light` / `dark`；它们是互不覆盖的兼容接口。更换键必须升级版本，不得加入访问数据。明暗样式切换后，同一头像按钮的日光/月光文案与视觉必须即时联动；关闭环境光时两层都必须消失。
+
+头像旁的 `yiyuiii` 始终返回当前语言欢迎页。JavaScript 可用时头像渐进增强为环境光开关；不可用时头像必须保留为首页链接。404、无 JavaScript、reduced-motion 与暗色搜索框的边界以实施规格和自动化测试为准。
 
 本机无需 Ruby 即可运行：
 
@@ -402,6 +404,7 @@ python scripts/sync_projects.py
 python scripts/translation_guard.py --check --production
 node --check assets/js/site-search.js
 node --check assets/js/theme-compat.js
+node --check assets/js/theme.js
 node --check assets/js/article-navigation.js
 node --check assets/js/home-feed.js
 node --check assets/js/sunlight.js

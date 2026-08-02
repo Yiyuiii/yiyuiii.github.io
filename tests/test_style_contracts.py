@@ -279,7 +279,7 @@ def test_rejected_visual_patterns_are_absent():
         "@font-face",
     ):
         assert forbidden not in lowered
-    assert 'html[data-theme="dark"]' not in lowered
+    assert 'html[data-theme="dark"]' in lowered
 
 
 def test_system_font_stack_has_local_cjk_fallbacks_without_font_downloads():

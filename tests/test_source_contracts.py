@@ -75,7 +75,7 @@ def test_site_text_is_parallel_and_contains_approved_navigation():
     assert "about_links" not in data["en"]
 
 
-def test_header_has_avatar_centered_navigation_search_and_language_action():
+def test_header_has_avatar_centered_navigation_search_theme_and_language_actions():
     header = text("_includes/header.liquid")
 
     assert "site-brand__avatar" in header
@@ -87,7 +87,9 @@ def test_header_has_avatar_centered_navigation_search_and_language_action():
     assert "text.nav.about" in header
     assert 'id="search-toggle"' in header
     assert "language-switch" in header
-    assert "theme-toggle" not in header
+    assert 'id="theme-toggle"' in header
+    assert "site-brand__avatar-toggle" in header
+    assert "site-brand__name" in header
 
 
 def test_document_language_uses_page_value_and_google_fonts_are_absent():
@@ -180,14 +182,14 @@ def test_head_allows_only_used_cdn_fonts_and_production_favicons():
     }
 
 
-def test_fixed_light_shell_provides_the_theme_api_required_by_mermaid():
+def test_site_theme_shell_provides_the_dynamic_api_required_by_mermaid():
     layout = text("_layouts/default.liquid")
     compatibility = text("assets/js/theme-compat.js")
 
     assert "theme-compat.js" in layout
     assert layout.index("theme-compat.js") < layout.index("scripts.liquid")
     assert "window.determineComputedTheme" in compatibility
-    assert 'return "light"' in compatibility
+    assert 'dataset.theme === "dark" ? "dark" : "light"' in compatibility
 
 
 def test_nested_content_includes_bind_their_page_language_locally():

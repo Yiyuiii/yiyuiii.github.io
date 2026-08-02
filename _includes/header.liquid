@@ -11,16 +11,48 @@
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="site-brand" href="{{ text.urls.home | relative_url }}" aria-label="{{ text.home_link }}">
-      <img
-        class="site-brand__avatar"
-        src="{{ '/assets/img/favicons/android-chrome-256x256.png' | relative_url }}"
-        alt=""
-        width="40"
-        height="40"
+    <span class="site-brand">
+      <a
+        id="sunlight-fallback-link"
+        class="site-brand__avatar-home"
+        href="{{ text.urls.home | relative_url }}"
+        aria-label="{{ text.home_link }}"
       >
-      <span>yiyuiii</span>
-    </a>
+        <img
+          class="site-brand__avatar"
+          src="{{ '/assets/img/favicons/android-chrome-256x256.png' | relative_url }}"
+          alt=""
+          width="40"
+          height="40"
+        >
+      </a>
+      <button
+        id="sunlight-toggle"
+        class="site-brand__avatar-toggle"
+        type="button"
+        aria-label="{{ text.sunlight.disable_light }}"
+        aria-pressed="true"
+        data-enable-light-label="{{ text.sunlight.enable_light | escape }}"
+        data-disable-light-label="{{ text.sunlight.disable_light | escape }}"
+        data-enable-dark-label="{{ text.sunlight.enable_dark | escape }}"
+        data-disable-dark-label="{{ text.sunlight.disable_dark | escape }}"
+        data-status-light-on="{{ text.sunlight.status_light_on | escape }}"
+        data-status-light-off="{{ text.sunlight.status_light_off | escape }}"
+        data-status-dark-on="{{ text.sunlight.status_dark_on | escape }}"
+        data-status-dark-off="{{ text.sunlight.status_dark_off | escape }}"
+        hidden
+      >
+        <img
+          class="site-brand__avatar"
+          src="{{ '/assets/img/favicons/android-chrome-256x256.png' | relative_url }}"
+          alt=""
+          width="40"
+          height="40"
+        >
+      </button>
+      <a class="site-brand__name" href="{{ text.urls.home | relative_url }}">yiyuiii</a>
+      <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
+    </span>
 
     <nav class="site-nav" aria-label="{{ text.primary_navigation }}">
       <a href="{{ text.urls.writing | relative_url }}"{% if page.nav_key == 'writing' %} aria-current="page"{% endif %}>{{ text.nav.writing }}</a>
@@ -37,23 +69,26 @@
         </svg>
       </button>
       <button
-        id="sunlight-toggle"
-        class="icon-button sunlight-toggle"
+        id="theme-toggle"
+        class="icon-button theme-toggle"
         type="button"
-        aria-label="{{ text.sunlight.disable }}"
-        aria-pressed="true"
-        data-enable-label="{{ text.sunlight.enable | escape }}"
-        data-disable-label="{{ text.sunlight.disable | escape }}"
-        data-status-on="{{ text.sunlight.status_on | escape }}"
-        data-status-off="{{ text.sunlight.status_off | escape }}"
+        aria-label="{{ text.theme.enable_dark }}"
+        aria-pressed="false"
+        data-enable-light-label="{{ text.theme.enable_light | escape }}"
+        data-enable-dark-label="{{ text.theme.enable_dark | escape }}"
+        data-status-light="{{ text.theme.status_light | escape }}"
+        data-status-dark="{{ text.theme.status_dark | escape }}"
         hidden
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
+        <svg class="theme-toggle__sun" viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="12" cy="12" r="3.4"></circle>
           <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path>
         </svg>
+        <svg class="theme-toggle__moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path>
+        </svg>
       </button>
-      <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
+      <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span>
       <a class="language-switch" href="{{ translation_target | relative_url }}" aria-label="{{ text.switch_language }}">
         {% if lang_key == 'en' %}中{% else %}EN{% endif %}
       </a>

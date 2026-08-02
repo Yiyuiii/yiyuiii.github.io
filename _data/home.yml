@@ -6,16 +6,16 @@ zh:
   guide:
     label: 页面指引
     items:
-      - target: brand
-        text: 左上角头像和 yiyuiii 随时返回这里
+      - target: sunlight
+        text: 左上角头像开关日光或月光，旁边 yiyuiii 返回这里
       - target: navigation
         text: 页顶文字用于切换栏目
       - target: search
         text: 放大镜用于搜索全站
       - target: language
         text: EN / 中用于切换语言
-      - target: sunlight
-        text: 太阳按钮用于开关背景光效
+      - target: theme
+        text: 页眉明暗按钮用于切换明亮 / 夜晚样式
   sections:
     rotation: 随机发现
     rotation_note: 每次进入随机抽取，不记录访问
@@ -37,16 +37,16 @@ en:
   guide:
     label: Page guide
     items:
-      - target: brand
-        text: The avatar and yiyuiii at the top left always return here
+      - target: sunlight
+        text: The avatar switches sunlight or moonlight; yiyuiii beside it returns here
       - target: navigation
         text: The text links at the top switch sections
       - target: search
         text: The magnifying glass searches the whole site
       - target: language
         text: EN / 中 switches language
-      - target: sunlight
-        text: The sun button switches the background effect
+      - target: theme
+        text: The header appearance button switches between light and night
   sections:
     rotation: Random discovery
     rotation_note: Drawn at random on each visit, with no visit tracking
