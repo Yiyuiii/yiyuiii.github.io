@@ -17,8 +17,8 @@ zh:
       - target: sunlight
         text: 太阳按钮用于开关背景光效
   sections:
-    rotation: 今日轮换
-    rotation_note: 按香港日期轮换，不记录访问
+    rotation: 随机发现
+    rotation_note: 每次进入随机抽取，不记录访问
     rotation_fallback: 浏览起点
     recent: 最近整理
   types:
@@ -48,8 +48,8 @@ en:
       - target: sunlight
         text: The sun button switches the background effect
   sections:
-    rotation: Today’s rotation
-    rotation_note: Rotates by the Hong Kong date and records no visits
+    rotation: Random discovery
+    rotation_note: Drawn at random on each visit, with no visit tracking
     rotation_fallback: A place to start
     recent: Recently curated
   types:

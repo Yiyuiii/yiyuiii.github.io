@@ -38,16 +38,43 @@ const contrast = (foreground, background) => {
   return (lighter + 0.05) / (darker + 0.05);
 };
 
+const createStubbedRandomContext = async (browser, samples) => {
+  const context = await browser.newContext({
+    baseURL: process.env.SITE_URL || "http://localhost:62091",
+  });
+  await context.addInitScript((stubbedSamples) => {
+    const nativeGetRandomValues = Crypto.prototype.getRandomValues;
+    let nextSample = Number.parseInt(window.name, 10);
+    if (!Number.isInteger(nextSample) || nextSample < 0) nextSample = 0;
+    Object.defineProperty(Crypto.prototype, "getRandomValues", {
+      configurable: true,
+      value(array) {
+        if (array instanceof Uint32Array && array.length === 1) {
+          const sample = stubbedSamples[Math.min(nextSample, stubbedSamples.length - 1)];
+          array[0] = sample;
+          nextSample += 1;
+          window.name = String(nextSample);
+          globalThis.__cryptoDrawCount = nextSample;
+          return array;
+        }
+        return nativeGetRandomValues.call(this, array);
+      },
+    });
+  }, samples);
+  return context;
+};
+
 for (const viewport of viewports) {
   test(`welcome pages stay readable at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    for (const [route, heading, recentLabel] of [
-      ["/", "你好，欢迎来到 yiyuiii", "最近整理"],
-      ["/en/", "Hello, welcome to yiyuiii", "Recently curated"],
+    for (const [route, heading, pickLabel, recentLabel] of [
+      ["/", "你好，欢迎来到 yiyuiii", "随机发现", "最近整理"],
+      ["/en/", "Hello, welcome to yiyuiii", "Random discovery", "Recently curated"],
     ]) {
       await page.goto(route);
       await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
       await expect(page.locator(".home-guide li")).toHaveCount(5);
+      await expect(page.getByRole("heading", { level: 2, name: pickLabel })).toBeVisible();
       await expect(page.getByRole("heading", { level: 2, name: recentLabel })).toBeVisible();
       await expect(page.locator("[data-home-recent] > .home-feed-item")).toHaveCount(8);
       await expect(page.locator(".home-guide-arrows")).toHaveCount(0);
@@ -67,24 +94,102 @@ for (const viewport of viewports) {
   });
 }
 
-test("daily rotation is bilingual, stable, and outside recent items", async ({
-  page,
+test("random discovery draws independently within eligible candidates", async ({
+  browser,
 }) => {
   const identities = [];
-  for (const route of ["/", "/en/"]) {
+  for (const [route, sample] of [["/", 0], ["/en/", 1]]) {
+    const context = await createStubbedRandomContext(browser, [sample]);
+    const page = await context.newPage();
     await page.goto(route);
     const card = page.locator("[data-home-rotation] [data-home-feed-item]");
     await expect(page.locator("[data-rotation-live-title]")).toBeVisible();
     await expect(page.locator("[data-rotation-fallback-title]")).toBeHidden();
     const identity = await card.getAttribute("data-stable-id");
+    const candidates = await page.locator("#home-rotation-data").evaluate(
+      (element) => JSON.parse(element.textContent || "[]").map((item) => item.id),
+    );
     const recent = await page.locator("[data-home-recent] > [data-stable-id]").evaluateAll(
       (items) => items.map((item) => item.dataset.stableId),
     );
+    const eligible = candidates.filter((candidate) => !recent.includes(candidate));
+    expect(identity).toBe(eligible[sample]);
     expect(recent).not.toContain(identity);
     identities.push(identity);
+    await context.close();
   }
-  expect(identities[0]).toBeTruthy();
-  expect(identities[1]).toBe(identities[0]);
+  expect(identities[0]).not.toBe(identities[1]);
+});
+
+test("random discovery redraws on reload and BFCache restoration", async ({
+  browser,
+}) => {
+  const context = await createStubbedRandomContext(browser, [0, 1, 2]);
+  const page = await context.newPage();
+  await page.goto("/");
+  const card = page.locator("[data-home-rotation] [data-home-feed-item]");
+  const candidates = await page.locator("#home-rotation-data").evaluate(
+    (element) => JSON.parse(element.textContent || "[]").map((item) => item.id),
+  );
+  const recent = await page.locator("[data-home-recent] > [data-stable-id]").evaluateAll(
+    (items) => items.map((item) => item.dataset.stableId),
+  );
+  const eligible = candidates.filter((candidate) => !recent.includes(candidate));
+
+  await expect(card).toHaveAttribute("data-stable-id", eligible[0]);
+  await page.reload();
+  await expect(card).toHaveAttribute("data-stable-id", eligible[1]);
+  await page.evaluate(() => {
+    window.dispatchEvent(new PageTransitionEvent("pageshow", { persisted: true }));
+  });
+  await expect(card).toHaveAttribute("data-stable-id", eligible[2]);
+  await context.close();
+});
+
+test("random discovery rejects the biased uint32 tail before taking modulo", async ({
+  browser,
+}) => {
+  const context = await createStubbedRandomContext(browser, [0xffffffff, 0]);
+  const page = await context.newPage();
+  await page.goto("/");
+  const candidates = await page.locator("#home-rotation-data").evaluate(
+    (element) => JSON.parse(element.textContent || "[]").map((item) => item.id),
+  );
+  const recent = await page.locator("[data-home-recent] > [data-stable-id]").evaluateAll(
+    (items) => items.map((item) => item.dataset.stableId),
+  );
+  const eligible = candidates.filter((candidate) => !recent.includes(candidate));
+  expect(0x1_0000_0000 % eligible.length).not.toBe(0);
+  await expect(page.locator("[data-home-rotation] [data-home-feed-item]")).toHaveAttribute(
+    "data-stable-id",
+    eligible[0],
+  );
+  expect(await page.evaluate(() => globalThis.__cryptoDrawCount)).toBe(2);
+  await context.close();
+});
+
+test("random discovery quietly keeps the browsing fallback when crypto fails", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    baseURL: process.env.SITE_URL || "http://localhost:62091",
+  });
+  await context.addInitScript(() => {
+    Object.defineProperty(Crypto.prototype, "getRandomValues", {
+      configurable: true,
+      value() {
+        throw new Error("stubbed random source failure");
+      },
+    });
+  });
+  const page = await context.newPage();
+  const pageErrors = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  await page.goto("/");
+  await expect(page.locator("[data-rotation-fallback-title]")).toBeVisible();
+  await expect(page.locator("[data-rotation-live-title]")).toBeHidden();
+  expect(pageErrors).toEqual([]);
+  await context.close();
 });
 
 test("legacy root tag query preserves its complete query and hash", async ({ page }) => {

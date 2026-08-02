@@ -42,6 +42,12 @@ def test_home_copy_is_bilingual_structured_and_not_hardcoded_in_runtime_files():
             "rotation_fallback",
             "recent",
         }
+    assert home["zh"]["sections"]["rotation"] == "随机发现"
+    assert home["en"]["sections"]["rotation"] == "Random discovery"
+    assert home["zh"]["sections"]["rotation_note"] == "每次进入随机抽取，不记录访问"
+    assert home["en"]["sections"]["rotation_note"] == (
+        "Drawn at random on each visit, with no visit tracking"
+    )
 
     runtime = "\n".join(
         text(path)
@@ -113,6 +119,22 @@ def test_home_feed_builder_enforces_resolution_and_objective_sorting():
         assert forbidden not in plugin
 
 
+def test_home_rotation_candidates_are_shared_ordered_and_outside_both_recent_lists():
+    items = yaml.safe_load(text("_data/home_feed.yml"))["items"]
+    ordered = sorted(items, key=lambda item: (-item["feed_date"].toordinal(), item["id"]))
+    recent_ids = {item["id"] for item in ordered[:8]}
+    rotation_ids = sorted(item["id"] for item in items if item["id"] not in recent_ids)
+
+    assert len(rotation_ids) > 1
+    assert not recent_ids.intersection(rotation_ids)
+
+    plugin = text("_plugins/site_content.rb")
+    assert 'localized.fetch("zh").map' in plugin
+    assert 'localized.fetch("en").map' in plugin
+    assert "rotation_ids = (common_ids - recent_ids).sort" in plugin
+    assert 'rotation_ids.map { |id| by_id.fetch(id) }' in plugin
+
+
 def test_home_pages_own_roots_and_writing_indexes_move_without_changing_posts():
     expected = {
         "_pages/home.md": ("/", "zh", "WebSite", "/en/"),
@@ -152,11 +174,18 @@ def test_home_template_keeps_semantics_without_javascript_and_uses_small_images(
     assert "post.thumbnail | relative_url" not in include + item_include
 
 
-def test_home_script_is_daily_hong_kong_rotation_and_preserves_old_tag_urls():
+def test_home_script_uses_unbiased_crypto_random_discovery_and_preserves_old_tag_urls():
     script = text("assets/js/home-feed.js")
 
-    assert 'timeZone: "Asia/Hong_Kong"' in script
-    assert "stableId" in script
+    assert "window.crypto.getRandomValues(sample)" in script
+    assert "uint32Range - (uint32Range % length)" in script
+    assert "sample[0] >= unbiasedLimit" in script
+    assert "sample[0] % length" in script
+    assert "catch (_error)" in script
+    assert "return null" in script
+    assert 'window.addEventListener("pageshow"' in script
+    assert "event.persisted" in script
+    assert "renderRandomCandidate()" in script
     assert "recentIds" in script
     assert "location.replace" in script
     assert "URLSearchParams" in script
@@ -168,6 +197,10 @@ def test_home_script_is_daily_hong_kong_rotation_and_preserves_old_tag_urls():
         "XMLHttpRequest",
         "sendBeacon",
         "canvas",
+        "Math.random",
+        "new Date",
+        "Date.now",
+        "Intl.DateTimeFormat",
     ):
         assert forbidden not in script
 
