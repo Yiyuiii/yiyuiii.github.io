@@ -29,7 +29,6 @@
         <span data-rotation-live-title hidden>{{ home.sections.rotation }}</span>
         <span data-rotation-fallback-title>{{ home.sections.rotation_fallback }}</span>
       </h2>
-      <p data-rotation-live-note hidden>{{ home.sections.rotation_note }}</p>
     </div>
     <div id="home-rotation-item" data-home-rotation data-external-label="{{ home.external_label | escape }}" data-date-format="{{ home.date_format | escape }}">
       {% include home-feed-item.liquid item=runtime.rotation_fallback home=home %}

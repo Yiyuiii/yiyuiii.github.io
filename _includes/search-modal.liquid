@@ -72,16 +72,18 @@
     }
     {% assign search_first = false %}
   {% endfor %}
-  {% for toy in site.data.toys.items %}
-    {% unless search_first %},{% endunless %}
-    {
-      "title": {{ toy.title[lang_key] | jsonify }},
-      "description": {{ toy.description[lang_key] | jsonify }},
-      "tags": {{ toy.keywords[lang_key] | jsonify }},
-      "url": {{ text.urls.toys | append: '#' | append: toy.id | relative_url | jsonify }},
-      "kind": {{ text.nav.toys | jsonify }}
-    }
-    {% assign search_first = false %}
+  {% for toy_group in site.data.toys.groups %}
+    {% for toy in toy_group.items %}
+      {% unless search_first %},{% endunless %}
+      {
+        "title": {{ toy.title[lang_key] | jsonify }},
+        "description": {{ toy.description[lang_key] | jsonify }},
+        "tags": {{ toy.keywords[lang_key] | jsonify }},
+        "url": {{ text.urls.toys | append: '#' | append: toy.id | relative_url | jsonify }},
+        "kind": {{ text.nav.toys | jsonify }}
+      }
+      {% assign search_first = false %}
+    {% endfor %}
   {% endfor %}
 ]
 </script>

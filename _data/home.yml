@@ -18,9 +18,8 @@ zh:
         text: 页眉明暗按钮用于切换明亮 / 夜晚样式
   sections:
     rotation: 随机发现
-    rotation_note: 每次进入随机抽取，不记录访问
     rotation_fallback: 浏览起点
-    recent: 近期内容
+    recent: 最近更新
   types:
     writing: 随笔
     project: 项目
@@ -49,9 +48,8 @@ en:
         text: The header appearance button switches between light and night
   sections:
     rotation: Random discovery
-    rotation_note: Drawn at random on each visit, with no visit tracking
     rotation_fallback: A place to start
-    recent: Recent items
+    recent: Recent updates
   types:
     writing: Writing
     project: Project

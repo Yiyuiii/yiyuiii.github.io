@@ -119,76 +119,94 @@ def _check_index_shell(soup: BeautifulSoup, route: str) -> None:
 
 
 def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
-    heading = soup.select(".toy-index__header > h1")
+    heading = soup.select(".toy-index__header > h1.sr-only")
     expected_heading = "小玩意" if language == "zh" else "Toys"
     if len(heading) != 1 or heading[0].get_text(" ", strip=True) != expected_heading:
-        raise SiteCheckError(f"{route}: toys heading is missing or not localized")
+        raise SiteCheckError(f"{route}: hidden toys heading is missing or not localized")
+    if not soup.select_one(".toy-index__introduction"):
+        raise SiteCheckError(f"{route}: toys introduction is missing")
 
-    cards = soup.select(".toy-grid > article.toy-card[id]")
-    if len(cards) < 2:
-        raise SiteCheckError(f"{route}: expected at least two usable toy entries")
-    ids = [str(card.get("id", "")) for card in cards]
-    if len(set(ids)) != len(ids) or any(not item_id for item_id in ids):
-        raise SiteCheckError(f"{route}: toy identities must be non-empty and unique")
+    expected_ids = [
+        "moegirl-quiz",
+        "color-challenge",
+        "ten-second",
+        "reaction-time",
+        "random-password",
+        "random-number",
+    ]
+    entries = soup.select(".toy-group__items > details.toy-entry[id]")
+    ids = [str(entry.get("id", "")) for entry in entries]
+    if ids != expected_ids:
+        raise SiteCheckError(f"{route}: toy identities/order are {ids!r}")
 
-    for card in cards:
-        if not card.select_one(".toy-card__meta"):
-            raise SiteCheckError(f"{route}: toy {card.get('id')} lacks metadata")
-        heading_node = card.find("h2")
-        description = card.select_one("p:not(.toy-card__action)")
-        action = card.select_one(".toy-card__action")
+    groups = soup.select(".toy-list > section.toy-group[data-toy-group]")
+    group_ids = [str(group.get("data-toy-group", "")) for group in groups]
+    if group_ids != ["ungrouped", "quick-challenges", "random-generators"]:
+        raise SiteCheckError(f"{route}: toy groups/order are {group_ids!r}")
+    expected_group_titles = (
+        ["轻松挑战", "随机生成"]
+        if language == "zh"
+        else ["Quick challenges", "Random generators"]
+    )
+    actual_group_titles = [
+        node.get_text(" ", strip=True) for node in soup.select(".toy-group__title")
+    ]
+    if actual_group_titles != expected_group_titles:
+        raise SiteCheckError(f"{route}: toy group headings are not localized")
+
+    for entry in entries:
+        summary = entry.find("summary", recursive=False)
+        heading_node = summary.find(["h2", "h3"], recursive=False) if summary else None
+        description = summary.select_one(".toy-entry__description") if summary else None
+        body = entry.select_one(":scope > .toy-entry__body")
         if (
             not heading_node
             or not heading_node.get_text(" ", strip=True)
             or not description
             or not description.get_text(" ", strip=True)
-            or not action
-            or not action.get_text(" ", strip=True)
+            or not body
         ):
-            raise SiteCheckError(f"{route}: toy {card.get('id')} is incomplete")
-        for link in card.find_all("a", href=True):
-            parsed = urlparse(link.get("href", ""))
-            if parsed.scheme or parsed.netloc:
-                if (
-                    parsed.scheme != "https"
-                    or link.get("target") != "_blank"
-                    or "noopener" not in (link.get("rel") or [])
-                    or "noreferrer" not in (link.get("rel") or [])
-                ):
-                    raise SiteCheckError(
-                        f"{route}: toy external link is not HTTPS and safely isolated"
-                    )
+            raise SiteCheckError(f"{route}: toy {entry.get('id')} is incomplete")
 
-    random_card = soup.select_one("#random-discovery a.toy-card__action")
-    expected_home = "/en/" if language == "en" else "/"
-    if not random_card or random_card.get("href") != expected_home:
-        raise SiteCheckError(
-            f"{route}: random discovery does not link to the localized welcome page"
-        )
+    for link in soup.select(".toy-index a[href]"):
+        parsed = urlparse(link.get("href", ""))
+        if parsed.scheme or parsed.netloc:
+            if (
+                parsed.scheme != "https"
+                or link.get("target") != "_blank"
+                or "noopener" not in (link.get("rel") or [])
+                or "noreferrer" not in (link.get("rel") or [])
+            ):
+                raise SiteCheckError(
+                    f"{route}: toy external link is not HTTPS and safely isolated"
+                )
 
     quiz = soup.select(".moegirl-quiz[data-moegirl-quiz]")
     if len(quiz) != 1:
         raise SiteCheckError(f"{route}: expected exactly one Moegirl quiz component")
     quiz_title = soup.select("#moegirl-quiz-title")
     expected_quiz_title = (
-        "根据线索，猜猜这是谁？" if language == "zh" else "Who is this character?"
+        "萌娘百科角色猜猜"
+        if language == "zh"
+        else "Moegirlpedia character quiz"
+    )
+    quiz_title_text = (
+        quiz_title[0].select_one(".toy-entry__title")
+        if len(quiz_title) == 1
+        else None
     )
     if (
         len(quiz_title) != 1
-        or quiz_title[0].get_text(" ", strip=True) != expected_quiz_title
+        or not quiz_title_text
+        or quiz_title_text.get_text(" ", strip=True) != expected_quiz_title
     ):
         raise SiteCheckError(f"{route}: Moegirl quiz title is missing or not localized")
-    quiz_card = soup.select_one("#moegirl-quiz")
-    quiz_action = quiz_card.select_one("a.toy-card__action") if quiz_card else None
-    expected_quiz_href = f"{route}#moegirl-quiz-title"
-    if not quiz_action or quiz_action.get("href") != expected_quiz_href:
-        raise SiteCheckError(f"{route}: Moegirl quiz card does not link to its component")
     if quiz[0].find("img") or not quiz[0].select_one("[data-quiz-clue-text]"):
         raise SiteCheckError(
             f"{route}: Moegirl quiz must use a text clue without embedded images"
         )
     if len(soup.select('[id="moegirl-quiz"]')) != 1:
-        raise SiteCheckError(f"{route}: Moegirl quiz card id must be unique")
+        raise SiteCheckError(f"{route}: Moegirl quiz disclosure id must be unique")
     source = str(soup).lower()
     if "mathjax" in source or "al_math" in source:
         raise SiteCheckError(f"{route}: toys page loads math assets")

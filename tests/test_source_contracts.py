@@ -240,7 +240,8 @@ def test_search_uses_the_current_publication_language():
     assert "publication.authors[lang_key]" in include
     assert "publication.venue[lang_key]" in include
     assert "publication.recognition.label[lang_key]" in include
-    assert "site.data.toys.items" in include
+    assert "site.data.toys.groups" in include
+    assert "group.items" in include
     assert "toy.title[lang_key]" in include
     assert "toy.keywords[lang_key]" in include
     assert "text.urls.toys" in include

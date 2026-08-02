@@ -1,73 +1,85 @@
 page:
   zh:
-    eyebrow: 轻量互动
-    title: 小玩意
-    introduction: 这里收纳几秒钟就能上手的站内功能与轻量实验。首批只列出已经可以使用的互动；以后新增内容时，继续在这份清单中维护。
-    available: 现在可用
+    introduction: 几个随时可以展开、用完即走的轻量互动。
   en:
-    eyebrow: Lightweight interactions
-    title: Toys
-    introduction: A home for small site features and lightweight experiments that take only a few seconds to try. This first collection lists interactions that already work; future additions stay in this same manifest.
-    available: Available now
+    introduction: A few lightweight interactions to open, try, and leave at any time.
 
-items:
-  - id: random-discovery
-    kind:
-      zh: 站内发现
-      en: Site discovery
-    title:
-      zh: 随机发现
-      en: Random discovery
-    description:
-      zh: 每次进入欢迎页时，从最近发布之外的双语随笔、项目和论文中等概率抽出一项；不记录访问，也不请求外部服务。
-      en: Each welcome-page visit draws uniformly from bilingual writing, projects, and papers outside the recently published list, without visit tracking or external requests.
-    action:
-      zh: 去欢迎页抽一次
-      en: Draw on the welcome page
-    keywords:
-      zh: [随机, 推荐, 内容发现]
-      en: [random, recommendation, discovery]
-    href:
-      zh: /
-      en: /en/
-    external: false
+groups:
+  - id: ungrouped
+    title: null
+    items:
+      - id: moegirl-quiz
+        title:
+          zh: 萌娘百科角色猜猜
+          en: Moegirlpedia character quiz
+        description:
+          zh: 阅读匿名化的条目导言，从四个候选中找出角色。
+          en: Read an anonymized entry introduction and choose the character from four candidates.
+        keywords:
+          zh: [萌娘百科, 角色, 问答, 动漫, 游戏]
+          en: [Moegirlpedia, character, quiz, anime, games]
 
-  - id: theme-and-light
-    kind:
-      zh: 页面氛围
-      en: Page ambience
+  - id: quick-challenges
     title:
-      zh: 明暗主题与日月光效
-      en: Light, dark, sunlight, and moonlight
-    description:
-      zh: 用页眉按钮切换明亮或夜晚主题，点击左上头像独立开关随主题变化的日光或月光；你的选择只保存在当前浏览器。
-      en: Switch between light and dark themes from the header, then click the upper-left avatar to toggle matching sunlight or moonlight independently. Your choices stay only in this browser.
-    action:
-      zh: 在页眉中直接试试
-      en: Try it directly in the header
-    keywords:
-      zh: [主题, 阳光, 月光, 背景]
-      en: [theme, sunlight, moonlight, background]
-    href: null
-    external: false
+      zh: 轻松挑战
+      en: Quick challenges
+    items:
+      - id: color-challenge
+        title:
+          zh: 色差挑战
+          en: Color difference challenge
+        description:
+          zh: 找出颜色略有不同的方块，看看你能走到第几关。
+          en: Find the subtly different tile and see how far you can go.
+        keywords:
+          zh: [颜色, 视觉, 辨识, 挑战]
+          en: [color, vision, perception, challenge]
 
-  - id: moegirl-quiz
-    kind:
-      zh: 角色问答
-      en: Character quiz
+      - id: ten-second
+        title:
+          zh: 盲估十秒
+          en: Ten-second estimate
+        description:
+          zh: 不看计时器，凭感觉停在十秒附近。
+          en: Stop as close to ten seconds as you can without watching a timer.
+        keywords:
+          zh: [十秒, 时间, 直觉, 挑战]
+          en: [ten seconds, time, intuition, challenge]
+
+      - id: reaction-time
+        title:
+          zh: 反应时间
+          en: Reaction time
+        description:
+          zh: 等待信号出现后尽快作出反应。
+          en: Wait for the signal, then respond as quickly as possible.
+        keywords:
+          zh: [反应, 时间, 速度, 挑战]
+          en: [reaction, time, speed, challenge]
+
+  - id: random-generators
     title:
-      zh: 萌娘百科角色猜猜
-      en: Moegirlpedia character quiz
-    description:
-      zh: 从已核验的角色池随机组成四个选项，点击开始后才向萌娘百科请求一段匿名化文字线索；不请求图片，也不记录访问。
-      en: Draw four choices from a reviewed character pool, then request one anonymized text clue from Moegirlpedia only after you start. No image or visit history is used.
-    action:
-      zh: 开始猜猜看
-      en: Start guessing
-    keywords:
-      zh: [萌娘百科, 角色, 问答, 动漫, 游戏]
-      en: [Moegirlpedia, character, quiz, anime, games]
-    href:
-      zh: /toys/#moegirl-quiz-title
-      en: /en/toys/#moegirl-quiz-title
-    external: false
+      zh: 随机生成
+      en: Random generators
+    items:
+      - id: random-password
+        title:
+          zh: 随机密码
+          en: Random password
+        description:
+          zh: 在当前浏览器中生成可调整的随机密码。
+          en: Generate a configurable random password in your browser.
+        keywords:
+          zh: [随机, 密码, 安全, 生成器]
+          en: [random, password, security, generator]
+
+      - id: random-number
+        title:
+          zh: 随机数字
+          en: Random numbers
+        description:
+          zh: 从指定整数范围中生成一个或多个随机结果。
+          en: Generate one or more random results from an integer range.
+        keywords:
+          zh: [随机, 数字, 整数, 生成器]
+          en: [random, number, integer, generator]

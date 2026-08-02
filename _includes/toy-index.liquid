@@ -3,36 +3,64 @@
 {% assign toys = site.data.toys %}
 {% assign copy = toys.page[lang_key] %}
 
-<div class="toy-index">
+<div class="toy-index" data-toy-index>
   <header class="toy-index__header">
-    <p class="toy-index__eyebrow">{{ copy.eyebrow }}</p>
-    <h1>{{ copy.title }}</h1>
-    <p>{{ copy.introduction }}</p>
+    <h1 class="sr-only">{{ page.title }}</h1>
+    <p class="toy-index__introduction">{{ copy.introduction }}</p>
   </header>
 
-  <div class="toy-grid">
-    {% for toy in toys.items %}
-      {% assign toy_href = nil %}
-      {% if toy.href %}{% assign toy_href = toy.href[lang_key] %}{% endif %}
-      <article id="{{ toy.id | escape }}" class="toy-card">
-        <div class="toy-card__meta">
-          <span>{{ toy.kind[lang_key] }}</span>
-          <span>{{ copy.available }}</span>
-        </div>
-        <h2>{{ toy.title[lang_key] }}</h2>
-        <p>{{ toy.description[lang_key] }}</p>
-        {% if toy_href %}
-          <a
-            class="toy-card__action"
-            href="{% if toy.external %}{{ toy_href }}{% else %}{{ toy_href | relative_url }}{% endif %}"
-            {% if toy.external %}target="_blank" rel="noopener noreferrer"{% endif %}
-          >{{ toy.action[lang_key] }} <span aria-hidden="true">→</span></a>
-        {% else %}
-          <p class="toy-card__action toy-card__action--hint">{{ toy.action[lang_key] }}</p>
+  <div class="toy-list">
+    {% for group in toys.groups %}
+      {% assign group_title = nil %}
+      {% if group.title %}{% assign group_title = group.title[lang_key] %}{% endif %}
+      <section
+        class="toy-group{% unless group_title %} toy-group--ungrouped{% endunless %}"
+        data-toy-group="{{ group.id | escape }}"
+        {% if group_title %}aria-labelledby="toy-group-{{ group.id | escape }}-title"{% endif %}
+      >
+        {% if group_title %}
+          <h2 id="toy-group-{{ group.id | escape }}-title" class="toy-group__title">{{ group_title }}</h2>
         {% endif %}
-      </article>
+
+        <div class="toy-group__items">
+          {% for toy in group.items %}
+            {% capture toy_title_id %}{{ toy.id }}-title{% endcapture %}
+            <details id="{{ toy.id | escape }}" class="toy-entry" data-toy-disclosure>
+              <summary class="toy-entry__summary">
+                {% if group_title %}
+                  <h3 id="{{ toy_title_id }}">
+                {% else %}
+                  <h2 id="{{ toy_title_id }}">
+                {% endif %}
+                    <span class="toy-entry__title">{{ toy.title[lang_key] }}</span>
+                    <small class="toy-entry__description">{{ toy.description[lang_key] }}</small>
+                {% if group_title %}</h3>{% else %}</h2>{% endif %}
+              </summary>
+              <div class="toy-entry__body" aria-labelledby="{{ toy_title_id }}">
+                {% case toy.id %}
+                  {% when 'moegirl-quiz' %}
+                    {% include toy-moegirl-quiz.liquid heading_id=toy_title_id %}
+                  {% when 'color-challenge' %}
+                    {% include toy-color-challenge.liquid %}
+                  {% when 'ten-second' %}
+                    {% include toy-ten-second.liquid %}
+                  {% when 'reaction-time' %}
+                    {% include toy-reaction-time.liquid %}
+                  {% when 'random-password' %}
+                    {% include toy-random-password.liquid %}
+                  {% when 'random-number' %}
+                    {% include toy-random-number.liquid %}
+                {% endcase %}
+              </div>
+            </details>
+          {% endfor %}
+        </div>
+      </section>
     {% endfor %}
   </div>
 
-  {% include toy-moegirl-quiz.liquid %}
+  <script src="{{ '/assets/js/toy-random.js' | relative_url | bust_file_cache }}" defer></script>
+  <script src="{{ '/assets/js/toy-generators.js' | relative_url | bust_file_cache }}" defer></script>
+  <script src="{{ '/assets/js/toy-challenges.js' | relative_url | bust_file_cache }}" defer></script>
+  <script src="{{ '/assets/js/toy-disclosure.js' | relative_url | bust_file_cache }}" defer></script>
 </div>

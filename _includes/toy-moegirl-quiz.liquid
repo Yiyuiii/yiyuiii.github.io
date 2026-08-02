@@ -3,19 +3,13 @@
 {% assign quiz = site.data.moegirl_quiz %}
 {% assign copy = quiz.copy[lang_key] | default: quiz.copy.zh %}
 
-<section
+<div
   class="moegirl-quiz"
   data-moegirl-quiz
   data-api-endpoint="{{ quiz.api_endpoint | escape }}"
   data-timeout-ms="{{ quiz.timeout_ms }}"
-  aria-labelledby="moegirl-quiz-title"
+  aria-labelledby="{{ include.heading_id | default: 'moegirl-quiz-title' }}"
 >
-  <header class="moegirl-quiz__header">
-    <p class="moegirl-quiz__eyebrow">{{ copy.eyebrow }}</p>
-    <h2 id="moegirl-quiz-title">{{ copy.title }}</h2>
-    <p>{{ copy.description }}</p>
-  </header>
-
   <p class="moegirl-quiz__privacy">{{ copy.privacy }}</p>
 
   <div class="moegirl-quiz__interactive" data-quiz-interactive hidden>
@@ -66,4 +60,4 @@
   <script type="application/json" data-quiz-pool>{{ quiz.entries | jsonify }}</script>
   <script type="application/json" data-quiz-copy>{{ copy | jsonify }}</script>
   <script src="{{ '/assets/js/moegirl-quiz.js' | relative_url | bust_file_cache }}" defer></script>
-</section>
+</div>

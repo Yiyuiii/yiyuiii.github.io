@@ -53,4 +53,4 @@
 
 ## 当前排序结果
 
-按标志日期降序、同日稳定 ID 升序，当前“近期内容”前 8 条依次为：`codex-cc-tools`、`taco`、《大创造时代》随笔、Newton trust-region 论文、HDBO-B 论文、`simple_asr_llm_tts`、高维贝叶斯优化综述、PPSN 降维论文。推荐候选必须排除这 8 个身份；后续修订不会把旧随笔重新推入这里。
+按标志日期降序、同日稳定 ID 升序，当前“最近更新”前 8 条依次为：`codex-cc-tools`、`taco`、《大创造时代》随笔、Newton trust-region 论文、HDBO-B 论文、`simple_asr_llm_tts`、高维贝叶斯优化综述、PPSN 降维论文。推荐候选必须排除这 8 个身份；后续修订不会把旧随笔重新推入这里。

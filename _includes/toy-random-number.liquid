@@ -1,0 +1,43 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign copy = site.data.toy_generators.number[lang_key] | default: site.data.toy_generators.number.zh %}
+
+<form class="toy-tool toy-number" data-toy-random-number>
+  <div data-generator-interactive hidden>
+    <p class="toy-tool__note">{{ copy.local_note }}</p>
+
+    <div class="toy-number__fields">
+      <label>{{ copy.minimum }}<input data-number-minimum type="number" step="1" value="1" inputmode="numeric"></label>
+      <label>{{ copy.maximum }}<input data-number-maximum type="number" step="1" value="100" inputmode="numeric"></label>
+      <label>{{ copy.count }}<input data-number-count type="number" min="1" max="100" step="1" value="1" inputmode="numeric"></label>
+    </div>
+
+    <div class="toy-checks">
+      <label class="toy-check"><input data-number-unique type="checkbox"> {{ copy.unique }}</label>
+      <label class="toy-check"><input data-number-sort type="checkbox"> {{ copy.sort }}</label>
+    </div>
+
+    <fieldset class="toy-fieldset toy-presets">
+      <legend>{{ copy.presets_label }}</legend>
+      <button type="button" data-number-preset data-minimum="0" data-maximum="1">{{ copy.coin }}</button>
+      <button type="button" data-number-preset data-minimum="1" data-maximum="6">{{ copy.d6 }}</button>
+      <button type="button" data-number-preset data-minimum="1" data-maximum="20">{{ copy.d20 }}</button>
+    </fieldset>
+
+    <div class="toy-actions">
+      <button type="submit" data-number-generate>{{ copy.generate }}</button>
+    </div>
+
+    <div class="toy-output" data-number-output-wrap hidden>
+      <label for="random-number-output">{{ copy.output_label }}</label>
+      <textarea id="random-number-output" data-number-output rows="3" readonly spellcheck="false"></textarea>
+      <div class="toy-actions toy-actions--secondary">
+        <button type="button" data-number-copy>{{ copy.copy }}</button>
+      </div>
+    </div>
+
+    <p class="toy-status" data-number-status aria-live="polite" aria-atomic="true"></p>
+  </div>
+  <noscript><p class="toy-noscript">{{ copy.no_js }}</p></noscript>
+  <script type="application/json" data-number-copy-data>{{ copy | jsonify }}</script>
+</form>

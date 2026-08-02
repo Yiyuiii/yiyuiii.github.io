@@ -217,9 +217,9 @@ def test_post_layout_is_reader_first():
     assert layout.count("{% toc %}") == 1
     assert "{% capture article_toc_markup %}" in layout
     assert 'replace: \' id="toc"\', \'\'' in layout
-    assert '<details class="article-toc">' not in layout
+    assert '<details class="article-inline-toc">' in layout
     assert "article-side-toc" in layout
-    assert 'class="article-section-dialog"' in layout
+    assert 'class="article-section-dialog"' not in layout
     assert "data-article-navigation" in layout
     assert "article-navigation.js" in layout
     assert "related_posts" not in layout
@@ -234,6 +234,8 @@ def test_post_layout_is_reader_first():
     cover = text("_includes/article-cover.liquid")
     assert '<figure class="article-cover">' in cover
     assert 'class="article-cover__image"' in cover
+    assert 'loading="eager"' in cover
+    assert 'fetchpriority="high"' in cover
     assert "page.thumbnail | relative_url" in cover
     assert "page.article_cover.alt | escape" in cover
     assert "page.article_cover.caption | markdownify" in cover
@@ -366,16 +368,18 @@ def test_age_of_innovation_keeps_reviewed_production_conclusions():
     assert_age_of_innovation_reviewed_conclusions(body)
 
 
-def test_article_navigation_uses_native_dialog_and_progressive_scroll_tracking():
+def test_article_navigation_uses_inline_disclosure_and_progressive_scroll_tracking():
     script = text("assets/js/article-navigation.js")
 
-    assert "showModal()" in script
+    assert 'querySelector(".article-inline-toc")' in script
+    assert "inlineDisclosure.open = false" in script
+    assert "showModal()" not in script
     assert "IntersectionObserver" in script
     assert 'aria-current' in script
     assert '"location"' in script
     assert "prefers-reduced-motion" in script
     assert "requestAnimationFrame" in script
     assert "decodeURIComponent" in script
-    assert "data-article-section-trigger" in script
-    assert "data-article-section-close" in script
+    assert "data-article-section-trigger" not in script
+    assert "data-article-section-close" not in script
     assert "preventScroll" in script

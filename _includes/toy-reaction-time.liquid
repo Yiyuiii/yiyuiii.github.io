@@ -1,0 +1,73 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% if lang_key == 'en' %}
+  {% assign challenge_label = 'Reaction time' %}
+  {% assign instructions = 'Start, wait for the signal, then press the same button as quickly as you can.' %}
+  {% assign local_note = 'The result describes only this attempt on this device; it is not a ranking or ability assessment.' %}
+  {% assign start = 'Start' %}
+  {% assign wait = 'Wait…' %}
+  {% assign now = 'Now!' %}
+  {% assign again = 'Try again' %}
+  {% assign waiting = 'Wait for the signal before pressing.' %}
+  {% assign ready = 'Now—press the button.' %}
+  {% assign too_soon = 'Too soon. Start another attempt when you are ready.' %}
+  {% assign result = '{milliseconds} ms on this device for this attempt.' %}
+  {% assign cancelled = 'The attempt was cancelled because this challenge was hidden.' %}
+  {% assign unavailable = 'Secure local randomness is unavailable in this browser, so this challenge has been disabled.' %}
+  {% assign no_js = 'JavaScript is required to measure this challenge locally. No result is sent or stored.' %}
+{% else %}
+  {% assign challenge_label = '反应时间' %}
+  {% assign instructions = '点击开始，等待提示出现后，再尽快点击同一个按钮。' %}
+  {% assign local_note = '结果只描述本设备上的本次尝试，不用于排名或能力评估。' %}
+  {% assign start = '开始' %}
+  {% assign wait = '请等待…' %}
+  {% assign now = '就是现在！' %}
+  {% assign again = '再试一次' %}
+  {% assign waiting = '请等到提示出现后再点击。' %}
+  {% assign ready = '现在，请点击按钮。' %}
+  {% assign too_soon = '点早了；准备好后可以重新尝试。' %}
+  {% assign result = '本设备上本次反应时间为 {milliseconds} 毫秒。' %}
+  {% assign cancelled = '页面或挑战被隐藏，本次尝试已经取消。' %}
+  {% assign unavailable = '当前浏览器无法提供安全的本地随机源，因此这项挑战已停用。' %}
+  {% assign no_js = '这项挑战需要 JavaScript 在本地计时；结果不会被发送或保存。' %}
+{% endif %}
+
+<section
+  class="toy-challenge toy-reaction-time"
+  data-toy-reaction-time
+  data-state="idle"
+  aria-label="{{ challenge_label | escape }}"
+>
+  <p class="toy-challenge__instructions">{{ instructions }}</p>
+  <p class="toy-challenge__note">{{ local_note }}</p>
+
+  <div class="toy-challenge__interactive" data-challenge-interactive hidden>
+    <div class="toy-challenge__actions">
+      <button type="button" data-reaction-primary>{{ start }}</button>
+    </div>
+    <p
+      class="toy-challenge__status"
+      data-challenge-status
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+  </div>
+
+  <p class="toy-challenge__unavailable" data-challenge-unavailable hidden>{{ unavailable }}</p>
+  <noscript><p class="toy-challenge__noscript">{{ no_js }}</p></noscript>
+
+  <script type="application/json" data-challenge-copy>
+    {
+      "start": {{ start | jsonify }},
+      "wait": {{ wait | jsonify }},
+      "now": {{ now | jsonify }},
+      "again": {{ again | jsonify }},
+      "waiting": {{ waiting | jsonify }},
+      "ready": {{ ready | jsonify }},
+      "tooSoon": {{ too_soon | jsonify }},
+      "result": {{ result | jsonify }},
+      "cancelled": {{ cancelled | jsonify }},
+      "unavailable": {{ unavailable | jsonify }}
+    }
+  </script>
+</section>
