@@ -189,7 +189,9 @@ def _check_home(soup: BeautifulSoup, route: str, language: str) -> None:
     expected = sorted(ordered, key=lambda item: item[1])
     expected.sort(key=lambda item: item[0], reverse=True)
     if ordered != expected:
-        raise SiteCheckError(f"{route}: recent home items are not feed_date desc/id asc")
+        raise SiteCheckError(
+            f"{route}: recent home items are not first-public date desc/id asc"
+        )
 
     rotation = soup.select("[data-home-rotation] > .home-feed-item")
     if len(rotation) != 1:

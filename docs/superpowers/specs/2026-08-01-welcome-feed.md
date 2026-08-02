@@ -6,13 +6,13 @@
 - `/writing/`、`/en/writing/`：中英文随笔索引，`schema_type: CollectionPage`。
 - 品牌返回当前语言欢迎页；文章缺少译文时，语言切换回目标语言随笔索引。
 - `_data/home.yml` 是欢迎页人工文案的唯一维护入口。
-- `_data/home_feed.yml` 只保存稳定 ID、来源类型、来源引用和 `feed_date`，不复制内容详情。
+- `_data/home_feed.yml` 只保存稳定 ID、来源类型和来源引用，不复制内容详情或日期。
 
 ## 内容流契约
 
-构建插件把随笔、项目和论文解析为 `id`、`kind`、`lang`、`title`、`summary`、`url`、`feed_date`、可选 `thumbnail` 与 `external`。`feed_date` 只表示内容首次进入本站或最近一次实质编辑整理；普通仓库活动、Star/Fork、构建和错别字不刷新日期。
+构建插件把随笔、项目和论文解析为 `id`、`kind`、`lang`、`title`、`summary`、`url`、`first_public_date`、`first_public_precision`、可选 `thumbnail` 与 `external`。日期不是首页清单中的人工排序值，而由各类内容自己的来源解析：随笔取 `revisions[0].date` 或文章 `date`；项目取经同步脚本核验的 GitHub `created_at` 香港自然日；论文取带来源 URL 和来源字段的最早权威公开记录。
 
-最近 8 项严格按 `feed_date desc / id asc`。当前多个项目和论文都在 2026-07-31 的站点正式整理中进入，因此可见结果是 6 个项目、2 篇论文；这是客观同日数据与稳定 ID 的结果。实现没有按类型补位，也没有 `featured`、`priority`、`score` 或隐藏权重。
+近期公开 8 项严格按首次公开日期降序、同日 `id` 升序。当前结果由真实初稿、仓库创建和论文公开日期共同决定；后续修订、本站整理、普通仓库活动、Star/Fork、构建和错别字都不刷新日期。若未来只有年份证据，运行时保留 `year` 精度、页面只显示年份，并排在同年所有到日条目之后，不伪造 1 月 1 日。实现没有按类型补位，也没有 `featured`、`priority`、`score` 或隐藏权重。
 
 面向访客的栏目名称为中文“随机发现”、英文 “Random discovery”，栏目说明为“每次进入随机抽取，不记录访问”。候选从中英文共同存在、并且不属于两种语言任一最近 8 项的身份中产生。客户端每次载入或刷新欢迎页时独立抽取，从浏览器 BFCache 恢复时也重新抽取；中英文页面不承诺同一身份，连续两次抽到同一项是允许的随机结果。
 
@@ -38,6 +38,6 @@
 
 ## 验证范围
 
-- Python 源码与数据契约覆盖文案集中、25 条来源完整性、严格字段、ID、日期、解析、排序、路由、页眉和 MathJax 门禁。
+- Python 源码与数据契约覆盖文案集中、25 条来源完整性、严格字段、ID、首次公开日期及证据、解析、排序、路由、页眉和 MathJax 门禁。
 - production Jekyll 构建后的站点检查验证欢迎页、8 条内容流、稳定排序、浏览起点、品牌路径、响应式图片和无 MathJax。
 - Playwright 覆盖中英文随机发现文案、候选范围、最近项过滤、刷新与 BFCache 恢复重抽、拒绝采样、旧 tag query/hash、禁用 JavaScript、无原图请求及 1280/390/320 px 无横向溢出。

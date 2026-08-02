@@ -68,8 +68,8 @@ for (const viewport of viewports) {
   test(`welcome pages stay readable at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
     for (const [route, heading, pickLabel, recentLabel] of [
-      ["/", "你好，欢迎来到 yiyuiii", "随机发现", "最近整理"],
-      ["/en/", "Hello, welcome to yiyuiii", "Random discovery", "Recently curated"],
+      ["/", "你好，欢迎来到 yiyuiii", "随机发现", "近期公开"],
+      ["/en/", "Hello, welcome to yiyuiii", "Random discovery", "Recently published"],
     ]) {
       await page.goto(route);
       await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
