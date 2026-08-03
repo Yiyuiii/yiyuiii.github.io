@@ -1187,14 +1187,12 @@ for (const viewport of [
     const targetId = await subsection.getAttribute("href");
     await subsection.click();
     await expect(disclosure).not.toHaveAttribute("open", "");
-    expect(
-      await page.evaluate((hash) => {
-        const target = document.getElementById(
-          decodeURIComponent(hash.slice(1)),
-        );
-        return target === document.activeElement;
-      }, targetId),
-    ).toBe(true);
+    await expect.poll(() => page.evaluate((hash) => {
+      const target = document.getElementById(
+        decodeURIComponent(hash.slice(1)),
+      );
+      return target === document.activeElement;
+    }, targetId)).toBe(true);
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
     ).toBe(false);
@@ -1204,7 +1202,7 @@ for (const viewport of [
 test("search, paired language switch, and article reading controls work", async ({
   page,
 }) => {
-  // This path verifies the real pinned MathJax CDN integration, so allow the
+  // This path verifies a formula page plus several interactions, so allow the
   // browser more time than the default interaction-only tests.
   test.slow();
   const errors = [];
