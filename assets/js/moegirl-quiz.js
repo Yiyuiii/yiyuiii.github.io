@@ -5,8 +5,11 @@
   const API_HOST = "zh.moegirl.org.cn";
   const API_PATH = "/api.php";
   const MAX_RESPONSE_CHARS = 262_144;
-  const MIN_CLUE_LENGTH = 60;
+  const MIN_CLUE_LENGTH = 30;
   const MAX_CLUE_LENGTH = 420;
+  const CHARACTER_SIGNAL = /(?:登场|登場|出场)(?:的)?(?:角色|人物)|(?:角色|人物)之一|虚拟(?:UP主|主播|YouTuber)|V[Tt]uber|吉祥物|拟人(?:化形象|角色)/u;
+  const SENSITIVE_SIGNAL = /R-?18|成人向|色情|性行为|性暴力|强奸|乱伦|恋童|裸露|裸体|乳房|生殖器|自杀|自残|虐杀|血腥|猎奇|纳粹|政治人物/u;
+  const NON_ARTICLE_SIGNAL = /消歧义页|消歧义|条目列表|列表条目/u;
 
   const secureRandomIndex = (maximum) => {
     if (
@@ -26,9 +29,21 @@
     return sample[0] % maximum;
   };
 
+  const secureRequestNonce = () => {
+    if (
+      !globalThis.crypto
+      || typeof globalThis.crypto.getRandomValues !== "function"
+    ) {
+      throw new Error("secure randomness is unavailable");
+    }
+    const sample = new Uint32Array(4);
+    globalThis.crypto.getRandomValues(sample);
+    return Array.from(sample, (value) => value.toString(16).padStart(8, "0")).join("");
+  };
+
   const sampleWithoutReplacement = (entries, count) => {
     if (!Array.isArray(entries) || entries.length < count) {
-      throw new Error("the reviewed entry pool is too small");
+      throw new Error("the discovered entry pool is too small");
     }
 
     const shuffled = entries.slice();
@@ -66,7 +81,7 @@
     }
   };
 
-  const buildApiUrl = (endpoint, titles) => {
+  const buildApiUrl = (endpoint, batchSize, requestNonce) => {
     const parsed = new URL(endpoint);
     if (
       parsed.protocol !== "https:"
@@ -80,16 +95,22 @@
     }
     parsed.search = new URLSearchParams({
       action: "query",
-      titles: titles.join("|"),
-      prop: "extracts|info",
+      generator: "random",
+      grnnamespace: "0",
+      grnfilterredir: "nonredirects",
+      grnlimit: String(batchSize),
+      prop: "extracts|info|categories",
       exintro: "1",
       explaintext: "1",
       exchars: "900",
       inprop: "url",
-      redirects: "1",
+      cllimit: "10",
       format: "json",
       formatversion: "2",
       origin: "*",
+      maxage: "0",
+      smaxage: "0",
+      requestid: requestNonce,
     }).toString();
     return parsed.href;
   };
@@ -101,12 +122,18 @@
     .replace(/\s+/gu, " ")
     .trim();
 
+  const titleKey = (value) => normalizeText(value).toLocaleLowerCase("zh-Hans-CN");
+
   const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 
   const expandTitleFragments = (value) => {
     const title = normalizeText(value);
     const symbols = [...title];
-    const fragments = [title];
+    const fragments = [
+      title,
+      title.replace(/^.*?:/u, ""),
+      title.replace(/[（(].*?[）)]/gu, ""),
+    ];
     if (!/\p{Script=Han}/u.test(title)) return fragments;
     for (let start = 0; start < symbols.length; start += 1) {
       for (let length = 2; length <= symbols.length - start; length += 1) {
@@ -117,8 +144,16 @@
     return fragments;
   };
 
-  const anonymizeClue = (extract, terms, replacement) => {
+  const anonymizeClue = (extract, terms, replacementValue) => {
+    const replacement = normalizeText(replacementValue) || "⬛";
     let clue = normalizeText(extract);
+
+    // The leading subject often contains readings or foreign names absent from the page title.
+    clue = clue.replace(
+      /^.{1,96}?(?=(?:是|为)(?:一名|一位|一个|由|《|「|动画|漫画|游戏|小说|系列|网页|多媒体|来自))/u,
+      replacement,
+    );
+
     const masks = [...new Set(terms.map(normalizeText))]
       .filter((term) => term.length >= 1 && term.length <= 80)
       .sort((left, right) => right.length - left.length)
@@ -126,25 +161,50 @@
     for (const term of masks) {
       clue = clue.replace(new RegExp(escapeRegExp(term), "giu"), replacement);
     }
-    clue = clue.replace(/(?:\s*〔角色名已隐藏〕\s*){2,}/gu, "〔角色名已隐藏〕");
+
+    clue = clue.replace(
+      /((?:又称|亦称|也称|别名|昵称|外文名|英文名|日文名|罗马字)(?:是|为|作|写作|:)?)[^,。;；]{1,80}/gu,
+      `$1${replacement}`,
+    );
+    const repeatedReplacement = new RegExp(
+      `(?:\\s*${escapeRegExp(replacement)}\\s*){2,}`,
+      "gu",
+    );
+    clue = clue.replace(repeatedReplacement, replacement);
     if (clue.length < MIN_CLUE_LENGTH) return null;
     if (clue.length <= MAX_CLUE_LENGTH) return clue;
 
     const draft = clue.slice(0, MAX_CLUE_LENGTH + 1);
-    const boundaries = ["。", "！", "？", ".", "!", "?"]
+    const boundaries = ["。", "!", "?", ".", "！", "？"]
       .map((marker) => draft.lastIndexOf(marker))
       .filter((index) => index >= Math.floor(MAX_CLUE_LENGTH * 0.55));
     const end = boundaries.length ? Math.max(...boundaries) + 1 : MAX_CLUE_LENGTH;
     return `${draft.slice(0, end).trim()}…`;
   };
 
+  const isCharacterPage = (page) => {
+    if (
+      !page
+      || page.missing
+      || (page.ns !== undefined && page.ns !== 0)
+      || !normalizeText(page.title)
+      || !normalizeText(page.extract)
+    ) return false;
+
+    const categories = Array.isArray(page.categories)
+      ? page.categories.map((category) => normalizeText(category?.title)).join(" ")
+      : "";
+    const searchable = `${normalizeText(page.title)} ${normalizeText(page.extract)} ${categories}`;
+    return CHARACTER_SIGNAL.test(searchable)
+      && !SENSITIVE_SIGNAL.test(searchable)
+      && !NON_ARTICLE_SIGNAL.test(categories);
+  };
+
   const initQuiz = (root) => {
     if (root.dataset.quizReady === "true") return;
 
-    let entries;
     let copy;
     try {
-      entries = readJson(root, "[data-quiz-pool]");
       copy = readJson(root, "[data-quiz-copy]");
     } catch (error) {
       return;
@@ -177,6 +237,15 @@
     const timeoutMs = Number.isFinite(configuredTimeout)
       ? Math.min(Math.max(configuredTimeout, 1000), 15000)
       : 10000;
+    const configuredBatchSize = Number.parseInt(root.dataset.batchSize || "", 10);
+    const batchSize = Number.isFinite(configuredBatchSize)
+      ? Math.min(Math.max(configuredBatchSize, 20), 100)
+      : 50;
+    const configuredHistorySize = Number.parseInt(root.dataset.historySize || "", 10);
+    const historySize = Number.isFinite(configuredHistorySize)
+      ? Math.min(Math.max(configuredHistorySize, 4), 100)
+      : 24;
+    const recentTitles = [];
     let activeRound = 0;
 
     const resetRound = () => {
@@ -211,7 +280,7 @@
         button.addEventListener("click", () => {
           if (roundToken !== activeRound || options.dataset.answered === "true") return;
           options.dataset.answered = "true";
-          const correct = entry.title === answer.title;
+          const correct = entry.key === answer.key;
           for (const choice of options.querySelectorAll("button")) {
             choice.disabled = true;
             if (choice.textContent === answer.title) choice.dataset.result = "correct";
@@ -241,9 +310,9 @@
       status.textContent = copy.loading;
       root.setAttribute("aria-busy", "true");
 
-      let selected;
+      let requestUrl;
       try {
-        selected = sampleWithoutReplacement(entries, 4);
+        requestUrl = buildApiUrl(endpoint, batchSize, secureRequestNonce());
       } catch (error) {
         showFailure(copy.random_error);
         return;
@@ -253,18 +322,18 @@
       const timeout = globalThis.setTimeout(() => controller.abort(), timeoutMs);
       let payload;
       try {
-        const response = await fetch(
-          buildApiUrl(endpoint, selected.map((entry) => entry.title)),
-          {
-            method: "GET",
-            mode: "cors",
-            credentials: "omit",
-            cache: "no-store",
-            redirect: "error",
-            referrerPolicy: "no-referrer",
-            signal: controller.signal,
+        const response = await fetch(requestUrl, {
+          method: "GET",
+          mode: "cors",
+          credentials: "omit",
+          cache: "no-store",
+          redirect: "error",
+          referrerPolicy: "no-referrer",
+          headers: {
+            Accept: "application/json",
           },
-        );
+          signal: controller.signal,
+        });
         if (!response.ok) throw new Error(`quiz API returned ${response.status}`);
         const declaredLength = Number.parseInt(response.headers.get("content-length") || "", 10);
         if (Number.isFinite(declaredLength) && declaredLength > MAX_RESPONSE_CHARS) {
@@ -280,66 +349,58 @@
       }
       globalThis.clearTimeout(timeout);
 
-      const selectedTitles = new Set(selected.map((entry) => entry.title));
-      const canonicalByOriginal = new Map(
-        selected.map((entry) => [entry.title, entry.title]),
-      );
-      const responseTitles = [];
-      for (const relation of [
-        ...(Array.isArray(payload?.query?.normalized) ? payload.query.normalized : []),
-        ...(Array.isArray(payload?.query?.redirects) ? payload.query.redirects : []),
-      ]) {
-        if (!relation?.from || !relation?.to) continue;
-        responseTitles.push(relation.from, relation.to);
-        for (const [original, canonical] of canonicalByOriginal) {
-          if (canonical === relation.from) canonicalByOriginal.set(original, relation.to);
-        }
-      }
-      const displayByCanonical = new Map();
-      for (const [original, canonical] of canonicalByOriginal) {
-        if (displayByCanonical.has(canonical)) {
-          displayByCanonical.set(canonical, null);
-        } else {
-          displayByCanonical.set(canonical, original);
-        }
+      const recentSet = new Set(recentTitles);
+      const discoveredByTitle = new Map();
+      const pages = Array.isArray(payload?.query?.pages) ? payload.query.pages : [];
+      for (const page of pages) {
+        if (!isCharacterPage(page)) continue;
+        const fullurl = safeMoegirlUrl(page.fullurl);
+        const title = normalizeText(page.title);
+        const key = titleKey(title);
+        if (!fullurl || !key || recentSet.has(key) || discoveredByTitle.has(key)) continue;
+        discoveredByTitle.set(key, {
+          title,
+          key,
+          extract: normalizeText(page.extract),
+          fullurl,
+        });
       }
 
-      const sharedMasks = selected.flatMap((entry) => [
-        ...expandTitleFragments(entry.title),
-        ...(Array.isArray(entry.aliases) ? entry.aliases : []),
-      ]).concat(responseTitles);
-      const pages = Array.isArray(payload?.query?.pages) ? payload.query.pages : [];
-      const eligible = pages.flatMap((page) => {
-        const displayTitle = displayByCanonical.get(page?.title);
-        if (
-          !page
-          || page.missing
-          || (page.ns !== undefined && page.ns !== 0)
-          || !displayTitle
-          || !selectedTitles.has(displayTitle)
-        ) return [];
-        const fullurl = safeMoegirlUrl(page.fullurl);
+      let selected;
+      try {
+        selected = sampleWithoutReplacement([...discoveredByTitle.values()], 4);
+      } catch (error) {
+        if (roundToken === activeRound) showFailure(copy.no_clue_error);
+        return;
+      }
+
+      const sharedMasks = selected.flatMap((entry) => expandTitleFragments(entry.title));
+      const eligibleAnswers = selected.flatMap((entry) => {
         const anonymized = anonymizeClue(
-          page.extract,
-          [...sharedMasks, page.title],
-          copy.redaction || "〔角色名已隐藏〕",
+          entry.extract,
+          sharedMasks,
+          copy.redaction || "⬛",
         );
-        if (!fullurl || !anonymized) return [];
-        return [{ title: displayTitle, clue: anonymized, fullurl }];
+        return anonymized ? [{ ...entry, clue: anonymized }] : [];
       });
 
       if (roundToken !== activeRound) return;
-      if (eligible.length === 0) {
+      if (eligibleAnswers.length === 0) {
         showFailure(copy.no_clue_error);
         return;
       }
 
       let answer;
       try {
-        answer = eligible[secureRandomIndex(eligible.length)];
+        answer = eligibleAnswers[secureRandomIndex(eligibleAnswers.length)];
       } catch (error) {
         showFailure(copy.random_error);
         return;
+      }
+
+      recentTitles.push(...selected.map((entry) => entry.key));
+      if (recentTitles.length > historySize) {
+        recentTitles.splice(0, recentTitles.length - historySize);
       }
 
       renderOptions(selected, answer, roundToken);

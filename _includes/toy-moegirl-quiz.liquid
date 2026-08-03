@@ -8,6 +8,8 @@
   data-moegirl-quiz
   data-api-endpoint="{{ quiz.api_endpoint | escape }}"
   data-timeout-ms="{{ quiz.timeout_ms }}"
+  data-batch-size="{{ quiz.batch_size }}"
+  data-history-size="{{ quiz.recent_history_size }}"
   aria-labelledby="{{ include.heading_id | default: 'moegirl-quiz-title' }}"
 >
   <p class="moegirl-quiz__privacy">{{ copy.privacy }}</p>
@@ -57,7 +59,6 @@
     <p class="moegirl-quiz__noscript">{{ copy.no_js }}</p>
   </noscript>
 
-  <script type="application/json" data-quiz-pool>{{ quiz.entries | jsonify }}</script>
   <script type="application/json" data-quiz-copy>{{ copy | jsonify }}</script>
   <script src="{{ '/assets/js/moegirl-quiz.js' | relative_url | bust_file_cache }}" defer></script>
 </div>

@@ -1436,8 +1436,6 @@ html:lang(en) .article-header h1 {
 .post-content h4,
 .post-content h5,
 .post-content h6 {
-  margin-right: 0;
-  margin-left: 0;
   color: var(--ink);
   font-family: inherit;
   font-weight: 600;
@@ -1520,7 +1518,7 @@ html:lang(en) .post-content h3 {
 
 .post-content blockquote:not(.article-evidence) {
   padding: 0.75rem 1rem;
-  margin: 1.5rem 0;
+  margin-block: 1.5rem;
   border-left: 2px solid var(--divider);
   color: var(--body);
   background: color-mix(in srgb, var(--surface) 62%, transparent);
@@ -1529,7 +1527,7 @@ html:lang(en) .post-content h3 {
 
 .post-content blockquote.article-evidence {
   padding: 0.1rem 0 0.1rem 1rem;
-  margin: 1.4rem 0;
+  margin-block: 1.4rem;
   border-left: 2px solid color-mix(in srgb, var(--amethyst) 28%, var(--divider));
   color: var(--muted);
   background: transparent;
@@ -1550,6 +1548,14 @@ html:lang(en) .post-content h3 {
   font-weight: 600;
 }
 
+.post-content blockquote > :first-child {
+  margin-top: 0;
+}
+
+.post-content blockquote > :last-child {
+  margin-bottom: 0;
+}
+
 .post-content img {
   display: block;
   width: auto;
@@ -1562,7 +1568,7 @@ html:lang(en) .post-content h3 {
 .post-content pre {
   max-width: 100%;
   padding: 0.85rem 1rem;
-  margin: 1.35rem 0;
+  margin-block: 1.35rem;
   border: 1px solid color-mix(in srgb, var(--divider) 78%, transparent);
   border-radius: 0.42rem;
   color: var(--body);
@@ -1718,12 +1724,14 @@ html[data-theme="dark"] .highlight .gu {
   margin-top: 1.35rem;
   margin-bottom: 1.35rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior-inline: contain;
 }
 
 .post-content
   > :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote, hr, .footnotes) {
   width: min(100%, var(--article-prose-width));
+  max-width: 100%;
   margin-inline: auto;
 }
 

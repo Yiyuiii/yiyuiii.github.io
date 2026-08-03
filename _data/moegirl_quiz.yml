@@ -1,53 +1,29 @@
 api_endpoint: https://zh.moegirl.org.cn/api.php
 timeout_ms: 10000
-reviewed_on: "2026-08-02"
+batch_size: 50
+recent_history_size: 24
+reviewed_on: "2026-08-03"
 
-# 人工核验的普通角色条目白名单。用户开始答题后，本站只向萌娘百科 API
-# 临时请求纯文本导言，不请求、复制或缓存萌娘共享图片。aliases 也会从线索中屏蔽。
-entries:
-  - title: 初音未来
-    aliases: [初音ミク, Hatsune Miku, Miku, ミク, 初音]
-  - title: 洛天依
-    aliases: [Luo Tianyi, Tianyi Luo, LuoTianyi, Tianyi]
-  - title: 博丽灵梦
-    aliases: [博麗霊夢, Hakurei Reimu, Reimu Hakurei, Reimu, 灵梦, 霊夢]
-  - title: 琪露诺
-    aliases: [Cirno, ⑨]
-  - title: 蕾米莉亚·斯卡蕾特
-    aliases: [Remilia Scarlet, Remilia, 蕾咪, 大小姐]
-  - title: 御坂美琴
-    aliases: [Misaka Mikoto, Mikoto Misaka, 美琴, 炮姐]
-  - title: 初春饰利
-    aliases: [Uiharu Kazari, Kazari Uiharu, 初春, 饰利]
-  - title: 阿尔托莉雅·潘德拉贡
-    aliases: [Saber, Artoria Pendragon, Altria Pendragon, Artoria, Altria, 亚瑟王, 骑士王, 呆毛王]
-  - title: 远坂凛
-    aliases: [Tohsaka Rin, Rin Tohsaka, 凛]
-  - title: 伊莉雅丝菲尔·冯·爱因兹贝伦
-    aliases: [Illyasviel von Einzbern, Illyasviel, Illya, Ilya, 伊莉雅]
-  - title: 晓美焰
-    aliases: [Akemi Homura, Homura Akemi, Homura, 小焰]
-  - title: 四宫辉夜
-    aliases: [四宮辉夜, 四宮かぐや, Kaguya Shinomiya, Shinomiya Kaguya, Kaguya, 辉夜]
-
+# 每轮只向官方 Action API 请求一次随机主名字空间条目。浏览器随后在本地筛选
+# 角色型、非敏感且未在当前会话近期出现的条目，不抓取页面，也不请求图片。
 copy:
   zh:
     eyebrow: 萌娘百科角色猜猜
     title: 根据线索，猜猜这是谁？
     description: 阅读一段匿名化的条目导言，从四个候选中找出角色。
-    privacy: 点击开始后，本页只会向萌娘百科 API 请求一次四个候选的文字导言；第三方可看到本次请求和你的 IP 地址。本站不使用 Cookie、存储或跟踪，也不请求图片。
+    privacy: 点击开始后，本页只会向萌娘百科 API 请求一次随机条目的纯文字导言与分类，并在浏览器本地筛选本题；第三方可看到本次请求和你的 IP 地址。本站不使用 Cookie、持久化存储或跟踪，也不请求图片。
     start: 开始一题
     again: 再来一题
     retry: 重试
-    loading: 正在向萌娘百科请求本题文字线索……
+    loading: 正在向萌娘百科随机发现本题候选……
     options_label: 角色选项
     clue_label: 匿名线索
-    clue_origin: 线索取自一个候选条目的导言，候选名与已知别名已被屏蔽。
-    redaction: 〔角色名已隐藏〕
+    clue_origin: 线索取自一个随机发现条目的导言；可识别的角色名片段会替换为 ⬛。
+    redaction: ⬛
     correct: 答对了！这是 {title}。
     incorrect: 没猜中；答案是 {title}。
     network_error: 暂时没能取得文字线索，请稍后重试。
-    no_clue_error: 这组选项暂时没有足够的匿名线索，请再试一次。
+    no_clue_error: 本次随机结果里没有足够的合适角色线索，请再试一次。
     random_error: 浏览器无法提供可靠随机数，暂时不能出题。
     source_label: "查看萌娘百科来源条目：{title}"
     license: 线索是上方来源条目的匿名化节选；条目文本按来源页标示的许可协议提供，再次使用时请保留来源与署名。
@@ -57,19 +33,19 @@ copy:
     eyebrow: Moegirlpedia character quiz
     title: Who is this character?
     description: Read an anonymized entry introduction and choose the character from four options.
-    privacy: Starting a round makes one request to the Moegirlpedia API for the four candidates’ text introductions. The third party can see the request and your IP address. This site uses no cookies, storage, tracking, or images.
+    privacy: Starting a round makes one request to the Moegirlpedia API for a random batch of text introductions and categories, then filters the round locally. The third party can see the request and your IP address. This site uses no cookies, persistent storage, tracking, or images.
     start: Start a round
     again: Another round
     retry: Try again
-    loading: Requesting this round's text clue from Moegirlpedia…
+    loading: Discovering this round's candidates on Moegirlpedia…
     options_label: Character choices
     clue_label: Anonymized clue
-    clue_origin: The clue comes from one candidate’s Chinese introduction; candidate names and known aliases are hidden.
-    redaction: 〔name hidden〕
+    clue_origin: The clue comes from a randomly discovered Chinese introduction; recognizable character-name fragments are replaced with ⬛.
+    redaction: ⬛
     correct: Correct! This is {title}.
     incorrect: Not quite; the answer is {title}.
     network_error: The text clue could not be retrieved just now. Please try again later.
-    no_clue_error: These candidates do not have a sufficient anonymized clue right now. Please try again.
+    no_clue_error: This random batch did not contain enough suitable character clues. Please try again.
     random_error: This browser cannot provide secure randomness, so a round cannot be created.
     source_label: "Open the source entry on Moegirlpedia: {title}"
     license: The clue is an anonymized excerpt from the source entry above. Its text follows the license shown on that page; preserve the source and attribution when reusing it.

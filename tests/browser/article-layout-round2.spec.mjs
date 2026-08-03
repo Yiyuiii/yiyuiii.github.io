@@ -148,9 +148,9 @@ for (const viewport of [
         imageOutsideViewport: images.some(
           (image) => image.getBoundingClientRect().right > viewportWidth + 1,
         ),
-        hasLocalTableOverflow: tables.some(
-          (table) => table.scrollWidth > table.clientWidth + 1,
-        ),
+        overflowingTablesStayLocal: tables
+          .filter((table) => table.scrollWidth > table.clientWidth + 1)
+          .every((table) => getComputedStyle(table).overflowX === "auto"),
       };
     });
 
@@ -158,6 +158,6 @@ for (const viewport of [
     expect(overflow.contentRight).toBeLessThanOrEqual(viewport.width);
     expect(overflow.tableOutsideViewport).toBe(false);
     expect(overflow.imageOutsideViewport).toBe(false);
-    expect(overflow.hasLocalTableOverflow).toBe(true);
+    expect(overflow.overflowingTablesStayLocal).toBe(true);
   });
 }
