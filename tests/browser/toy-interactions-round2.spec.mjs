@@ -22,13 +22,23 @@ const storageSnapshot = async () => {
   };
 };
 
-const beginLocalOnlyAudit = async (page) => {
+const beginLocalOnlyAudit = async (page, allowedStorageKeys = []) => {
   await page.evaluate(() => {
-    globalThis.__toyStorageWrites = [];
+    globalThis.__toyStorageMutations = [];
     const nativeSetItem = Storage.prototype.setItem;
+    const nativeRemoveItem = Storage.prototype.removeItem;
+    const nativeClear = Storage.prototype.clear;
     Storage.prototype.setItem = function setItem(key, value) {
-      globalThis.__toyStorageWrites.push({ key: String(key), value: String(value) });
+      globalThis.__toyStorageMutations.push({ method: "set", key: String(key) });
       return nativeSetItem.call(this, key, value);
+    };
+    Storage.prototype.removeItem = function removeItem(key) {
+      globalThis.__toyStorageMutations.push({ method: "remove", key: String(key) });
+      return nativeRemoveItem.call(this, key);
+    };
+    Storage.prototype.clear = function clear() {
+      globalThis.__toyStorageMutations.push({ method: "clear", key: null });
+      return nativeClear.call(this);
     };
   });
   const before = await page.evaluate(storageSnapshot);
@@ -39,10 +49,17 @@ const beginLocalOnlyAudit = async (page) => {
   return async () => {
     page.off("request", recordRequest);
     const after = await page.evaluate(storageSnapshot);
-    const writes = await page.evaluate(() => globalThis.__toyStorageWrites);
+    const mutations = await page.evaluate(() => globalThis.__toyStorageMutations);
+    const allowed = new Set(allowedStorageKeys);
     expect(requests).toEqual([]);
-    expect(writes).toEqual([]);
-    expect(after).toEqual(before);
+    expect(mutations.some(({ method }) => method === "clear")).toBe(false);
+    expect(mutations.every(({ key }) => key !== null && allowed.has(key))).toBe(true);
+    expect(after.cookie).toBe(before.cookie);
+    expect(after.databases).toEqual(before.databases);
+    expect(after.session).toEqual(before.session);
+    expect(after.local.filter(([key]) => !allowed.has(key))).toEqual(
+      before.local.filter(([key]) => !allowed.has(key)),
+    );
   };
 };
 
@@ -67,6 +84,19 @@ const clickDifferentColor = async (page) => {
   await expect(cells.nth(oddIndex)).toHaveAttribute("data-result", "correct");
 };
 
+const clickMatchingColor = async (page) => {
+  const cells = page.locator("[data-toy-color-challenge] [data-color-index]");
+  const normalIndex = await cells.evaluateAll((buttons) => {
+    const colors = buttons.map((button) => getComputedStyle(button).backgroundColor);
+    const counts = new Map();
+    for (const color of colors) counts.set(color, (counts.get(color) || 0) + 1);
+    return colors.findIndex((color) => counts.get(color) > 1);
+  });
+  expect(normalIndex).toBeGreaterThanOrEqual(0);
+  await cells.nth(normalIndex).click();
+  await expect(cells.nth(normalIndex)).toHaveAttribute("data-result", "incorrect");
+};
+
 for (const route of ["/toys/", "/en/toys/"]) {
   test(`${route} renders all five local interactions`, async ({ page }) => {
     await page.goto(route);
@@ -80,7 +110,7 @@ for (const route of ["/toys/", "/en/toys/"]) {
   });
 }
 
-test("color challenge marks the odd tile and advances difficulty locally", async ({
+test("color challenge scores negative answers and advances by a three-question majority", async ({
   page,
 }) => {
   await page.goto("/toys/");
@@ -90,13 +120,20 @@ test("color challenge marks the odd tile and advances difficulty locally", async
   const next = root.locator("[data-color-next]");
 
   await expect(root).toHaveAttribute("data-state", "ready");
-  await expect(root).toHaveAttribute("data-difficulty", "0");
+  await expect(root).toHaveAttribute("data-difficulty", "8");
+  await clickMatchingColor(page);
+  await expect(root.locator("[data-color-score]")).toHaveText("-1");
+  const scoreAfterWrong = await root.locator("[data-color-score]").textContent();
+  await root.locator('[data-color-index][data-result="incorrect"]').dispatchEvent("click");
+  await expect(root.locator("[data-color-score]")).toHaveText(scoreAfterWrong);
+  await next.click();
   await clickDifferentColor(page);
   await expect(next).toBeEnabled();
   await next.click();
   await clickDifferentColor(page);
   await next.click();
-  await expect(root).toHaveAttribute("data-difficulty", "1");
+  await expect(root).toHaveAttribute("data-difficulty", "9");
+  await expect(root.locator("[data-color-score]")).toHaveText("1");
   await expect(root.locator("[data-challenge-status]")).toBeEmpty();
 
   await finishAudit();
@@ -107,7 +144,7 @@ test("ten-second estimate supports start, stop, restart, and fold cancellation",
 }) => {
   await page.goto("/toys/");
   const disclosure = await openToy(page, "ten-second");
-  const finishAudit = await beginLocalOnlyAudit(page);
+  const finishAudit = await beginLocalOnlyAudit(page, ["yiyuiii.toy.ten-second.v1"]);
   const root = disclosure.locator("[data-toy-ten-second]");
   const primary = root.locator("[data-ten-primary]");
   const restart = root.locator("[data-ten-restart]");
@@ -137,7 +174,7 @@ test("reaction challenge handles early presses, a valid signal, and fold cancell
   test.slow();
   await page.goto("/toys/");
   const disclosure = await openToy(page, "reaction-time");
-  const finishAudit = await beginLocalOnlyAudit(page);
+  const finishAudit = await beginLocalOnlyAudit(page, ["yiyuiii.toy.reaction-time.v1"]);
   const root = disclosure.locator("[data-toy-reaction-time]");
   const primary = root.locator("[data-reaction-primary]");
 

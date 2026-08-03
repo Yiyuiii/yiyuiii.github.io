@@ -237,7 +237,7 @@ python scripts/translation_guard.py --check --production
 - 新增内嵌功能时还必须在 `_includes/toy-index.liquid` 的显式 `case` 白名单中增加组件 include；不要根据数据拼接任意模板名。
 - 搜索索引会遍历每个分组下的条目并读取标题、说明和关键词，不要在搜索模板里重复抄写。
 - 当前不提供随机名字。随机密码和随机数字的文案维护在 `_data/toy_generators.yml`；实现、安全边界和验证见 `docs/toy-generators.md`。
-- 色差挑战、盲估十秒和反应时间的组件边界见 `docs/toy-challenges.md`。它们不联网、不记录结果，折叠条目或隐藏页面时会取消正在进行的计时。
+- 色差挑战、盲估十秒和反应时间的组件边界见 `docs/toy-challenges.md`。三者不联网；色差不保存，两个计时挑战只在浏览器本机用各自精确键保留最近 100 次完成记录并允许清空。折叠条目或隐藏页面时会取消正在进行的计时，取消不写历史。
 - 猜图类功能不得自行维护一个固定小数据集。只有能接入庞大、许可和接口稳定性可核验的外部数据集时才立项，否则不做。
 
 萌娘百科角色问答是索引页中的渐进增强组件：稳定折叠锚点是 `#moegirl-quiz`，可见标题和说明由统一清单提供，组件自身不重复标题。随机批次、近期排除窗口与双语界面文案维护在 `_data/moegirl_quiz.yml`，外部大题库筛选、匿名化、请求时机、来源和许可说明见 `docs/moegirl-quiz-component.md`。打开页面不会访问萌娘百科；只有用户点击开始后才发起一次官方 API 随机纯文本请求，每轮不得静默追加请求。不要改成页面预载、后台预取、固定小白名单、远程题图、图片复制或静默追踪。
@@ -247,7 +247,7 @@ python scripts/translation_guard.py --check --production
 ```powershell
 python -m pytest -q tests/test_toys_contracts.py tests/test_moegirl_quiz_contracts.py tests/test_toy_generators_contracts.py tests/test_toy_challenges_contracts.py tests/test_source_contracts.py tests/test_check_site.py
 python scripts/translation_guard.py --check --production
-node --test tests/toy_challenges.logic.test.mjs
+node --test tests/toy_challenges.logic.test.mjs tests/toy_challenge_history.logic.test.mjs tests/toy_color_challenge.logic.test.mjs
 ```
 
 ## 随笔

@@ -85,10 +85,9 @@ test("prose stays readable while standalone media and data use the wide canvas",
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto(articleRoute, { waitUntil: "domcontentloaded" });
-  await expect(page.locator('.post-content img[src$="/bigcards.jpg"]')).toHaveJSProperty(
-    "complete",
-    true,
-  );
+  const wideImage = page.locator('.post-content img[src$="/bigcards.jpg"]');
+  await wideImage.scrollIntoViewIfNeeded();
+  await expect(wideImage).toHaveJSProperty("complete", true);
 
   const geometry = await page.evaluate(() => {
     const content = document.querySelector(".post-content");

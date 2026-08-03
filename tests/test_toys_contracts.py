@@ -117,12 +117,14 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
     expected_scripts = [
         "toy-random.js",
         "toy-generators.js",
+        "toy-challenge-history.js",
         "toy-challenges.js",
+        "toy-color-challenge.js",
         "toy-disclosure.js",
     ]
     positions = [include.index(script) for script in expected_scripts]
     assert positions == sorted(positions)
-    assert include.count(" defer></script>") == 4
+    assert include.count(" defer></script>") == 6
 
 
 def test_moegirl_component_uses_the_disclosure_heading_without_repeating_it():

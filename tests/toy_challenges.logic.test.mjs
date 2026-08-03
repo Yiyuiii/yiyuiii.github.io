@@ -15,39 +15,6 @@ test("the shared random interface requires all three methods", () => {
   }), true);
 });
 
-test("color difficulty advances after each two consecutive correct answers", () => {
-  assert.equal(logic.colorDifficulty(0), 0);
-  assert.equal(logic.colorDifficulty(1), 0);
-  assert.equal(logic.colorDifficulty(2), 1);
-  assert.equal(logic.colorDifficulty(3), 1);
-  assert.equal(logic.colorDifficulty(4), 2);
-  assert.equal(logic.colorDifficulty(100), 2);
-});
-
-test("a color round has sixteen cells and a stable lightness difference", () => {
-  const integers = [210, 68, 50];
-  const randomApi = {
-    intInclusive(minimum, maximum) {
-      const value = integers.shift();
-      assert.ok(value >= minimum && value <= maximum);
-      return value;
-    },
-    pick(entries) {
-      assert.deepEqual(entries, [-1, 1]);
-      return 1;
-    },
-    uintBelow(maximum) {
-      assert.equal(maximum, 16);
-      return 9;
-    },
-  };
-  const round = logic.createColorRound(randomApi, 2);
-  assert.equal(round.difficulty, 1);
-  assert.equal(round.oddIndex, 9);
-  assert.equal(round.normalColor, "hsl(210 68% 50%)");
-  assert.equal(round.oddColor, "hsl(210 68% 57%)");
-});
-
 test("the ten-second state machine measures only start-to-stop", () => {
   const idle = Object.freeze({ phase: "idle" });
   const running = logic.tenSecondTransition(idle, "start", 1000);

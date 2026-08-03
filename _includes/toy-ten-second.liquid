@@ -3,7 +3,7 @@
 {% if lang_key == 'en' %}
   {% assign challenge_label = 'Estimate ten seconds' %}
   {% assign instructions = 'Start, count ten seconds in your head, then stop. No running clock is shown.' %}
-  {% assign local_note = 'Only this attempt is measured; there is no ranking or saved history.' %}
+  {% assign local_note = 'Results stay on this device. Up to 100 completed attempts are kept in this browser; nothing is uploaded or ranked.' %}
   {% assign start = 'Start' %}
   {% assign stop = 'Stop' %}
   {% assign again = 'Try again' %}
@@ -16,10 +16,42 @@
   {% assign cancelled = 'The attempt was cancelled because this challenge was hidden.' %}
   {% assign unavailable = 'This browser cannot start the local timer, so this challenge has been disabled.' %}
   {% assign no_js = 'JavaScript is required to measure this challenge locally. No result is sent or stored.' %}
+  {% assign history_label = 'Ten-second estimate history' %}
+  {% assign empty_history = 'Complete one attempt to see local statistics and a trend chart.' %}
+  {% assign retained_label = 'Valid / retained' %}
+  {% assign completed_label = 'Completed since clearing' %}
+  {% assign best_label = 'Best error' %}
+  {% assign typical_label = 'Typical error' %}
+  {% assign tendency_label = 'Overall tendency' %}
+  {% assign recent_label = 'Latest five valid median' %}
+  {% assign trend_note = 'Dots are completed attempts; the latest-five median trend line appears after five valid results.' %}
+  {% assign records_label = 'View complete local history' %}
+  {% assign record_number = 'Attempt' %}
+  {% assign record_value = 'Result' %}
+  {% assign record_inclusion = 'Statistics' %}
+  {% assign clear_history = 'Clear local history' %}
+  {% assign clear_question = 'Clear all locally saved ten-second results?' %}
+  {% assign confirm_clear = 'Confirm clear' %}
+  {% assign cancel_clear = 'Cancel' %}
+  {% assign persistence_copy = 'Results are stored only in this browser (up to 100 completed attempts), are not uploaded or synced, and can be cleared here.' %}
+  {% assign memory_only_copy = 'This browser did not allow local storage. Statistics work for this open page only.' %}
+  {% assign seconds_value_copy = '{value} s' %}
+  {% assign signed_seconds_value_copy = '{direction} by {value} s' %}
+  {% assign exact_value_copy = 'within 0.01 s' %}
+  {% assign valid_retained_value_copy = '{valid} / {retained}' %}
+  {% assign chart_title_copy = 'Ten-second estimate error trend' %}
+  {% assign chart_description_copy = '{count} retained attempts. Latest error: {latest}. Latest five-valid-attempt median: {trend}.' %}
+  {% assign older_copy = 'Older' %}
+  {% assign newer_copy = 'Recent' %}
+  {% assign ten_sample_value_copy = '{elapsed} s; {error}' %}
+  {% assign included_copy = 'Included' %}
+  {% assign excluded_copy = 'Not included' %}
+  {% assign cleared_copy = 'Local ten-second history has been cleared.' %}
+  {% assign clear_failed_copy = 'The current-page history was cleared, but the browser did not allow the saved copy to be removed.' %}
 {% else %}
   {% assign challenge_label = '盲估十秒' %}
   {% assign instructions = '点击开始后在心里默数十秒，再点击停止；过程中不会显示实时计时。' %}
-  {% assign local_note = '只测量当前设备上的这一次尝试，不排名，也不保存历史。' %}
+  {% assign local_note = '结果仅留在当前设备；浏览器最多保存 100 次完成记录，不上传，也不排名。' %}
   {% assign start = '开始' %}
   {% assign stop = '停止' %}
   {% assign again = '再试一次' %}
@@ -32,6 +64,38 @@
   {% assign cancelled = '页面或挑战被隐藏，本次计时已经取消。' %}
   {% assign unavailable = '当前浏览器无法启动本地计时，因此这项挑战已停用。' %}
   {% assign no_js = '这项挑战需要 JavaScript 在本地计时；结果不会被发送或保存。' %}
+  {% assign history_label = '盲估十秒本机历史' %}
+  {% assign empty_history = '完成一次后，这里会显示本机统计和趋势图。' %}
+  {% assign retained_label = '有效 / 保留' %}
+  {% assign completed_label = '清空后累计完成' %}
+  {% assign best_label = '最佳误差' %}
+  {% assign typical_label = '典型误差' %}
+  {% assign tendency_label = '整体倾向' %}
+  {% assign recent_label = '最近五个有效成绩中位数' %}
+  {% assign trend_note = '圆点表示每次完成结果；达到五个有效成绩后显示最近五次中位数趋势线。' %}
+  {% assign records_label = '查看完整本机记录' %}
+  {% assign record_number = '次序' %}
+  {% assign record_value = '结果' %}
+  {% assign record_inclusion = '统计状态' %}
+  {% assign clear_history = '清空本机历史' %}
+  {% assign clear_question = '确定清空本机保存的全部盲估结果吗？' %}
+  {% assign confirm_clear = '确认清空' %}
+  {% assign cancel_clear = '取消' %}
+  {% assign persistence_copy = '结果仅保存在当前浏览器中（最多 100 次完成记录），不会上传或跨设备同步，可在这里随时清空。' %}
+  {% assign memory_only_copy = '当前浏览器不允许本地存储；统计仅在本次打开页面期间有效。' %}
+  {% assign seconds_value_copy = '{value} 秒' %}
+  {% assign signed_seconds_value_copy = '{direction}{value} 秒' %}
+  {% assign exact_value_copy = '误差不到 0.01 秒' %}
+  {% assign valid_retained_value_copy = '{valid} / {retained}' %}
+  {% assign chart_title_copy = '盲估十秒误差趋势' %}
+  {% assign chart_description_copy = '当前保留 {count} 次记录。最新误差：{latest}；最近五个有效成绩的中位数：{trend}。' %}
+  {% assign older_copy = '较早' %}
+  {% assign newer_copy = '最近' %}
+  {% assign ten_sample_value_copy = '{elapsed} 秒；{error}' %}
+  {% assign included_copy = '计入汇总' %}
+  {% assign excluded_copy = '未计入汇总' %}
+  {% assign cleared_copy = '盲估十秒的本机历史已清空。' %}
+  {% assign clear_failed_copy = '当前页面的历史已清空，但浏览器未允许删除原先保存的副本。' %}
 {% endif %}
 
 <section
@@ -55,6 +119,57 @@
     ></p>
   </div>
 
+  <section
+    class="toy-history"
+    data-challenge-history
+    aria-label="{{ history_label | escape }}"
+    hidden
+  >
+    <p class="toy-challenge__note" data-history-persistence></p>
+    <p class="toy-history__empty" data-history-empty>{{ empty_history }}</p>
+
+    <div data-history-stats hidden>
+      <dl class="toy-history__stats">
+        <div><dt>{{ retained_label }}</dt><dd data-history-value="retained">—</dd></div>
+        <div><dt>{{ completed_label }}</dt><dd data-history-value="completed">0</dd></div>
+        <div><dt>{{ best_label }}</dt><dd data-history-value="best">—</dd></div>
+        <div><dt>{{ typical_label }}</dt><dd data-history-value="typical">—</dd></div>
+        <div><dt>{{ tendency_label }}</dt><dd data-history-value="tendency">—</dd></div>
+        <div><dt>{{ recent_label }}</dt><dd data-history-value="recent">—</dd></div>
+      </dl>
+      <p class="toy-challenge__note">{{ trend_note }}</p>
+    </div>
+
+    <div class="toy-history__chart" data-history-chart hidden></div>
+
+    <details class="toy-history__records" data-history-records hidden>
+      <summary>{{ records_label }}</summary>
+      <div class="toy-history__table-wrap">
+        <table>
+          <caption class="sr-only">{{ history_label }}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{{ record_number }}</th>
+              <th scope="col">{{ record_value }}</th>
+              <th scope="col">{{ record_inclusion }}</th>
+            </tr>
+          </thead>
+          <tbody data-history-table-body></tbody>
+        </table>
+      </div>
+    </details>
+
+    <div class="toy-history__actions">
+      <button type="button" data-history-clear hidden>{{ clear_history }}</button>
+      <span data-history-confirmation hidden>
+        <span>{{ clear_question }}</span>
+        <button type="button" data-history-confirm-clear>{{ confirm_clear }}</button>
+        <button type="button" data-history-cancel-clear>{{ cancel_clear }}</button>
+      </span>
+    </div>
+    <p data-history-clear-status aria-live="polite" aria-atomic="true"></p>
+  </section>
+
   <p class="toy-challenge__unavailable" data-challenge-unavailable hidden>{{ unavailable }}</p>
   <noscript><p class="toy-challenge__noscript">{{ no_js }}</p></noscript>
 
@@ -70,7 +185,23 @@
       "late": {{ late | jsonify }},
       "exact": {{ exact | jsonify }},
       "cancelled": {{ cancelled | jsonify }},
-      "unavailable": {{ unavailable | jsonify }}
+      "unavailable": {{ unavailable | jsonify }},
+      "persistence": {{ persistence_copy | jsonify }},
+      "memoryOnly": {{ memory_only_copy | jsonify }},
+      "notAvailable": {{ '—' | jsonify }},
+      "secondsValue": {{ seconds_value_copy | jsonify }},
+      "signedSecondsValue": {{ signed_seconds_value_copy | jsonify }},
+      "exactValue": {{ exact_value_copy | jsonify }},
+      "validRetainedValue": {{ valid_retained_value_copy | jsonify }},
+      "chartTitle": {{ chart_title_copy | jsonify }},
+      "chartDescription": {{ chart_description_copy | jsonify }},
+      "older": {{ older_copy | jsonify }},
+      "newer": {{ newer_copy | jsonify }},
+      "tenSampleValue": {{ ten_sample_value_copy | jsonify }},
+      "included": {{ included_copy | jsonify }},
+      "excluded": {{ excluded_copy | jsonify }},
+      "cleared": {{ cleared_copy | jsonify }},
+      "clearFailed": {{ clear_failed_copy | jsonify }}
     }
   </script>
 </section>

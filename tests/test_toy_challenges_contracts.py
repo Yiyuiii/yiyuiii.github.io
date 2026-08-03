@@ -34,13 +34,20 @@ def test_color_challenge_is_keyboard_native_and_non_diagnostic():
     assert "data-color-next" in include
 
 
-def test_timing_challenges_explain_local_one_attempt_results():
+def test_timing_challenges_explain_bounded_local_history():
     ten_second = text("_includes/toy-ten-second.liquid")
     reaction = text("_includes/toy-reaction-time.liquid")
     assert "不会显示实时计时" in ten_second
-    assert "no ranking or saved history" in ten_second
-    assert "本设备上的本次尝试" in reaction
-    assert "this attempt on this device" in reaction
+    assert "最多保存 100 次完成记录" in ten_second
+    assert "Up to 100 completed attempts" in ten_second
+    assert "最多保存 100 次完成记录" in reaction
+    assert "Up to 100 completed attempts" in reaction
+    for include in (ten_second, reaction):
+        assert "data-challenge-history" in include
+        assert "data-history-chart" in include
+        assert "data-history-table-body" in include
+        assert "data-history-confirm-clear" in include
+        assert "data-history-clear-status" in include
 
 
 def test_ten_second_does_not_require_randomness():
@@ -61,19 +68,31 @@ def test_challenge_script_uses_only_the_shared_random_interface():
     assert "crypto.getRandomValues" not in script
 
 
-def test_challenge_script_has_no_network_or_persistence_surface():
+def test_timing_history_has_no_network_and_only_two_bounded_storage_keys():
     script = text("assets/js/toy-challenges.js")
+    history = text("assets/js/toy-challenge-history.js")
+    combined = script + history
     forbidden = (
         "fetch(",
         "XMLHttpRequest",
         "WebSocket",
-        "localStorage",
         "sessionStorage",
         "document.cookie",
         "indexedDB",
     )
     for token in forbidden:
-        assert token not in script
+        assert token not in combined
+    assert 'key: "yiyuiii.toy.ten-second.v1"' in history
+    assert 'key: "yiyuiii.toy.reaction-time.v1"' in history
+    assert "HISTORY_LIMIT = 100" in history
+    assert "Math.round" in history
+    assert "localStorage.clear" not in combined
+    assert "innerHTML" not in history
+    assert "createElementNS" in history
+    assert 'svgNode("title"' in history
+    assert 'svgNode("desc"' in history
+    assert 'role: "img"' in history
+    assert 'focusable: "false"' in history
 
 
 def test_timers_cancel_when_the_page_or_disclosure_is_hidden():
@@ -83,6 +102,8 @@ def test_timers_cancel_when_the_page_or_disclosure_is_hidden():
     assert 'root.closest("details")' in script
     assert 'disclosure.addEventListener("toggle"' in script
     assert 'globalScope.addEventListener("pagehide"' in script
+    assert "requestAnimationFrame" in script
+    assert "cancelAnimationFrame" in script
     assert "setInterval" not in script
 
 
@@ -93,10 +114,16 @@ def test_reaction_wait_is_bounded_and_early_press_is_explicit():
     assert 'reactionTransition(state, "press"' in script
 
 
-def test_color_challenge_has_three_progressive_difficulty_levels():
-    script = text("assets/js/toy-challenges.js")
+def test_color_challenge_uses_the_twenty_five_level_specialist_runtime():
+    script = text("assets/js/toy-color-challenge.js")
     include = text("_includes/toy-color-challenge.liquid")
-    assert "COLOR_DELTAS = Object.freeze([12, 7, 4])" in script
-    assert "streak / 2" in script
-    assert '["easy","medium","hard"]' in include
-    assert '["简单","适中","困难"]' in include
+    assert "const LEVEL_COUNT = 25" in script
+    assert "const START_LEVEL = 8" in script
+    assert "const BLOCK_SIZE = 3" in script
+    assert "const point = correct ? 1 : -1" in script
+    assert "rgb8ToOklab" in script
+    assert "createIntegerNeighbourPair" in script
+    assert "每三题结算一次" in include
+    assert "Each set contains three questions" in include
+    assert "dataset.colorChallengeReady" in script
+    assert "COLOR_DELTAS" not in script

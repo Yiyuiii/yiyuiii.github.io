@@ -39,6 +39,16 @@ zh:
     enable_dark: 切换到夜晚样式
     status_light: 已切换到明亮样式
     status_dark: 已切换到夜晚样式
+  feedback:
+    heading: 页面反馈
+    prompt: 发现错误、失效链接或显示问题？
+    public_link: 提交公开反馈
+    private_link: 发送私人邮件
+    privacy_note: GitHub Issue 是公开的；不适合公开的信息请使用邮件，且不要在公开反馈中填写私人信息。
+    page_issue_prefix: "[页面反馈]"
+    post_issue_prefix: "[文章纠错]"
+    email_subject: "页面反馈：{title}"
+    email_body: "页面：{url}\n\n请在这里描述问题："
   project:
     stars: Star
     forks: Fork
@@ -114,6 +124,16 @@ en:
     enable_dark: Switch to the night appearance
     status_light: Light appearance is on
     status_dark: Night appearance is on
+  feedback:
+    heading: Page feedback
+    prompt: Found an error, broken link, or display problem?
+    public_link: Submit public feedback
+    private_link: Send a private email
+    privacy_note: GitHub Issues are public. Use email for anything that should stay private, and do not include private information in public feedback.
+    page_issue_prefix: "[Page feedback]"
+    post_issue_prefix: "[Writing correction]"
+    email_subject: "Page feedback: {title}"
+    email_body: "Page: {url}\n\nDescribe the problem here:"
   project:
     stars: Stars
     forks: Forks
