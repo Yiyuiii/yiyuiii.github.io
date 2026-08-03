@@ -18,6 +18,7 @@
 {% endif %}
 
 <link rel="canonical" href="{{ canonical_absolute }}">
+<meta name="giscus:backlink" content="{{ canonical_absolute }}">
 {% if page.translation_url %}
   {% if seo_lang == 'en' %}
     {% assign zh_path = page.translation_url %}

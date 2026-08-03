@@ -76,17 +76,16 @@ related_blog_posts:
   max_related: 5
 giscus:
   repo: Yiyuiii/yiyuiii.github.io
-  repo_id: null
-  category: Comments
-  category_id: null
-  mapping: title
+  repo_id: MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=
+  category: Announcements
+  category_id: DIC_kwDOGDlY-c4DCk8v
+  mapping: pathname
   strict: 1
   reactions_enabled: 1
   input_position: bottom
   dark_theme: dark
   light_theme: light
   emit_metadata: 0
-  lang: en
 disqus_shortname: null
 external_sources: []
 newsletter:

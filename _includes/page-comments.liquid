@@ -1,0 +1,45 @@
+{% assign comments_lang = include.lang | default: page.lang | default: 'zh' %}
+{% if comments_lang == 'zh-CN' %}{% assign comments_lang = 'zh' %}{% endif %}
+{% assign comments_text = site.data.site_text[comments_lang].comments %}
+{% if comments_lang == 'en' %}
+  {% assign giscus_lang = 'en' %}
+{% else %}
+  {% assign giscus_lang = 'zh-CN' %}
+{% endif %}
+{% capture heading_id %}page-comments-title-{{ comments_lang }}{% endcapture %}
+
+<section
+  class="page-shell page-comments"
+  data-page-comments
+  data-repo="{{ site.giscus.repo }}"
+  data-repo-id="{{ site.giscus.repo_id }}"
+  data-category="{{ site.giscus.category }}"
+  data-category-id="{{ site.giscus.category_id }}"
+  data-mapping="{{ site.giscus.mapping }}"
+  data-strict="{{ site.giscus.strict }}"
+  data-reactions-enabled="{{ site.giscus.reactions_enabled }}"
+  data-emit-metadata="{{ site.giscus.emit_metadata }}"
+  data-input-position="{{ site.giscus.input_position }}"
+  data-light-theme="{{ site.giscus.light_theme }}"
+  data-dark-theme="{{ site.giscus.dark_theme }}"
+  data-giscus-lang="{{ giscus_lang }}"
+  data-loading-text="{{ comments_text.loading | escape }}"
+  data-retry-text="{{ comments_text.retry | escape }}"
+  data-error-text="{{ comments_text.error | escape }}"
+  aria-labelledby="{{ heading_id }}"
+>
+  <h2 id="{{ heading_id }}">{{ comments_text.heading }}</h2>
+  <p class="page-comments__introduction">{{ comments_text.introduction }}</p>
+  <div class="page-comments__actions">
+    <button type="button" data-comments-load hidden>{{ comments_text.load }}</button>
+    <a
+      data-comments-direct
+      href="https://github.com/{{ site.giscus.repo }}/discussions/categories/{{ site.giscus.category | slugify }}"
+      rel="external nofollow noopener noreferrer"
+      referrerpolicy="no-referrer"
+    >{{ comments_text.direct_link }}</a>
+  </div>
+  <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p>
+  <div class="page-comments__thread" data-comments-thread hidden></div>
+  <noscript><p class="page-comments__noscript">{{ comments_text.no_script }}</p></noscript>
+</section>

@@ -49,6 +49,15 @@ zh:
     post_issue_prefix: "[文章纠错]"
     email_subject: "页面反馈：{title}"
     email_body: "页面：{url}\n\n请在这里描述问题："
+  comments:
+    heading: 评论
+    introduction: 评论公开保存在 GitHub Discussions。点击加载后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径；请勿留下私人信息。
+    load: 加载评论
+    loading: 正在加载评论……
+    retry: 重新加载
+    error: 评论暂时无法加载；你可以重试或直接前往 GitHub Discussions。
+    direct_link: 直接前往 GitHub Discussions
+    no_script: 请启用 JavaScript 加载评论，或使用上方链接前往 GitHub Discussions。
   project:
     stars: Star
     forks: Fork
@@ -134,6 +143,15 @@ en:
     post_issue_prefix: "[Writing correction]"
     email_subject: "Page feedback: {title}"
     email_body: "Page: {url}\n\nDescribe the problem here:"
+  comments:
+    heading: Comments
+    introduction: Comments are public and stored in GitHub Discussions. This page connects to giscus.app and GitHub, sending the current page path, only after you choose to load them. Do not include private information.
+    load: Load comments
+    loading: Loading comments…
+    retry: Try again
+    error: Comments could not be loaded. You can try again or open GitHub Discussions directly.
+    direct_link: Open GitHub Discussions
+    no_script: Enable JavaScript to load comments, or use the link above to open GitHub Discussions.
   project:
     stars: Stars
     forks: Forks
