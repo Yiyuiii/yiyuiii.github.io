@@ -223,7 +223,9 @@ test("non-character, disambiguation, and sensitive entries cannot become options
   await installQuiz(page);
 
   await page.getByRole("button", { name: "开始一题" }).click();
-  const labels = await page.locator("[data-quiz-options] button").allTextContents();
+  const optionButtons = page.locator("[data-quiz-options] button");
+  await expect(optionButtons).toHaveCount(4);
+  const labels = await optionButtons.allTextContents();
   expect(labels).toHaveLength(4);
   expect(labels).not.toContain("测试歌曲");
   expect(labels).not.toContain("敏感角色");
@@ -238,9 +240,12 @@ test("recent options stay out of the next round and each request gets a new nonc
   await installQuiz(page);
 
   await page.getByRole("button", { name: "开始一题" }).click();
-  const first = await page.locator("[data-quiz-options] button").allTextContents();
+  const optionButtons = page.locator("[data-quiz-options] button");
+  await expect(optionButtons).toHaveCount(4);
+  const first = await optionButtons.allTextContents();
   await page.getByRole("button", { name: "再来一题" }).click();
-  const second = await page.locator("[data-quiz-options] button").allTextContents();
+  await expect(optionButtons).toHaveCount(4);
+  const second = await optionButtons.allTextContents();
 
   expect(first).toHaveLength(4);
   expect(second).toHaveLength(4);
