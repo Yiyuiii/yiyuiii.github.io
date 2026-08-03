@@ -9,7 +9,7 @@ translation_key: post-202510112233
 translation_url: /posts/大创造时代-资源-分值量化计算思路/
 translation_source: _posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md
 translation_status: current
-source_hash: b5250de0321961e43784885cdc7b84f98395ca7c9ab7c2c4327aaad0469daf93
+source_hash: 2ada4c6966734127f31ef137bf68bbcc38facc4eb185b05b9f938682b76d0df6
 aliases: []
 categories:
 - Board Games
@@ -61,6 +61,7 @@ Using the exchange ratio of Power actions, this article counts each Coin as 1 po
 1c = 1 点通用资源
 1o = 3 点通用资源
 ```
+{: .article-prose .article-conversion}
 
 This is only the baseline unit used for the comparisons that follow.
 
