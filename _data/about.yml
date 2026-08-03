@@ -2,7 +2,7 @@ display:
   hidden_blocks:
   - education
 translation:
-  source_hash: 9e088f6ae861f1b5f00daa0517182c770e1df4111bf5e594ec520784a6a2744f
+  source_hash: b393e7df060a99085f9ef4cb2ba1077944ba6dee9181de29281bd790a765110d
 zh:
   blocks:
   - id: greeting
@@ -13,18 +13,24 @@ zh:
     type: prose
     paragraphs:
     - id: donation
-      style: italic
-      inline_markdown: 如果你喜欢我的文章，我也不介意收到 1–3 美元的 [PayPal](https://paypal.me/yiyuiii) 捐助，这会让我非常开心 :D
+      style: normal
+      inline_markdown: 如果你喜欢这里的文章，我也不介意收到 1–3 美元的 [PayPal](https://paypal.me/yiyuiii) 捐助，这会让我开心很久 :D
     - id: contact
       style: normal
-      inline_markdown: 如果你有建议或问题，欢迎通过电子邮件联系我：[yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com)
+      inline_markdown: 有建议、问题，或者只是想聊聊，都欢迎给我发邮件：[yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com)
   - id: aesthetics
     type: prose
-    heading: 个人基调
+    heading: 灵魂基调
     paragraphs:
-    - id: preference
+    - id: mbti
       style: normal
-      inline_markdown: 偏好亚洲、日系的角色，也喜欢灵活多变而结构精密的逻辑与色彩表达。
+      inline_markdown: 男生，INTJ。
+    - id: thinking_style
+      style: normal
+      inline_markdown: 脑子经常自动开始拆问题、建模和找抽象，也喜欢快速学习（尤其是学习怎么学习）、琢磨博弈和读人。偏爱灵活、精妙、实用又新鲜的东西；至于已经完全想明白的逻辑，就不太想被迫再想一遍了。
+    - id: aesthetic_preferences
+      style: normal
+      inline_markdown: 喜欢可爱的小动物、好听的声音和有意思的色彩。
   - id: education
     type: education
     heading: 教育经历
@@ -59,70 +65,70 @@ zh:
         value: 直博
   - id: research
     type: details
-    heading: 科研方向
+    heading: 研究方向
     items:
     - id: meta_reinforcement_learning
       name: 元强化学习
-      description: 元决策技术对研究人类思维、提炼决策方法论和提升自己都有很强的借鉴意义。
+      description: 我关心的是：学会的决策方法能不能迁移到新问题？研究它时，也会顺手反思人是怎么思考和做决定的。
     - id: meta_bayesian_optimization
       name: 元贝叶斯优化
-      description: 一项兼具研究空间与实际应用潜力的实用技术。
+      description: 让优化器借用过去的经验、少走一点弯路；既有研究空间，也很实用。
     - id: llm_agents
       name: 大模型 Agent
-      description: 当前发展迅速、开发反馈快且成效直观，是很有潜力的实用技术方向。
+      description: 发展快、反馈快，效果还经常挺惊喜；正处风口，也很适合把想法迅速做成能用的东西。
   - id: interests
     type: details
-    heading: 兴趣方向
+    heading: 平时喜欢
     items:
     - id: board_games
       name: 桌游
-      description: 本科加入校棋牌协会桌游部，此后持续游玩各类桌游约十年；常在 [Board Game Arena](https://boardgamearena.com/) 和线下桌游店开局，BGA 用户名为 yiyuiii。
+      description: 广义上的桌游我基本都愿意试。主要出没在 [Board Game Arena](https://boardgamearena.com/) 和线下桌游店；BGA 用户名是 yiyuiii。
     - id: chess_and_cards
       name: 棋牌
-      description: 本科加入校棋牌协会，接触桥牌、象棋、围棋、五子棋、国际象棋、将棋、麻将和德州扑克；目前对五子棋、日麻、国标麻将和德州扑克理解相对深入，其余项目以广泛了解和休闲水平为主。
-    - id: 3d_printing
-      name: 3D 打印
-      description: 使用 A1 mini，并能用 Fusion 360 进行基础建模；目前处于入门阶段，重点关注多材质混合和全彩打印技术。
-    - id: minecraft
-      name: Minecraft
-      description: 断续游玩约十年，偏爱 Java 版 Mod 服务器，尤其喜欢匠魂、拔刀剑和 Mekanism，也能自行开服。
+      description: 桥牌、象棋、围棋、五子棋、国际象棋、将棋、麻将和德州扑克都学过一些；五子棋、日麻、国标麻将和德州扑克玩得更明白，其余项目以开心参与为主。
     - id: acg
       name: ACG
-      description: 偏爱动画和 Galgame，持续追新番，接触至今已有十余年。
+      description: 动画和 Galgame 爱好者，新番还在持续追。
     - id: league_of_legends
       name: 英雄联盟
       description: 电一海克斯大乱斗选手。
+    - id: minecraft
+      name: Minecraft
+      description: 断断续续在 Java 版 Mod 服务器里住了近 10 年，最喜欢匠魂、拔刀剑和 Mekanism。
+    - id: 3d_printing
+      name: 3D 打印
+      description: 刚入坑，手头有一台拓竹 A1 mini，会用 Fusion 360 做基础建模，最近在研究叠色打印。
     - id: badminton
       name: 羽毛球
-      description: 从本科开始持续打羽毛球，目前是距离打好单打还差一点的业余水平。
+      description: 从本科打到现在，仍是单打打不太好的快乐业余选手。
     - id: traditional_archery
       name: 传统射艺
-      description: 本科期间在弓协接触传统弓，目前能拉 30 磅。
+      description: 本科时在弓协玩传统弓，目前能拉 30 磅。
     - id: swimming
       name: 游泳
-      description: 博士阶段开始学习，目前初步掌握蛙泳。
+      description: 认真学过几个月，蛙泳算是入门了；自由泳动作还不太规范，踩水时也仍在和下沉作斗争。
     - id: smart_home
       name: 数智化家庭
-      description: 设想利用 LLM 与 Home Assistant 连接并统一控制家中设备，目前处于方案构思和可行性探索阶段。
+      description: 想用 LLM + Home Assistant 的可控开源方案，把家尽量变聪明。底层架构已经跑起来，正在慢慢接入更多设备。
     - id: llm_applications
       name: LLM 应用
-      description: 目前订阅 ChatGPT、Ark Coding Plan / Agent Plan 和 Kimi，持续比较不同 LLM 工具在实际工作流中的使用体验。
+      description: 同时订阅 ChatGPT、Ark Coding Plan / Agent Plan 和 Kimi，把不同 LLM 当成一支各有所长的队伍来带。努力做好它们的 leader，也享受这份顶级数字劳动力。
   - id: skills
     type: details
-    heading: 日常技能
+    heading: 还会这些
     items:
     - id: cooking
       name: 做饭
-      description: 会做鸡蛋卷、蒸馒头、下面条、炖菜和家常炒菜。
+      description: 鸡蛋卷、馒头、面条、炖菜和家常炒菜都能做。
     - id: singing
       name: 唱歌
-      description: 业余爱好者，正在磨炼声乐基础。
+      description: 正在练声，最熟的歌单基本被周杰伦承包了。
     - id: pc_building
       name: 装机
-      description: 能独立组装和维护台式机，也能维护笔记本电脑。
+      description: 自己的台式机和笔记本，通常自己装、自己修。
   - id: links
     type: links
-    heading: 我的链接
+    heading: 找到我
     items:
     - id: github
       icon: github
@@ -158,18 +164,24 @@ en:
     type: prose
     paragraphs:
     - id: donation
-      style: italic
-      inline_markdown: If you enjoy my writing, I would also be happy to receive a [PayPal](https://paypal.me/yiyuiii) donation of 1–3 USD. It would make me very happy :D
+      style: normal
+      inline_markdown: If you enjoy the writing here, I would be delighted to receive a [PayPal](https://paypal.me/yiyuiii) donation of USD 1–3. It would make my day :D
     - id: contact
       style: normal
-      inline_markdown: If you have any suggestions or questions, feel free to email me at [yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com).
+      inline_markdown: Suggestions, questions, or just want to chat? Feel free to email me at [yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com).
   - id: aesthetics
     type: prose
-    heading: Personal Tastes
+    heading: How I’m Wired
     paragraphs:
-    - id: preference
+    - id: mbti
       style: normal
-      inline_markdown: I tend to favor Asian and Japanese-style characters, as well as expressions of logic and color that are flexible, varied, and structurally precise.
+      inline_markdown: A guy and an INTJ.
+    - id: thinking_style
+      style: normal
+      inline_markdown: My brain tends to start breaking problems down, building models, and looking for abstractions before I ask it to. I also enjoy learning quickly—especially learning how to learn—thinking through games of strategy, and reading people. I am drawn to things that are flexible, finely crafted, practical, and new; once I have fully worked through a line of reasoning, though, I would rather not be forced to repeat it.
+    - id: aesthetic_preferences
+      style: normal
+      inline_markdown: I like cute animals, beautiful sounds, and interesting uses of color.
   - id: education
     type: education
     heading: Education
@@ -204,70 +216,70 @@ en:
         value: Direct-entry PhD
   - id: research
     type: details
-    heading: Research Directions
+    heading: Research
     items:
     - id: meta_reinforcement_learning
       name: Meta-Reinforcement Learning
-      description: Meta-decision-making can offer useful perspectives for studying human thought, distilling decision-making methods, and improving my own decisions.
+      description: The question that draws me in is whether a way of making decisions can transfer to new problems. Working on it also gives me an excuse to reflect on how people think and decide.
     - id: meta_bayesian_optimization
       name: Meta-Bayesian Optimization
-      description: A practical technique with room for further research and application.
+      description: It is about helping an optimizer reuse past experience and take fewer detours—a topic with both research depth and practical value.
     - id: llm_agents
       name: LLM Agents
-      description: A fast-moving area with short development cycles and readily visible results, with strong practical potential.
+      description: The field moves fast, feedback comes quickly, and the results can be surprisingly powerful. It is having a moment—and it is a great place to turn ideas into useful tools.
   - id: interests
     type: details
-    heading: Interests
+    heading: Things I Like
     items:
     - id: board_games
       name: Board games
-      description: I joined the board-game division of my university chess-and-card association as an undergraduate and have played a wide range of board games for about ten years. I often play on [Board Game Arena](https://boardgamearena.com/) or at local board-game cafés; my BGA username is yiyuiii.
+      description: I will try almost anything that counts as a board game in the broadest sense. I mostly turn up on [Board Game Arena](https://boardgamearena.com/) or at local board-game cafés; my BGA username is yiyuiii.
     - id: chess_and_cards
       name: Chess and card games
-      description: I joined my university chess-and-card association and explored bridge, Chinese chess, Go, Gomoku, chess, shogi, mahjong, and Texas hold’em. I currently have a relatively deeper understanding of Gomoku, riichi mahjong, Chinese Official Mahjong, and Texas hold’em; for the others, I have broad familiarity at a recreational level.
-    - id: 3d_printing
-      name: 3D printing
-      description: I use an A1 mini and can create basic models in Fusion 360. I am still at an introductory level and am currently interested in multi-material and full-color printing.
-    - id: minecraft
-      name: Minecraft
-      description: I have played on and off for about ten years. I prefer Java Edition modded servers, especially Tinkers’ Construct, SlashBlade, and Mekanism, and I can run a server myself.
+      description: I have spent some time learning bridge, Chinese chess, Go, Gomoku, chess, shogi, mahjong, and Texas hold’em. I know Gomoku, riichi mahjong, Chinese Official Mahjong, and Texas hold’em better; with the others, I am mostly there to enjoy the game.
     - id: acg
       name: ACG
-      description: I prefer anime and galgames and have followed seasonal anime for more than ten years.
+      description: I enjoy anime and galgames, and I still keep up with seasonal anime.
     - id: league_of_legends
       name: League of Legends
       description: A Hextech ARAM player on the Ionia server.
+    - id: minecraft
+      name: Minecraft
+      description: I have lived on and off in Java Edition modded servers for nearly ten years; my favorites are Tinkers’ Construct, SlashBlade, and Mekanism.
+    - id: 3d_printing
+      name: 3D printing
+      description: I have just started, with a Bambu Lab A1 mini and some basic Fusion 360 modeling skills. Lately I have been exploring color-blending prints.
     - id: badminton
       name: Badminton
-      description: I have played since my undergraduate years and am an amateur who is not quite able to play singles well yet.
+      description: I have played since college and remain a cheerful amateur who still cannot quite make singles work.
     - id: traditional_archery
       name: Traditional archery
-      description: I practiced traditional bows in my university archery club and can currently draw 30 pounds.
+      description: I played with traditional bows in my university archery club and can currently draw 30 pounds.
     - id: swimming
       name: Swimming
-      description: I started learning during my doctoral studies and currently have a basic command of breaststroke.
+      description: I trained seriously for a few months and can now call my breaststroke passable. My freestyle form still needs work, and treading water remains a contest with sinking.
     - id: smart_home
       name: Smart home
-      description: I am exploring the idea of connecting and controlling household devices through LLMs and Home Assistant; it is currently at the concept and feasibility stage.
+      description: I want to make my home as smart as possible with a controllable, open-source setup built around LLMs and Home Assistant. The foundation is running, and I am gradually connecting more devices.
     - id: llm_applications
       name: LLM applications
-      description: I currently subscribe to ChatGPT, Ark Coding Plan / Agent Plan, and Kimi, and compare how different LLM tools perform in practical workflows.
+      description: I subscribe to ChatGPT, Ark Coding Plan / Agent Plan, and Kimi, and treat different LLMs as a team with different strengths. I am learning to be a good team lead while happily letting this top-tier digital workforce do the heavy lifting.
   - id: skills
     type: details
-    heading: Everyday Skills
+    heading: A Few Other Skills
     items:
     - id: cooking
       name: Cooking
       description: I can make rolled omelets, steamed buns, noodles, stews, and everyday stir-fries.
     - id: singing
       name: Singing
-      description: An amateur currently working on vocal fundamentals.
+      description: I am working on vocal fundamentals; Jay Chou has more or less taken over the part of my songbook I know best.
     - id: pc_building
       name: PC building
-      description: I can assemble and maintain desktop PCs and maintain laptops.
+      description: I usually build and repair my own desktops and laptops.
   - id: links
     type: links
-    heading: My Links
+    heading: Find Me
     items:
     - id: github
       icon: github

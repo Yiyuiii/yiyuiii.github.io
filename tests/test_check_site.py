@@ -78,11 +78,11 @@ def about_profile(language):
     if language == "zh":
         label = "关于yiyuiii"
         headings = (
-            "个人基调",
-            "科研方向",
-            "兴趣方向",
-            "日常技能",
-            "我的链接",
+            "灵魂基调",
+            "研究方向",
+            "平时喜欢",
+            "还会这些",
+            "找到我",
         )
         research_names = ("元强化学习", "元贝叶斯优化", "大模型 Agent")
         interest_names = tuple(f"兴趣 {index}" for index in range(11))
@@ -91,11 +91,11 @@ def about_profile(language):
     else:
         label = "About yiyuiii"
         headings = (
-            "Personal Tastes",
-            "Research Directions",
-            "Interests",
-            "Everyday Skills",
-            "My Links",
+            "How I’m Wired",
+            "Research",
+            "Things I Like",
+            "A Few Other Skills",
+            "Find Me",
         )
         research_names = (
             "Meta-Reinforcement Learning",
@@ -613,13 +613,13 @@ def test_about_allows_tools_as_an_ordinary_word_in_english_copy(tmp_path):
     check_site(tmp_path)
 
 
-def test_about_requires_personal_tastes_first_and_all_five_visible_sections_in_order(
+def test_about_requires_personality_first_and_all_five_visible_sections_in_order(
     tmp_path,
 ):
     valid_site(tmp_path)
     path = route_path(tmp_path, "/about/")
     source = path.read_text(encoding="utf-8").replace(
-        ">个人基调</h2>",
+        ">灵魂基调</h2>",
         ">错误顺序</h2>",
         1,
     )

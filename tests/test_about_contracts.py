@@ -77,9 +77,20 @@ def test_about_content_uses_one_valid_bilingual_data_source():
     assert [item["id"] for item in data["zh"]["blocks"]] == expected
     assert [item["id"] for item in data["en"]["blocks"]] == expected
     assert data["display"] == {"hidden_blocks": ["education"]}
-    assert block(data, "zh", "aesthetics")["heading"] == "个人基调"
-    assert block(data, "en", "aesthetics")["heading"] == "Personal Tastes"
-    assert block(data, "en", "interests")["heading"] == "Interests"
+    assert block(data, "zh", "aesthetics")["heading"] == "灵魂基调"
+    assert block(data, "en", "aesthetics")["heading"] == "How I’m Wired"
+    assert [
+        paragraph["id"]
+        for paragraph in block(data, "zh", "aesthetics")["paragraphs"]
+    ] == ["mbti", "thinking_style", "aesthetic_preferences"]
+    assert block(data, "zh", "research")["heading"] == "研究方向"
+    assert block(data, "en", "research")["heading"] == "Research"
+    assert block(data, "zh", "interests")["heading"] == "平时喜欢"
+    assert block(data, "en", "interests")["heading"] == "Things I Like"
+    assert block(data, "zh", "skills")["heading"] == "还会这些"
+    assert block(data, "en", "skills")["heading"] == "A Few Other Skills"
+    assert block(data, "zh", "links")["heading"] == "找到我"
+    assert block(data, "en", "links")["heading"] == "Find Me"
 
 
 def test_about_education_fields_are_aligned_without_invented_affiliations():
@@ -125,10 +136,10 @@ def test_about_research_interests_and_skills_use_the_approved_full_descriptions(
     assert zh_interest_ids == [
         "board_games",
         "chess_and_cards",
-        "3d_printing",
-        "minecraft",
         "acg",
         "league_of_legends",
+        "minecraft",
+        "3d_printing",
         "badminton",
         "traditional_archery",
         "swimming",
@@ -148,7 +159,7 @@ def test_about_research_interests_and_skills_use_the_approved_full_descriptions(
         "Ark Coding Plan / Agent Plan",
         "Kimi",
         "30 磅",
-        "声乐基础",
+        "周杰伦",
     ):
         assert expected in visible
 

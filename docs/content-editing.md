@@ -56,7 +56,7 @@ _data/about.yml
 greeting → intro → aesthetics → education → research → interests → skills → links
 ```
 
-也就是 Ciallo、两段开场说明、个人基调、教育经历、科研方向、兴趣方向、日常技能、我的链接。每个 block、段落、条目、教育字段和链接都有语言无关的 `id`。中英文两棵树的 ID、层级、顺序和字段必须对应；可见文字可以不同。
+也就是 Ciallo、两段开场说明、灵魂基调、教育经历、研究方向、平时喜欢、还会这些、找到我。每个 block、段落、条目、教育字段和链接都有语言无关的 `id`。中英文两棵树的 ID、层级、顺序和字段必须对应；可见文字可以不同。
 
 ### 临时隐藏或恢复栏目
 
@@ -77,13 +77,13 @@ display:
 ```yaml
 - id: singing
   name: 唱歌
-  description: 业余爱好者，正在磨炼声乐基础，也会定期录音复盘。
+  description: 正在练声，最熟的歌单基本被周杰伦承包了。
 ```
 
 ```yaml
 - id: singing
   name: Singing
-  description: An amateur working on vocal fundamentals and regularly reviewing my own recordings.
+  description: I am working on vocal fundamentals; Jay Chou has more or less taken over the part of my songbook I know best.
 ```
 
 ### 新增一个兴趣或技能
@@ -102,7 +102,7 @@ display:
   description: I currently focus on pour-over coffee and am still learning how beans, grind size, and water temperature affect the result.
 ```
 
-ID 使用小写英文、数字和下划线，创建后尽量不要改。删除条目时也要同时删除中英文两份。
+ID 只能使用小写英文、数字和单个下划线，不得有连字符、波浪号、首尾下划线或连续下划线；为了兼容稳定的 `3d_printing`，允许数字开头。ID 创建后尽量不要改。删除条目时也要同时删除中英文两份。
 
 ### 新增或重排栏目
 
@@ -174,7 +174,8 @@ heading、text、aria_label、label、name、description、value 和
 inline_markdown 字符串。必须原样保留所有 id、type、style、icon、url、
 relative、new_tab、键名、列表层级、条目数量和条目顺序；Markdown 链接目标
 不得改变。不要添加、删除、合并或概括条目，不要输出解释，只返回完整 en 树。
-英文应自然、客观，重点保留我的真实经历、水平和兴趣，不宣传领域本身。
+英文应自然、像本人在聊天，保留中文里的轻松、自嘲和玩心，但不得发明经历、
+身份或能力，也不要把个人偏好改写成履历或宣传稿。
 ```
 
 把返回的完整 `en` 树替换回文件后，刷新中文来源 hash：

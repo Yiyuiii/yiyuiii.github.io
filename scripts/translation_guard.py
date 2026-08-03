@@ -44,6 +44,7 @@ SITE_TIMEZONE = ZoneInfo("Asia/Hong_Kong")
 ABOUT_SHARED_KEYS = {"id", "type", "style", "icon", "url", "relative", "new_tab"}
 ABOUT_BLOCK_TYPES = {"greeting", "prose", "education", "details", "links"}
 ABOUT_ICONS = {"github", "email", "rss", "paypal"}
+ABOUT_ID = re.compile(r"[a-z0-9]+(?:_[a-z0-9]+)*\Z")
 ABOUT_PLACEHOLDER = re.compile(r"\b(?:TODO|TBD)\b|待翻译", re.IGNORECASE)
 ABOUT_LINK = re.compile(r"(?<!!)\[[^\]\r\n]+\]\(([^)\s]+)([^)]*)\)")
 POST_UID = re.compile(r"\d{12}\Z")
@@ -683,11 +684,15 @@ def _validate_about_markdown(value: str, path: str) -> None:
             )
 
 
+def _validate_about_id(value: Any, path: str) -> None:
+    if not isinstance(value, str) or not ABOUT_ID.fullmatch(value):
+        raise TranslationError(
+            f"{path} must use lowercase letters, digits, and single underscores"
+        )
+
+
 def _validate_about_node(value: Any, path: str, *, language: str) -> None:
     if isinstance(value, dict):
-        node_id = value.get("id")
-        if "id" in value and (not isinstance(node_id, str) or not node_id.strip()):
-            raise TranslationError(f"{path}.id must be a non-empty string")
         for key, child in value.items():
             child_path = f"{path}.{key}"
             if key in {"inline_markdown", "description"}:
@@ -723,8 +728,7 @@ def _validate_about_records(
                 f"expected {sorted(required_keys)!r}"
             )
         record_id = record["id"]
-        if not isinstance(record_id, str) or not record_id.strip():
-            raise TranslationError(f"{record_path}.id must be a non-empty string")
+        _validate_about_id(record_id, f"{record_path}.id")
         if record_id in seen_ids:
             raise TranslationError(f"{record_path}.id duplicates {record_id!r}")
         seen_ids.add(record_id)
@@ -834,8 +838,7 @@ def _validate_about_language(profile: Any, language: str) -> None:
             raise TranslationError(f"{path} must be a mapping")
         block_id = block.get("id")
         block_type = block.get("type")
-        if not isinstance(block_id, str) or not block_id.strip():
-            raise TranslationError(f"{path}.id must be a non-empty string")
+        _validate_about_id(block_id, f"{path}.id")
         if block_id in seen_block_ids:
             raise TranslationError(f"{path}.id duplicates {block_id!r}")
         seen_block_ids.add(block_id)

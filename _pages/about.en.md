@@ -2,7 +2,7 @@
 layout: page
 title: About yiyuiii
 permalink: /en/about/
-description: A short personal introduction
+description: About Yiyu Chen—research, interests, everyday skills, and a few things I am tinkering with.
 lang: en
 schema_type: ProfilePage
 nav_key: about
@@ -10,7 +10,7 @@ translation_url: /about/
 translation_key: about-yiyuiii
 translation_source: _pages/about.md
 translation_status: current
-source_hash: adc4c7a7c0daf4b346062567db36ed5b95903cc05231a74439edff25e540678a
+source_hash: ea7c0eb8b1b20625fcb2d027cc45f22fd008eb628f03c1950e54672809906c83
 hide_title: true
 ---
 

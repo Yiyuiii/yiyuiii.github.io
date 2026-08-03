@@ -332,6 +332,31 @@ def test_about_profile_rejects_duplicate_nested_ids(tmp_path):
         validate_about_profile(path)
 
 
+@pytest.mark.parametrize(
+    "invalid_id",
+    ["min~ecraft", "bad-id", "BadId", "_leading", "trailing_", "two__underscores"],
+)
+def test_about_profile_requires_lower_snake_ids(tmp_path, invalid_id):
+    path = tmp_path / "about.yml"
+    data = valid_about_data()
+    for language in ("zh", "en"):
+        data[language]["blocks"][3]["items"][0]["id"] = invalid_id
+    write_about(path, data)
+
+    with pytest.raises(TranslationError, match="lowercase letters, digits"):
+        validate_about_profile(path)
+
+
+def test_about_profile_allows_ids_that_start_with_a_digit(tmp_path):
+    path = tmp_path / "about.yml"
+    data = valid_about_data()
+    for language in ("zh", "en"):
+        data[language]["blocks"][3]["items"][0]["id"] = "3d_printing"
+    write_about(path, data)
+
+    validate_about_profile(path)
+
+
 def test_about_profile_rejects_keys_the_renderer_would_ignore(tmp_path):
     path = tmp_path / "about.yml"
     data = valid_about_data()
