@@ -1,0 +1,60 @@
+name: 页面反馈 / Page feedback
+description: 报告内容、翻译、链接或页面问题 / Report a content, translation, link, or page problem
+title: "[页面反馈 / Page feedback] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你帮助改进这个网站。Issue 及其中的内容会公开显示，请勿填写邮箱、账号或其它私人信息。
+
+        Thank you for helping improve this site. Issues and their contents are public; do not include email addresses, account details, or other private information.
+
+  - type: input
+    id: page_url
+    attributes:
+      label: 页面网址 / Page URL
+      description: 请粘贴出现问题页面的完整网址。 / Paste the full URL of the affected page.
+      placeholder: https://yiyuiii.github.io/...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feedback_type
+    attributes:
+      label: 反馈类型 / Feedback type
+      options:
+        - 内容纠错 / Content correction
+        - 翻译问题 / Translation issue
+        - 失效链接 / Broken link
+        - 显示或功能问题 / Display or functionality problem
+        - 其它 / Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题说明 / Problem
+      description: 请指出具体章节、原文或复现步骤。 / Identify the section, text, or reproduction steps.
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 建议修改 / Suggested change
+      description: 如果你有明确的修改建议，请写在这里。 / If you have a concrete correction, describe it here.
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 依据或补充材料 / Evidence or additional context
+      description: 可提供公开来源、截图或其它有助于核实的信息。 / Add public sources, screenshots, or other verifiable context.
+
+  - type: checkboxes
+    id: public_notice
+    attributes:
+      label: 公开确认 / Public-content confirmation
+      options:
+        - label: 我确认没有在这份公开 Issue 中填写私人信息。 / I confirm that this public issue contains no private information.
+          required: true

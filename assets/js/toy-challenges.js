@@ -3,7 +3,6 @@
 
   const globalScope = typeof window === "undefined" ? globalThis : window;
   const TARGET_TEN_SECONDS_MS = 10_000;
-  const COLOR_DELTAS = Object.freeze([12, 7, 4]);
 
   const interpolate = (template, values) => Object.entries(values).reduce(
     (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
@@ -16,34 +15,6 @@
     && typeof randomApi.uintBelow === "function"
     && typeof randomApi.pick === "function"
   );
-
-  const colorDifficulty = (consecutiveCorrect) => {
-    const streak = Number.isSafeInteger(consecutiveCorrect) && consecutiveCorrect > 0
-      ? consecutiveCorrect
-      : 0;
-    return Math.min(Math.floor(streak / 2), COLOR_DELTAS.length - 1);
-  };
-
-  const createColorRound = (randomApi, consecutiveCorrect) => {
-    if (!hasRandomApi(randomApi)) throw new Error("local random interface is unavailable");
-    const difficulty = colorDifficulty(consecutiveCorrect);
-    const hue = randomApi.intInclusive(0, 359);
-    const saturation = randomApi.intInclusive(60, 74);
-    const lightness = randomApi.intInclusive(44, 56);
-    const direction = randomApi.pick([-1, 1]);
-    if (direction !== -1 && direction !== 1) throw new Error("unexpected random choice");
-    const oddIndex = randomApi.uintBelow(16);
-    if (!Number.isSafeInteger(oddIndex) || oddIndex < 0 || oddIndex >= 16) {
-      throw new Error("unexpected random index");
-    }
-    const oddLightness = lightness + (direction * COLOR_DELTAS[difficulty]);
-    return Object.freeze({
-      difficulty,
-      normalColor: `hsl(${hue} ${saturation}% ${lightness}%)`,
-      oddColor: `hsl(${hue} ${saturation}% ${oddLightness}%)`,
-      oddIndex,
-    });
-  };
 
   const tenSecondTransition = (state, event, now) => {
     const current = state || Object.freeze({ phase: "idle" });
@@ -91,8 +62,6 @@
   };
 
   const logic = Object.freeze({
-    colorDifficulty,
-    createColorRound,
     hasRandomApi,
     reactionTransition,
     tenSecondTransition,
@@ -124,7 +93,7 @@
     let copy;
     try {
       copy = readCopy(root);
-    } catch (error) {
+    } catch (_error) {
       disableChallenge(root, null);
       return null;
     }
@@ -157,81 +126,32 @@
     }
   };
 
-  const initColorChallenge = (root) => {
-    if (root.dataset.challengeReady === "true") return;
-    const prepared = prepareChallenge(root);
-    if (!prepared) return;
-    const { copy, randomApi } = prepared;
-    const grid = root.querySelector("[data-color-grid]");
-    const nextButton = root.querySelector("[data-color-next]");
-    const status = root.querySelector("[data-challenge-status]");
-    if (!grid || !nextButton || !status || !Array.isArray(copy.levels)) {
-      disableChallenge(root, copy);
-      return;
+  const noopHistory = Object.freeze({
+    append() {},
+    falseStart() {},
+    refresh() {},
+  });
+
+  const prepareHistory = (root, kind, copy) => {
+    const historyApi = globalScope.yiyuiiiToyChallengeHistory;
+    if (!historyApi || typeof historyApi.createHistoryController !== "function") {
+      return noopHistory;
     }
-
-    let consecutiveCorrect = 0;
-    let activeRound = null;
-    let answered = false;
-
-    const renderRound = (moveFocus = false) => {
-      try {
-        activeRound = createColorRound(randomApi, consecutiveCorrect);
-      } catch (error) {
-        disableChallenge(root, copy);
-        return;
-      }
-      answered = false;
-      nextButton.disabled = true;
-      status.textContent = "";
-      root.dataset.difficulty = String(activeRound.difficulty);
-
-      const fragment = document.createDocumentFragment();
-      for (let index = 0; index < 16; index += 1) {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "toy-color-challenge__cell";
-        button.dataset.colorIndex = String(index);
-        button.setAttribute("aria-label", interpolate(copy.cellLabel, { number: index + 1 }));
-        button.style.backgroundColor = index === activeRound.oddIndex
-          ? activeRound.oddColor
-          : activeRound.normalColor;
-        fragment.append(button);
-      }
-      grid.replaceChildren(fragment);
-      if (moveFocus) grid.querySelector("button")?.focus();
-    };
-
-    grid.addEventListener("click", (event) => {
-      const button = event.target.closest("button[data-color-index]");
-      if (!button || answered || !activeRound) return;
-      answered = true;
-      const selectedIndex = Number.parseInt(button.dataset.colorIndex || "", 10);
-      const correct = selectedIndex === activeRound.oddIndex;
-      consecutiveCorrect = correct ? consecutiveCorrect + 1 : 0;
-
-      for (const choice of grid.querySelectorAll("button")) choice.disabled = true;
-      const answer = grid.querySelector(`[data-color-index="${activeRound.oddIndex}"]`);
-      if (answer) answer.dataset.result = "correct";
-      if (!correct) button.dataset.result = "incorrect";
-
-      const level = copy.levels[activeRound.difficulty] || copy.levels[0];
-      status.textContent = `${correct ? copy.correct : copy.incorrect} ${interpolate(
-        copy.levelLabel,
-        { level },
-      )}`;
-      nextButton.disabled = false;
-      nextButton.focus();
-    });
-
-    nextButton.addEventListener("click", () => renderRound(true));
-    root.dataset.challengeReady = "true";
-    root.dataset.state = "ready";
-    renderRound();
+    try {
+      return historyApi.createHistoryController({ root, kind, copy });
+    } catch (_error) {
+      return noopHistory;
+    }
   };
 
   const initTenSecond = (root) => {
     if (root.dataset.challengeReady === "true") return;
+    let history = noopHistory;
+    try {
+      history = prepareHistory(root, "ten-second", readCopy(root));
+    } catch (_error) {
+      // The ordinary timer remains available when local history cannot initialize.
+    }
     const prepared = prepareChallenge(root, false);
     if (!prepared) return;
     const { copy } = prepared;
@@ -288,7 +208,9 @@
 
     primary.addEventListener("click", () => {
       if (state.phase === "running") {
-        state = tenSecondTransition(state, "stop", performance.now());
+        const nextState = tenSecondTransition(state, "stop", performance.now());
+        if (nextState.phase === "finished") history.append(Math.round(nextState.elapsed));
+        state = nextState;
         render();
       } else {
         start();
@@ -302,6 +224,12 @@
 
   const initReactionTime = (root) => {
     if (root.dataset.challengeReady === "true") return;
+    let history = noopHistory;
+    try {
+      history = prepareHistory(root, "reaction-time", readCopy(root));
+    } catch (_error) {
+      // Saved results remain optional; the reaction challenge has its own availability check.
+    }
     const prepared = prepareChallenge(root);
     if (!prepared) return;
     const { copy, randomApi } = prepared;
@@ -314,11 +242,14 @@
 
     let state = Object.freeze({ phase: "idle" });
     let timer = 0;
+    let signalFrame = 0;
     let attemptToken = 0;
 
     const clearSignal = () => {
       if (timer) globalScope.clearTimeout(timer);
+      if (signalFrame) globalScope.cancelAnimationFrame(signalFrame);
       timer = 0;
+      signalFrame = 0;
       attemptToken += 1;
     };
 
@@ -347,26 +278,6 @@
       }
     };
 
-    const start = () => {
-      clearSignal();
-      let delay;
-      try {
-        delay = randomApi.intInclusive(1500, 4000);
-      } catch (error) {
-        disableChallenge(root, copy);
-        return;
-      }
-      state = reactionTransition(state, "start", performance.now(), delay);
-      render();
-      const token = attemptToken;
-      timer = globalScope.setTimeout(() => {
-        if (token !== attemptToken || state.phase !== "waiting") return;
-        timer = 0;
-        state = reactionTransition(state, "signal", performance.now());
-        render();
-      }, delay);
-    };
-
     const cancel = () => {
       const nextState = reactionTransition(state, "cancel", performance.now());
       if (nextState !== state) {
@@ -376,13 +287,48 @@
       }
     };
 
+    const start = () => {
+      clearSignal();
+      let delay;
+      try {
+        delay = randomApi.intInclusive(1500, 4000);
+      } catch (_error) {
+        disableChallenge(root, copy);
+        return;
+      }
+      state = reactionTransition(state, "start", performance.now(), delay);
+      render();
+      const token = attemptToken;
+      timer = globalScope.setTimeout(() => {
+        if (token !== attemptToken || state.phase !== "waiting") return;
+        timer = 0;
+        if (document.hidden) {
+          cancel();
+          return;
+        }
+        signalFrame = globalScope.requestAnimationFrame(() => {
+          signalFrame = 0;
+          if (token !== attemptToken || state.phase !== "waiting" || document.hidden) {
+            cancel();
+            return;
+          }
+          state = reactionTransition(state, "signal", performance.now());
+          render();
+        });
+      }, delay);
+    };
+
     primary.addEventListener("click", () => {
       if (state.phase === "waiting") {
         clearSignal();
-        state = reactionTransition(state, "press", performance.now());
+        const nextState = reactionTransition(state, "press", performance.now());
+        if (nextState.phase === "tooSoon") history.falseStart();
+        state = nextState;
         render();
       } else if (state.phase === "ready") {
-        state = reactionTransition(state, "press", performance.now());
+        const nextState = reactionTransition(state, "press", performance.now());
+        if (nextState.phase === "finished") history.append(Math.round(nextState.elapsed));
+        state = nextState;
         render();
       } else {
         start();
@@ -393,9 +339,6 @@
     render();
   };
 
-  for (const root of document.querySelectorAll("[data-toy-color-challenge]")) {
-    initColorChallenge(root);
-  }
   for (const root of document.querySelectorAll("[data-toy-ten-second]")) {
     initTenSecond(root);
   }

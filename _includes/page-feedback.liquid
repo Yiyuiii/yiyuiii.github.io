@@ -1,0 +1,36 @@
+{% assign feedback_lang = include.lang | default: page.lang | default: 'zh' %}
+{% if feedback_lang == 'zh-CN' %}{% assign feedback_lang = 'zh' %}{% endif %}
+{% assign feedback_text = site.data.site_text[feedback_lang].feedback %}
+{% assign feedback_title = include.page_title | default: page.title | default: site.title %}
+{% assign feedback_path = include.page_url | default: page.canonical_url | default: page.url %}
+{% assign feedback_url = feedback_path | absolute_url %}
+{% if page.collection == 'posts' %}
+  {% assign issue_prefix = feedback_text.post_issue_prefix %}
+{% else %}
+  {% assign issue_prefix = feedback_text.page_issue_prefix %}
+{% endif %}
+{% capture issue_title %}{{ issue_prefix }} {{ feedback_title }}{% endcapture %}
+{% assign issue_title = issue_title | strip | url_encode %}
+{% assign issue_page_url = feedback_url | url_encode %}
+{% assign email_subject = feedback_text.email_subject | replace: '{title}', feedback_title | url_encode %}
+{% assign email_body = feedback_text.email_body | replace: '{url}', feedback_url | url_encode %}
+{% capture heading_id %}page-feedback-title-{{ feedback_lang }}{% endcapture %}
+
+<aside class="page-shell" data-page-feedback aria-labelledby="{{ heading_id }}">
+  <h2 class="sr-only" id="{{ heading_id }}">{{ feedback_text.heading }}</h2>
+  <p class="article-meta">
+    {{ feedback_text.prompt }}
+    <a
+      data-feedback-public
+      href="https://github.com/Yiyuiii/yiyuiii.github.io/issues/new?template=page-feedback.yml&amp;title={{ issue_title }}&amp;page_url={{ issue_page_url }}"
+      rel="external nofollow noopener noreferrer"
+      referrerpolicy="no-referrer"
+    >{{ feedback_text.public_link }}</a>
+    <span class="article-meta__separator" aria-hidden="true">·</span>
+    <a
+      data-feedback-private
+      href="mailto:yiyuiii@foxmail.com?subject={{ email_subject }}&amp;body={{ email_body }}"
+    >{{ feedback_text.private_link }}</a>
+  </p>
+  <p class="article-meta">{{ feedback_text.privacy_note }}</p>
+</aside>
