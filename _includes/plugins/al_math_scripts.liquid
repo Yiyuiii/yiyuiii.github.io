@@ -1,3 +1,15 @@
 {% if page.math != false %}
-  {% al_math_scripts %}
+  {% if page.pseudocode or page.tikzjax %}
+    {% al_math_scripts %}
+  {% elsif page.math == true %}
+    <script src="{{ '/assets/al_math/js/mathjax-setup.js' | relative_url }}"></script>
+    <script
+      defer
+      src="{{ '/assets/js/mathjax-loader.js' | relative_url | bust_file_cache }}"
+      data-primary-src="{{ site.third_party_libraries.mathjax.url.js | escape }}"
+      data-primary-integrity="{{ site.third_party_libraries.mathjax.integrity.js | escape }}"
+      data-fallback-src="{{ site.third_party_libraries.mathjax.fallback.url.js | escape }}"
+      data-fallback-integrity="{{ site.third_party_libraries.mathjax.fallback.integrity.js | escape }}"
+    ></script>
+  {% endif %}
 {% endif %}

@@ -10,26 +10,15 @@ def text(path):
     return (ROOT / path).read_text(encoding="utf-8")
 
 
-def test_reviewed_pool_is_local_unique_and_large_enough_for_varied_rounds():
+def test_random_discovery_configuration_uses_the_official_action_api():
     data = yaml.safe_load(text("_data/moegirl_quiz.yml"))
-    titles = [entry["title"] for entry in data["entries"]]
 
     assert data["api_endpoint"] == "https://zh.moegirl.org.cn/api.php"
     assert data["timeout_ms"] == 10000
-    assert data["reviewed_on"] == "2026-08-02"
-    assert len(titles) >= 12
-    assert len(titles) == len(set(titles))
-    assert all(title.strip() == title and title for title in titles)
-    assert not any("http" in str(entry).lower() for entry in data["entries"])
-    assert "Saber" not in titles
-    assert "阿尔托莉雅·潘德拉贡" in titles
-    for entry in data["entries"]:
-        assert set(entry) <= {"title", "aliases"}
-        assert set(entry) >= {"title"}
-        assert all(
-            isinstance(alias, str) and alias.strip()
-            for alias in entry.get("aliases", [])
-        )
+    assert data["batch_size"] == 50
+    assert data["recent_history_size"] >= 16
+    assert data["reviewed_on"] == "2026-08-03"
+    assert "entries" not in data
 
 
 def test_chinese_and_english_copy_have_the_same_complete_interface():
@@ -43,9 +32,10 @@ def test_chinese_and_english_copy_have_the_same_complete_interface():
         assert "{title}" in en[key]
     assert "IP" in zh["privacy"] and "IP" in en["privacy"]
     assert "不请求图片" in zh["privacy"]
-    assert "no cookies, storage, tracking, or images" in en["privacy"]
+    assert "no cookies, persistent storage, tracking, or images" in en["privacy"]
     assert "来源与署名" in zh["license"]
     assert "source and attribution" in en["license"]
+    assert zh["redaction"] == en["redaction"] == "⬛"
 
 
 def test_include_is_progressively_enhanced_and_discloses_remote_boundaries():
@@ -54,8 +44,10 @@ def test_include_is_progressively_enhanced_and_discloses_remote_boundaries():
     assert "data-moegirl-quiz" in include
     assert "data-quiz-interactive hidden" in include
     assert "<noscript>" in include and "copy.no_js" in include
-    assert "data-quiz-pool" in include and "quiz.entries | jsonify" in include
+    assert "data-quiz-pool" not in include and "quiz.entries | jsonify" not in include
     assert "data-quiz-copy" in include and "copy | jsonify" in include
+    assert 'data-batch-size="{{ quiz.batch_size }}"' in include
+    assert 'data-history-size="{{ quiz.recent_history_size }}"' in include
     assert "assets/js/moegirl-quiz.js" in include
     assert "data-quiz-clue" in include
     assert "data-quiz-clue-text" in include
@@ -68,24 +60,32 @@ def test_include_is_progressively_enhanced_and_discloses_remote_boundaries():
     assert "creativecommons.org/licenses/by-nc-sa/3.0/" in include
 
 
-def test_script_uses_one_metadata_fetch_without_tracking_or_unsafe_dom_html():
+def test_script_uses_one_random_api_fetch_without_tracking_or_unsafe_dom_html():
     script = text("assets/js/moegirl-quiz.js")
 
     assert script.count("await fetch(") == 1
     assert "crypto.getRandomValues" in script
-    assert "sampleWithoutReplacement(entries, 4)" in script
+    assert "sampleWithoutReplacement([...discoveredByTitle.values()], 4)" in script
     assert "referrerPolicy: \"no-referrer\"" in script
     assert "credentials: \"omit\"" in script
     assert "cache: \"no-store\"" in script
     assert "redirect: \"error\"" in script
     assert "AbortController" in script
     assert "API_HOST" in script and "API_PATH" in script
-    assert 'prop: "extracts|info"' in script
+    assert 'generator: "random"' in script
+    assert 'grnfilterredir: "nonredirects"' in script
+    assert 'prop: "extracts|info|categories"' in script
+    assert 'cllimit: "10"' in script
     assert 'exintro: "1"' in script
     assert 'explaintext: "1"' in script
+    assert 'maxage: "0"' in script and 'smaxage: "0"' in script
+    assert "requestid: requestNonce" in script
     assert "MAX_RESPONSE_CHARS" in script
     assert "anonymizeClue" in script
     assert "expandTitleFragments" in script
+    assert "isCharacterPage" in script
+    assert "SENSITIVE_SIGNAL" in script
+    assert "recentTitles" in script
     assert "term.length >= 1" in script
     assert "textContent" in script and "replaceChildren" in script
     lowered = script.lower()
