@@ -78,7 +78,7 @@ def about_profile(language):
     if language == "zh":
         label = "关于yiyuiii"
         headings = (
-            "个人基调",
+            "灵魂基调",
             "科研方向",
             "兴趣方向",
             "日常技能",
@@ -91,7 +91,7 @@ def about_profile(language):
     else:
         label = "About yiyuiii"
         headings = (
-            "Personal Tastes",
+            "Core Traits",
             "Research Directions",
             "Interests",
             "Everyday Skills",
@@ -653,7 +653,7 @@ def test_about_requires_personality_first_and_all_five_visible_sections_in_order
     valid_site(tmp_path)
     path = route_path(tmp_path, "/about/")
     source = path.read_text(encoding="utf-8").replace(
-        ">个人基调</h2>",
+        ">灵魂基调</h2>",
         ">错误顺序</h2>",
         1,
     )
