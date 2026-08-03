@@ -67,12 +67,25 @@ const createStubbedRandomContext = async (browser, samples) => {
 for (const viewport of viewports) {
   test(`welcome pages stay readable at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    for (const [route, heading, pickLabel, recentLabel] of [
-      ["/", "你好，欢迎来到 yiyuiii", "随机发现", "最近更新"],
-      ["/en/", "Hello, welcome to yiyuiii", "Random discovery", "Recent updates"],
+    for (const [route, heading, introduction, pickLabel, recentLabel] of [
+      [
+        "/",
+        "你好 👋",
+        "这里是我的博客，记录随笔、项目、论文和一些好玩的东西。",
+        "随机发现",
+        "最近更新",
+      ],
+      [
+        "/en/",
+        "Hello 👋",
+        "This is my blog—a place for writing, projects, papers, and a few things I make for fun.",
+        "Random discovery",
+        "Recent updates",
+      ],
     ]) {
       await page.goto(route);
       await expect(page.getByRole("heading", { level: 1, name: heading })).toBeVisible();
+      await expect(page.locator(".home-welcome__introduction")).toHaveText(introduction);
       await expect(page.locator(".home-guide li")).toHaveCount(5);
       await expect(page.getByRole("heading", { level: 2, name: pickLabel })).toBeVisible();
       await expect(page.getByRole("heading", { level: 2, name: recentLabel })).toBeVisible();
