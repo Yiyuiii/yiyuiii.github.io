@@ -2,7 +2,7 @@ display:
   hidden_blocks:
   - education
 translation:
-  source_hash: b393e7df060a99085f9ef4cb2ba1077944ba6dee9181de29281bd790a765110d
+  source_hash: 98997af5423c7e18c2c840513c1200b991d39d061ef3086d64bc37ee6b16d17b
 zh:
   blocks:
   - id: greeting
@@ -17,10 +17,10 @@ zh:
       inline_markdown: 如果你喜欢这里的文章，我也不介意收到 1–3 美元的 [PayPal](https://paypal.me/yiyuiii) 捐助，这会让我开心很久 :D
     - id: contact
       style: normal
-      inline_markdown: 有建议、问题，或者只是想聊聊，都欢迎给我发邮件：[yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com)
+      inline_markdown: 有建议、问题，或者只是想聊聊，都欢迎给我发邮件：[yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com)。
   - id: aesthetics
     type: prose
-    heading: 灵魂基调
+    heading: 个人基调
     paragraphs:
     - id: mbti
       style: normal
@@ -65,7 +65,7 @@ zh:
         value: 直博
   - id: research
     type: details
-    heading: 研究方向
+    heading: 科研方向
     items:
     - id: meta_reinforcement_learning
       name: 元强化学习
@@ -78,7 +78,7 @@ zh:
       description: 发展快、反馈快，效果还经常挺惊喜；正处风口，也很适合把想法迅速做成能用的东西。
   - id: interests
     type: details
-    heading: 平时喜欢
+    heading: 兴趣方向
     items:
     - id: board_games
       name: 桌游
@@ -115,7 +115,7 @@ zh:
       description: 同时订阅 ChatGPT、Ark Coding Plan / Agent Plan 和 Kimi，把不同 LLM 当成一支各有所长的队伍来带。努力做好它们的 leader，也享受这份顶级数字劳动力。
   - id: skills
     type: details
-    heading: 还会这些
+    heading: 日常技能
     items:
     - id: cooking
       name: 做饭
@@ -128,7 +128,7 @@ zh:
       description: 自己的台式机和笔记本，通常自己装、自己修。
   - id: links
     type: links
-    heading: 找到我
+    heading: 我的链接
     items:
     - id: github
       icon: github
@@ -171,7 +171,7 @@ en:
       inline_markdown: Suggestions, questions, or just want to chat? Feel free to email me at [yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com).
   - id: aesthetics
     type: prose
-    heading: How I’m Wired
+    heading: Personal Tastes
     paragraphs:
     - id: mbti
       style: normal
@@ -216,7 +216,7 @@ en:
         value: Direct-entry PhD
   - id: research
     type: details
-    heading: Research
+    heading: Research Directions
     items:
     - id: meta_reinforcement_learning
       name: Meta-Reinforcement Learning
@@ -229,7 +229,7 @@ en:
       description: The field moves fast, feedback comes quickly, and the results can be surprisingly powerful. It is having a moment—and it is a great place to turn ideas into useful tools.
   - id: interests
     type: details
-    heading: Things I Like
+    heading: Interests
     items:
     - id: board_games
       name: Board games
@@ -266,7 +266,7 @@ en:
       description: I subscribe to ChatGPT, Ark Coding Plan / Agent Plan, and Kimi, and treat different LLMs as a team with different strengths. I am learning to be a good team lead while happily letting this top-tier digital workforce do the heavy lifting.
   - id: skills
     type: details
-    heading: A Few Other Skills
+    heading: Everyday Skills
     items:
     - id: cooking
       name: Cooking
@@ -279,7 +279,7 @@ en:
       description: I usually build and repair my own desktops and laptops.
   - id: links
     type: links
-    heading: Find Me
+    heading: My Links
     items:
     - id: github
       icon: github

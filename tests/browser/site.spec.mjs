@@ -477,21 +477,21 @@ for (const viewport of aboutViewports) {
     {
       route: "/about/",
       headings: [
-        "灵魂基调",
-        "研究方向",
-        "平时喜欢",
-        "还会这些",
-        "找到我",
+        "个人基调",
+        "科研方向",
+        "兴趣方向",
+        "日常技能",
+        "我的链接",
       ],
     },
     {
       route: "/en/about/",
       headings: [
-        "How I’m Wired",
-        "Research",
-        "Things I Like",
-        "A Few Other Skills",
-        "Find Me",
+        "Personal Tastes",
+        "Research Directions",
+        "Interests",
+        "Everyday Skills",
+        "My Links",
       ],
     },
   ]) {
@@ -789,11 +789,11 @@ test("project, paper, and profile indexes remain source-faithful", async ({
   await expect(greeting).toHaveText("Ciallo～(∠・ω< )⌒★");
   await expect(page.locator("#about-education")).toHaveCount(0);
   await expect(page.locator(".about-section > h2")).toHaveText([
-    "灵魂基调",
-    "研究方向",
-    "平时喜欢",
-    "还会这些",
-    "找到我",
+    "个人基调",
+    "科研方向",
+    "兴趣方向",
+    "日常技能",
+    "我的链接",
   ]);
   await expect(page.locator("#about-research .about-detail-list > div")).toHaveCount(3);
   await expect(page.locator("#about-interests .about-detail-list > div")).toHaveCount(11);
@@ -819,11 +819,11 @@ test("project, paper, and profile indexes remain source-faithful", async ({
   ).toHaveText("Ciallo～(∠・ω< )⌒★");
   await expect(page.locator("#about-education")).toHaveCount(0);
   await expect(page.locator(".about-section > h2")).toHaveText([
-    "How I’m Wired",
-    "Research",
-    "Things I Like",
-    "A Few Other Skills",
-    "Find Me",
+    "Personal Tastes",
+    "Research Directions",
+    "Interests",
+    "Everyday Skills",
+    "My Links",
   ]);
   await expect(page.locator("#about-interests .about-detail-list > div")).toHaveCount(11);
   await expect(page.locator("#about-skills .about-detail-list > div")).toHaveCount(3);

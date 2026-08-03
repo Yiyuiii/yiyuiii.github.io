@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import yaml
@@ -39,6 +40,21 @@ def block(data, language, block_id):
     )
 
 
+def narrative_copy(data, language):
+    values = []
+    for item in data[language]["blocks"]:
+        values.extend(
+            paragraph["inline_markdown"]
+            for paragraph in item.get("paragraphs", [])
+        )
+        values.extend(
+            detail["description"]
+            for detail in item.get("items", [])
+            if "description" in detail
+        )
+    return values
+
+
 def test_about_routes_and_titles_are_explicit():
     zh, _ = parse_page("_pages/about.md")
     en, _ = parse_page("_pages/about.en.md")
@@ -77,20 +93,20 @@ def test_about_content_uses_one_valid_bilingual_data_source():
     assert [item["id"] for item in data["zh"]["blocks"]] == expected
     assert [item["id"] for item in data["en"]["blocks"]] == expected
     assert data["display"] == {"hidden_blocks": ["education"]}
-    assert block(data, "zh", "aesthetics")["heading"] == "灵魂基调"
-    assert block(data, "en", "aesthetics")["heading"] == "How I’m Wired"
+    assert block(data, "zh", "aesthetics")["heading"] == "个人基调"
+    assert block(data, "en", "aesthetics")["heading"] == "Personal Tastes"
     assert [
         paragraph["id"]
         for paragraph in block(data, "zh", "aesthetics")["paragraphs"]
     ] == ["mbti", "thinking_style", "aesthetic_preferences"]
-    assert block(data, "zh", "research")["heading"] == "研究方向"
-    assert block(data, "en", "research")["heading"] == "Research"
-    assert block(data, "zh", "interests")["heading"] == "平时喜欢"
-    assert block(data, "en", "interests")["heading"] == "Things I Like"
-    assert block(data, "zh", "skills")["heading"] == "还会这些"
-    assert block(data, "en", "skills")["heading"] == "A Few Other Skills"
-    assert block(data, "zh", "links")["heading"] == "找到我"
-    assert block(data, "en", "links")["heading"] == "Find Me"
+    assert block(data, "zh", "research")["heading"] == "科研方向"
+    assert block(data, "en", "research")["heading"] == "Research Directions"
+    assert block(data, "zh", "interests")["heading"] == "兴趣方向"
+    assert block(data, "en", "interests")["heading"] == "Interests"
+    assert block(data, "zh", "skills")["heading"] == "日常技能"
+    assert block(data, "en", "skills")["heading"] == "Everyday Skills"
+    assert block(data, "zh", "links")["heading"] == "我的链接"
+    assert block(data, "en", "links")["heading"] == "My Links"
 
 
 def test_about_education_fields_are_aligned_without_invented_affiliations():
@@ -162,6 +178,23 @@ def test_about_research_interests_and_skills_use_the_approved_full_descriptions(
         "周杰伦",
     ):
         assert expected in visible
+
+
+def test_about_narrative_copy_uses_language_appropriate_punctuation():
+    data = about_data()
+
+    for value in narrative_copy(data, "zh"):
+        prose = re.sub(
+            r"\[[^\]]+\]\((?:https://|mailto:)[^)]+\)",
+            "",
+            value,
+        ).replace(":D", "")
+        assert not re.search(r"[,;:.?!()]", prose), value
+        assert value.endswith(("。", "！", "？", ":D")), value
+
+    for value in narrative_copy(data, "en"):
+        assert not re.search(r"[，；：。？！（）]", value), value
+        assert value.endswith((".", "!", "?", ":D")), value
 
 
 def test_about_link_data_has_exactly_four_real_destinations():

@@ -436,14 +436,14 @@ def _check_about(soup: BeautifulSoup, route: str, language: str) -> None:
         )
 
     expected_headings = (
-        ["灵魂基调", "研究方向", "平时喜欢", "还会这些", "找到我"]
+        ["个人基调", "科研方向", "兴趣方向", "日常技能", "我的链接"]
         if language == "zh"
         else [
-            "How I’m Wired",
-            "Research",
-            "Things I Like",
-            "A Few Other Skills",
-            "Find Me",
+            "Personal Tastes",
+            "Research Directions",
+            "Interests",
+            "Everyday Skills",
+            "My Links",
         ]
     )
     sections = profile.select(":scope > section.about-section")
@@ -540,7 +540,7 @@ def _check_about(soup: BeautifulSoup, route: str, language: str) -> None:
             f"expected {expected_labels!r}"
         )
     heading = soup.select_one(".about-links h2")
-    expected_heading = "找到我" if language == "zh" else "Find Me"
+    expected_heading = "我的链接" if language == "zh" else "My Links"
     heading_text = heading.get_text(" ", strip=True) if heading else ""
     if heading_text != expected_heading:
         raise SiteCheckError(
