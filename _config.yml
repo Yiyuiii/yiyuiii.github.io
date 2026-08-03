@@ -357,16 +357,9 @@ third_party_libraries:
   mathjax:
     integrity:
       js: sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=
-    fallback:
-      integrity:
-        js: sha256-EdXFN3Kp65uVom1t8M2LxLk9bjBd6kQH5hH34qfGhlc=
-      url:
-        js: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js
-    local:
-      fonts: output/chtml/fonts/woff-v2/
     url:
-      fonts: https://cdn.jsdelivr.net/npm/mathjax@{{version}}/es5/output/chtml/fonts/woff-v2/
-      js: https://cdn.jsdelivr.net/npm/mathjax@{{version}}/es5/tex-mml-chtml.js
+      fonts: /assets/vendor/mathjax/3.2.2/output/chtml/fonts/woff-v2/
+      js: /assets/vendor/mathjax/3.2.2/tex-mml-chtml.min.js
     version: 3.2.2
   tikzjax:
     integrity:

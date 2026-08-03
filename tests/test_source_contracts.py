@@ -301,6 +301,11 @@ def test_workflow_builds_pr_artifact_and_only_deploys_master():
     assert "python -m pytest -q" in workflow
     assert "python scripts/check_site.py --site _site" in workflow
     assert "python scripts/check_legacy_urls.py --site _site" in workflow
+    assert "actions/setup-node@v6" in workflow
+    assert 'node-version: "24"' in workflow
+    assert "npx playwright install --with-deps chromium" in workflow
+    assert "python scripts/run_browser_tests.py --site _site" in workflow
+    assert "name: browser-failure-artifacts" in workflow
     assert "name: site-preview" in workflow
     assert "github.event_name != 'pull_request'" in workflow
     assert "github.ref == 'refs/heads/master'" in workflow

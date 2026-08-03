@@ -6,10 +6,9 @@
     <script
       defer
       src="{{ '/assets/js/mathjax-loader.js' | relative_url | bust_file_cache }}"
-      data-primary-src="{{ site.third_party_libraries.mathjax.url.js | escape }}"
-      data-primary-integrity="{{ site.third_party_libraries.mathjax.integrity.js | escape }}"
-      data-fallback-src="{{ site.third_party_libraries.mathjax.fallback.url.js | escape }}"
-      data-fallback-integrity="{{ site.third_party_libraries.mathjax.fallback.integrity.js | escape }}"
+      data-runtime-src="{{ site.third_party_libraries.mathjax.url.js | relative_url | escape }}"
+      data-runtime-integrity="{{ site.third_party_libraries.mathjax.integrity.js | escape }}"
+      data-font-url="{{ site.third_party_libraries.mathjax.url.fonts | relative_url | escape }}"
     ></script>
   {% endif %}
 {% endif %}

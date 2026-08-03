@@ -22,13 +22,28 @@ const formulaPages = [
 test.describe("math rendering round 3", () => {
   test.setTimeout(180_000);
 
+  test.beforeEach(async ({ page }) => {
+    await page.route(/^https?:\/\//u, async (route) => {
+      const hostname = new URL(route.request().url()).hostname;
+      if (hostname === "127.0.0.1" || hostname === "localhost") {
+        await route.continue();
+      } else {
+        await route.abort("blockedbyclient");
+      }
+    });
+  });
+
   test("every bilingual formula page renders all formulas", async ({ page }) => {
     for (const [route, expectedFormulaCount] of formulaPages) {
       await test.step(route, async () => {
         const runtimeErrors = [];
-        const recordPageError = (error) => runtimeErrors.push(error.message);
+        const recordPageError = (error) => {
+          if (/mathjax/iu.test(error.message)) runtimeErrors.push(error.message);
+        };
         const recordConsoleError = (message) => {
-          if (message.type() === "error") runtimeErrors.push(message.text());
+          if (message.type() === "error" && /mathjax/iu.test(message.text())) {
+            runtimeErrors.push(message.text());
+          }
         };
         page.on("pageerror", recordPageError);
         page.on("console", recordConsoleError);
@@ -99,13 +114,16 @@ test.describe("math rendering round 3", () => {
     }
   });
 
-  test("the secondary MathJax source survives a primary CDN outage", async ({
+  test("the runtime and fonts stay local when every external request is blocked", async ({
     page,
   }) => {
-    await page.route(
-      "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js",
-      (route) => route.abort("failed"),
-    );
+    const mathJaxRequests = [];
+    page.on("request", (request) => {
+      if (request.url().toLowerCase().includes("mathjax")) {
+        mathJaxRequests.push(request.url());
+      }
+    });
+
     await page.goto("/en/posts/reinforcement-learning-issues/");
     await page.waitForFunction(
       () => document.documentElement.dataset.mathRendering === "ready",
@@ -115,9 +133,15 @@ test.describe("math rendering round 3", () => {
 
     await expect(page.locator("html")).toHaveAttribute(
       "data-math-rendering-source",
-      "fallback",
+      "local",
     );
     await expect(page.locator(".post-content mjx-container")).toHaveCount(1);
     await expect(page.locator(".post-content mjx-merror")).toHaveCount(0);
+
+    expect(mathJaxRequests.length).toBeGreaterThanOrEqual(2);
+    expect(mathJaxRequests.some((url) => url.endsWith(".woff"))).toBe(true);
+    for (const url of mathJaxRequests) {
+      expect(new URL(url).hostname, url).toMatch(/^(?:127\.0\.0\.1|localhost)$/u);
+    }
   });
 });

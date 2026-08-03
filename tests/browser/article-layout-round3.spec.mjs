@@ -63,10 +63,9 @@ for (const viewport of [
   }) => {
     await page.setViewportSize(viewport);
     await page.goto(richArticleRoute, { waitUntil: "domcontentloaded" });
-    await expect(page.locator('.post-content img[src$="/bigcards.jpg"]')).toHaveJSProperty(
-      "complete",
-      true,
-    );
+    const targetImage = page.locator('.post-content img[src$="/bigcards.jpg"]');
+    await targetImage.scrollIntoViewIfNeeded();
+    await expect(targetImage).toHaveJSProperty("complete", true);
 
     const geometry = await articleGeometry(page);
 

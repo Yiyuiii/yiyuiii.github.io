@@ -62,6 +62,30 @@ jobs:
           python scripts/check_site.py --site _site
           python scripts/check_legacy_urls.py --site _site
 
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install browser checks
+        run: npm ci
+
+      - name: Install browser runtime
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser regression
+        run: python scripts/run_browser_tests.py --site _site
+
+      - name: Upload browser failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-failure-artifacts
+          path: test-results
+          if-no-files-found: ignore
+          retention-days: 7
+
       - name: Upload preview artifact
         uses: actions/upload-artifact@v7
         with:

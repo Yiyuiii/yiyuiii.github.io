@@ -1,0 +1,64 @@
+{
+  "audit_date": "2026-08-03",
+  "scope": "Two five-request, rate-limited samples of the official Action API random generator; no article extracts are retained.",
+  "request_contract": {
+    "requests_per_sample": 5,
+    "delay_milliseconds": 4000,
+    "random_pages_per_request": 50,
+    "extract_limit_per_request": 20,
+    "category_limit": "max",
+    "images": false,
+    "html_scraping": false
+  },
+  "baseline_sample": {
+    "random_pages": 250,
+    "pages_with_extract": 92,
+    "accepted_candidates": 36,
+    "usable_anonymized_clues": 30,
+    "cross_batch_duplicate_titles": 0,
+    "exact_title_leaks_after_redaction": 0,
+    "manual_candidate_review": {
+      "reviewed": 36,
+      "clear_non_character_false_positives": 4,
+      "false_positive_kinds": {
+        "song_pages": 3,
+        "character_equipment_subpages": 1
+      }
+    },
+    "targeted_alias_probe": {
+      "reviewed": 1,
+      "foreign_alias_leaks": 1,
+      "cause": "The old leading-subject rule did not cover a country name immediately after the copula."
+    }
+  },
+  "revised_sample": {
+    "random_pages": 250,
+    "pages_with_extract": 93,
+    "pages_with_categories": 249,
+    "character_signal_matches": 29,
+    "sensitive_signal_matches_rejected": 3,
+    "non_article_matches_rejected": 8,
+    "song_music_or_equipment_matches_rejected": 76,
+    "accepted_candidates_by_batch": [4, 4, 4, 8, 6],
+    "usable_anonymized_clues_by_batch": [4, 3, 4, 7, 3],
+    "accepted_candidates": 26,
+    "usable_anonymized_clues": 21,
+    "cross_batch_duplicate_titles": 0,
+    "exact_title_leaks_after_redaction": 0,
+    "manual_candidate_review": {
+      "reviewed": 26,
+      "clear_non_character_false_positives": 0
+    },
+    "response_characters": {
+      "minimum": 38126,
+      "maximum": 40794,
+      "mean": 38908.2,
+      "configured_rejection_limit": 262144
+    }
+  },
+  "interpretation": [
+    "All ten sampled batches contained at least four accepted options; the revised five batches also retained at least one usable answer after any four-option draw.",
+    "A 50-page generator result does not mean 50 extracts: the installed Extracts module returns at most 20 per request, so the application now states that limit explicitly.",
+    "The sample is intentionally small and random. It supports regression decisions, not a permanent estimate of encyclopedia-wide prevalence."
+  ]
+}

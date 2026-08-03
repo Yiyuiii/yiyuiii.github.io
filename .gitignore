@@ -7,7 +7,7 @@
 
 # bundler cache
 _site
-vendor
+/vendor
 Gemfile.lock
 _data/project_runtime.yml
 

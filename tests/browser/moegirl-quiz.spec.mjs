@@ -140,6 +140,8 @@ test("first render stays local; one start makes one nonce-protected random API r
   expect(requestUrl.searchParams.get("grnfilterredir")).toBe("nonredirects");
   expect(requestUrl.searchParams.get("grnlimit")).toBe("20");
   expect(requestUrl.searchParams.get("prop")).toBe("extracts|info|categories");
+  expect(requestUrl.searchParams.get("exlimit")).toBe("20");
+  expect(requestUrl.searchParams.get("cllimit")).toBe("max");
   expect(requestUrl.searchParams.get("requestid")).toMatch(/^[0-9a-f]{32}$/);
   expect(requestUrl.searchParams.has("titles")).toBe(false);
   await expect(page.locator("[data-moegirl-quiz] img")).toHaveCount(0);
@@ -170,6 +172,25 @@ test("leading aliases, title fragments, and hostile markup are anonymized with a
   expect(await page.evaluate(() => globalThis.__quizXss)).toBeUndefined();
 });
 
+test("a foreign alias is hidden when the predicate starts with a country name", async ({ page }) => {
+  const pages = roundPages();
+  const answer = pages[0].title;
+  pages[0].extract = `${answer}（英语：Aisha Landar）是韩国工作室开发的游戏《测试作品》的登场角色。`
+    + "她在故事里经历了多段冒险，也因鲜明的能力、伙伴关系和代表性场景而受到读者关注。"
+    + "隐藏姓名以后，仍有足够长的完整线索供读者判断。";
+  await page.route("https://zh.moegirl.org.cn/api.php?**", (route) => route.fulfill({
+    contentType: "application/json",
+    body: JSON.stringify({ query: { pages } }),
+  }));
+  await installQuiz(page);
+
+  await page.getByRole("button", { name: "开始一题" }).click();
+  const clue = page.locator("[data-quiz-clue-text]");
+  await expect(clue).toContainText("⬛");
+  await expect(clue).not.toContainText(answer);
+  await expect(clue).not.toContainText("Aisha Landar");
+});
+
 test("non-character, disambiguation, and sensitive entries cannot become options", async ({ page }) => {
   const pages = roundPages();
   pages.push(
@@ -185,6 +206,15 @@ test("non-character, disambiguation, and sensitive entries cannot become options
       ...characterPage("同名消歧义"),
       categories: [{ ns: 14, title: "Category:消歧义页" }],
     },
+    {
+      ...characterPage("测试原创歌曲"),
+      extract: "《测试原创歌曲》是由虚拟YouTuber演唱的原创歌曲。",
+      categories: [{ ns: 14, title: "Category:测试角色歌曲" }],
+    },
+    {
+      ...characterPage("测试角色/人格面具"),
+      extract: "本文介绍《测试作品》的登场角色测试角色的人格面具，是该游戏中的战斗单位。",
+    },
   );
   await page.route("https://zh.moegirl.org.cn/api.php?**", (route) => route.fulfill({
     contentType: "application/json",
@@ -193,11 +223,15 @@ test("non-character, disambiguation, and sensitive entries cannot become options
   await installQuiz(page);
 
   await page.getByRole("button", { name: "开始一题" }).click();
-  const labels = await page.locator("[data-quiz-options] button").allTextContents();
+  const optionButtons = page.locator("[data-quiz-options] button");
+  await expect(optionButtons).toHaveCount(4);
+  const labels = await optionButtons.allTextContents();
   expect(labels).toHaveLength(4);
   expect(labels).not.toContain("测试歌曲");
   expect(labels).not.toContain("敏感角色");
   expect(labels).not.toContain("同名消歧义");
+  expect(labels).not.toContain("测试原创歌曲");
+  expect(labels).not.toContain("测试角色/人格面具");
 });
 
 test("recent options stay out of the next round and each request gets a new nonce", async ({ page }) => {
@@ -206,9 +240,12 @@ test("recent options stay out of the next round and each request gets a new nonc
   await installQuiz(page);
 
   await page.getByRole("button", { name: "开始一题" }).click();
-  const first = await page.locator("[data-quiz-options] button").allTextContents();
+  const optionButtons = page.locator("[data-quiz-options] button");
+  await expect(optionButtons).toHaveCount(4);
+  const first = await optionButtons.allTextContents();
   await page.getByRole("button", { name: "再来一题" }).click();
-  const second = await page.locator("[data-quiz-options] button").allTextContents();
+  await expect(optionButtons).toHaveCount(4);
+  const second = await optionButtons.allTextContents();
 
   expect(first).toHaveLength(4);
   expect(second).toHaveLength(4);
@@ -244,6 +281,24 @@ test("an insufficient random batch fails gracefully and remains retryable", asyn
   await page.getByRole("button", { name: "开始一题" }).click();
   await expect(page.locator("[data-quiz-status]")).toHaveText(copy.zh.no_clue_error);
   await expect(page.getByRole("button", { name: "重试" })).toBeFocused();
+});
+
+test("an introduction that cannot actually be anonymized cannot become a clue", async ({ page }) => {
+  const pages = ["玄霜甲号", "碧落乙号", "丹霞丙号", "苍梧丁号"].map((title) => ({
+    ...characterPage(title),
+    extract: "但是某部作品包含一位登场角色，相关经历、能力、伙伴关系与代表性场景构成了足够长的介绍，"
+      + "这段导言没有给出页面标题，也没有可安全识别并替换的开头主语。",
+  }));
+  await page.route("https://zh.moegirl.org.cn/api.php?**", (route) => route.fulfill({
+    contentType: "application/json",
+    body: JSON.stringify({ query: { pages } }),
+  }));
+  await installQuiz(page);
+
+  await page.getByRole("button", { name: "开始一题" }).click();
+  await expect(page.locator("[data-quiz-status]")).toHaveText(copy.zh.no_clue_error);
+  await expect(page.getByRole("button", { name: "重试" })).toBeFocused();
+  await expect(page.locator("[data-quiz-clue]")).toBeHidden();
 });
 
 test("API failure leaves a focused, retryable component without affecting the document", async ({ page }) => {

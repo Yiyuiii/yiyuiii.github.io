@@ -1,6 +1,7 @@
 {% assign lang_key = page.lang | default: 'zh' %}
 {% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
 {% assign text = site.data.site_text[lang_key] %}
+<h1 class="sr-only">{{ page.title }}</h1>
 <section class="publication-list" aria-label="{{ text.nav.papers }}">
   {% assign publications = site.data.publications | sort: 'order' %}
   {% for publication in publications %}

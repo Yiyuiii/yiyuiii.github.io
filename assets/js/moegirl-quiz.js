@@ -10,6 +10,8 @@
   const CHARACTER_SIGNAL = /(?:登场|登場|出场)(?:的)?(?:角色|人物)|(?:角色|人物)之一|虚拟(?:UP主|主播|YouTuber)|V[Tt]uber|吉祥物|拟人(?:化形象|角色)/u;
   const SENSITIVE_SIGNAL = /R-?18|成人向|色情|性行为|性暴力|强奸|乱伦|恋童|裸露|裸体|乳房|生殖器|自杀|自残|虐杀|血腥|猎奇|纳粹|政治人物/u;
   const NON_ARTICLE_SIGNAL = /消歧义页|消歧义|条目列表|列表条目/u;
+  const NON_CHARACTER_TITLE_SIGNAL = /\/人格面具$/u;
+  const NON_CHARACTER_CATEGORY_SIGNAL = /Category:\S{0,80}(?:歌曲|音乐作品)/u;
 
   const secureRandomIndex = (maximum) => {
     if (
@@ -103,8 +105,9 @@
       exintro: "1",
       explaintext: "1",
       exchars: "900",
+      exlimit: "20",
       inprop: "url",
-      cllimit: "10",
+      cllimit: "max",
       format: "json",
       formatversion: "2",
       origin: "*",
@@ -147,31 +150,39 @@
   const anonymizeClue = (extract, terms, replacementValue) => {
     const replacement = normalizeText(replacementValue) || "⬛";
     let clue = normalizeText(extract);
+    let redacted = false;
 
     // The leading subject often contains readings or foreign names absent from the page title.
-    clue = clue.replace(
-      /^.{1,96}?(?=(?:是|为)(?:一名|一位|一个|由|《|「|动画|漫画|游戏|小说|系列|网页|多媒体|来自))/u,
+    // Require a real subject span so words such as "但是" or "作为" cannot satisfy the gate.
+    const withoutLeadingSubject = clue.replace(
+      /^.{3,120}?(?=(?:是|为))/u,
       replacement,
     );
+    if (withoutLeadingSubject !== clue) redacted = true;
+    clue = withoutLeadingSubject;
 
     const masks = [...new Set(terms.map(normalizeText))]
       .filter((term) => term.length >= 1 && term.length <= 80)
       .sort((left, right) => right.length - left.length)
       .slice(0, 512);
     for (const term of masks) {
-      clue = clue.replace(new RegExp(escapeRegExp(term), "giu"), replacement);
+      const withoutTerm = clue.replace(new RegExp(escapeRegExp(term), "giu"), replacement);
+      if (withoutTerm !== clue) redacted = true;
+      clue = withoutTerm;
     }
 
-    clue = clue.replace(
+    const withoutAlias = clue.replace(
       /((?:又称|亦称|也称|别名|昵称|外文名|英文名|日文名|罗马字)(?:是|为|作|写作|:)?)[^,。;；]{1,80}/gu,
       `$1${replacement}`,
     );
+    if (withoutAlias !== clue) redacted = true;
+    clue = withoutAlias;
     const repeatedReplacement = new RegExp(
       `(?:\\s*${escapeRegExp(replacement)}\\s*){2,}`,
       "gu",
     );
     clue = clue.replace(repeatedReplacement, replacement);
-    if (clue.length < MIN_CLUE_LENGTH) return null;
+    if (!redacted || clue.length < MIN_CLUE_LENGTH) return null;
     if (clue.length <= MAX_CLUE_LENGTH) return clue;
 
     const draft = clue.slice(0, MAX_CLUE_LENGTH + 1);
@@ -197,7 +208,9 @@
     const searchable = `${normalizeText(page.title)} ${normalizeText(page.extract)} ${categories}`;
     return CHARACTER_SIGNAL.test(searchable)
       && !SENSITIVE_SIGNAL.test(searchable)
-      && !NON_ARTICLE_SIGNAL.test(categories);
+      && !NON_ARTICLE_SIGNAL.test(categories)
+      && !NON_CHARACTER_TITLE_SIGNAL.test(normalizeText(page.title))
+      && !NON_CHARACTER_CATEGORY_SIGNAL.test(categories);
   };
 
   const initQuiz = (root) => {
