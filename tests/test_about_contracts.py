@@ -96,12 +96,12 @@ def test_about_content_uses_one_valid_bilingual_data_source():
     assert [item["id"] for item in data["zh"]["blocks"]] == expected
     assert [item["id"] for item in data["en"]["blocks"]] == expected
     assert data["display"] == {"hidden_blocks": ["education"]}
-    assert block(data, "zh", "aesthetics")["heading"] == "个人基调"
-    assert block(data, "en", "aesthetics")["heading"] == "Personal Tastes"
+    assert block(data, "zh", "aesthetics")["heading"] == "灵魂基调"
+    assert block(data, "en", "aesthetics")["heading"] == "Core Traits"
     assert [
         paragraph["id"]
         for paragraph in block(data, "zh", "aesthetics")["paragraphs"]
-    ] == ["mbti", "thinking_style", "aesthetic_preferences"]
+    ] == ["mbti", "logic", "art"]
     assert block(data, "zh", "research")["heading"] == "科研方向"
     assert block(data, "en", "research")["heading"] == "Research Directions"
     assert block(data, "zh", "interests")["heading"] == "兴趣方向"
@@ -124,11 +124,11 @@ def test_about_content_uses_one_valid_bilingual_data_source():
 
     zh_intro = block(data, "zh", "links")["intro"]["paragraphs"]
     assert zh_intro[0]["inline_markdown"] == (
-        "如果你喜欢我的文章，我也不介意收到 1–3 美元的 "
-        "[PayPal](https://paypal.me/yiyuiii) 捐助，这会让我非常开心 :D"
+        "如果你喜欢我的文章，我很高兴收到一点点 "
+        "[PayPal](https://paypal.me/yiyuiii) 赞助，这会让我非常开心 (∠・ω< )⌒★"
     )
     assert zh_intro[1]["inline_markdown"] == (
-        "如果你有建议或问题，欢迎通过电子邮件联系我："
+        "欢迎通过电子邮件联系我："
         "[yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com)。"
     )
 
@@ -213,12 +213,14 @@ def test_about_narrative_copy_uses_language_appropriate_punctuation():
             "",
             value,
         ).replace(":D", "")
+        prose = prose.replace("(∠・ω< )⌒★", "")
+        prose = re.sub(r"\bi\.e\.", "", prose)
         assert not re.search(r"[,;:.?!()]", prose), value
-        assert value.endswith(("。", "！", "？", ":D")), value
+        assert value.endswith(("。", "！", "？", ":D", "★")), value
 
     for value in narrative_copy(data, "en"):
         assert not re.search(r"[，；：。？！（）]", value), value
-        assert value.endswith((".", "!", "?", ":D")), value
+        assert value.endswith((".", "!", "?", ":D", "★")), value
 
 
 def test_about_link_data_has_exactly_four_real_destinations():

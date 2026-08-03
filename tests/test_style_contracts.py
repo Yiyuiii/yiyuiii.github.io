@@ -25,7 +25,7 @@ def test_single_column_responsive_primitives_are_used():
     assert "clamp(" in CSS
     assert "min(" in CSS
     assert "@media (max-width: 640px)" in CSS
-    assert "max-width: 72ch" in CSS
+    assert "width: min(100%, 52rem)" in CSS
     assert "overflow-x: clip" in CSS
 
 
@@ -50,6 +50,14 @@ def test_profile_uses_a_quieter_highlighted_greeting():
 
 
 def test_profile_sections_use_label_rule_content_in_one_column():
+    about_styles = CSS[CSS.index(".about-profile") : CSS.index(".writing-archive")]
+    profile_styles = about_styles[
+        about_styles.index(".about-profile") : about_styles.index(".about-intro")
+    ]
+    assert "width: 100%" in profile_styles
+    assert "max-width: 100%" in profile_styles
+    assert "72ch" not in about_styles
+
     assert ".about-section > h2" in CSS
     assert ".about-section > h2::after" in CSS
     heading_styles = CSS[

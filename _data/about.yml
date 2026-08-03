@@ -2,7 +2,7 @@ display:
   hidden_blocks:
   - education
 translation:
-  source_hash: 4ae2d77a25fffcb92e1401b16e0da4643792d9018b787f602d291ae6cca0aa00
+  source_hash: 1d3631d42f14499bb6ec52a66be5436dcf3be81e6a9b589667420b470aa03d62
 zh:
   blocks:
   - id: greeting
@@ -11,17 +11,17 @@ zh:
     aria_label: 关于yiyuiii
   - id: aesthetics
     type: prose
-    heading: 个人基调
+    heading: 灵魂基调
     paragraphs:
     - id: mbti
       style: normal
-      inline_markdown: 男生，INTJ。
-    - id: thinking_style
+      inline_markdown: 纯正男生，INTJ。
+    - id: logic
       style: normal
-      inline_markdown: 脑子经常自动开始拆问题、建模和找抽象，也喜欢快速学习（尤其是学习怎么学习）、琢磨博弈和读人。偏爱灵活、精妙、实用又新鲜的东西；至于已经完全想明白的逻辑，就不太想被迫再想一遍了。
-    - id: aesthetic_preferences
+      inline_markdown: 擅长逻辑建模、抽象思维、快速学习（i.e. 元学习）、博弈、读人。喜欢灵活、精妙、实用、新鲜的事物（工具、文章、艺术、逻辑等）。不想被迫重复思考自己完全理解的逻辑。
+    - id: art
       style: normal
-      inline_markdown: 喜欢可爱的小动物、好听的声音和有意思的色彩。
+      inline_markdown: 喜欢可爱、动听的小动物。
   - id: education
     type: education
     heading: 教育经历
@@ -60,63 +60,63 @@ zh:
     items:
     - id: meta_reinforcement_learning
       name: 元强化学习
-      description: 我关心的是：学会的决策方法能不能迁移到新问题？研究它时，也会顺手反思人是怎么思考和做决定的。
+      description: 决策的元迁移方法对提升个人修养、研究人类思维、提炼决策方法论有很强的借鉴意义。
     - id: meta_bayesian_optimization
       name: 元贝叶斯优化
-      description: 让优化器借用过去的经验、少走一点弯路；既有研究空间，也很实用。
+      description: 兼具研究空间与实际应用潜力的实用技术。
     - id: llm_agents
       name: 大模型 Agent
-      description: 发展快、反馈快，效果还经常挺惊喜；正处风口，也很适合把想法迅速做成能用的东西。
+      description: 发展迅速、开发反馈快、效果强大，是很有潜力的实用技术，正处风口。
   - id: interests
     type: details
     heading: 兴趣方向
     items:
     - id: board_games
       name: 桌游
-      description: 广义上的桌游我基本都愿意试。主要出没在 [Board Game Arena](https://boardgamearena.com/) 和线下桌游店；BGA 用户名是 yiyuiii。
+      description: 通识各种广泛意义的“桌游”。主要出没在 [Board Game Arena](https://boardgamearena.com/) 和桌游店，BGA 用户名 yiyuiii。
     - id: chess_and_cards
       name: 棋牌
-      description: 桥牌、象棋、围棋、五子棋、国际象棋、将棋、麻将和德州扑克都学过一些；五子棋、日麻、国标麻将和德州扑克玩得更明白，其余项目以开心参与为主。
+      description: 曾经学习过桥牌、象棋、围棋、五子棋、国际象棋、将棋、麻将和德州扑克；对五子棋、日麻、国标麻将和德州扑克理解比较深入，其余项目胜在休闲参与。
     - id: acg
       name: ACG
-      description: 动画和 Galgame 爱好者，新番还在持续追。
+      description: 动画和 Galgame 爱好者，在持续追新番。
     - id: league_of_legends
       name: 英雄联盟
       description: 电一海克斯大乱斗选手。
     - id: minecraft
       name: Minecraft
-      description: 断断续续在 Java 版 Mod 服务器里住了近 10 年，最喜欢匠魂、拔刀剑和 Mekanism。
+      description: 近 10 年断断续续玩 Mod 服务器。喜欢的 mod 是匠魂、拔刀剑和 Mekanism。
     - id: 3d_printing
       name: 3D 打印
-      description: 刚入坑，手头有一台拓竹 A1 mini，会用 Fusion 360 做基础建模，最近在研究叠色打印。
+      description: 刚入门，有一台拓竹 A1 mini 打印机，用 Fusion 360 建模。正在关注叠色打印技术。
     - id: badminton
       name: 羽毛球
-      description: 从本科打到现在，仍是单打打不太好的快乐业余选手。
+      description: 本科开始打羽毛球，还是打不好单打的业余选手。
     - id: traditional_archery
       name: 传统射艺
-      description: 本科时在弓协玩传统弓，目前能拉 30 磅。
+      description: 本科在弓协玩传统弓，能拉 30 磅。
     - id: swimming
       name: 游泳
-      description: 认真学过几个月，蛙泳算是入门了；自由泳动作还不太规范，踩水时也仍在和下沉作斗争。
+      description: 学习过几个月，算是入门蛙泳；自由泳动作不太规范，踩水也浮不起来。
     - id: smart_home
       name: 数智化家庭
-      description: 想用 LLM + Home Assistant 的可控开源方案，把家尽量变聪明。底层架构已经跑起来，正在慢慢接入更多设备。
+      description: 倾向 LLM + Home Assistant 的可控开源方案，扩展增强对家的智能控制。实现了底层架构，正在扩展更多节点。
     - id: llm_applications
       name: LLM 应用
-      description: 同时订阅 ChatGPT、Ark Coding Plan / Agent Plan 和 Kimi，把不同 LLM 当成一支各有所长的队伍来带。努力做好它们的 leader，也享受这份顶级数字劳动力。
+      description: 正在订阅 ChatGPT、Ark Coding Plan / Agent Plan 和 Kimi。做 LLM 的 leader，享受顶级劳动力。
   - id: skills
     type: details
     heading: 日常技能
     items:
     - id: cooking
       name: 做饭
-      description: 鸡蛋卷、馒头、面条、炖菜和家常炒菜都能做。
+      description: 会做鸡蛋卷、蒸馒头、下面条、炖菜和家常炒菜。
     - id: singing
       name: 唱歌
-      description: 正在练声，最熟的歌单基本被周杰伦承包了。
+      description: 正在练习声乐基础。最熟悉周杰伦的歌。
     - id: pc_building
       name: 装机
-      description: 自己的台式机和笔记本，通常自己装、自己修。
+      description: 组装维护自己的台式机、笔记本。
   - id: links
     type: links
     heading: 我的链接
@@ -125,10 +125,10 @@ zh:
       paragraphs:
       - id: donation
         style: italic
-        inline_markdown: 如果你喜欢我的文章，我也不介意收到 1–3 美元的 [PayPal](https://paypal.me/yiyuiii) 捐助，这会让我非常开心 :D
+        inline_markdown: 如果你喜欢我的文章，我很高兴收到一点点 [PayPal](https://paypal.me/yiyuiii) 赞助，这会让我非常开心 (∠・ω< )⌒★
       - id: contact
         style: normal
-        inline_markdown: 如果你有建议或问题，欢迎通过电子邮件联系我：[yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com)。
+        inline_markdown: 欢迎通过电子邮件联系我：[yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com)。
     items:
     - id: github
       icon: github
@@ -162,17 +162,17 @@ en:
     aria_label: About yiyuiii
   - id: aesthetics
     type: prose
-    heading: Personal Tastes
+    heading: Core Traits
     paragraphs:
     - id: mbti
       style: normal
-      inline_markdown: A guy and an INTJ.
-    - id: thinking_style
+      inline_markdown: Definitely a guy, INTJ.
+    - id: logic
       style: normal
-      inline_markdown: My brain tends to start breaking problems down, building models, and looking for abstractions before I ask it to. I also enjoy learning quickly—especially learning how to learn—thinking through games of strategy, and reading people. I am drawn to things that are flexible, finely crafted, practical, and new; once I have fully worked through a line of reasoning, though, I would rather not be forced to repeat it.
-    - id: aesthetic_preferences
+      inline_markdown: I am good at logical modeling, abstract thinking, rapid learning (i.e. meta-learning), strategic reasoning, and reading people. I like things that are flexible, refined, practical, and fresh—tools, articles, art, logic, and so on. I do not want to be forced to rethink logic I already fully understand.
+    - id: art
       style: normal
-      inline_markdown: I like cute animals, beautiful sounds, and interesting uses of color.
+      inline_markdown: I like cute little animals and the lovely sounds they make.
   - id: education
     type: education
     heading: Education
@@ -211,50 +211,50 @@ en:
     items:
     - id: meta_reinforcement_learning
       name: Meta-Reinforcement Learning
-      description: The question that draws me in is whether a way of making decisions can transfer to new problems. Working on it also gives me an excuse to reflect on how people think and decide.
+      description: Methods for transferring decision-making across tasks can offer valuable insights for self-improvement, studying human thought, and distilling decision-making methodologies.
     - id: meta_bayesian_optimization
       name: Meta-Bayesian Optimization
-      description: It is about helping an optimizer reuse past experience and take fewer detours—a topic with both research depth and practical value.
+      description: A practical technique with both room for research and real-world application potential.
     - id: llm_agents
       name: LLM Agents
-      description: The field moves fast, feedback comes quickly, and the results can be surprisingly powerful. It is having a moment—and it is a great place to turn ideas into useful tools.
+      description: A fast-moving field with short development feedback loops and powerful results. It is a promising practical technology currently in the spotlight.
   - id: interests
     type: details
     heading: Interests
     items:
     - id: board_games
       name: Board games
-      description: I will try almost anything that counts as a board game in the broadest sense. I mostly turn up on [Board Game Arena](https://boardgamearena.com/) or at local board-game cafés; my BGA username is yiyuiii.
+      description: I am broadly familiar with all kinds of “board games.” I mostly turn up on [Board Game Arena](https://boardgamearena.com/) and at board-game cafés; my BGA username is yiyuiii.
     - id: chess_and_cards
       name: Chess and card games
-      description: I have spent some time learning bridge, Chinese chess, Go, Gomoku, chess, shogi, mahjong, and Texas hold’em. I know Gomoku, riichi mahjong, Chinese Official Mahjong, and Texas hold’em better; with the others, I am mostly there to enjoy the game.
+      description: I have learned bridge, Chinese chess, Go, Gomoku, chess, shogi, mahjong, and Texas hold’em. I understand Gomoku, riichi mahjong, Chinese Official Mahjong, and Texas hold’em fairly well; the rest are mostly for casual play.
     - id: acg
       name: ACG
-      description: I enjoy anime and galgames, and I still keep up with seasonal anime.
+      description: An anime and galgame fan who still keeps up with seasonal releases.
     - id: league_of_legends
       name: League of Legends
       description: A Hextech ARAM player on the Ionia server.
     - id: minecraft
       name: Minecraft
-      description: I have lived on and off in Java Edition modded servers for nearly ten years; my favorites are Tinkers’ Construct, SlashBlade, and Mekanism.
+      description: I have played on modded servers on and off for nearly 10 years. My favorite mods are Tinkers’ Construct, SlashBlade, and Mekanism.
     - id: 3d_printing
       name: 3D printing
-      description: I have just started, with a Bambu Lab A1 mini and some basic Fusion 360 modeling skills. Lately I have been exploring color-blending prints.
+      description: I am just getting started. I have a Bambu Lab A1 mini and use Fusion 360 for modeling. I am currently interested in color-blending printing.
     - id: badminton
       name: Badminton
-      description: I have played since college and remain a cheerful amateur who still cannot quite make singles work.
+      description: I have played badminton since university and am still an amateur who is not very good at singles.
     - id: traditional_archery
       name: Traditional archery
-      description: I played with traditional bows in my university archery club and can currently draw 30 pounds.
+      description: I practiced traditional archery in my university archery club and can draw a 30-pound bow.
     - id: swimming
       name: Swimming
-      description: I trained seriously for a few months and can now call my breaststroke passable. My freestyle form still needs work, and treading water remains a contest with sinking.
+      description: I trained for a few months and have more or less learned the basics of breaststroke. My freestyle form is not very standard, and I cannot stay afloat while treading water.
     - id: smart_home
       name: Smart home
-      description: I want to make my home as smart as possible with a controllable, open-source setup built around LLMs and Home Assistant. The foundation is running, and I am gradually connecting more devices.
+      description: I prefer a controllable, open-source approach based on LLMs + Home Assistant to extend and improve intelligent control of my home. The underlying architecture is in place, and I am adding more nodes.
     - id: llm_applications
       name: LLM applications
-      description: I subscribe to ChatGPT, Ark Coding Plan / Agent Plan, and Kimi, and treat different LLMs as a team with different strengths. I am learning to be a good team lead while happily letting this top-tier digital workforce do the heavy lifting.
+      description: I currently subscribe to ChatGPT, Ark Coding Plan / Agent Plan, and Kimi. I get to be the LLMs’ leader and enjoy a top-tier workforce.
   - id: skills
     type: details
     heading: Everyday Skills
@@ -264,10 +264,10 @@ en:
       description: I can make rolled omelets, steamed buns, noodles, stews, and everyday stir-fries.
     - id: singing
       name: Singing
-      description: I am working on vocal fundamentals; Jay Chou has more or less taken over the part of my songbook I know best.
+      description: I am practicing vocal fundamentals. I know Jay Chou’s songs best.
     - id: pc_building
       name: PC building
-      description: I usually build and repair my own desktops and laptops.
+      description: I assemble and maintain my own desktop and laptop.
   - id: links
     type: links
     heading: My Links
@@ -276,10 +276,10 @@ en:
       paragraphs:
       - id: donation
         style: italic
-        inline_markdown: If you enjoy my articles, I would not mind receiving a [PayPal](https://paypal.me/yiyuiii) donation of USD 1–3. It would make me very happy :D
+        inline_markdown: If you enjoy my articles, I would be happy to receive a small [PayPal](https://paypal.me/yiyuiii) donation. It would make me very happy (∠・ω< )⌒★
       - id: contact
         style: normal
-        inline_markdown: If you have any suggestions or questions, feel free to email me at [yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com).
+        inline_markdown: You are welcome to contact me by email at [yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com).
     items:
     - id: github
       icon: github

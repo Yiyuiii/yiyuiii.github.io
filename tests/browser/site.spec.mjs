@@ -490,7 +490,7 @@ for (const viewport of aboutViewports) {
     {
       route: "/about/",
       headings: [
-        "个人基调",
+        "灵魂基调",
         "科研方向",
         "兴趣方向",
         "日常技能",
@@ -500,7 +500,7 @@ for (const viewport of aboutViewports) {
     {
       route: "/en/about/",
       headings: [
-        "Personal Tastes",
+        "Core Traits",
         "Research Directions",
         "Interests",
         "Everyday Skills",
@@ -542,6 +542,31 @@ for (const viewport of aboutViewports) {
         "about-intro",
         "ul",
       ]);
+
+      const widthContract = await page.evaluate(() => {
+        const selectors = {
+          profile: ".about-profile",
+          prose: "#about-aesthetics .about-prose__body",
+          heading: "#about-research > h2",
+          details: "#about-research .about-detail-list",
+          intro: "#about-links > #about-intro",
+          links: "#about-links > ul",
+        };
+        return Object.fromEntries(
+          Object.entries(selectors).map(([name, selector]) => [
+            name,
+            document.querySelector(selector).getBoundingClientRect().width,
+          ]),
+        );
+      });
+      expect(
+        Math.max(...Object.values(widthContract)) -
+          Math.min(...Object.values(widthContract)),
+      ).toBeLessThanOrEqual(1);
+      if (viewport.width === 1280) {
+        expect(widthContract.profile).toBeGreaterThanOrEqual(831);
+        expect(widthContract.profile).toBeLessThanOrEqual(833);
+      }
 
       const layout = await page.evaluate(() => ({
         overflow: document.documentElement.scrollWidth > innerWidth,
@@ -684,7 +709,7 @@ for (const route of ["/projects/", "/en/projects/"]) {
   });
 }
 
-test("project, paper, and profile indexes remain source-faithful", async ({
+test("project and paper indexes remain source-faithful", async ({
   page,
 }) => {
   await page.goto("/projects/");
@@ -806,7 +831,9 @@ test("project, paper, and profile indexes remain source-faithful", async ({
     )
     .allTextContents();
   expect(metadata.some((value) => /[\u3400-\u9fff]/.test(value))).toBe(false);
+});
 
+test("bilingual profile pages remain source-faithful", async ({ page }) => {
   await page.goto("/about/");
   await expect(page.locator(".page-header")).toHaveCount(0);
   const greeting = page.getByRole("heading", {
@@ -816,7 +843,7 @@ test("project, paper, and profile indexes remain source-faithful", async ({
   await expect(greeting).toHaveText("Ciallo～(∠・ω< )⌒★");
   await expect(page.locator("#about-education")).toHaveCount(0);
   await expect(page.locator(".about-section > h2")).toHaveText([
-    "个人基调",
+    "灵魂基调",
     "科研方向",
     "兴趣方向",
     "日常技能",
@@ -827,6 +854,14 @@ test("project, paper, and profile indexes remain source-faithful", async ({
   await expect(page.locator("#about-skills .about-detail-list > div")).toHaveCount(3);
   await expect(page.getByText("兴趣驱动的复杂系统的拆解者")).toHaveCount(0);
   await expect(page.getByText(/我目前是/)).toHaveCount(0);
+  await expect(page.locator("#about-links > h2 + #about-intro + ul")).toHaveCount(1);
+  await expect(page.locator("#about-intro-donation")).toHaveText(
+    "如果你喜欢我的文章，我很高兴收到一点点 PayPal 赞助，这会让我非常开心 (∠・ω< )⌒★",
+  );
+  await expect(page.locator("#about-intro-donation")).toHaveCSS("font-style", "italic");
+  await expect(page.locator("#about-intro-contact")).toHaveText(
+    "欢迎通过电子邮件联系我：yiyuiii@foxmail.com。",
+  );
   const profileLinks = page.locator(".about-links ul a");
   await expect(profileLinks).toHaveCount(4);
   await expect(profileLinks).toHaveText(["GitHub", "电子邮件", "RSS", "PayPal"]);
@@ -846,7 +881,7 @@ test("project, paper, and profile indexes remain source-faithful", async ({
   ).toHaveText("Ciallo～(∠・ω< )⌒★");
   await expect(page.locator("#about-education")).toHaveCount(0);
   await expect(page.locator(".about-section > h2")).toHaveText([
-    "Personal Tastes",
+    "Core Traits",
     "Research Directions",
     "Interests",
     "Everyday Skills",
@@ -855,6 +890,8 @@ test("project, paper, and profile indexes remain source-faithful", async ({
   await expect(page.locator("#about-interests .about-detail-list > div")).toHaveCount(11);
   await expect(page.locator("#about-skills .about-detail-list > div")).toHaveCount(3);
   await expect(page.getByText(/currently a PhD student/i)).toHaveCount(0);
+  await expect(page.locator("#about-links > h2 + #about-intro + ul")).toHaveCount(1);
+  await expect(page.locator("#about-intro-donation")).toHaveCSS("font-style", "italic");
 });
 
 test("publication recognition wraps without horizontal overflow at 320px", async ({
