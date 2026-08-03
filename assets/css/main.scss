@@ -1711,6 +1711,15 @@ html:lang(en) .post-content h3 {
   margin-bottom: 1.1rem;
 }
 
+.post-content
+  > p:not(:has(> img:only-child)):not(:has(> a:only-child > img:only-child)) {
+  text-indent: 2em;
+}
+
+.post-content > p:has(> mjx-container[display="true"]) {
+  text-indent: 0;
+}
+
 .post-content ul,
 .post-content ol {
   padding-inline-start: 1.6em;
@@ -1960,6 +1969,14 @@ html[data-theme="dark"] .highlight .gu {
 .post-content > .article-prose {
   width: min(100%, var(--article-prose-width));
   margin-inline: auto;
+}
+
+.post-content > .article-conversion pre {
+  width: fit-content;
+  min-width: min(100%, 19rem);
+  max-width: 100%;
+  margin-inline: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 @media (min-width: 1536px) {

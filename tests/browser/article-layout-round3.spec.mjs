@@ -175,3 +175,63 @@ test("quotes, evidence, and code follow their intended prose or wide canvas", as
   expect(code.pre.right).toBeLessThanOrEqual(code.wrapper.left + code.wrapper.width + 1);
   expect(code.pageOverflows).toBe(false);
 });
+
+test("narrative paragraphs indent while the compact conversion block stays aligned", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/posts/大创造时代-资源-分值量化计算思路/", {
+    waitUntil: "domcontentloaded",
+  });
+  await page.waitForFunction(
+    () => document.documentElement.dataset.mathRendering === "ready",
+  );
+
+  const layout = await page.evaluate(() => {
+    const content = document.querySelector(".post-content");
+    const prose = content.querySelector(":scope > p:not(:has(img))");
+    const conversion = content.querySelector(":scope > .article-conversion");
+    const code = conversion.querySelector("code");
+    const displayMath = content.querySelector('mjx-container[display="true"]');
+    const displayMathParagraph = displayMath.closest("p");
+
+    const equalsOffsets = [];
+    const text = code.firstChild;
+    for (
+      let index = text.data.indexOf("=");
+      index >= 0;
+      index = text.data.indexOf("=", index + 1)
+    ) {
+      const range = document.createRange();
+      range.setStart(text, index);
+      range.setEnd(text, index + 1);
+      equalsOffsets.push(range.getBoundingClientRect().left);
+    }
+
+    return {
+      proseIndent: parseFloat(getComputedStyle(prose).textIndent),
+      proseFontSize: parseFloat(getComputedStyle(prose).fontSize),
+      conversionLeft: conversion.getBoundingClientRect().left,
+      proseLeft: prose.getBoundingClientRect().left,
+      equalsOffsets,
+      displayMathIndent: displayMathParagraph
+        ? parseFloat(getComputedStyle(displayMathParagraph).textIndent)
+        : 0,
+      pageOverflows:
+        document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+    };
+  });
+
+  await page.goto(richArticleRoute, { waitUntil: "domcontentloaded" });
+  const imageIndent = await page
+    .locator('.post-content p:has(> img[src$="/bigcards.jpg"]:only-child)')
+    .evaluate((paragraph) => parseFloat(getComputedStyle(paragraph).textIndent));
+
+  expectClose(layout.proseIndent, layout.proseFontSize * 2, 0.5);
+  expectClose(layout.conversionLeft, layout.proseLeft);
+  expect(layout.equalsOffsets).toHaveLength(2);
+  expectClose(layout.equalsOffsets[0], layout.equalsOffsets[1], 0.5);
+  expect(layout.displayMathIndent).toBe(0);
+  expect(imageIndent).toBe(0);
+  expect(layout.pageOverflows).toBe(false);
+});

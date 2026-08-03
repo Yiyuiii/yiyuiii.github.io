@@ -243,6 +243,19 @@ def test_article_typography_is_one_global_language_aware_system():
     assert "_posts" not in article
 
 
+def test_article_narrative_paragraphs_indent_without_shifting_special_blocks():
+    article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
+
+    assert "> p:not(:has(> img:only-child))" in article
+    assert ":not(:has(> a:only-child > img:only-child))" in article
+    assert "text-indent: 2em" in article
+    assert '.post-content > p:has(> mjx-container[display="true"])' in article
+    assert "text-indent: 0" in article
+    assert ".post-content > .article-conversion pre" in article
+    assert "min-width: min(100%, 19rem)" in article
+    assert "font-variant-numeric: tabular-nums" in article
+
+
 def test_article_lists_code_images_and_dates_have_explicit_shared_rules():
     article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
 
