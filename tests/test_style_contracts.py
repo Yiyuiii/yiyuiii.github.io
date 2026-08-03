@@ -76,7 +76,7 @@ def test_profile_sections_use_label_rule_content_in_one_column():
 
     link_styles = CSS[CSS.index(".about-links") : CSS.index(".writing-archive")]
     assert "border-top: 0" in link_styles
-    assert ".about-links a:focus-visible" in link_styles
+    assert ".about-links li > a:focus-visible" in link_styles
 
 
 def test_profile_stacks_internal_fields_at_the_approved_640px_breakpoint():

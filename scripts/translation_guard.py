@@ -735,6 +735,17 @@ def _validate_about_records(
     return records
 
 
+def _validate_about_paragraphs(paragraphs: Any, path: str) -> None:
+    records = _validate_about_records(
+        paragraphs,
+        path,
+        required_keys={"id", "style", "inline_markdown"},
+    )
+    for index, paragraph in enumerate(records):
+        if paragraph["style"] not in {"normal", "italic"}:
+            raise TranslationError(f"{path}[{index}].style is unsupported")
+
+
 def _validate_about_link(item: Mapping[str, Any], path: str) -> None:
     icon = item["icon"]
     if icon not in ABOUT_ICONS:
@@ -854,16 +865,10 @@ def _validate_about_language(profile: Any, language: str) -> None:
             if set(block) - allowed:
                 raise TranslationError(f"{path}: prose has unsupported keys")
             required = set(block)
-            paragraphs = _validate_about_records(
+            _validate_about_paragraphs(
                 block.get("paragraphs"),
                 f"{path}.paragraphs",
-                required_keys={"id", "style", "inline_markdown"},
             )
-            for paragraph_index, paragraph in enumerate(paragraphs):
-                if paragraph["style"] not in {"normal", "italic"}:
-                    raise TranslationError(
-                        f"{path}.paragraphs[{paragraph_index}].style is unsupported"
-                    )
         elif block_type == "education":
             required = {"id", "type", "heading", "items"}
             items = _validate_about_records(
@@ -895,8 +900,22 @@ def _validate_about_language(profile: Any, language: str) -> None:
                 f"{path}.items",
                 required_keys={"id", "name", "description"},
             )
-        else:
-            required = {"id", "type", "heading", "items"}
+        elif block_type == "links":
+            required = {"id", "type", "heading", "intro", "items"}
+            intro = block.get("intro")
+            if not isinstance(intro, dict) or set(intro) != {"id", "paragraphs"}:
+                raise TranslationError(
+                    f"{path}.intro must contain exactly id and paragraphs"
+                )
+            intro_id = intro["id"]
+            _validate_about_id(intro_id, f"{path}.intro.id")
+            if intro_id in seen_block_ids:
+                raise TranslationError(f"{path}.intro.id duplicates {intro_id!r}")
+            seen_block_ids.add(intro_id)
+            _validate_about_paragraphs(
+                intro.get("paragraphs"),
+                f"{path}.intro.paragraphs",
+            )
             links = _validate_about_records(
                 block.get("items"),
                 f"{path}.items",

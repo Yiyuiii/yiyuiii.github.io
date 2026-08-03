@@ -427,9 +427,8 @@ def _check_about(soup: BeautifulSoup, route: str, language: str) -> None:
         )
 
     profile = soup.select_one(".about-profile")
-    intro = soup.select_one("#about-intro.about-intro")
-    if profile is None or intro is None or intro.find(["h1", "h2"]):
-        raise SiteCheckError(f"{route}: headingless profile introduction is missing")
+    if profile is None:
+        raise SiteCheckError(f"{route}: About profile is missing")
     if profile.select_one("#about-education"):
         raise SiteCheckError(
             f"{route}: About section headings include temporarily hidden education"
@@ -516,7 +515,39 @@ def _check_about(soup: BeautifulSoup, route: str, language: str) -> None:
     ):
         raise SiteCheckError(f"{route}: obsolete or inferred profile copy is visible")
 
-    links = soup.select(".about-links a")
+    links_section = profile.select_one("#about-links.about-links")
+    heading = (
+        links_section.find("h2", recursive=False) if links_section is not None else None
+    )
+    link_list = (
+        links_section.find("ul", recursive=False) if links_section is not None else None
+    )
+    intro = (
+        links_section.find(
+            "div",
+            id="about-intro",
+            class_="about-intro",
+            recursive=False,
+        )
+        if links_section is not None
+        else None
+    )
+    if (
+        links_section is None
+        or heading is None
+        or link_list is None
+        or intro is None
+        or intro.find(["h1", "h2"])
+        or intro.parent is not links_section
+        or intro.find_previous_sibling() is not heading
+        or intro.find_next_sibling() is not link_list
+    ):
+        raise SiteCheckError(
+            f"{route}: profile introduction must be under the link heading "
+            "and before the link list"
+        )
+
+    links = link_list.find_all("a")
     if len(links) != 4:
         raise SiteCheckError(f"{route}: expected exactly 4 profile links, got {len(links)}")
     hrefs = {link.get("href") for link in links}
@@ -539,7 +570,6 @@ def _check_about(soup: BeautifulSoup, route: str, language: str) -> None:
             f"{route}: profile link labels are {labels!r}, "
             f"expected {expected_labels!r}"
         )
-    heading = soup.select_one(".about-links h2")
     expected_heading = "我的链接" if language == "zh" else "My Links"
     heading_text = heading.get_text(" ", strip=True) if heading else ""
     if heading_text != expected_heading:

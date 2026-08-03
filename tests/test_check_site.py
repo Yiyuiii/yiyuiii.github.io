@@ -121,7 +121,6 @@ def about_profile(language):
         '<div class="about-profile">'
         f'<h1 id="about-greeting" class="about-greeting" aria-label="{label}">'
         "Ciallo～(∠・ω&lt; )⌒★</h1>"
-        '<div id="about-intro" class="about-intro"><p>Intro copy.</p></div>'
         '<section id="about-aesthetics" class="about-section about-prose" '
         'aria-labelledby="about-aesthetics-heading">'
         f'<h2 id="about-aesthetics-heading">{headings[0]}</h2>'
@@ -131,7 +130,10 @@ def about_profile(language):
         + about_details("skills", headings[3], skill_names)
         + '<section id="about-links" class="about-section about-links" '
         'aria-labelledby="about-links-heading">'
-        f'<h2 id="about-links-heading">{headings[4]}</h2><ul>{links}</ul></section>'
+        f'<h2 id="about-links-heading">{headings[4]}</h2>'
+        '<div id="about-intro" class="about-intro about-links__intro">'
+        '<p>Intro copy.</p></div>'
+        f'<ul>{links}</ul></section>'
         "</div>"
     )
 
@@ -335,6 +337,38 @@ def test_valid_built_site_contract_passes(tmp_path):
     valid_site(tmp_path)
 
     check_site(tmp_path)
+
+
+def test_about_intro_must_be_between_link_heading_and_link_list(tmp_path):
+    valid_site(tmp_path)
+    path = tmp_path / "about" / "index.html"
+    intro = (
+        '<div id="about-intro" class="about-intro about-links__intro">'
+        '<p>Intro copy.</p></div>'
+    )
+    source = path.read_text(encoding="utf-8").replace(intro, "")
+    source = source.replace('<section id="about-links"', intro + '<section id="about-links"')
+    path.write_text(source, encoding="utf-8")
+
+    with pytest.raises(SiteCheckError, match="under the link heading"):
+        check_site(tmp_path)
+
+
+@pytest.mark.parametrize("side", ("before", "after"))
+def test_about_intro_must_be_adjacent_to_link_heading_and_list(tmp_path, side):
+    valid_site(tmp_path)
+    path = tmp_path / "about" / "index.html"
+    intro = (
+        '<div id="about-intro" class="about-intro about-links__intro">'
+        '<p>Intro copy.</p></div>'
+    )
+    unexpected = '<div id="unexpected-link-child"></div>'
+    replacement = unexpected + intro if side == "before" else intro + unexpected
+    source = path.read_text(encoding="utf-8").replace(intro, replacement)
+    path.write_text(source, encoding="utf-8")
+
+    with pytest.raises(SiteCheckError, match="under the link heading"):
+        check_site(tmp_path)
 
 
 def test_missing_required_route_has_concrete_evidence(tmp_path):

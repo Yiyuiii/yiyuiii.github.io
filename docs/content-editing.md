@@ -57,10 +57,10 @@ _data/about.yml
 当前 block 顺序为：
 
 ```text
-greeting → intro → aesthetics → education → research → interests → skills → links
+greeting → aesthetics → education → research → interests → skills → links
 ```
 
-也就是 Ciallo、两段开场说明、个人基调、教育经历、科研方向、兴趣方向、日常技能、我的链接。每个 block、段落、条目、教育字段和链接都有语言无关的 `id`。中英文两棵树的 ID、层级、顺序和字段必须对应；可见文字可以不同。
+也就是 Ciallo、个人基调、教育经历、科研方向、兴趣方向、日常技能、我的链接。“我的链接”内部固定为 `heading → intro → items`：栏目标题下先显示捐助与联系说明，再显示四个链接。每个 block、段落、条目、教育字段和链接都有语言无关的 `id`。中英文两棵树的 ID、层级、顺序和字段必须对应；可见文字可以不同。
 
 ### 临时隐藏或恢复栏目
 
@@ -113,10 +113,10 @@ ID 只能使用小写英文、数字和单个下划线，不得有连字符、�
 重排时移动完整的 block，并在 `zh.blocks` 与 `en.blocks` 中保持完全相同的 ID 顺序。不要只移动标题。现有五种类型是：
 
 - `greeting`：页面唯一的一级标题；
-- `prose`：普通段落，可有 `heading`，也可像 `intro` 一样不设标题；
+- `prose`：带普通段落的文字栏目；`heading` 可省略，但当前数据没有无标题的 `prose` block；
 - `education`：时间、学校、专业或院系、培养阶段；
 - `details`：名称与完整说明；
-- `links`：带既有图标的链接。
+- `links`：栏目标题、标题下的 `intro` 说明，以及带既有图标的链接。
 
 新增普通文字栏目可复制下面两个完整 block：
 
@@ -144,7 +144,9 @@ ID 只能使用小写英文、数字和单个下划线，不得有连字符、�
 
 ### 修改链接
 
-链接顺序、标签和地址也在 YAML 中。中英文 URL 和行为字段必须相同，只翻译 `label`：
+“我的链接”标题下、四个链接上方的捐助与联系文字位于 `links.intro.paragraphs`。`intro`、`donation`、`contact` 是稳定 ID；修改时只改中英文对应的 `inline_markdown` 或 `style`，不要把 `intro` 移回顶层 block。
+
+链接顺序、标签和地址也在同一个 `links` block 中。中英文 URL 和行为字段必须相同，只翻译 `label`：
 
 ```yaml
 - id: github

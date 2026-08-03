@@ -68,6 +68,11 @@
       {% when 'links' %}
         <section id="about-{{ block.id }}" class="about-section about-links" aria-labelledby="about-{{ block.id }}-heading">
           <h2 id="about-{{ block.id }}-heading">{{ block.heading | escape }}</h2>
+          <div id="about-{{ block.intro.id }}" class="about-intro about-links__intro">
+            {% for paragraph in block.intro.paragraphs %}
+              <div id="about-{{ block.intro.id }}-{{ paragraph.id }}" class="about-intro__paragraph about-intro__paragraph--{{ paragraph.style }}">{{ paragraph.inline_markdown | escape | markdownify }}</div>
+            {% endfor %}
+          </div>
           <ul>
             {% for item in block.items %}
               {% assign item_href = item.url %}

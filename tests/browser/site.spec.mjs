@@ -514,7 +514,21 @@ for (const viewport of aboutViewports) {
       await expect(page.locator("#about-skills .about-detail-list > div")).toHaveCount(
         3,
       );
-      await expect(page.locator(".about-links a")).toHaveCount(4);
+      await expect(page.locator(".about-links ul a")).toHaveCount(4);
+      await expect(page.locator("#about-intro-donation")).toHaveCSS(
+        "font-style",
+        "italic",
+      );
+      const linkSectionOrder = await page.locator("#about-links").evaluate(
+        (section) => [...section.children].map(
+          (child) => child.id || child.tagName.toLowerCase(),
+        ),
+      );
+      expect(linkSectionOrder).toEqual([
+        "about-links-heading",
+        "about-intro",
+        "ul",
+      ]);
 
       const layout = await page.evaluate(() => ({
         overflow: document.documentElement.scrollWidth > innerWidth,
@@ -549,7 +563,7 @@ for (const viewport of aboutViewports) {
         expect(positions.detailTop).toBeGreaterThanOrEqual(positions.termBottom);
       }
 
-      const paypal = page.locator(".about-links a").last();
+      const paypal = page.locator(".about-links ul a").last();
       await paypal.scrollIntoViewIfNeeded();
       await expect(paypal).toBeVisible();
       const accessibleNames = [
@@ -559,7 +573,7 @@ for (const viewport of aboutViewports) {
         "PayPal",
       ];
       for (const [index, name] of accessibleNames.entries()) {
-        await expect(page.locator(".about-links a").nth(index)).toHaveAccessibleName(
+        await expect(page.locator(".about-links ul a").nth(index)).toHaveAccessibleName(
           name,
         );
       }
@@ -800,7 +814,7 @@ test("project, paper, and profile indexes remain source-faithful", async ({
   await expect(page.locator("#about-skills .about-detail-list > div")).toHaveCount(3);
   await expect(page.getByText("兴趣驱动的复杂系统的拆解者")).toHaveCount(0);
   await expect(page.getByText(/我目前是/)).toHaveCount(0);
-  const profileLinks = page.locator(".about-links a");
+  const profileLinks = page.locator(".about-links ul a");
   await expect(profileLinks).toHaveCount(4);
   await expect(profileLinks).toHaveText(["GitHub", "电子邮件", "RSS", "PayPal"]);
   expect(await profileLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href"))))

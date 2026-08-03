@@ -48,6 +48,10 @@ def narrative_copy(data, language):
             for paragraph in item.get("paragraphs", [])
         )
         values.extend(
+            paragraph["inline_markdown"]
+            for paragraph in item.get("intro", {}).get("paragraphs", [])
+        )
+        values.extend(
             detail["description"]
             for detail in item.get("items", [])
             if "description" in detail
@@ -82,7 +86,6 @@ def test_about_content_uses_one_valid_bilingual_data_source():
     validate_about_profile(ABOUT_PATH)
     expected = [
         "greeting",
-        "intro",
         "aesthetics",
         "education",
         "research",
@@ -107,6 +110,27 @@ def test_about_content_uses_one_valid_bilingual_data_source():
     assert block(data, "en", "skills")["heading"] == "Everyday Skills"
     assert block(data, "zh", "links")["heading"] == "我的链接"
     assert block(data, "en", "links")["heading"] == "My Links"
+    for language in ("zh", "en"):
+        intro = block(data, language, "links")["intro"]
+        assert intro["id"] == "intro"
+        assert [paragraph["id"] for paragraph in intro["paragraphs"]] == [
+            "donation",
+            "contact",
+        ]
+        assert [paragraph["style"] for paragraph in intro["paragraphs"]] == [
+            "italic",
+            "normal",
+        ]
+
+    zh_intro = block(data, "zh", "links")["intro"]["paragraphs"]
+    assert zh_intro[0]["inline_markdown"] == (
+        "如果你喜欢我的文章，我也不介意收到 1–3 美元的 "
+        "[PayPal](https://paypal.me/yiyuiii) 捐助，这会让我非常开心 :D"
+    )
+    assert zh_intro[1]["inline_markdown"] == (
+        "如果你有建议或问题，欢迎通过电子邮件联系我："
+        "[yiyuiii@foxmail.com](mailto:yiyuiii@foxmail.com)。"
+    )
 
 
 def test_about_education_fields_are_aligned_without_invented_affiliations():

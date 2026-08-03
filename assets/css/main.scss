@@ -2199,6 +2199,10 @@ html[data-theme="dark"] .highlight .gu {
   border-top: 0;
 }
 
+.about-links__intro {
+  margin-bottom: clamp(1rem, 2vw, 1.4rem);
+}
+
 .about-links ul {
   display: flex;
   flex-wrap: wrap;
@@ -2208,7 +2212,7 @@ html[data-theme="dark"] .highlight .gu {
   list-style: none;
 }
 
-.about-links a {
+.about-links li > a {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -2216,16 +2220,16 @@ html[data-theme="dark"] .highlight .gu {
   text-decoration: none;
 }
 
-.about-links a:hover {
+.about-links li > a:hover {
   color: var(--jade);
 }
 
-.about-links a:focus-visible {
+.about-links li > a:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--focus) 72%, white);
   outline-offset: 3px;
 }
 
-.about-links svg {
+.about-links li > a svg {
   width: 1rem;
   height: 1rem;
   flex: none;

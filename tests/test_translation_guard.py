@@ -96,17 +96,6 @@ def valid_about_data():
                     "aria_label": "关于 yiyuiii",
                 },
                 {
-                    "id": "intro",
-                    "type": "prose",
-                    "paragraphs": [
-                        {
-                            "id": "contact",
-                            "style": "normal",
-                            "inline_markdown": "通过[电子邮件](mailto:a@example.com)联系。",
-                        }
-                    ],
-                },
-                {
                     "id": "education",
                     "type": "education",
                     "heading": "教育经历",
@@ -138,6 +127,16 @@ def valid_about_data():
                     "id": "links",
                     "type": "links",
                     "heading": "我的链接",
+                    "intro": {
+                        "id": "intro",
+                        "paragraphs": [
+                            {
+                                "id": "contact",
+                                "style": "normal",
+                                "inline_markdown": "通过[电子邮件](mailto:a@example.com)联系。",
+                            }
+                        ],
+                    },
                     "items": [
                         {
                             "id": "github",
@@ -158,17 +157,6 @@ def valid_about_data():
                     "type": "greeting",
                     "text": "Ciallo",
                     "aria_label": "About yiyuiii",
-                },
-                {
-                    "id": "intro",
-                    "type": "prose",
-                    "paragraphs": [
-                        {
-                            "id": "contact",
-                            "style": "normal",
-                            "inline_markdown": "Contact me by [email](mailto:a@example.com).",
-                        }
-                    ],
                 },
                 {
                     "id": "education",
@@ -210,6 +198,16 @@ def valid_about_data():
                     "id": "links",
                     "type": "links",
                     "heading": "My Links",
+                    "intro": {
+                        "id": "intro",
+                        "paragraphs": [
+                            {
+                                "id": "contact",
+                                "style": "normal",
+                                "inline_markdown": "Contact me by [email](mailto:a@example.com).",
+                            }
+                        ],
+                    },
                     "items": [
                         {
                             "id": "github",
@@ -281,11 +279,11 @@ def test_about_profile_requires_unique_string_hidden_block_ids(tmp_path):
             "shared value",
         ),
         (
-            lambda data: data["en"]["blocks"][2]["items"][0]["fields"].pop(),
+            lambda data: data["en"]["blocks"][1]["items"][0]["fields"].pop(),
             "length",
         ),
         (
-            lambda data: data["en"]["blocks"][4]["items"][0].update(icon="email"),
+            lambda data: data["en"]["blocks"][3]["items"][0].update(icon="email"),
             "shared value",
         ),
         (
@@ -308,7 +306,7 @@ def test_about_profile_rejects_bilingual_structure_drift(tmp_path, mutate, messa
 def test_about_profile_rejects_incomplete_english_strings(tmp_path, value):
     path = tmp_path / "about.yml"
     data = valid_about_data()
-    data["en"]["blocks"][3]["items"][0]["description"] = value
+    data["en"]["blocks"][2]["items"][0]["description"] = value
     write_about(path, data)
 
     with pytest.raises(TranslationError, match="English"):
@@ -319,13 +317,13 @@ def test_about_profile_rejects_duplicate_nested_ids(tmp_path):
     path = tmp_path / "about.yml"
     data = valid_about_data()
     duplicate_zh = json.loads(
-        json.dumps(data["zh"]["blocks"][3]["items"][0], ensure_ascii=False)
+        json.dumps(data["zh"]["blocks"][2]["items"][0], ensure_ascii=False)
     )
     duplicate_en = json.loads(
-        json.dumps(data["en"]["blocks"][3]["items"][0], ensure_ascii=False)
+        json.dumps(data["en"]["blocks"][2]["items"][0], ensure_ascii=False)
     )
-    data["zh"]["blocks"][3]["items"].append(duplicate_zh)
-    data["en"]["blocks"][3]["items"].append(duplicate_en)
+    data["zh"]["blocks"][2]["items"].append(duplicate_zh)
+    data["en"]["blocks"][2]["items"].append(duplicate_en)
     write_about(path, data)
 
     with pytest.raises(TranslationError, match="duplicates"):
@@ -340,7 +338,7 @@ def test_about_profile_requires_lower_snake_ids(tmp_path, invalid_id):
     path = tmp_path / "about.yml"
     data = valid_about_data()
     for language in ("zh", "en"):
-        data[language]["blocks"][3]["items"][0]["id"] = invalid_id
+        data[language]["blocks"][2]["items"][0]["id"] = invalid_id
     write_about(path, data)
 
     with pytest.raises(TranslationError, match="lowercase letters, digits"):
@@ -351,7 +349,7 @@ def test_about_profile_allows_ids_that_start_with_a_digit(tmp_path):
     path = tmp_path / "about.yml"
     data = valid_about_data()
     for language in ("zh", "en"):
-        data[language]["blocks"][3]["items"][0]["id"] = "3d_printing"
+        data[language]["blocks"][2]["items"][0]["id"] = "3d_printing"
     write_about(path, data)
 
     validate_about_profile(path)
@@ -360,11 +358,33 @@ def test_about_profile_allows_ids_that_start_with_a_digit(tmp_path):
 def test_about_profile_rejects_keys_the_renderer_would_ignore(tmp_path):
     path = tmp_path / "about.yml"
     data = valid_about_data()
-    data["zh"]["blocks"][3]["items"][0]["ignored"] = "不会显示"
-    data["en"]["blocks"][3]["items"][0]["ignored"] = "Not rendered"
+    data["zh"]["blocks"][2]["items"][0]["ignored"] = "不会显示"
+    data["en"]["blocks"][2]["items"][0]["ignored"] = "Not rendered"
     write_about(path, data)
 
     with pytest.raises(TranslationError, match="keys"):
+        validate_about_profile(path)
+
+
+def test_about_profile_requires_intro_inside_the_links_block(tmp_path):
+    path = tmp_path / "about.yml"
+    data = valid_about_data()
+    for language in ("zh", "en"):
+        data[language]["blocks"][3].pop("intro")
+    write_about(path, data)
+
+    with pytest.raises(TranslationError, match="intro must contain"):
+        validate_about_profile(path)
+
+
+def test_about_profile_rejects_link_intro_ids_that_collide_with_blocks(tmp_path):
+    path = tmp_path / "about.yml"
+    data = valid_about_data()
+    for language in ("zh", "en"):
+        data[language]["blocks"][3]["intro"]["id"] = "education"
+    write_about(path, data)
+
+    with pytest.raises(TranslationError, match="duplicates 'education'"):
         validate_about_profile(path)
 
 
@@ -387,7 +407,7 @@ def test_about_profile_rejects_unsafe_or_inconsistent_link_urls(
     path = tmp_path / "about.yml"
     data = valid_about_data()
     for language in ("zh", "en"):
-        link = data[language]["blocks"][4]["items"][0]
+        link = data[language]["blocks"][3]["items"][0]
         link["url"] = url
         link["relative"] = relative
     write_about(path, data)
@@ -400,7 +420,7 @@ def test_about_profile_rejects_unknown_link_icons(tmp_path):
     path = tmp_path / "about.yml"
     data = valid_about_data()
     for language in ("zh", "en"):
-        data[language]["blocks"][4]["items"][0]["icon"] = "GitHub"
+        data[language]["blocks"][3]["items"][0]["icon"] = "GitHub"
     write_about(path, data)
 
     with pytest.raises(TranslationError, match="icon"):
@@ -412,7 +432,7 @@ def test_about_profile_requires_boolean_link_behavior_flags(tmp_path, field):
     path = tmp_path / "about.yml"
     data = valid_about_data()
     for language in ("zh", "en"):
-        data[language]["blocks"][4]["items"][0][field] = "false"
+        data[language]["blocks"][3]["items"][0][field] = "false"
     write_about(path, data)
 
     with pytest.raises(TranslationError, match="boolean"):
@@ -435,8 +455,8 @@ def test_about_profile_requires_boolean_link_behavior_flags(tmp_path, field):
 def test_about_profile_rejects_markdown_outside_the_safe_subset(tmp_path, value):
     path = tmp_path / "about.yml"
     data = valid_about_data()
-    data["zh"]["blocks"][3]["items"][0]["description"] = value
-    data["en"]["blocks"][3]["items"][0]["description"] = value
+    data["zh"]["blocks"][2]["items"][0]["description"] = value
+    data["en"]["blocks"][2]["items"][0]["description"] = value
     write_about(path, data)
 
     with pytest.raises(TranslationError, match="Markdown"):
