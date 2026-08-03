@@ -278,7 +278,7 @@ node --test tests/toy_challenges.logic.test.mjs
 
 所有随笔共用 `assets/css/main.scss` 中唯一一套 `.post-content` 排版。文章不得添加仅供自己使用的 CSS class、ID 或样式文件来调整字号、字距、列表、代码块和图片。中英文可以通过页面 `lang` 使用同一系统内的语言级规则，但不得按文章分叉。
 
-含公式的中英文文章必须同时声明 `math: true`。行内公式使用 `$...$`，独立公式使用 `$$...$$` 或项目既有等价写法；变量下标与单位使用标准 TeX，例如 `\rho_{\mathrm{water}}`、`985\,\mathrm{kg/m^3}`，不要把中文字符直接写成未分组下标，也不要在数学式中混用程序语言的 `*`。MathJax 主、备来源和完整性值集中在 `_config.yml`，加载器位于 `assets/js/mathjax-loader.js`；修改公式或加载器后应运行 `tests/browser/math-rendering-round3.spec.mjs`，它会覆盖全部 16 个现有中英文公式页并模拟主来源故障。
+含公式的中英文文章必须同时声明 `math: true`。行内公式使用 `$...$`，独立公式使用 `$$...$$` 或项目既有等价写法；变量下标与单位使用标准 TeX，例如 `\rho_{\mathrm{water}}`、`985\,\mathrm{kg/m^3}`，不要把中文字符直接写成未分组下标，也不要在数学式中混用程序语言的 `*`。MathJax 3.2.2 运行时和 CHTML 字体固定在 `assets/vendor/mathjax/3.2.2/`，路径与完整性值集中在 `_config.yml`，加载器位于 `assets/js/mathjax-loader.js`；修改公式、加载器或本地化资产后应运行 `tests/browser/math-rendering-round3.spec.mjs`，它会在阻断站外请求的条件下覆盖全部 16 个现有中英文公式页。
 
 极少数历史文章可能在正文中保留不可见的显式片段锚点，以兼容已经公开的旧链接。它不是标题，也不要随意删除或改名；制作对应翻译时，应让双方的标题层级和显式 ID 保持一致，便于翻译结构签名检查图片、公式、代码、章节和锚点的对应关系。
 

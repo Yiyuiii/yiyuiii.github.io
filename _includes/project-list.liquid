@@ -1,6 +1,7 @@
 {% assign lang_key = page.lang | default: 'zh' %}
 {% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
 {% assign text = site.data.site_text[lang_key] %}
+<h1 class="sr-only">{{ page.title }}</h1>
 <section class="project-list" aria-label="{{ text.nav.github }}" data-filter-list>
   {% for project in site.data.project_runtime %}
     {% assign description = project.descriptions[page.lang] %}

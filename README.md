@@ -76,7 +76,19 @@ Ruby production build 使用 Jekyll 4.4.1；精确 CI 流程见 .github/workflow
 
 ### 浏览器回归
 
-下面的 PowerShell 先通过 loopback 端口 0 选择一个当时空闲的本机 TCP 端口，再用 `scripts/serve_site.py` 隐藏启动刚构建的 `_site`。该预览服务保留普通静态文件行为，并让缺失路径以 HTTP 404 返回站点自己的 `404.html`，从而覆盖真实的中英文 404 语义。站点绝对路径只通过专用的子进程环境变量 `SITE_PREVIEW_ROOT` 传递，不拼进命令行参数，因此含空格的路径也不会产生引号歧义。命令会等待服务就绪，运行浏览器测试，并在结束时停止服务和恢复原有 `SITE_URL`。释放端口探针到启动 Python 之间仍存在很短的理论竞态；轮询会同时检查 Python 子进程，若绑定失败并退出则立即报错，避免把其它端口上的旧服务误当成当前预览：
+首选跨平台入口如下。它会验证 `_site` 和自定义 404，直接在随机 loopback 端口启动预览服务，只给 Playwright 子进程设置 `SITE_URL`，并在成功、失败或中断后关闭服务：
+
+```powershell
+python scripts/run_browser_tests.py --site _site
+```
+
+只运行指定规格时，把参数放在 `--` 后：
+
+```powershell
+python scripts/run_browser_tests.py --site _site -- tests/browser/site.spec.mjs
+```
+
+下面保留的 PowerShell 是旧版手工等价流程，仅供排查启动器自身时参考；日常验证和 CI 应统一使用上面的 Python 入口：
 
 ```powershell
 $hadSiteUrl = Test-Path Env:\SITE_URL

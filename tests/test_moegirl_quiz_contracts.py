@@ -75,7 +75,8 @@ def test_script_uses_one_random_api_fetch_without_tracking_or_unsafe_dom_html():
     assert 'generator: "random"' in script
     assert 'grnfilterredir: "nonredirects"' in script
     assert 'prop: "extracts|info|categories"' in script
-    assert 'cllimit: "10"' in script
+    assert 'exlimit: "20"' in script
+    assert 'cllimit: "max"' in script
     assert 'exintro: "1"' in script
     assert 'explaintext: "1"' in script
     assert 'maxage: "0"' in script and 'smaxage: "0"' in script
@@ -85,6 +86,8 @@ def test_script_uses_one_random_api_fetch_without_tracking_or_unsafe_dom_html():
     assert "expandTitleFragments" in script
     assert "isCharacterPage" in script
     assert "SENSITIVE_SIGNAL" in script
+    assert "NON_CHARACTER_TITLE_SIGNAL" in script
+    assert "NON_CHARACTER_CATEGORY_SIGNAL" in script
     assert "recentTitles" in script
     assert "term.length >= 1" in script
     assert "textContent" in script and "replaceChildren" in script

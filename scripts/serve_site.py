@@ -4,17 +4,48 @@
 import argparse
 import functools
 import os
+import sys
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 
+EXPECTED_CLIENT_DISCONNECTS = (
+    BrokenPipeError,
+    ConnectionAbortedError,
+    ConnectionResetError,
+)
+
+
+class SiteThreadingHTTPServer(ThreadingHTTPServer):
+    """Preview server that can silence expected browser disconnects."""
+
+    def __init__(self, *args, quiet=False, **kwargs):
+        self.quiet = quiet
+        super().__init__(*args, **kwargs)
+
+    def handle_error(self, request, client_address):
+        error_type = sys.exc_info()[0]
+        if (
+            self.quiet
+            and error_type
+            and issubclass(error_type, EXPECTED_CLIENT_DISCONNECTS)
+        ):
+            return
+        super().handle_error(request, client_address)
+
+
 class SiteRequestHandler(SimpleHTTPRequestHandler):
     """Static-file handler that serves the built 404 page with status 404."""
 
-    def __init__(self, *args, error_document, **kwargs):
+    def __init__(self, *args, error_document, quiet=False, **kwargs):
         self.error_document = Path(error_document)
+        self.quiet = quiet
         super().__init__(*args, **kwargs)
+
+    def log_message(self, format, *args):
+        if not self.quiet:
+            super().log_message(format, *args)
 
     def send_error(self, code, message=None, explain=None):
         if code != HTTPStatus.NOT_FOUND:
@@ -56,7 +87,7 @@ def validate_site(site):
     return site_root, error_document
 
 
-def create_server(site, bind="127.0.0.1", port=0):
+def create_server(site, bind="127.0.0.1", port=0, quiet=False):
     """Create a local preview server without starting its request loop."""
     if bind != "127.0.0.1":
         raise ValueError("Preview server must bind to 127.0.0.1")
@@ -68,8 +99,9 @@ def create_server(site, bind="127.0.0.1", port=0):
         SiteRequestHandler,
         directory=str(site_root),
         error_document=error_document,
+        quiet=quiet,
     )
-    return ThreadingHTTPServer((bind, port), handler)
+    return SiteThreadingHTTPServer((bind, port), handler, quiet=quiet)
 
 
 def port_number(value):

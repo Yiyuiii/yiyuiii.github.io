@@ -4,7 +4,12 @@ import urllib.request
 
 import pytest
 
-from scripts.serve_site import create_server, parse_args, resolve_site
+from scripts.serve_site import (
+    SiteThreadingHTTPServer,
+    create_server,
+    parse_args,
+    resolve_site,
+)
 
 
 def write(path, content):
@@ -97,6 +102,15 @@ def test_server_requires_a_readable_regular_404_file(tmp_path):
 
     with pytest.raises(ValueError, match="readable regular file"):
         create_server(site=site, bind="127.0.0.1", port=0)
+
+
+def test_quiet_server_records_its_disconnect_policy(tmp_path):
+    server = create_server(site=make_site(tmp_path), quiet=True)
+    try:
+        assert isinstance(server, SiteThreadingHTTPServer)
+        assert server.quiet is True
+    finally:
+        server.server_close()
 
 
 def test_cli_rejects_non_loopback_bind():

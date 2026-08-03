@@ -1,5 +1,7 @@
 import { defineConfig } from "@playwright/test";
 
+const browserChannel = process.env.CI ? undefined : "chrome";
+
 export default defineConfig({
   testDir: "./tests/browser",
   testMatch: "**/*.spec.mjs",
@@ -8,7 +10,7 @@ export default defineConfig({
   reporter: "line",
   use: {
     baseURL: process.env.SITE_URL || "http://localhost:62091",
-    channel: "chrome",
+    ...(browserChannel ? { channel: browserChannel } : {}),
     headless: true,
     trace: "retain-on-failure",
   },
