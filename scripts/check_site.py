@@ -435,10 +435,10 @@ def _check_about(soup: BeautifulSoup, route: str, language: str) -> None:
         )
 
     expected_headings = (
-        ["个人基调", "科研方向", "兴趣方向", "日常技能", "我的链接"]
+        ["灵魂基调", "科研方向", "兴趣方向", "日常技能", "我的链接"]
         if language == "zh"
         else [
-            "Personal Tastes",
+            "Core Traits",
             "Research Directions",
             "Interests",
             "Everyday Skills",
