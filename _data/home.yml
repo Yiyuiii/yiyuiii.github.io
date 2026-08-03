@@ -1,21 +1,20 @@
 zh:
-  title: 你好，欢迎来到 yiyuiii
+  title: 你好 👋
   introduction:
-    - 这里收录我持续整理的随笔、公开项目和参与发表的论文。
-    - "下方内容按标志日期排列：随笔取初稿日，GitHub 项目取仓库创建日，论文取最早公开日；后续修订不会改变顺序。"
+    - 这里是我的博客，记录随笔、项目、论文和一些好玩的东西。
   guide:
     label: 页面指引
     items:
       - target: sunlight
-        text: 左上角头像开关日光或月光，旁边 yiyuiii 返回这里
+        text: 点击左上角头像，开关日光 / 月光背景
       - target: navigation
-        text: 页顶文字用于切换栏目
+        text: 点击顶部导航，浏览不同栏目
       - target: search
-        text: 放大镜用于搜索全站
+        text: 点击右上角 🔍，搜索站内内容
       - target: language
-        text: EN / 中用于切换语言
+        text: Looking for English? Click “EN” in the upper-right corner.
       - target: theme
-        text: 页眉明暗按钮用于切换明亮 / 夜晚样式
+        text: 点击右上角的 🌙 / ☀️，切换明亮 / 夜晚样式
   sections:
     rotation: 随机发现
     rotation_fallback: 浏览起点
@@ -29,23 +28,22 @@ zh:
   legacy_tag_noscript: 旧标签筛选地址需要 JavaScript 自动迁移；你仍可前往随笔索引继续浏览。
 
 en:
-  title: Hello, welcome to yiyuiii
+  title: Hello 👋
   introduction:
-    - This site is where I keep my writing, public projects, and papers I have contributed to.
-    - "Items below use type-specific marker dates: initial drafts for writing, repository creation for GitHub projects, and earliest public records for papers. Later revisions do not change the order."
+    - This is my blog—a place for writing, projects, papers, and a few things I make for fun.
   guide:
     label: Page guide
     items:
       - target: sunlight
-        text: The avatar switches sunlight or moonlight; yiyuiii beside it returns here
+        text: Click the avatar at top left to turn the sunlight or moonlight background on or off
       - target: navigation
-        text: The text links at the top switch sections
+        text: Use the navigation at the top to browse different sections
       - target: search
-        text: The magnifying glass searches the whole site
+        text: Click 🔍 at top right to search the site
       - target: language
-        text: EN / 中 switches language
+        text: 想看中文？点击右上角的“中”。
       - target: theme
-        text: The header appearance button switches between light and night
+        text: Click 🌙 / ☀️ at top right to switch between light and night modes
   sections:
     rotation: Random discovery
     rotation_fallback: A place to start

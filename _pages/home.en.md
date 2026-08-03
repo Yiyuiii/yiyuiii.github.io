@@ -1,7 +1,7 @@
 ---
 layout: page
 title: yiyuiii
-description: Writing, public projects, and co-authored papers by Yiyu Chen.
+description: Yiyu Chen's personal blog about writing, public projects, papers, and everyday interests.
 permalink: /en/
 lang: en
 schema_type: WebSite
@@ -11,7 +11,7 @@ translation_url: /
 translation_key: home
 translation_source: _pages/home.md
 translation_status: current
-source_hash: 2af0d0bd430870d08852f590dac27e8ae053e623fc886ab276db39552e10d800
+source_hash: 19c58d903703331c66e0a9b14f31577108f75ff3a6ee21bae0eba7698601b1c3
 home: true
 math: false
 ---

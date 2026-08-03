@@ -1,7 +1,7 @@
 ---
 layout: page
 title: yiyuiii
-description: yiyuiii 的随笔、公开项目与合作论文。
+description: yiyuiii 的个人博客，记录随笔、公开项目、论文与日常兴趣。
 permalink: /
 lang: zh
 schema_type: WebSite

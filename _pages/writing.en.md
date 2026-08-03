@@ -11,7 +11,7 @@ translation_url: /writing/
 translation_key: writing-index
 translation_source: _pages/writing.md
 translation_status: current
-source_hash: 71bb64d5a5f80be927bbbc95933501c6b4e3e70b949f4c33bdfdb27428e9eaa2
+source_hash: 214849f28df10cbc6b750a1704fd3302d1444039cc421062dc8eefa1339def1e
 ---
 
 {% include post-list.liquid %}
