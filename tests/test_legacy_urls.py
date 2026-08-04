@@ -71,6 +71,37 @@ def test_redirect_target_must_be_a_real_built_route(tmp_path):
         )
 
 
+def test_percent_encoded_redirect_target_matches_unicode_route(tmp_path):
+    target = "/posts/SETI桌游规则-从摆桌到完成第一局/"
+    encoded_target = (
+        "/posts/SETI%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99-"
+        "%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E5%AE%8C%E6%88%90"
+        "%E7%AC%AC%E4%B8%80%E5%B1%80/"
+    )
+    canonical = f"https://example.test{encoded_target}"
+    write(
+        tmp_path / "posts" / "SETI桌游规则-从摆桌到完成第一局" / "index.html",
+        f'<link rel="canonical" href="{canonical}">',
+    )
+    write(
+        tmp_path / "posts" / "old-seti-guide" / "index.html",
+        f'<meta http-equiv="refresh" content="0; url={encoded_target}">\n'
+        f'<link rel="canonical" href="{canonical}">\n'
+        f'<meta property="og:url" content="{canonical}">',
+    )
+
+    verify_inventory(
+        tmp_path,
+        [
+            {
+                "path": "/posts/old-seti-guide/",
+                "policy": "redirected",
+                "target": target,
+            }
+        ],
+    )
+
+
 @pytest.mark.parametrize(
     ("field", "canonical", "open_graph"),
     [

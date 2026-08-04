@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 import re
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 
 import yaml
 from bs4 import BeautifulSoup
@@ -22,7 +22,7 @@ class LegacyUrlError(RuntimeError):
 
 def route_path(site: Path, route: str) -> Path:
     parsed = urlparse(route)
-    path = parsed.path
+    path = unquote(parsed.path)
     if path == "/":
         return site / "index.html"
     relative = path.lstrip("/")
@@ -43,7 +43,7 @@ def _redirect_target(path: Path) -> str | None:
     parsed = urlparse(target)
     if parsed.scheme or parsed.netloc:
         return parsed.path or "/"
-    return parsed.path or "/"
+    return unquote(parsed.path or "/")
 
 
 def _canonical_url(soup: BeautifulSoup) -> str | None:
