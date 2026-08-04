@@ -8,6 +8,7 @@
 - original-40a013 与 archives 不得进入站点提交。
 - Anthropic 来源永久不可用，不得尝试。
 - 对用户交流和审阅材料使用中文。
+- 后续工作优先完善和扩充“小玩意”页，并主动搜集适合本站的有趣轻量小游戏；具体候选仍须按双语、隐私、许可、可访问性和可验证性逐项复核。
 - 每篇随笔最终必须有完整中英文版本，并保持图片、公式、代码、标题结构、锚点与修订日期对应。
 - 《SETI》教学随笔应按实际开局与游玩顺序组织，文字简洁、条目清楚，避免无助于理解规则的比喻、长句和“不是……而是……”句式；“扩展理解”应优先解释不同来源的行动、组件和结算时点怎样组成规则链，外部知识只保留能直接帮助记忆或决策的浅层联系并控制字数，同时明确区分真实知识与游戏抽象；完整基础游戏应包括五种基础外星生物和单人模式，之后另行覆盖《Space Agencies》、三种新增外星生物和官方促销内容，并只使用可核验来源的原装配图。中文标签使用中文，游戏或扩展专名可保留原文；源文件名与 canonical URL 应和标题语义一致；修订历史标明本文由 GPT5.6 Sol 撰写。
 - 主导航顺序为“欢迎｜随笔｜GitHub｜论文｜小玩意｜关于yiyuiii”，英文保持同样的六项结构；导航目的页必须正确标记当前项，移动端不得横向溢出。
@@ -70,6 +71,7 @@ python scripts/run_browser_tests.py --site _site
 - 萌娘百科英文题源审计：docs/moegirl-quiz-english-source-audit-2026-08-04.md
 - 本地轻量挑战：docs/toy-challenges.md
 - 随机生成器：docs/toy-generators.md
+- 小玩意扩充路线：docs/toy-expansion-roadmap-2026-08-04.md
 - MathJax 同源资产：docs/mathjax-localization.md
 - 性能与语义标题基线：docs/experience-quality-baseline-2026-08-03.md
 - 内容体验集中优化：docs/superpowers/plans/2026-08-03-content-experience-round5.md
