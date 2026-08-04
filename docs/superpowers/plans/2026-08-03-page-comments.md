@@ -40,3 +40,9 @@
 5. 主题切换向现有 Giscus iframe 发送官方 `setConfig` 消息。
 6. 重定向与 404 不渲染评论；320 px 无横向溢出。
 7. Python/Node 契约、production 构建、站点检查、旧 URL 检查和 Playwright 全部通过。
+
+## 外部状态
+
+- 2026-08-03：仓库 GitHub Discussions 已启用，选用默认的 `Announcements` 公告分类。
+- 2026-08-04：用户完成 Giscus GitHub App 的仓库级授权；Giscus 官方分类接口返回配置中的仓库与分类 Node ID。
+- 2026-08-04：在 PR #10 的 CI `site-preview` artifact 上验证中文与英文真实 Giscus iframe、GitHub 登录入口和明暗主题切换；未创建讨论、回应或评论。
