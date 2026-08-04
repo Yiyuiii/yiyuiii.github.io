@@ -131,6 +131,7 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         "color-challenge",
         "ten-second",
         "reaction-time",
+        "codebreaker",
         "random-password",
         "random-number",
     ]
@@ -141,12 +142,17 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
 
     groups = soup.select(".toy-list > section.toy-group[data-toy-group]")
     group_ids = [str(group.get("data-toy-group", "")) for group in groups]
-    if group_ids != ["ungrouped", "quick-challenges", "random-generators"]:
+    if group_ids != [
+        "ungrouped",
+        "quick-challenges",
+        "logic-puzzles",
+        "random-generators",
+    ]:
         raise SiteCheckError(f"{route}: toy groups/order are {group_ids!r}")
     expected_group_titles = (
-        ["轻松挑战", "随机生成"]
+        ["轻松挑战", "逻辑谜题", "随机生成"]
         if language == "zh"
-        else ["Quick challenges", "Random generators"]
+        else ["Quick challenges", "Logic puzzles", "Random generators"]
     )
     actual_group_titles = [
         node.get_text(" ", strip=True) for node in soup.select(".toy-group__title")

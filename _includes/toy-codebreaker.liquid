@@ -1,0 +1,238 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% if lang_key == 'en' %}
+  {% assign challenge_label = 'Codebreaker' %}
+  {% assign instructions = 'Guess the hidden number code. After each guess, you will see how many digits are exact matches and how many are present in another position.' %}
+  {% assign disclaimer = 'The code, settings, and round history stay only in this page’s memory. Nothing is sent or stored, and the result is not an assessment of intelligence or logical ability.' %}
+  {% assign settings_title = 'Game rules' %}
+  {% assign settings_adjust = 'Adjust' %}
+  {% assign presets_label = 'Quick presets' %}
+  {% assign preset_beginner = 'Beginner' %}
+  {% assign preset_standard = 'Standard' %}
+  {% assign preset_duplicates = 'Repeated digits' %}
+  {% assign length_label = 'Code length' %}
+  {% assign attempts_label = 'Guesses allowed' %}
+  {% assign duplicates_label = 'Allow repeated digits' %}
+  {% assign candidates_label = 'Current search space' %}
+  {% assign candidate_value = '{count} possible codes' %}
+  {% assign settings_notice = 'Changes take effect only after you apply them. Applying clears the current round.' %}
+  {% assign settings_reset = 'Restore defaults' %}
+  {% assign settings_apply = 'Apply and start a new game' %}
+  {% assign input_label = 'Your guess' %}
+  {% assign input_help = 'Enter {length} digits{unique}.' %}
+  {% assign unique_suffix = ', without repeats' %}
+  {% assign submit_label = 'Submit guess' %}
+  {% assign new_label = 'New code' %}
+  {% assign attempts_used_label = 'Guesses used' %}
+  {% assign remaining_label = 'Remaining' %}
+  {% assign history_caption = 'Guesses in this round' %}
+  {% assign history_attempt = 'No.' %}
+  {% assign history_guess = 'Guess' %}
+  {% assign history_exact = 'Exact' %}
+  {% assign history_misplaced = 'Misplaced' %}
+  {% assign exact_explanation = 'right digit and position' %}
+  {% assign misplaced_explanation = 'right digit, different position' %}
+  {% assign invalid_digits = 'Enter exactly {length} digits from 0 to 9.' %}
+  {% assign invalid_duplicates = 'Use each digit at most once under the current rules.' %}
+  {% assign feedback = '{guess}: {exact} exact, {misplaced} misplaced. {remaining} guesses left.' %}
+  {% assign won = 'Correct—the code was {secret}. Solved in {attempts} guesses.' %}
+  {% assign lost = 'No guesses left. The code was {secret}.' %}
+  {% assign new_game = 'A new code is ready.' %}
+  {% assign applied = 'Rules applied. A new code is ready.' %}
+  {% assign preset_ready = 'Preset loaded. Apply it to start a new game.' %}
+  {% assign defaults_ready = 'Defaults restored in the panel. Apply them to start a new game.' %}
+  {% assign duplicates_allowed = 'repeats allowed' %}
+  {% assign duplicates_disallowed = 'no repeats' %}
+  {% assign settings_summary = '{length} digits · {duplicates} · {attempts} guesses · {candidates} possibilities' %}
+  {% assign attempts_value = '{used}/{total}' %}
+  {% assign unavailable = 'Secure local randomness is unavailable in this browser, so this game has been disabled.' %}
+  {% assign no_js = 'This local game requires JavaScript. Nothing is sent or stored.' %}
+  {% assign locale = 'en' %}
+{% else %}
+  {% assign challenge_label = '破译数字码' %}
+  {% assign instructions = '猜出隐藏的数字码。每次提交后，只会告诉你有几个数字和位置都正确，以及有几个数字正确但位置不对。' %}
+  {% assign disclaimer = '答案、设置和本局记录只保留在当前页面内存中，不会发送或保存；结果也不是智力或逻辑能力评估。' %}
+  {% assign settings_title = '玩法规则' %}
+  {% assign settings_adjust = '调整' %}
+  {% assign presets_label = '快捷预设' %}
+  {% assign preset_beginner = '入门' %}
+  {% assign preset_standard = '标准' %}
+  {% assign preset_duplicates = '可重复' %}
+  {% assign length_label = '数字码长度' %}
+  {% assign attempts_label = '作答机会' %}
+  {% assign duplicates_label = '允许数字重复' %}
+  {% assign candidates_label = '当前候选范围' %}
+  {% assign candidate_value = '{count} 个可能答案' %}
+  {% assign settings_notice = '调整只会在点击应用后生效；应用会清空当前这一局。' %}
+  {% assign settings_reset = '恢复默认' %}
+  {% assign settings_apply = '应用并开始新一局' %}
+  {% assign input_label = '你的猜测' %}
+  {% assign input_help = '请输入 {length} 位数字{unique}。' %}
+  {% assign unique_suffix = '，不要重复' %}
+  {% assign submit_label = '提交猜测' %}
+  {% assign new_label = '换一个答案' %}
+  {% assign attempts_used_label = '已用机会' %}
+  {% assign remaining_label = '剩余机会' %}
+  {% assign history_caption = '本局猜测记录' %}
+  {% assign history_attempt = '次数' %}
+  {% assign history_guess = '猜测' %}
+  {% assign history_exact = '位置正确' %}
+  {% assign history_misplaced = '数字正确' %}
+  {% assign exact_explanation = '数字和位置都正确' %}
+  {% assign misplaced_explanation = '数字正确但位置不对' %}
+  {% assign invalid_digits = '请输入恰好 {length} 位 0 到 9 的数字。' %}
+  {% assign invalid_duplicates = '当前规则下，每个数字最多使用一次。' %}
+  {% assign feedback = '{guess}：位置正确 {exact} 个，数字正确 {misplaced} 个；还剩 {remaining} 次。' %}
+  {% assign won = '答对了，数字码是 {secret}；共使用 {attempts} 次。' %}
+  {% assign lost = '机会已经用完，数字码是 {secret}。' %}
+  {% assign new_game = '新的数字码已经准备好。' %}
+  {% assign applied = '规则已应用，新的数字码已经准备好。' %}
+  {% assign preset_ready = '预设已填入；应用后会开始新一局。' %}
+  {% assign defaults_ready = '默认设置已填入；应用后会开始新一局。' %}
+  {% assign duplicates_allowed = '允许重复' %}
+  {% assign duplicates_disallowed = '不重复' %}
+  {% assign settings_summary = '{length} 位 · {duplicates} · {attempts} 次 · {candidates} 种组合' %}
+  {% assign attempts_value = '{used}/{total}' %}
+  {% assign unavailable = '当前浏览器无法提供安全的本地随机源，因此这项游戏已停用。' %}
+  {% assign no_js = '这项本地游戏需要 JavaScript；不会发送或保存任何内容。' %}
+  {% assign locale = 'zh-CN' %}
+{% endif %}
+
+<section
+  class="toy-challenge toy-codebreaker"
+  data-toy-codebreaker
+  aria-label="{{ challenge_label | escape }}"
+>
+  <p class="toy-challenge__instructions">{{ instructions }}</p>
+  <p class="toy-challenge__note">{{ disclaimer }}</p>
+
+  <div class="toy-challenge__interactive" data-challenge-interactive data-code-interactive hidden>
+    <details class="toy-settings toy-codebreaker-settings" data-code-settings>
+      <summary>
+        <span class="toy-settings__title">{{ settings_title }}</span>
+        <span class="toy-settings__summary" data-code-settings-summary></span>
+        <span class="toy-settings__adjust">{{ settings_adjust }}</span>
+      </summary>
+      <div class="toy-settings__panel">
+        <fieldset class="toy-fieldset toy-presets">
+          <legend>{{ presets_label }}</legend>
+          <button type="button" data-code-preset="beginner">{{ preset_beginner }}</button>
+          <button type="button" data-code-preset="standard">{{ preset_standard }}</button>
+          <button type="button" data-code-preset="duplicates">{{ preset_duplicates }}</button>
+        </fieldset>
+
+        <div class="toy-codebreaker-settings__fields">
+          <label>
+            <span>{{ length_label }}</span>
+            <select data-code-length>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </label>
+          <label>
+            <span>{{ attempts_label }}</span>
+            <select data-code-attempts>
+              <option value="6">6</option>
+              <option value="8">8</option>
+              <option value="10">10</option>
+              <option value="12">12</option>
+            </select>
+          </label>
+          <label class="toy-check toy-codebreaker-settings__duplicates">
+            <input type="checkbox" data-code-duplicates>
+            <span>{{ duplicates_label }}</span>
+          </label>
+        </div>
+
+        <p class="toy-codebreaker-settings__candidates">
+          <span>{{ candidates_label }}</span>
+          <output data-code-candidates></output>
+        </p>
+        <p class="toy-field-help">{{ settings_notice }}</p>
+        <div class="toy-settings__actions">
+          <button type="button" data-code-reset>{{ settings_reset }}</button>
+          <button type="button" class="toy-settings__apply" data-code-apply>{{ settings_apply }}</button>
+        </div>
+        <p class="toy-settings__status" data-code-settings-status aria-live="polite" aria-atomic="true"></p>
+      </div>
+    </details>
+
+    <dl class="toy-codebreaker__stats">
+      <div><dt>{{ attempts_used_label }}</dt><dd data-code-attempts-used></dd></div>
+      <div><dt>{{ remaining_label }}</dt><dd data-code-remaining></dd></div>
+    </dl>
+
+    <form class="toy-codebreaker__form" data-code-form novalidate>
+      <label for="codebreaker-guess">{{ input_label }}</label>
+      <div class="toy-codebreaker__input-row">
+        <input
+          id="codebreaker-guess"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          spellcheck="false"
+          aria-describedby="codebreaker-guess-help"
+          data-code-input
+        >
+        <button type="submit" data-code-submit>{{ submit_label }}</button>
+      </div>
+      <p id="codebreaker-guess-help" class="toy-field-help" data-code-input-help></p>
+    </form>
+
+    <div class="toy-codebreaker__history" data-code-history hidden>
+      <div class="toy-codebreaker__table-wrap">
+        <table>
+          <caption class="sr-only">{{ history_caption }}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{{ history_attempt }}</th>
+              <th scope="col">{{ history_guess }}</th>
+              <th scope="col" title="{{ exact_explanation | escape }}">
+                <span aria-hidden="true">{{ history_exact }}</span>
+                <span class="sr-only">{{ exact_explanation }}</span>
+              </th>
+              <th scope="col" title="{{ misplaced_explanation | escape }}">
+                <span aria-hidden="true">{{ history_misplaced }}</span>
+                <span class="sr-only">{{ misplaced_explanation }}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody data-code-history-body></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="toy-challenge__actions">
+      <button type="button" data-code-new>{{ new_label }}</button>
+    </div>
+    <p class="toy-challenge__status" data-code-status aria-live="polite" aria-atomic="true"></p>
+  </div>
+
+  <p class="toy-challenge__unavailable" data-challenge-unavailable data-code-unavailable hidden>{{ unavailable }}</p>
+  <noscript><p class="toy-challenge__noscript">{{ no_js }}</p></noscript>
+
+  <script type="application/json" data-code-copy>
+    {
+      "applied": {{ applied | jsonify }},
+      "attemptsValue": {{ attempts_value | jsonify }},
+      "candidateValue": {{ candidate_value | jsonify }},
+      "defaultsReady": {{ defaults_ready | jsonify }},
+      "duplicatesAllowed": {{ duplicates_allowed | jsonify }},
+      "duplicatesDisallowed": {{ duplicates_disallowed | jsonify }},
+      "feedback": {{ feedback | jsonify }},
+      "inputHelp": {{ input_help | jsonify }},
+      "invalidDigits": {{ invalid_digits | jsonify }},
+      "invalidDuplicates": {{ invalid_duplicates | jsonify }},
+      "locale": {{ locale | jsonify }},
+      "lost": {{ lost | jsonify }},
+      "newGame": {{ new_game | jsonify }},
+      "presetReady": {{ preset_ready | jsonify }},
+      "settingsSummary": {{ settings_summary | jsonify }},
+      "uniqueSuffix": {{ unique_suffix | jsonify }},
+      "unavailable": {{ unavailable | jsonify }},
+      "won": {{ won | jsonify }}
+    }
+  </script>
+</section>

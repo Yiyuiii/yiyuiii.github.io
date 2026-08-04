@@ -4,6 +4,7 @@ const toyIds = [
   "color-challenge",
   "ten-second",
   "reaction-time",
+  "codebreaker",
   "random-password",
   "random-number",
 ];
@@ -98,7 +99,7 @@ const clickMatchingColor = async (page) => {
 };
 
 for (const route of ["/toys/", "/en/toys/"]) {
-  test(`${route} renders all five local interactions`, async ({ page }) => {
+  test(`${route} renders all six local interactions`, async ({ page }) => {
     await page.goto(route);
     const finishAudit = await beginLocalOnlyAudit(page);
     for (const id of toyIds) {
@@ -196,6 +197,122 @@ test("color challenge settings remain touchable without horizontal overflow at 3
   expect(metrics.columns).toBe(2);
   expect(metrics.minimumHueHeight).toBeGreaterThanOrEqual(44);
   expect(metrics.overflow).toBeLessThanOrEqual(0);
+});
+
+test("codebreaker validates guesses, scores exact matches, and applies duplicate rules", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    baseURL: process.env.SITE_URL || "http://localhost:62091",
+  });
+  await context.addInitScript(() => {
+    Object.defineProperty(Crypto.prototype, "getRandomValues", {
+      configurable: true,
+      value(array) {
+        array.fill(0);
+        return array;
+      },
+    });
+  });
+  const page = await context.newPage();
+  try {
+    await page.goto("/toys/");
+    const finishAudit = await beginLocalOnlyAudit(page);
+    const root = (await openToy(page, "codebreaker")).locator("[data-toy-codebreaker]");
+    const input = root.locator("[data-code-input]");
+
+    await expect(root).toHaveAttribute("data-state", "playing");
+    await expect(root.locator("[data-code-settings-summary]")).toHaveText(
+      "4 位 · 不重复 · 8 次 · 5,040 种组合",
+    );
+    await input.fill("0012");
+    await input.press("Enter");
+    await expect(input).toHaveAttribute("aria-invalid", "true");
+    await expect(root.locator("[data-code-status]")).toHaveText(
+      "当前规则下，每个数字最多使用一次。",
+    );
+    await expect(root.locator("[data-code-attempts-used]")).toHaveText("0/8");
+
+    await input.fill("4567");
+    await input.press("Enter");
+    await expect(root.locator("[data-code-history-body] tr")).toHaveCount(1);
+    await expect(root.locator("[data-code-status]")).toContainText("还剩 7 次");
+    await input.fill("0123");
+    await input.press("Enter");
+    await expect(root).toHaveAttribute("data-state", "won");
+    await expect(root.locator("[data-code-status]")).toContainText("数字码是 0123");
+    await expect(input).toBeDisabled();
+
+    const settings = root.locator("[data-code-settings]");
+    await settings.locator(":scope > summary").click();
+    await settings.locator('[data-code-preset="duplicates"]').click();
+    await expect(settings.locator("[data-code-candidates]")).toHaveText(
+      "10,000 个可能答案",
+    );
+    await settings.locator("[data-code-apply]").click();
+    await expect(root).toHaveAttribute("data-state", "playing");
+    await expect(root).toHaveAttribute("data-duplicates", "true");
+    await expect(root.locator("[data-code-history]")).toBeHidden();
+    await input.fill("0000");
+    await input.press("Enter");
+    await expect(root).toHaveAttribute("data-state", "won");
+    await expect(root.locator("[data-code-status]")).toContainText("数字码是 0000");
+
+    await finishAudit();
+  } finally {
+    await context.close();
+  }
+});
+
+test("codebreaker settings and maximum candidate count fit at 320px", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/toys/");
+  const root = (await openToy(page, "codebreaker")).locator("[data-toy-codebreaker]");
+  const settings = root.locator("[data-code-settings]");
+  await settings.locator(":scope > summary").click();
+  await settings.locator("[data-code-length]").selectOption("6");
+  await settings.locator("[data-code-attempts]").selectOption("12");
+  await settings.locator("[data-code-duplicates]").check();
+  await expect(settings.locator("[data-code-candidates]")).toHaveText(
+    "1,000,000 个可能答案",
+  );
+
+  const metrics = await page.evaluate(() => ({
+    minimumControlHeight: Math.min(
+      ...[...document.querySelectorAll("[data-code-settings] button, [data-code-settings] select")]
+        .map((node) => node.getBoundingClientRect().height),
+    ),
+    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  }));
+  expect(metrics.minimumControlHeight).toBeGreaterThanOrEqual(44);
+  expect(metrics.overflow).toBeLessThanOrEqual(0);
+});
+
+test("codebreaker hides all controls when secure randomness fails", async ({ browser }) => {
+  const context = await browser.newContext({
+    baseURL: process.env.SITE_URL || "http://localhost:62091",
+  });
+  await context.addInitScript(() => {
+    Object.defineProperty(Crypto.prototype, "getRandomValues", {
+      configurable: true,
+      value() {
+        throw new Error("stubbed random source failure");
+      },
+    });
+  });
+  const page = await context.newPage();
+  const pageErrors = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  try {
+    await page.goto("/en/toys/");
+    const root = (await openToy(page, "codebreaker")).locator("[data-toy-codebreaker]");
+    await expect(root).toHaveAttribute("data-state", "unavailable");
+    await expect(root.locator("[data-code-interactive]")).toBeHidden();
+    await expect(root.locator("[data-code-unavailable]")).toBeVisible();
+    expect(pageErrors).toEqual([]);
+  } finally {
+    await context.close();
+  }
 });
 
 test("ten-second estimate supports start, stop, restart, and fold cancellation", async ({

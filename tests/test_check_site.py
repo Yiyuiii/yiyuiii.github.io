@@ -172,12 +172,14 @@ def valid_site(root):
             "zh": {
                 "page": "小玩意",
                 "quick": "轻松挑战",
+                "logic": "逻辑谜题",
                 "random": "随机生成",
                 "items": [
                     ("moegirl-quiz", "萌娘百科条目猜猜"),
                     ("color-challenge", "色差挑战"),
                     ("ten-second", "盲估十秒"),
                     ("reaction-time", "反应时间"),
+                    ("codebreaker", "破译数字码"),
                     ("random-password", "随机密码"),
                     ("random-number", "随机数字"),
                 ],
@@ -185,12 +187,14 @@ def valid_site(root):
             "en": {
                 "page": "Toys",
                 "quick": "Quick challenges",
+                "logic": "Logic puzzles",
                 "random": "Random generators",
                 "items": [
                     ("moegirl-quiz", "Moegirlpedia entry quiz"),
                     ("color-challenge", "Color difference challenge"),
                     ("ten-second", "Ten-second estimate"),
                     ("reaction-time", "Reaction time"),
+                    ("codebreaker", "Codebreaker"),
                     ("random-password", "Random password"),
                     ("random-number", "Random numbers"),
                 ],
@@ -225,9 +229,12 @@ def valid_site(root):
             '<section class="toy-group" data-toy-group="quick-challenges">'
             f'<h2 class="toy-group__title">{localized["quick"]}</h2>'
             f'<div class="toy-group__items">{"".join(entries[1:4])}</div></section>'
+            '<section class="toy-group" data-toy-group="logic-puzzles">'
+            f'<h2 class="toy-group__title">{localized["logic"]}</h2>'
+            f'<div class="toy-group__items">{entries[4]}</div></section>'
             '<section class="toy-group" data-toy-group="random-generators">'
             f'<h2 class="toy-group__title">{localized["random"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[4:])}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[5:])}</div></section>'
             "</div></div>"
         )
 

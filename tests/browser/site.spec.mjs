@@ -371,8 +371,8 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     }
   });
   for (const [route, heading, groupHeadings] of [
-    ["/toys/", "小玩意", ["轻松挑战", "随机生成"]],
-    ["/en/toys/", "Toys", ["Quick challenges", "Random generators"]],
+    ["/toys/", "小玩意", ["轻松挑战", "逻辑谜题", "随机生成"]],
+    ["/en/toys/", "Toys", ["Quick challenges", "Logic puzzles", "Random generators"]],
   ]) {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(route);
@@ -388,12 +388,13 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     ).toBe(true);
     await expect(page.locator(".toy-group__title")).toHaveText(groupHeadings);
     const disclosures = page.locator(".toy-group__items > details.toy-entry");
-    await expect(disclosures).toHaveCount(6);
+    await expect(disclosures).toHaveCount(7);
     expect(await disclosures.evaluateAll((items) => items.map((item) => item.id))).toEqual([
       "moegirl-quiz",
       "color-challenge",
       "ten-second",
       "reaction-time",
+      "codebreaker",
       "random-password",
       "random-number",
     ]);

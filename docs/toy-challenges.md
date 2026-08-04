@@ -1,16 +1,17 @@
 # 本地轻量挑战组件
 
-三个挑战由“小玩意”单栏清单按需嵌入；组件自身不显示标题，条目标题和摘要由清单统一提供：
+四个挑战由“小玩意”单栏清单按需嵌入；组件自身不显示标题，条目标题和摘要由清单统一提供：
 
 - `_includes/toy-color-challenge.liquid`：4×4、25 级色差挑战；
+- `_includes/toy-codebreaker.liquid`：可配置的数字码推理挑战；
 - `_includes/toy-ten-second.liquid`：盲估十秒；
 - `_includes/toy-reaction-time.liquid`：反应时间。
 
-色差运行时位于 `assets/js/toy-color-challenge.js`；两项计时状态机位于 `assets/js/toy-challenges.js`，本机历史、统计和 SVG 位于 `assets/js/toy-challenge-history.js`。三个挑战都不发送网络请求、Cookie 或用户标识，没有在线排名。色差不持久化；两项计时只使用本文列出的两个精确 `localStorage` 键。
+色差运行时位于 `assets/js/toy-color-challenge.js`，数字码运行时位于 `assets/js/toy-codebreaker.js`；两项计时状态机位于 `assets/js/toy-challenges.js`，本机历史、统计和 SVG 位于 `assets/js/toy-challenge-history.js`。四个挑战都不发送网络请求、Cookie 或用户标识，没有在线排名。色差和数字码不持久化；两项计时只使用本文列出的两个精确 `localStorage` 键。
 
 ## 随机与计时接口
 
-色差和反应时间只接受宿主预先提供的安全随机接口：
+随机挑战只接受宿主预先提供的安全随机接口：
 
 ```js
 globalThis.yiyuiiiToyRandom.intInclusive(minimum, maximum)
@@ -18,7 +19,7 @@ globalThis.yiyuiiiToyRandom.uintBelow(maximum)
 globalThis.yiyuiiiToyRandom.pick(entries)
 ```
 
-三个方法任一缺失时，对应随机挑战显示双语不可用说明并隐藏控件；不得另写随机实现或降级到 `Math.random()`。盲估十秒不需要随机数。
+色差和反应时间要求三个方法完整可用；数字码只依赖 `uintBelow(maximum)`。各自所需方法缺失时，对应随机挑战显示双语不可用说明并隐藏控件；不得另写随机实现或降级到 `Math.random()`。盲估十秒不需要随机数。
 
 计时只在用户操作和信号触发时读取 `performance.now()`。盲估十秒不显示实时计时；反应信号通过可取消的 `requestAnimationFrame` 呈现，并以该帧的时间为起点。页面进入后台、离开页面或外层 `details` 折叠时，进行中的计时、timeout 和待执行帧都立即取消，取消不会写入历史。
 
@@ -35,6 +36,15 @@ globalThis.yiyuiiiToyRandom.pick(entries)
 - 在最高级完成正分三题组后继续量化边缘练习并累计顶级组数；负分组退回一级。在最低级完成负分组继续基础练习并累计重复数；积分仍可继续变负。固定难度不记录这两项自动进阶边界统计。
 - 面板中的改动先暂存，只有“应用并开始新一局”才生效，同时明确清空本局积分与统计；设置、成绩和抽样状态都不持久化。
 - 四项核心统计常显，答题总数、正确率、连对、最高等级和上下界纪录位于折叠的次级统计中。只有结果摘要使用 `aria-live`。
+
+## 破译数字码
+
+- 默认使用四位互不重复的数字码和八次机会；快捷预设还提供三位入门与允许重复的四位模式。自定义设置允许 `3..6` 位、允许或禁止重复，以及 `6/8/10/12` 次机会。
+- 每次有效猜测给出“位置和数字都正确”与“数字正确但位置不对”两项反馈。允许重复时，两项总和按数字多重集合的交集计数，同一个数字不会被重复计算。
+- 设置摘要同时显示候选总数；禁止重复时为 `10! / (10 - 位数)!`，允许重复时为 `10^位数`。最大配置为六位且允许重复，共一百万种候选，不在浏览器中预生成候选表。
+- 输入使用保留前导零的文本框与数字键盘提示；格式无效、数字重复或提交空白都不会消耗次数，并通过同一结果区播报原因。有效历史使用原生表格展示猜测、两类反馈和提交后的剩余次数。
+- “应用并开始新一局”才使暂存设置生效，并清空当前题目与历史；“换一个新密码”保留配置但立即生成新题。设置、密码、猜测和战绩都只存在于当前页面内存。
+- 生成只调用安全随机接口的 `uintBelow`。随机接口不可用时，整个交互区隐藏，只保留双语不可用说明。
 
 ## 计时历史、统计与隐私
 
@@ -54,7 +64,7 @@ yiyuiii.toy.reaction-time.v1
 
 ## 无障碍与渐进增强
 
-- 三个挑战都使用原生按钮并保留键盘操作；答案同时使用文字、符号和轮廓，不只依赖红绿颜色。
+- 四个挑战都使用原生按钮并保留键盘操作；答案同时使用文字、数字、符号或轮廓，不只依赖红绿颜色。数字码的每次反馈既在历史表格中可读，也由结果区按次播报。
 - 统计区域本身不设 `aria-live`；只让单次结果或清空状态播报一次。
 - SVG 点不进入 Tab 顺序，完整记录表提供等价数据；图表在 320 px 视口内不得造成页面横向滚动。
 - 无 JavaScript 时，`noscript` 说明功能需要本地脚本，而不是显示失效控件。
@@ -63,7 +73,7 @@ yiyuiii.toy.reaction-time.v1
 
 ```powershell
 python -m pytest -q tests/test_toy_challenges_contracts.py tests/test_toy_color_challenge_round5.py
-node --test tests/toy_challenges.logic.test.mjs tests/toy_challenge_history.logic.test.mjs tests/toy_color_challenge.logic.test.mjs
+node --test tests/toy_challenges.logic.test.mjs tests/toy_challenge_history.logic.test.mjs tests/toy_color_challenge.logic.test.mjs tests/toy_codebreaker.logic.test.mjs
 ```
 
-浏览器回归还必须覆盖负分与三题升降、本机历史的精确键写入、刷新恢复、损坏或禁用存储、清空隔离、SVG 无障碍、暗色和 320 px 布局。
+浏览器回归还必须覆盖负分与三题升降、本机历史的精确键写入、刷新恢复、损坏或禁用存储、清空隔离、SVG 无障碍、数字码默认与重复模式、无效输入、随机接口失效、暗色和 320 px 布局。

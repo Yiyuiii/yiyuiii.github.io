@@ -175,13 +175,13 @@
   <p class="toy-challenge__note">{{ disclaimer }}</p>
 
   <div class="toy-challenge__interactive" data-challenge-interactive hidden>
-    <details class="toy-color-settings" data-color-settings>
+    <details class="toy-settings toy-color-settings" data-color-settings>
       <summary>
-        <span class="toy-color-settings__title">{{ settings_title }}</span>
-        <span class="toy-color-settings__summary" data-color-settings-summary></span>
-        <span class="toy-color-settings__adjust">{{ settings_adjust }}</span>
+        <span class="toy-settings__title toy-color-settings__title">{{ settings_title }}</span>
+        <span class="toy-settings__summary toy-color-settings__summary" data-color-settings-summary></span>
+        <span class="toy-settings__adjust toy-color-settings__adjust">{{ settings_adjust }}</span>
       </summary>
-      <div class="toy-color-settings__panel">
+      <div class="toy-settings__panel toy-color-settings__panel">
         <fieldset class="toy-fieldset toy-presets">
           <legend>{{ presets_label }}</legend>
           <button type="button" data-color-preset="all">{{ preset_all }}</button>
@@ -236,11 +236,11 @@
         </fieldset>
 
         <p class="toy-field-help">{{ settings_notice }}</p>
-        <div class="toy-color-settings__actions">
+        <div class="toy-settings__actions toy-color-settings__actions">
           <button type="button" data-color-reset>{{ settings_reset }}</button>
-          <button type="button" data-color-apply>{{ settings_apply }}</button>
+          <button type="button" class="toy-settings__apply" data-color-apply>{{ settings_apply }}</button>
         </div>
-        <p class="toy-color-settings__status" data-color-settings-status aria-live="polite" aria-atomic="true"></p>
+        <p class="toy-settings__status toy-color-settings__status" data-color-settings-status aria-live="polite" aria-atomic="true"></p>
       </div>
     </details>
 

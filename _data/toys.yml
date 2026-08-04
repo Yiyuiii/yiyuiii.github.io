@@ -57,6 +57,22 @@ groups:
           zh: [反应, 时间, 速度, 挑战]
           en: [reaction, time, speed, challenge]
 
+  - id: logic-puzzles
+    title:
+      zh: 逻辑谜题
+      en: Logic puzzles
+    items:
+      - id: codebreaker
+        title:
+          zh: 破译数字码
+          en: Codebreaker
+        description:
+          zh: 根据位置与数字命中数，逐步排除隐藏答案。
+          en: Use exact and misplaced matches to deduce the hidden number code.
+        keywords:
+          zh: [数字码, 推理, 排除, 逻辑, 游戏]
+          en: [codebreaker, deduction, logic, numbers, game]
+
   - id: random-generators
     title:
       zh: 随机生成

@@ -31,17 +31,20 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
     assert [group["id"] for group in groups] == [
         "ungrouped",
         "quick-challenges",
+        "logic-puzzles",
         "random-generators",
     ]
     assert groups[0]["title"] is None
     assert groups[1]["title"] == {"zh": "轻松挑战", "en": "Quick challenges"}
-    assert groups[2]["title"] == {"zh": "随机生成", "en": "Random generators"}
+    assert groups[2]["title"] == {"zh": "逻辑谜题", "en": "Logic puzzles"}
+    assert groups[3]["title"] == {"zh": "随机生成", "en": "Random generators"}
 
     expected_ids = [
         "moegirl-quiz",
         "color-challenge",
         "ten-second",
         "reaction-time",
+        "codebreaker",
         "random-password",
         "random-number",
     ]
@@ -108,6 +111,7 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
         "toy-color-challenge.liquid",
         "toy-ten-second.liquid",
         "toy-reaction-time.liquid",
+        "toy-codebreaker.liquid",
         "toy-random-password.liquid",
         "toy-random-number.liquid",
     ]
@@ -120,11 +124,12 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
         "toy-challenge-history.js",
         "toy-challenges.js",
         "toy-color-challenge.js",
+        "toy-codebreaker.js",
         "toy-disclosure.js",
     ]
     positions = [include.index(script) for script in expected_scripts]
     assert positions == sorted(positions)
-    assert include.count(" defer></script>") == 6
+    assert include.count(" defer></script>") == 7
 
 
 def test_moegirl_component_uses_the_disclosure_heading_without_repeating_it():

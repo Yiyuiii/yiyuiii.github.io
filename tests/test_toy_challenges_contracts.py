@@ -13,6 +13,7 @@ def test_challenge_includes_are_bilingual_embeddable_components():
         "_includes/toy-color-challenge.liquid": "data-toy-color-challenge",
         "_includes/toy-ten-second.liquid": "data-toy-ten-second",
         "_includes/toy-reaction-time.liquid": "data-toy-reaction-time",
+        "_includes/toy-codebreaker.liquid": "data-toy-codebreaker",
     }
     for path, selector in selectors.items():
         include = text(path)
@@ -32,6 +33,28 @@ def test_color_challenge_is_keyboard_native_and_non_diagnostic():
     assert "not a color-vision test or medical assessment" in include
     assert "data-color-grid" in include
     assert "data-color-next" in include
+
+
+def test_codebreaker_is_strict_local_and_keeps_leading_zeroes():
+    include = text("_includes/toy-codebreaker.liquid")
+    script = text("assets/js/toy-codebreaker.js")
+    assert 'type="text"' in include
+    assert 'inputmode="numeric"' in include
+    assert "不会发送或保存" in include
+    assert "Nothing is sent or stored" in include
+    assert "candidateCount" in script
+    assert "scoreGuess" in script
+    assert "Math" + ".random" not in script
+    for token in (
+        "fetch(",
+        "XMLHttpRequest",
+        "WebSocket",
+        "localStorage",
+        "sessionStorage",
+        "document.cookie",
+        "indexedDB",
+    ):
+        assert token not in script
 
 
 def test_timing_challenges_explain_bounded_local_history():
