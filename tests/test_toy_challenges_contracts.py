@@ -122,7 +122,9 @@ def test_color_challenge_uses_the_twenty_five_level_specialist_runtime():
     assert "const BLOCK_SIZE = 3" in script
     assert "const point = correct ? 1 : -1" in script
     assert "rgb8ToOklab" in script
-    assert "createIntegerNeighbourPair" in script
+    assert "oklchToOklab" in script
+    assert "createRoundScheduler" in script
+    assert "CURVE_ENDPOINTS" in script
     assert "每三题结算一次" in include
     assert "Each set contains three questions" in include
     assert "dataset.colorChallengeReady" in script

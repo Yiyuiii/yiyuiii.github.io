@@ -7,15 +7,32 @@
   const LEVEL_MAX = LEVEL_COUNT - 1;
   const START_LEVEL = 8;
   const BLOCK_SIZE = 3;
-  const HARD_DELTA = 0.0014;
   const MID_LIGHTNESS_MIN = 0.52;
   const MID_LIGHTNESS_MAX = 0.68;
-  const RGB_MAX_DISTANCE = Math.sqrt(3 * (255 ** 2));
-
-  const TARGETS = Object.freeze(Array.from(
-    { length: LEVEL_COUNT },
-    (_, level) => Math.pow(HARD_DELTA, level / LEVEL_MAX),
-  ));
+  const VARIATIONS = Object.freeze(["lightness", "chroma", "hue"]);
+  const HUE_SECTORS = Object.freeze([0, 1, 2, 3, 4, 5]);
+  const CURVE_ENDPOINTS = Object.freeze({
+    lightness: Object.freeze({ easy: 0.28, hard: 0.004 }),
+    chroma: Object.freeze({ easy: 0.07, hard: 0.0045 }),
+    hue: Object.freeze({ easy: 0.06, hard: 0.005 }),
+  });
+  const TARGETS = Object.freeze(Object.fromEntries(VARIATIONS.map((variation) => {
+    const { easy, hard } = CURVE_ENDPOINTS[variation];
+    return [variation, Object.freeze(Array.from(
+      { length: LEVEL_COUNT },
+      (_, level) => easy * ((hard / easy) ** (level / LEVEL_MAX)),
+    ))];
+  })));
+  const DEFAULT_CONFIG = Object.freeze({
+    fixedLevel: START_LEVEL,
+    hueSectors: HUE_SECTORS,
+    includeNeutral: true,
+    progression: "auto",
+    variations: VARIATIONS,
+  });
+  const MAX_GENERATION_ATTEMPTS = 96;
+  const CHROMATIC_CHROMA_MIN = 0.018;
+  const NEUTRAL_CHROMA_MAX = 0.012;
 
   const interpolate = (template, values) => Object.entries(values).reduce(
     (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
@@ -30,6 +47,9 @@
   );
 
   const clampByte = (value) => Math.min(255, Math.max(0, Math.round(value)));
+  const degreesToRadians = (degrees) => degrees * (Math.PI / 180);
+  const radiansToDegrees = (radians) => radians * (180 / Math.PI);
+  const normalizeHue = (degrees) => ((degrees % 360) + 360) % 360;
 
   const srgbByteToLinear = (value) => {
     const encoded = value / 255;
@@ -60,26 +80,40 @@
     ]);
   };
 
-  const oklabToRgb8 = ([lightness, a, b]) => {
+  const oklabToLinearRgb = ([lightness, a, b]) => {
     const lRoot = lightness + (0.3963377774 * a) + (0.2158037573 * b);
     const mRoot = lightness - (0.1055613458 * a) - (0.0638541728 * b);
     const sRoot = lightness - (0.0894841775 * a) - (1.291485548 * b);
     const l = lRoot ** 3;
     const m = mRoot ** 3;
     const s = sRoot ** 3;
-    const red = (4.0767416621 * l) - (3.3077115913 * m) + (0.2309699292 * s);
-    const green = (-1.2684380046 * l) + (2.6097574011 * m) - (0.3413193965 * s);
-    const blue = (-0.0041960863 * l) - (0.7034186147 * m) + (1.707614701 * s);
-    const epsilon = 1e-7;
-    if ([red, green, blue].some((value) => value < -epsilon || value > 1 + epsilon)) {
-      return null;
-    }
     return Object.freeze([
-      linearToSrgbByte(Math.min(1, Math.max(0, red))),
-      linearToSrgbByte(Math.min(1, Math.max(0, green))),
-      linearToSrgbByte(Math.min(1, Math.max(0, blue))),
+      (4.0767416621 * l) - (3.3077115913 * m) + (0.2309699292 * s),
+      (-1.2684380046 * l) + (2.6097574011 * m) - (0.3413193965 * s),
+      (-0.0041960863 * l) - (0.7034186147 * m) + (1.707614701 * s),
     ]);
   };
+
+  const oklabToRgb8 = (lab) => {
+    const linear = oklabToLinearRgb(lab);
+    const epsilon = 1e-7;
+    if (linear.some((value) => value < -epsilon || value > 1 + epsilon)) return null;
+    return Object.freeze(linear.map((value) => (
+      linearToSrgbByte(Math.min(1, Math.max(0, value)))
+    )));
+  };
+
+  const oklchToOklab = ([lightness, chroma, hue]) => Object.freeze([
+    lightness,
+    chroma * Math.cos(degreesToRadians(hue)),
+    chroma * Math.sin(degreesToRadians(hue)),
+  ]);
+
+  const oklabToOklch = ([lightness, a, b]) => Object.freeze([
+    lightness,
+    Math.sqrt((a ** 2) + (b ** 2)),
+    normalizeHue(radiansToDegrees(Math.atan2(b, a))),
+  ]);
 
   const oklabDistance = (left, right) => Math.sqrt(
     left.reduce((sum, value, index) => sum + ((value - right[index]) ** 2), 0),
@@ -101,39 +135,97 @@
 
   const colorsDiffer = (left, right) => left.some((value, index) => value !== right[index]);
 
-  const bandForLevel = (level) => {
-    if (!Number.isSafeInteger(level) || level <= LEVEL_MIN || level >= LEVEL_MAX) {
-      throw new RangeError("only intermediate levels have a perceptual band");
-    }
+  const angularDistance = (left, right) => {
+    const difference = Math.abs(normalizeHue(left) - normalizeHue(right));
+    return Math.min(difference, 360 - difference);
+  };
+
+  const pairAnalysis = (left, right) => {
+    const leftLab = rgb8ToOklab(left);
+    const rightLab = rgb8ToOklab(right);
+    const leftLch = oklabToOklch(leftLab);
+    const rightLch = oklabToOklch(rightLab);
+    const hueAngle = degreesToRadians(angularDistance(leftLch[2], rightLch[2]));
+    const lightness = Math.abs(leftLch[0] - rightLch[0]);
+    const chroma = Math.abs(leftLch[1] - rightLch[1]);
+    const hue = 2 * Math.sqrt(leftLch[1] * rightLch[1]) * Math.sin(hueAngle / 2);
+    const total = oklabDistance(leftLab, rightLab);
     return Object.freeze({
-      lower: Math.sqrt(TARGETS[level] * TARGETS[level + 1]),
-      target: TARGETS[level],
-      upper: Math.sqrt(TARGETS[level - 1] * TARGETS[level]),
+      chroma,
+      hue,
+      leftLch,
+      lightness,
+      rightLch,
+      total,
     });
   };
 
-  const pairMatchesLevel = (level, normalRgb, oddRgb) => {
-    if (!colorsDiffer(normalRgb, oddRgb)) return false;
-    if (level === LEVEL_MIN) {
-      return normalRgb.every((value, index) => Math.abs(value - oddRgb[index]) === 255);
+  const maxChromaFor = (lightness, hue) => {
+    let lower = 0;
+    let upper = 0.4;
+    for (let attempt = 0; attempt < 16; attempt += 1) {
+      const middle = (lower + upper) / 2;
+      if (oklabToRgb8(oklchToOklab([lightness, middle, hue]))) lower = middle;
+      else upper = middle;
     }
-    if (!pairUsesMidLightness(normalRgb, oddRgb)) return false;
-    if (level === LEVEL_MAX) {
-      const channelDifferences = normalRgb.map(
-        (value, index) => Math.abs(value - oddRgb[index]),
-      );
-      return channelDifferences.filter(Boolean).length === 1
-        && Math.max(...channelDifferences) === 1
-        && rgbDistance(normalRgb, oddRgb) < Math.sqrt(
-          TARGETS[LEVEL_MAX - 1] * TARGETS[LEVEL_MAX],
-        );
+    return lower;
+  };
+
+  const bandForLevel = (variation, level) => {
+    if (!VARIATIONS.includes(variation)) throw new RangeError("unexpected color variation");
+    if (!Number.isSafeInteger(level) || level < LEVEL_MIN || level > LEVEL_MAX) {
+      throw new RangeError("unexpected color level");
     }
-    const { lower, upper } = bandForLevel(level);
-    const actual = rgbDistance(normalRgb, oddRgb);
-    return actual >= lower && actual < upper;
+    const targets = TARGETS[variation];
+    return Object.freeze({
+      lower: targets[level] * (level === LEVEL_MAX ? 0.45 : 0.7),
+      target: targets[level],
+      upper: targets[level] * 1.35,
+    });
+  };
+
+  const representativeHue = (analysis) => (
+    analysis.leftLch[1] >= analysis.rightLch[1]
+      ? analysis.leftLch[2]
+      : analysis.rightLch[2]
+  );
+
+  const hueInSector = (hue, sector) => {
+    if (!HUE_SECTORS.includes(sector)) return false;
+    const normalized = normalizeHue(hue);
+    const start = sector * 60;
+    return normalized >= start && normalized < start + 60;
+  };
+
+  const directionThreshold = (level) => (level >= 20 ? 0.58 : 0.72);
+
+  const pairMatchesLevel = (variation, level, normalRgb, oddRgb, options = {}) => {
+    if (!colorsDiffer(normalRgb, oddRgb) || !pairUsesMidLightness(normalRgb, oddRgb)) {
+      return false;
+    }
+    const analysis = pairAnalysis(normalRgb, oddRgb);
+    const { lower, upper } = bandForLevel(variation, level);
+    if (analysis.total < lower || analysis.total >= upper) return false;
+    if ((analysis[variation] / analysis.total) < directionThreshold(level)) return false;
+    if (options.neutral) {
+      if (variation !== "lightness") return false;
+      if (Math.max(analysis.leftLch[1], analysis.rightLch[1]) > NEUTRAL_CHROMA_MAX) {
+        return false;
+      }
+    } else if (Math.max(analysis.leftLch[1], analysis.rightLch[1]) < CHROMATIC_CHROMA_MIN) {
+      return false;
+    }
+    if (!options.neutral && Number.isSafeInteger(options.hueSector)) {
+      const hue = variation === "hue" ? analysis.leftLch[2] : representativeHue(analysis);
+      if (!hueInSector(hue, options.hueSector)) return false;
+    }
+    return true;
   };
 
   const randomFraction = (randomApi) => randomApi.intInclusive(0, 1_000_000) / 1_000_000;
+  const randomRange = (randomApi, minimum, maximum) => (
+    minimum + ((maximum - minimum) * randomFraction(randomApi))
+  );
 
   const maybeSwap = (pair, randomApi) => (
     randomApi.pick([false, true])
@@ -141,213 +233,256 @@
       : Object.freeze({ normalRgb: pair.oddRgb, oddRgb: pair.normalRgb })
   );
 
-  const createOklabPair = (level, randomApi) => {
-    const { target } = bandForLevel(level);
-    for (let attempt = 0; attempt < 32; attempt += 1) {
-      const margin = 0.004;
-      const minimumMidpoint = Math.max(MID_LIGHTNESS_MIN, (target / 2) + margin);
-      const maximumMidpoint = Math.min(
-        MID_LIGHTNESS_MAX,
-        1 - (target / 2) - margin,
-      );
-      if (minimumMidpoint > maximumMidpoint) return null;
-      const midpoint = minimumMidpoint
-        + ((maximumMidpoint - minimumMidpoint) * randomFraction(randomApi));
-      const hue = randomApi.intInclusive(0, 359) * (Math.PI / 180);
-      const requestedChroma = randomFraction(randomApi) * (
-        target > 0.25 ? 0.025 : target > 0.1 ? 0.07 : 0.14
-      );
-      let chroma = requestedChroma;
-      let normalRgb = null;
-      let oddRgb = null;
+  const buildCandidate = (variation, target, parameters) => {
+    const { chromaFraction, direction, hue, lightness, neutral } = parameters;
+    let normalLab;
+    let oddLab;
 
-      for (let gamutAttempt = 0; gamutAttempt < 18; gamutAttempt += 1) {
-        const a = chroma * Math.cos(hue);
-        const b = chroma * Math.sin(hue);
-        normalRgb = oklabToRgb8([midpoint - (target / 2), a, b]);
-        oddRgb = oklabToRgb8([midpoint + (target / 2), a, b]);
-        if (normalRgb && oddRgb) break;
-        chroma *= 0.72;
-      }
-
-      if (normalRgb && oddRgb && pairMatchesLevel(level, normalRgb, oddRgb)) {
-        return maybeSwap(Object.freeze({ normalRgb, oddRgb }), randomApi);
-      }
+    if (variation === "lightness") {
+      const lowerLightness = lightness - (target / 2);
+      const upperLightness = lightness + (target / 2);
+      if (lowerLightness <= 0 || upperLightness >= 1) return null;
+      const chroma = neutral ? 0 : chromaFraction * Math.min(
+        maxChromaFor(lowerLightness, hue),
+        maxChromaFor(upperLightness, hue),
+      );
+      normalLab = oklchToOklab([lowerLightness, chroma, hue]);
+      oddLab = oklchToOklab([upperLightness, chroma, hue]);
+    } else if (variation === "chroma") {
+      const maximum = maxChromaFor(lightness, hue) * 0.96;
+      const room = maximum - target;
+      if (room <= 0.006) return null;
+      const lowerChroma = 0.006 + ((room - 0.006) * chromaFraction);
+      normalLab = oklchToOklab([lightness, lowerChroma, hue]);
+      oddLab = oklchToOklab([lightness, lowerChroma + target, hue]);
+    } else {
+      let chroma = chromaFraction * maxChromaFor(lightness, hue);
+      if (chroma <= target / 2) return null;
+      let angle = radiansToDegrees(2 * Math.asin(Math.min(1, target / (2 * chroma))));
+      if (angle > 78) return null;
+      const oddHue = normalizeHue(hue + (direction * angle));
+      chroma = chromaFraction * Math.min(
+        maxChromaFor(lightness, hue),
+        maxChromaFor(lightness, oddHue),
+      );
+      if (chroma <= target / 2) return null;
+      angle = radiansToDegrees(2 * Math.asin(Math.min(1, target / (2 * chroma))));
+      if (angle > 78) return null;
+      normalLab = oklchToOklab([lightness, chroma, hue]);
+      oddLab = oklchToOklab([
+        lightness,
+        chroma,
+        normalizeHue(hue + (direction * angle)),
+      ]);
     }
-    return null;
+
+    const normalRgb = oklabToRgb8(normalLab);
+    const oddRgb = oklabToRgb8(oddLab);
+    return normalRgb && oddRgb ? Object.freeze({ normalRgb, oddRgb }) : null;
   };
 
-  const createIntegerNeighbourPair = (level, randomApi) => {
-    for (let attempt = 0; attempt < 32; attempt += 1) {
-      const normalRgb = Object.freeze([
-        randomApi.intInclusive(32, 223),
-        randomApi.intInclusive(32, 223),
-        randomApi.intInclusive(32, 223),
-      ]);
-      const candidates = [];
-      candidateSearch:
-      for (let red = -6; red <= 6; red += 1) {
-        for (let green = -6; green <= 6; green += 1) {
-          for (let blue = -6; blue <= 6; blue += 1) {
-            if (red === 0 && green === 0 && blue === 0) continue;
-            const oddRgb = Object.freeze([
-              normalRgb[0] + red,
-              normalRgb[1] + green,
-              normalRgb[2] + blue,
-            ]);
-            if (oddRgb.some((value) => value < 0 || value > 255)) continue;
-            if (pairMatchesLevel(level, normalRgb, oddRgb)) candidates.push(oddRgb);
-            if (candidates.length >= 64) break candidateSearch;
-          }
-        }
-      }
-      if (candidates.length > 0) {
-        return maybeSwap(Object.freeze({
-          normalRgb,
-          oddRgb: randomApi.pick(candidates),
-        }), randomApi);
-      }
+  const randomHueForSector = (randomApi, sector) => (
+    (sector * 60) + randomRange(randomApi, 2, 58)
+  );
+
+  const createTypedPair = (randomApi, variation, level, hueSector, neutral) => {
+    const { target } = bandForLevel(variation, level);
+    for (let attempt = 0; attempt < MAX_GENERATION_ATTEMPTS; attempt += 1) {
+      const parameters = {
+        chromaFraction: variation === "hue"
+          ? randomRange(randomApi, 0.62, 0.82)
+          : randomRange(randomApi, 0.12, 0.62),
+        direction: randomApi.pick([-1, 1]),
+        hue: randomHueForSector(randomApi, hueSector),
+        lightness: randomRange(randomApi, MID_LIGHTNESS_MIN, MID_LIGHTNESS_MAX),
+        neutral,
+      };
+      let pair = buildCandidate(variation, target, parameters);
+      if (!pair) continue;
+      if (variation !== "hue") pair = maybeSwap(pair, randomApi);
+      if (pairMatchesLevel(variation, level, pair.normalRgb, pair.oddRgb, {
+        hueSector,
+        neutral,
+      })) return pair;
     }
     return null;
   };
 
   const fallbackCache = new Map();
 
-  const verifiedFallback = (level) => {
+  const verifiedFallback = (variation, level, hueSector = 0, neutral = false) => {
+    if (!VARIATIONS.includes(variation) || !HUE_SECTORS.includes(hueSector)) {
+      throw new RangeError("unexpected fallback configuration");
+    }
     if (!Number.isSafeInteger(level) || level < LEVEL_MIN || level > LEVEL_MAX) {
       throw new RangeError("unexpected color level");
     }
-    if (fallbackCache.has(level)) return fallbackCache.get(level);
-
-    if (level === LEVEL_MIN) {
-      const endpoint = Object.freeze({
-        normalRgb: Object.freeze([0, 0, 0]),
-        oddRgb: Object.freeze([255, 255, 255]),
-      });
-      fallbackCache.set(level, endpoint);
-      return endpoint;
+    if (neutral && variation !== "lightness") {
+      throw new RangeError("neutral is available only for lightness rounds");
     }
-    if (level === LEVEL_MAX) {
-      const endpoint = Object.freeze({
-        normalRgb: Object.freeze([128, 128, 128]),
-        oddRgb: Object.freeze([129, 128, 128]),
-      });
-      fallbackCache.set(level, endpoint);
-      return endpoint;
-    }
-
-    let result = null;
-    fallbackSearch:
-    for (let lower = 0; lower < 255; lower += 1) {
-      for (let upper = lower + 1; upper <= 255; upper += 1) {
-        const normalRgb = Object.freeze([lower, lower, lower]);
-        const oddRgb = Object.freeze([upper, upper, upper]);
-        if (pairMatchesLevel(level, normalRgb, oddRgb)) {
-          result = Object.freeze({ normalRgb, oddRgb });
-          break fallbackSearch;
-        }
-      }
-    }
-
-    if (!result) {
-      fallbackSearch:
-      for (let value = 80; value <= 192; value += 1) {
-        const normalRgb = Object.freeze([value, value, value]);
-        for (let red = -6; red <= 6; red += 1) {
-          for (let green = -6; green <= 6; green += 1) {
-            for (let blue = -6; blue <= 6; blue += 1) {
-              if (red === 0 && green === 0 && blue === 0) continue;
-              const oddRgb = Object.freeze([
-                value + red,
-                value + green,
-                value + blue,
-              ]);
-              if (oddRgb.some((channel) => channel < 0 || channel > 255)) continue;
-              if (pairMatchesLevel(level, normalRgb, oddRgb)) {
-                result = Object.freeze({ normalRgb, oddRgb });
-                break fallbackSearch;
-              }
+    const cacheKey = `${variation}:${level}:${hueSector}:${neutral}`;
+    if (fallbackCache.has(cacheKey)) return fallbackCache.get(cacheKey);
+    const { target } = bandForLevel(variation, level);
+    const lightnesses = [0.6, 0.56, 0.64, 0.53, 0.67];
+    const hueOffsets = [30, 18, 42, 8, 52, 25, 35];
+    const chromaFractions = variation === "hue"
+      ? [0.72, 0.8, 0.64, 0.76]
+      : [0.22, 0.38, 0.54, 0.14];
+    for (const lightness of lightnesses) {
+      for (const offset of hueOffsets) {
+        for (const chromaFraction of chromaFractions) {
+          for (const direction of [-1, 1]) {
+            const pair = buildCandidate(variation, target, {
+              chromaFraction,
+              direction,
+              hue: (hueSector * 60) + offset,
+              lightness,
+              neutral,
+            });
+            if (pair && pairMatchesLevel(variation, level, pair.normalRgb, pair.oddRgb, {
+              hueSector,
+              neutral,
+            })) {
+              fallbackCache.set(cacheKey, pair);
+              return pair;
             }
           }
         }
       }
     }
-
-    if (!result) throw new Error(`no verified fallback for color level ${level}`);
-    fallbackCache.set(level, result);
-    return result;
+    throw new Error(`no verified fallback for ${cacheKey}`);
   };
 
-  const createSingleCodePair = (randomApi) => {
-    const value = randomApi.intInclusive(112, 152);
-    const channel = randomApi.pick([0, 2]);
-    const direction = randomApi.pick([-1, 1]);
-    if (![0, 2].includes(channel) || ![-1, 1].includes(direction)) {
-      throw new Error("unexpected endpoint random choice");
+  const normalizeConfig = (input = DEFAULT_CONFIG) => {
+    const variations = [...new Set(input.variations || [])]
+      .filter((value) => VARIATIONS.includes(value));
+    const hueSectors = [...new Set(input.hueSectors || [])]
+      .filter((value) => HUE_SECTORS.includes(value))
+      .sort((left, right) => left - right);
+    const progression = input.progression === "fixed" ? "fixed" : "auto";
+    const fixedLevel = Number.isSafeInteger(input.fixedLevel)
+      ? Math.min(LEVEL_MAX, Math.max(LEVEL_MIN, input.fixedLevel))
+      : START_LEVEL;
+    if (variations.length === 0) throw new RangeError("select at least one variation");
+    if (hueSectors.length === 0) throw new RangeError("select at least one hue sector");
+    return Object.freeze({
+      fixedLevel,
+      hueSectors: Object.freeze(hueSectors),
+      includeNeutral: Boolean(input.includeNeutral) && variations.includes("lightness"),
+      progression,
+      variations: Object.freeze(variations),
+    });
+  };
+
+  const shuffleEntries = (randomApi, entries) => {
+    const shuffled = [...entries];
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const selected = randomApi.uintBelow(index + 1);
+      [shuffled[index], shuffled[selected]] = [shuffled[selected], shuffled[index]];
     }
-    const normalRgb = Object.freeze([value, value, value]);
-    const odd = [...normalRgb];
-    odd[channel] += direction;
-    const oddRgb = Object.freeze(odd);
-    const pair = Object.freeze({ normalRgb, oddRgb });
-    if (!pairMatchesLevel(LEVEL_MAX, normalRgb, oddRgb)) {
-      return verifiedFallback(LEVEL_MAX);
+    return shuffled;
+  };
+
+  const createShuffleBag = (randomApi, entries) => {
+    if (!hasRandomApi(randomApi) || !Array.isArray(entries) || entries.length === 0) {
+      throw new Error("cannot create an empty shuffle bag");
     }
-    return maybeSwap(pair, randomApi);
+    let bag = [];
+    let last = null;
+    return Object.freeze({
+      next() {
+        if (bag.length === 0) {
+          bag = shuffleEntries(randomApi, entries);
+          if (bag.length > 1 && bag[bag.length - 1] === last) {
+            [bag[0], bag[bag.length - 1]] = [bag[bag.length - 1], bag[0]];
+          }
+        }
+        last = bag.pop();
+        return last;
+      },
+    });
+  };
+
+  const createRoundScheduler = (randomApi, rawConfig = DEFAULT_CONFIG) => {
+    const config = normalizeConfig(rawConfig);
+    const variationBag = createShuffleBag(randomApi, config.variations);
+    const hueBags = new Map(config.variations.map((variation) => [
+      variation,
+      createShuffleBag(randomApi, config.hueSectors),
+    ]));
+    const neutralBag = config.includeNeutral
+      ? createShuffleBag(randomApi, [true, false, false, false, false, false, false])
+      : null;
+    return Object.freeze({
+      next() {
+        const variation = variationBag.next();
+        const neutral = variation === "lightness" && neutralBag?.next() === true;
+        return Object.freeze({
+          hueSector: neutral ? config.hueSectors[0] : hueBags.get(variation).next(),
+          neutral,
+          variation,
+        });
+      },
+    });
   };
 
   const rgbCss = (rgb) => `rgb(${rgb.join(" ")})`;
 
-  const createColorRound = (randomApi, level) => {
+  const createColorRound = (randomApi, level, selection = {}) => {
     if (!hasRandomApi(randomApi)) throw new Error("local random interface is unavailable");
     if (!Number.isSafeInteger(level) || level < LEVEL_MIN || level > LEVEL_MAX) {
       throw new RangeError("unexpected color level");
     }
-    let pair;
-    if (level === LEVEL_MIN) {
-      pair = maybeSwap(verifiedFallback(level), randomApi);
-    } else if (level === LEVEL_MAX) {
-      pair = createSingleCodePair(randomApi);
-    } else if (level <= 19) {
-      pair = createOklabPair(level, randomApi) || verifiedFallback(level);
-    } else {
-      pair = createIntegerNeighbourPair(level, randomApi) || verifiedFallback(level);
-    }
-
+    const variation = VARIATIONS.includes(selection.variation)
+      ? selection.variation
+      : "lightness";
+    const hueSector = HUE_SECTORS.includes(selection.hueSector)
+      ? selection.hueSector
+      : 0;
+    const neutral = Boolean(selection.neutral) && variation === "lightness";
+    const pair = createTypedPair(randomApi, variation, level, hueSector, neutral)
+      || verifiedFallback(variation, level, hueSector, neutral);
     const oddIndex = randomApi.uintBelow(16);
     if (!Number.isSafeInteger(oddIndex) || oddIndex < 0 || oddIndex >= 16) {
       throw new Error("unexpected random index");
     }
-    const actualDelta = rgbDistance(pair.normalRgb, pair.oddRgb);
     return Object.freeze({
-      actualDelta,
+      actualDelta: rgbDistance(pair.normalRgb, pair.oddRgb),
+      hueSector,
       level,
+      neutral,
       normalColor: rgbCss(pair.normalRgb),
       normalRgb: pair.normalRgb,
       oddColor: rgbCss(pair.oddRgb),
       oddIndex,
       oddRgb: pair.oddRgb,
-      targetDelta: TARGETS[level],
+      targetDelta: TARGETS[variation][level],
+      variation,
     });
   };
 
-  const createInitialColorState = () => Object.freeze({
-    bestStreak: 0,
-    blockAnswered: 0,
-    blockScore: 0,
-    currentStreak: 0,
-    extremeClears: 0,
-    foundationRetries: 0,
-    hasCleared: false,
-    highestLevel: START_LEVEL,
-    lastSettlement: null,
-    level: START_LEVEL,
-    phase: "ready",
-    totalAnswered: 0,
-    totalCorrect: 0,
-    totalScore: 0,
-    totalWrong: 0,
-  });
+  const createInitialColorState = (rawConfig = DEFAULT_CONFIG) => {
+    const config = normalizeConfig(rawConfig);
+    const level = config.progression === "fixed" ? config.fixedLevel : START_LEVEL;
+    return Object.freeze({
+      bestStreak: 0,
+      blockAnswered: 0,
+      blockScore: 0,
+      currentStreak: 0,
+      extremeClears: 0,
+      foundationRetries: 0,
+      hasCleared: false,
+      highestLevel: level,
+      lastSettlement: null,
+      level,
+      phase: "ready",
+      progression: config.progression,
+      totalAnswered: 0,
+      totalCorrect: 0,
+      totalScore: 0,
+      totalWrong: 0,
+    });
+  };
 
   const answerColorState = (state, correct) => {
     if (!state || state.phase !== "ready" || typeof correct !== "boolean") return state;
@@ -365,25 +500,26 @@
 
     if (answered === BLOCK_SIZE) {
       const previousLevel = level;
-      const direction = blockScore > 0 ? 1 : -1;
-      const attemptedLevel = level + direction;
-      let kind = direction > 0 ? "up" : "down";
+      let kind = "fixed";
       let clearedNow = false;
-
-      if (attemptedLevel > LEVEL_MAX) {
-        level = LEVEL_MAX;
-        extremeClears += 1;
-        clearedNow = !hasCleared;
-        hasCleared = true;
-        kind = "extreme";
-      } else if (attemptedLevel < LEVEL_MIN) {
-        level = LEVEL_MIN;
-        foundationRetries += 1;
-        kind = "foundation";
-      } else {
-        level = attemptedLevel;
+      if (state.progression === "auto") {
+        const direction = blockScore > 0 ? 1 : -1;
+        const attemptedLevel = level + direction;
+        kind = direction > 0 ? "up" : "down";
+        if (attemptedLevel > LEVEL_MAX) {
+          level = LEVEL_MAX;
+          extremeClears += 1;
+          clearedNow = !hasCleared;
+          hasCleared = true;
+          kind = "extreme";
+        } else if (attemptedLevel < LEVEL_MIN) {
+          level = LEVEL_MIN;
+          foundationRetries += 1;
+          kind = "foundation";
+        } else {
+          level = attemptedLevel;
+        }
       }
-
       lastSettlement = Object.freeze({
         blockScore,
         clearedNow,
@@ -397,6 +533,7 @@
 
     return Object.freeze({
       ...state,
+      bestStreak: Math.max(state.bestStreak, streak),
       blockAnswered: nextBlockAnswered,
       blockScore: nextBlockScore,
       currentStreak: streak,
@@ -411,7 +548,6 @@
       totalCorrect: state.totalCorrect + (correct ? 1 : 0),
       totalScore: state.totalScore + point,
       totalWrong: state.totalWrong + (correct ? 0 : 1),
-      bestStreak: Math.max(state.bestStreak || 0, streak),
     });
   };
 
@@ -422,23 +558,34 @@
 
   const logic = Object.freeze({
     BLOCK_SIZE,
+    CURVE_ENDPOINTS,
+    DEFAULT_CONFIG,
+    HUE_SECTORS,
     LEVEL_COUNT,
     LEVEL_MAX,
     LEVEL_MIN,
     MID_LIGHTNESS_MAX,
     MID_LIGHTNESS_MIN,
-    RGB_MAX_DISTANCE,
     START_LEVEL,
     TARGETS,
+    VARIATIONS,
     answerColorState,
     bandForLevel,
     createColorRound,
     createInitialColorState,
+    createRoundScheduler,
+    createShuffleBag,
     hasRandomApi,
+    hueInSector,
+    maxChromaFor,
     nextColorState,
+    normalizeConfig,
+    oklabToOklch,
     oklabToRgb8,
-    pairMidpointLightness,
+    oklchToOklab,
+    pairAnalysis,
     pairMatchesLevel,
+    pairMidpointLightness,
     rgb8ToOklab,
     rgbDistance,
     verifiedFallback,
@@ -464,14 +611,7 @@
     root.dataset.state = "unavailable";
   };
 
-  const zoneIndex = (level) => {
-    if (level === LEVEL_MIN) return 0;
-    if (level <= 7) return 1;
-    if (level <= 19) return 2;
-    if (level <= 23) return 3;
-    return 4;
-  };
-
+  const zoneIndex = (level) => (level <= 4 ? 0 : level <= 19 ? 1 : 2);
   const signed = (value) => (value > 0 ? `+${value}` : String(value));
 
   const initialize = (root) => {
@@ -488,7 +628,10 @@
     const grid = root.querySelector("[data-color-grid]");
     const nextButton = root.querySelector("[data-color-next]");
     const status = root.querySelector("[data-challenge-status]");
-    if (!hasRandomApi(randomApi) || !interactive || !grid || !nextButton || !status) {
+    const settings = root.querySelector("[data-color-settings]");
+    const settingsStatus = root.querySelector("[data-color-settings-status]");
+    if (!hasRandomApi(randomApi) || !interactive || !grid || !nextButton || !status
+      || !settings || !settingsStatus) {
       disableChallenge(root, copy);
       return;
     }
@@ -502,31 +645,88 @@
       return;
     }
 
-    let state = createInitialColorState();
+    const summary = root.querySelector("[data-color-settings-summary]");
+    const customHues = root.querySelector("[data-color-custom-hues]");
+    const fixedWrap = root.querySelector("[data-color-fixed-wrap]");
+    const fixedRange = root.querySelector("[data-color-fixed-level]");
+    const fixedOutput = root.querySelector("[data-color-fixed-output]");
+    const applyButton = root.querySelector("[data-color-apply]");
+    const resetButton = root.querySelector("[data-color-reset]");
+    if (!summary || !customHues || !fixedWrap || !fixedRange || !fixedOutput
+      || !applyButton || !resetButton) {
+      disableChallenge(root, copy);
+      return;
+    }
+
+    let config = normalizeConfig(DEFAULT_CONFIG);
+    let state = createInitialColorState(config);
+    let scheduler = createRoundScheduler(randomApi, config);
     let activeRound = null;
 
-    const differenceText = () => {
-      if (!activeRound) return copy.notAvailable;
-      if (activeRound.level === LEVEL_MIN) {
-        return interpolate(copy.maximumDifference, {
-          distance: RGB_MAX_DISTANCE.toFixed(2),
-        });
+    const checkedValues = (selector) => [...root.querySelectorAll(selector)]
+      .filter((field) => field.checked)
+      .map((field) => field.value);
+
+    const setDraftConfig = (rawConfig) => {
+      const draft = normalizeConfig(rawConfig);
+      for (const field of root.querySelectorAll("[data-color-variation]")) {
+        field.checked = draft.variations.includes(field.value);
       }
-      if (activeRound.level === LEVEL_MAX) {
-        const changes = activeRound.normalRgb.map(
-          (value, index) => activeRound.oddRgb[index] - value,
-        );
-        const channel = changes.findIndex((value) => value !== 0);
-        return interpolate(copy.singleCodeDifference, {
-          channel: copy.channels[channel],
-          code: signed(changes[channel]),
-          delta: activeRound.actualDelta.toFixed(5),
-        });
+      const allHues = draft.hueSectors.length === HUE_SECTORS.length;
+      [...root.querySelectorAll("[data-color-hue-scope]")]
+        .find((field) => field.value === (allHues ? "all" : "custom")).checked = true;
+      for (const field of root.querySelectorAll("[data-color-hue-sector]")) {
+        field.checked = draft.hueSectors.includes(Number.parseInt(field.value, 10));
       }
-      return interpolate(copy.perceptualDifference, {
-        delta: activeRound.actualDelta.toFixed(5),
+      root.querySelector("[data-color-neutral]").checked = draft.includeNeutral;
+      [...root.querySelectorAll("[data-color-progression]")]
+        .find((field) => field.value === draft.progression).checked = true;
+      fixedRange.value = String(draft.fixedLevel + 1);
+      fixedOutput.value = `${draft.fixedLevel + 1}/${LEVEL_COUNT}`;
+      customHues.hidden = allHues;
+      fixedWrap.hidden = draft.progression !== "fixed";
+    };
+
+    const readDraftConfig = () => {
+      const scope = root.querySelector("[data-color-hue-scope]:checked")?.value;
+      return normalizeConfig({
+        fixedLevel: Number.parseInt(fixedRange.value, 10) - 1,
+        hueSectors: scope === "all"
+          ? HUE_SECTORS
+          : checkedValues("[data-color-hue-sector]").map(Number),
+        includeNeutral: root.querySelector("[data-color-neutral]").checked,
+        progression: root.querySelector("[data-color-progression]:checked")?.value,
+        variations: checkedValues("[data-color-variation]"),
       });
     };
+
+    const summaryText = (activeConfig) => {
+      let variationText;
+      if (activeConfig.variations.length === VARIATIONS.length) {
+        variationText = copy.summaryComposite;
+      } else if (activeConfig.variations.length === 1) {
+        variationText = copy.variations[activeConfig.variations[0]];
+      } else {
+        variationText = interpolate(copy.summaryMixed, {
+          count: activeConfig.variations.length,
+        });
+      }
+      let hueText = activeConfig.hueSectors.length === HUE_SECTORS.length
+        ? copy.summaryAllHues
+        : interpolate(copy.summaryHueCount, { count: activeConfig.hueSectors.length });
+      if (activeConfig.includeNeutral) hueText += copy.summaryNeutralSuffix;
+      const progressionText = activeConfig.progression === "auto"
+        ? copy.summaryAuto
+        : interpolate(copy.summaryFixed, { level: activeConfig.fixedLevel + 1 });
+      return [variationText, hueText, progressionText].join(" · ");
+    };
+
+    const differenceText = () => activeRound
+      ? interpolate(copy.perceptualDifference, {
+        delta: activeRound.actualDelta.toFixed(5),
+        variation: copy.variations[activeRound.variation],
+      })
+      : copy.notAvailable;
 
     const renderStats = () => {
       const accuracy = state.totalAnswered === 0
@@ -539,9 +739,7 @@
         zone: copy.zones[zoneIndex(state.level)],
       });
       outputs.block.textContent = state.lastSettlement
-        ? interpolate(copy.blockSettledValue, {
-          score: signed(state.lastSettlement.blockScore),
-        })
+        ? interpolate(copy.blockSettledValue, { score: signed(state.lastSettlement.blockScore) })
         : interpolate(copy.blockValue, {
           answered: state.blockAnswered,
           score: signed(state.blockScore),
@@ -561,13 +759,18 @@
         count: LEVEL_COUNT,
         level: state.highestLevel + 1,
       });
-      outputs.extreme.textContent = String(state.extremeClears);
-      outputs.foundation.textContent = String(state.foundationRetries);
+      outputs.extreme.textContent = state.progression === "auto"
+        ? String(state.extremeClears)
+        : copy.notAvailable;
+      outputs.foundation.textContent = state.progression === "auto"
+        ? String(state.foundationRetries)
+        : copy.notAvailable;
     };
 
     const renderRound = (moveFocus = false) => {
       try {
-        activeRound = createColorRound(randomApi, state.level);
+        const selection = scheduler.next();
+        activeRound = createColorRound(randomApi, state.level, selection);
       } catch (error) {
         disableChallenge(root, copy);
         return;
@@ -575,8 +778,9 @@
       nextButton.disabled = true;
       status.textContent = "";
       root.dataset.difficulty = String(state.level);
-      root.dataset.mode = state.level === LEVEL_MAX && state.hasCleared ? "endless" : "levels";
+      root.dataset.mode = config.progression;
       root.dataset.state = "ready";
+      root.dataset.variation = activeRound.variation;
 
       const fragment = document.createDocumentFragment();
       for (let index = 0; index < 16; index += 1) {
@@ -629,6 +833,11 @@
           )}`;
         } else if (settlement.kind === "foundation") {
           result += ` ${copy.foundationContinues}`;
+        } else if (settlement.kind === "fixed") {
+          result += ` ${interpolate(copy.fixedContinues, {
+            level: state.level + 1,
+            score: signed(settlement.blockScore),
+          })}`;
         } else {
           result += ` ${interpolate(
             settlement.kind === "up" ? copy.levelUp : copy.levelDown,
@@ -647,8 +856,65 @@
       state = nextColorState(state);
       renderRound(true);
     });
+
+    settings.addEventListener("change", (event) => {
+      if (event.target.matches("[data-color-hue-scope]")) {
+        customHues.hidden = event.target.value === "all";
+      }
+      if (event.target.matches("[data-color-progression]")) {
+        fixedWrap.hidden = event.target.value !== "fixed";
+      }
+      settingsStatus.textContent = "";
+    });
+
+    fixedRange.addEventListener("input", () => {
+      fixedOutput.value = `${fixedRange.value}/${LEVEL_COUNT}`;
+      settingsStatus.textContent = "";
+    });
+
+    for (const preset of root.querySelectorAll("[data-color-preset]")) {
+      preset.addEventListener("click", () => {
+        const name = preset.dataset.colorPreset;
+        const variations = name === "all" ? VARIATIONS : [name];
+        setDraftConfig({
+          ...DEFAULT_CONFIG,
+          includeNeutral: name === "all" || name === "lightness",
+          variations,
+        });
+        settingsStatus.textContent = copy.presetReady;
+      });
+    }
+
+    resetButton.addEventListener("click", () => {
+      setDraftConfig(DEFAULT_CONFIG);
+      settingsStatus.textContent = copy.defaultsReady;
+    });
+
+    applyButton.addEventListener("click", () => {
+      let nextConfig;
+      try {
+        nextConfig = readDraftConfig();
+      } catch (error) {
+        settingsStatus.textContent = error.message.includes("variation")
+          ? copy.variationRequired
+          : copy.hueRequired;
+        return;
+      }
+      config = nextConfig;
+      state = createInitialColorState(config);
+      scheduler = createRoundScheduler(randomApi, config);
+      setDraftConfig(config);
+      summary.textContent = summaryText(config);
+      settings.open = false;
+      settingsStatus.textContent = copy.applied;
+      renderRound(true);
+      status.textContent = copy.applied;
+    });
+
     interactive.hidden = false;
     root.dataset.colorChallengeReady = "true";
+    setDraftConfig(config);
+    summary.textContent = summaryText(config);
     renderRound();
   };
 

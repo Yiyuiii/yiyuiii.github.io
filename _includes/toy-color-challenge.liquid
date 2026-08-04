@@ -2,8 +2,39 @@
 {% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
 {% if lang_key == 'en' %}
   {% assign challenge_label = 'Find the different color' %}
-  {% assign instructions = 'Each set contains three questions. Get at least two right to move up one of 25 levels; otherwise you move down. A correct answer adds one point and a wrong answer subtracts one, so the score may be negative.' %}
-  {% assign disclaimer = 'The scale runs from the maximum black–white digital difference to a one-code, one-channel sRGB difference. This is a visual game, not a color-vision test or medical assessment.' %}
+  {% assign instructions = 'Find the different tile among sixteen. By default, lightness, chroma, and hue changes are balanced. Each set contains three questions: get at least two right to move up; otherwise you move down. A correct answer adds 1 and a wrong answer subtracts 1, so the score may be negative.' %}
+  {% assign disclaimer = 'Colors stay within a moderate lightness range. Every difference is checked again after conversion to final 8-bit RGB. This local game sends and stores no result, and it is not a color-vision test or medical assessment.' %}
+  {% assign settings_title = 'Play settings' %}
+  {% assign settings_adjust = 'Adjust' %}
+  {% assign presets_label = 'Quick presets' %}
+  {% assign preset_all = 'Balanced mix' %}
+  {% assign preset_lightness = 'Lightness only' %}
+  {% assign preset_chroma = 'Chroma only' %}
+  {% assign preset_hue = 'Hue only' %}
+  {% assign variations_label = 'Changes to include' %}
+  {% assign lightness_name = 'Lightness' %}
+  {% assign chroma_name = 'Chroma' %}
+  {% assign hue_name = 'Hue' %}
+  {% assign variations_help = 'When several are enabled, each question uses one change; the game balances them instead of mixing axes in one tile.' %}
+  {% assign hue_scope_label = 'Main hue range' %}
+  {% assign hue_scope_all = 'All hues' %}
+  {% assign hue_scope_custom = 'Choose ranges' %}
+  {% assign hue_help = 'The six names divide the continuous OKLCH hue wheel into equal 60° ranges. They are guides, not six fixed colors. In a hue question, the repeated tile stays in the selected range while the different tile may shift toward a neighboring hue.' %}
+  {% assign red_name = 'Red' %}
+  {% assign yellow_name = 'Yellow' %}
+  {% assign green_name = 'Green' %}
+  {% assign cyan_name = 'Cyan' %}
+  {% assign blue_name = 'Blue' %}
+  {% assign magenta_name = 'Magenta' %}
+  {% assign neutral_label = 'Include neutral gray in lightness questions' %}
+  {% assign neutral_help = 'Gray has no useful hue, so this option applies only to lightness changes.' %}
+  {% assign progression_label = 'Difficulty' %}
+  {% assign progression_auto = 'Advance automatically' %}
+  {% assign progression_fixed = 'Keep a fixed level' %}
+  {% assign fixed_level_label = 'Fixed level' %}
+  {% assign settings_reset = 'Restore defaults' %}
+  {% assign settings_apply = 'Apply and start a new game' %}
+  {% assign settings_notice = 'Changes take effect only after you apply them. Applying clears this game’s score and statistics.' %}
   {% assign group_label = 'Sixteen color tiles' %}
   {% assign cell_label = 'Tile {number}' %}
   {% assign correct_cell_label = 'Tile {number}, the different color' %}
@@ -12,9 +43,10 @@
   {% assign incorrect = 'Not quite: score {score}. The different tile was {answer}.' %}
   {% assign level_up = 'The set was positive; difficulty rises to {level}/{count}.' %}
   {% assign level_down = 'The set was negative; difficulty falls to {level}/{count}.' %}
-  {% assign cleared = 'All standard levels are complete; single-code endless mode begins. Extreme sets cleared: {count}.' %}
-  {% assign extreme_continues = 'Single-code endless mode continues. Extreme sets cleared: {count}.' %}
-  {% assign foundation_continues = 'This is already the maximum digital difference, so foundation practice continues.' %}
+  {% assign cleared = 'All standard levels are complete; quantization-edge practice continues. Top-level sets cleared: {count}.' %}
+  {% assign extreme_continues = 'Quantization-edge practice continues. Top-level sets cleared: {count}.' %}
+  {% assign foundation_continues = 'This is already the easiest level, so foundation practice continues.' %}
+  {% assign fixed_continues = 'This set was {score}; fixed practice remains at level {level}/25.' %}
   {% assign unavailable = 'Secure local randomness is unavailable in this browser, so this challenge has been disabled.' %}
   {% assign no_js = 'JavaScript is required for this local challenge. No result is sent or stored.' %}
   {% assign score_label = 'Score' %}
@@ -26,23 +58,65 @@
   {% assign record_label = 'Record' %}
   {% assign streak_label = 'Streak' %}
   {% assign highest_label = 'Highest difficulty' %}
-  {% assign extreme_label = 'Extreme sets cleared' %}
+  {% assign extreme_label = 'Top-level sets cleared' %}
   {% assign foundation_label = 'Foundation repeats' %}
-  {% assign zones_json = '["digital maximum","high contrast","perceptual steps","quantization edge","single-code limit"]' %}
+  {% assign zones_json = '["foundation","perceptual steps","quantization edge"]' %}
+  {% assign variation_labels_json = '{"lightness":"lightness","chroma":"chroma","hue":"hue"}' %}
   {% assign level_value = '{level}/{count} · {zone}' %}
   {% assign block_value = '{answered}/3 · net {score}' %}
   {% assign block_settled_value = 'settled · net {score}' %}
   {% assign record_value = '{correct} correct · {wrong} wrong · {accuracy}' %}
   {% assign streak_value = '{current} current · {best} best' %}
   {% assign highest_value = '{level}/{count}' %}
-  {% assign maximum_difference = 'RGB code distance {distance} (maximum)' %}
-  {% assign perceptual_difference = 'ΔEOK {delta}, measured from final 8-bit RGB' %}
-  {% assign single_code_difference = '{channel} channel {code} code · ΔEOK {delta}' %}
+  {% assign perceptual_difference = '{variation} · ΔEOK {delta} from final RGB' %}
+  {% assign summary_composite = 'balanced changes' %}
+  {% assign summary_mixed = '{count} change types' %}
+  {% assign summary_all_hues = 'all hues' %}
+  {% assign summary_hue_count = '{count} hue ranges' %}
+  {% assign summary_neutral_suffix = ' + neutral gray' %}
+  {% assign summary_auto = 'auto advance' %}
+  {% assign summary_fixed = 'fixed {level}/25' %}
+  {% assign preset_ready = 'Preset loaded. Apply it to start a new game.' %}
+  {% assign defaults_ready = 'Defaults restored in the panel. Apply them to start a new game.' %}
+  {% assign applied = 'Settings applied. A new game has started.' %}
+  {% assign variation_required = 'Select at least one kind of change.' %}
+  {% assign hue_required = 'Select at least one hue range.' %}
   {% assign not_available = '—' %}
 {% else %}
   {% assign challenge_label = '找出不一样的颜色' %}
-  {% assign instructions = '每三题结算一次：答对至少两题升一级，否则降一级，共 25 级。每题答对加 1 分、答错减 1 分，因此积分可以为负。' %}
-  {% assign disclaimer = '难度从黑白最大数字色差延伸到 sRGB 单通道相差一个码值。这是视觉小游戏，不是色觉检查或医学评估。' %}
+  {% assign instructions = '在 16 个色块中找出不同的一格。默认均衡穿插明暗、鲜淡与色相变化；每三题结算一次，答对至少两题升一级，否则降一级。每题答对 +1、答错 -1，因此积分可以为负。' %}
+  {% assign disclaimer = '颜色保持在适中的亮度范围，色差会在转换为最终 8-bit RGB 后重新核验。这项本地游戏不发送或保存结果，也不是色觉检查或医学评估。' %}
+  {% assign settings_title = '玩法设置' %}
+  {% assign settings_adjust = '调整' %}
+  {% assign presets_label = '快捷预设' %}
+  {% assign preset_all = '综合随机' %}
+  {% assign preset_lightness = '仅明暗' %}
+  {% assign preset_chroma = '仅鲜淡' %}
+  {% assign preset_hue = '仅色相' %}
+  {% assign variations_label = '启用的变化' %}
+  {% assign lightness_name = '明暗' %}
+  {% assign chroma_name = '鲜淡' %}
+  {% assign hue_name = '色相' %}
+  {% assign variations_help = '启用多项时，每题只使用一种变化；系统会均衡轮换，不会在同一格里混合多个方向。' %}
+  {% assign hue_scope_label = '主色范围' %}
+  {% assign hue_scope_all = '全部色相' %}
+  {% assign hue_scope_custom = '选择范围' %}
+  {% assign hue_help = '六个名称把连续的 OKLCH 色相环等分为 60° 范围，只是方向提示，不是六个固定颜色。色相题中，重复色块位于所选范围，那个不同色块可能向相邻色相偏移。' %}
+  {% assign red_name = '红' %}
+  {% assign yellow_name = '黄' %}
+  {% assign green_name = '绿' %}
+  {% assign cyan_name = '青' %}
+  {% assign blue_name = '蓝' %}
+  {% assign magenta_name = '品红' %}
+  {% assign neutral_label = '在明暗题中加入中性灰' %}
+  {% assign neutral_help = '灰色没有有效色相，因此这个选项只用于明暗变化。' %}
+  {% assign progression_label = '难度方式' %}
+  {% assign progression_auto = '自动进阶' %}
+  {% assign progression_fixed = '固定难度' %}
+  {% assign fixed_level_label = '固定等级' %}
+  {% assign settings_reset = '恢复默认' %}
+  {% assign settings_apply = '应用并开始新一局' %}
+  {% assign settings_notice = '调整只会在点击应用后生效；应用会清空本局积分与统计。' %}
   {% assign group_label = '十六个色块' %}
   {% assign cell_label = '第 {number} 格' %}
   {% assign correct_cell_label = '第 {number} 格，不同的颜色' %}
@@ -51,9 +125,10 @@
   {% assign incorrect = '没有猜中，积分 {score}；不同色块是第 {answer} 格。' %}
   {% assign level_up = '本组三题净分为正，难度升至 {level}/{count}。' %}
   {% assign level_down = '本组三题净分为负，难度降至 {level}/{count}。' %}
-  {% assign cleared = '已完成全部标准等级，进入单码极限无尽模式；极限组三题已通过 {count} 组。' %}
-  {% assign extreme_continues = '继续单码极限无尽模式；极限组三题已通过 {count} 组。' %}
-  {% assign foundation_continues = '当前已经是最大数字色差，将继续基础练习。' %}
+  {% assign cleared = '已完成全部标准等级，继续量化边缘练习；顶级组三题已通过 {count} 组。' %}
+  {% assign extreme_continues = '继续量化边缘练习；顶级组三题已通过 {count} 组。' %}
+  {% assign foundation_continues = '当前已经是最容易的等级，将继续基础练习。' %}
+  {% assign fixed_continues = '本组三题净分 {score}；固定练习继续保持在 {level}/25。' %}
   {% assign unavailable = '当前浏览器无法提供安全的本地随机源，因此这项挑战已停用。' %}
   {% assign no_js = '这项本地挑战需要 JavaScript；结果不会被发送或保存。' %}
   {% assign score_label = '积分' %}
@@ -65,18 +140,29 @@
   {% assign record_label = '答题统计' %}
   {% assign streak_label = '连续答对' %}
   {% assign highest_label = '到达过的最高难度' %}
-  {% assign extreme_label = '极限组通过数' %}
+  {% assign extreme_label = '顶级组通过数' %}
   {% assign foundation_label = '基础端重复数' %}
-  {% assign zones_json = '["数字极值","高对比","感知阶梯","量化边缘","单码极限"]' %}
+  {% assign zones_json = '["基础练习","感知阶梯","量化边缘"]' %}
+  {% assign variation_labels_json = '{"lightness":"明暗","chroma":"鲜淡","hue":"色相"}' %}
   {% assign level_value = '{level}/{count} · {zone}' %}
   {% assign block_value = '{answered}/3 · 净分 {score}' %}
   {% assign block_settled_value = '已结算 · 净分 {score}' %}
   {% assign record_value = '答对 {correct} · 答错 {wrong} · 正确率 {accuracy}' %}
   {% assign streak_value = '当前 {current} · 最佳 {best}' %}
   {% assign highest_value = '{level}/{count}' %}
-  {% assign maximum_difference = 'RGB 码值距离 {distance}（数字最大）' %}
-  {% assign perceptual_difference = 'ΔEOK {delta}（由最终 8-bit RGB 计算）' %}
-  {% assign single_code_difference = '{channel} 通道 {code} 个码值 · ΔEOK {delta}' %}
+  {% assign perceptual_difference = '{variation} · ΔEOK {delta}（最终 RGB）' %}
+  {% assign summary_composite = '综合变化' %}
+  {% assign summary_mixed = '{count} 种变化' %}
+  {% assign summary_all_hues = '全部色相' %}
+  {% assign summary_hue_count = '{count} 段色相' %}
+  {% assign summary_neutral_suffix = ' + 中性灰' %}
+  {% assign summary_auto = '自动进阶' %}
+  {% assign summary_fixed = '固定 {level}/25' %}
+  {% assign preset_ready = '预设已填入；应用后会开始新一局。' %}
+  {% assign defaults_ready = '默认设置已填入；应用后会开始新一局。' %}
+  {% assign applied = '设置已应用，新一局已经开始。' %}
+  {% assign variation_required = '请至少启用一种变化。' %}
+  {% assign hue_required = '请至少选择一段色相。' %}
   {% assign not_available = '—' %}
 {% endif %}
 
@@ -89,6 +175,75 @@
   <p class="toy-challenge__note">{{ disclaimer }}</p>
 
   <div class="toy-challenge__interactive" data-challenge-interactive hidden>
+    <details class="toy-color-settings" data-color-settings>
+      <summary>
+        <span class="toy-color-settings__title">{{ settings_title }}</span>
+        <span class="toy-color-settings__summary" data-color-settings-summary></span>
+        <span class="toy-color-settings__adjust">{{ settings_adjust }}</span>
+      </summary>
+      <div class="toy-color-settings__panel">
+        <fieldset class="toy-fieldset toy-presets">
+          <legend>{{ presets_label }}</legend>
+          <button type="button" data-color-preset="all">{{ preset_all }}</button>
+          <button type="button" data-color-preset="lightness">{{ preset_lightness }}</button>
+          <button type="button" data-color-preset="chroma">{{ preset_chroma }}</button>
+          <button type="button" data-color-preset="hue">{{ preset_hue }}</button>
+        </fieldset>
+
+        <fieldset class="toy-fieldset">
+          <legend>{{ variations_label }}</legend>
+          <div class="toy-checks">
+            <label class="toy-check"><input type="checkbox" value="lightness" data-color-variation> {{ lightness_name }}</label>
+            <label class="toy-check"><input type="checkbox" value="chroma" data-color-variation> {{ chroma_name }}</label>
+            <label class="toy-check"><input type="checkbox" value="hue" data-color-variation> {{ hue_name }}</label>
+          </div>
+          <p class="toy-field-help">{{ variations_help }}</p>
+        </fieldset>
+
+        <fieldset class="toy-fieldset">
+          <legend>{{ hue_scope_label }}</legend>
+          <div class="toy-checks">
+            <label class="toy-check"><input type="radio" name="color-hue-scope" value="all" data-color-hue-scope> {{ hue_scope_all }}</label>
+            <label class="toy-check"><input type="radio" name="color-hue-scope" value="custom" data-color-hue-scope> {{ hue_scope_custom }}</label>
+          </div>
+          <div class="toy-color-settings__hues" data-color-custom-hues hidden>
+            <label style="--toy-hue: 30deg"><input type="checkbox" value="0" data-color-hue-sector><span aria-hidden="true"></span>{{ red_name }}</label>
+            <label style="--toy-hue: 90deg"><input type="checkbox" value="1" data-color-hue-sector><span aria-hidden="true"></span>{{ yellow_name }}</label>
+            <label style="--toy-hue: 150deg"><input type="checkbox" value="2" data-color-hue-sector><span aria-hidden="true"></span>{{ green_name }}</label>
+            <label style="--toy-hue: 210deg"><input type="checkbox" value="3" data-color-hue-sector><span aria-hidden="true"></span>{{ cyan_name }}</label>
+            <label style="--toy-hue: 270deg"><input type="checkbox" value="4" data-color-hue-sector><span aria-hidden="true"></span>{{ blue_name }}</label>
+            <label style="--toy-hue: 330deg"><input type="checkbox" value="5" data-color-hue-sector><span aria-hidden="true"></span>{{ magenta_name }}</label>
+          </div>
+          <p class="toy-field-help">{{ hue_help }}</p>
+        </fieldset>
+
+        <div class="toy-color-settings__neutral">
+          <label class="toy-check"><input type="checkbox" data-color-neutral> {{ neutral_label }}</label>
+          <p class="toy-field-help">{{ neutral_help }}</p>
+        </div>
+
+        <fieldset class="toy-fieldset">
+          <legend>{{ progression_label }}</legend>
+          <div class="toy-checks">
+            <label class="toy-check"><input type="radio" name="color-progression" value="auto" data-color-progression> {{ progression_auto }}</label>
+            <label class="toy-check"><input type="radio" name="color-progression" value="fixed" data-color-progression> {{ progression_fixed }}</label>
+          </div>
+          <label class="toy-color-settings__level" data-color-fixed-wrap hidden>
+            <span>{{ fixed_level_label }}</span>
+            <input type="range" min="1" max="25" step="1" value="9" data-color-fixed-level>
+            <output data-color-fixed-output>9/25</output>
+          </label>
+        </fieldset>
+
+        <p class="toy-field-help">{{ settings_notice }}</p>
+        <div class="toy-color-settings__actions">
+          <button type="button" data-color-reset>{{ settings_reset }}</button>
+          <button type="button" data-color-apply>{{ settings_apply }}</button>
+        </div>
+        <p class="toy-color-settings__status" data-color-settings-status aria-live="polite" aria-atomic="true"></p>
+      </div>
+    </details>
+
     <dl class="toy-color-challenge__stats toy-color-challenge__stats--primary">
       <div><dt>{{ score_label }}</dt><dd data-color-score>0</dd></div>
       <div><dt>{{ level_stats_label }}</dt><dd data-color-level></dd></div>
@@ -129,27 +284,38 @@
 
   <script type="application/json" data-challenge-copy>
     {
+      "applied": {{ applied | jsonify }},
       "blockSettledValue": {{ block_settled_value | jsonify }},
       "blockValue": {{ block_value | jsonify }},
-      "channels": ["R", "G", "B"],
       "cleared": {{ cleared | jsonify }},
       "correct": {{ correct | jsonify }},
       "correctCellLabel": {{ correct_cell_label | jsonify }},
       "cellLabel": {{ cell_label | jsonify }},
+      "defaultsReady": {{ defaults_ready | jsonify }},
       "extremeContinues": {{ extreme_continues | jsonify }},
+      "fixedContinues": {{ fixed_continues | jsonify }},
       "foundationContinues": {{ foundation_continues | jsonify }},
       "highestValue": {{ highest_value | jsonify }},
+      "hueRequired": {{ hue_required | jsonify }},
       "incorrect": {{ incorrect | jsonify }},
       "levelDown": {{ level_down | jsonify }},
       "levelUp": {{ level_up | jsonify }},
       "levelValue": {{ level_value | jsonify }},
-      "maximumDifference": {{ maximum_difference | jsonify }},
       "notAvailable": {{ not_available | jsonify }},
       "perceptualDifference": {{ perceptual_difference | jsonify }},
+      "presetReady": {{ preset_ready | jsonify }},
       "recordValue": {{ record_value | jsonify }},
-      "singleCodeDifference": {{ single_code_difference | jsonify }},
       "streakValue": {{ streak_value | jsonify }},
+      "summaryAllHues": {{ summary_all_hues | jsonify }},
+      "summaryAuto": {{ summary_auto | jsonify }},
+      "summaryComposite": {{ summary_composite | jsonify }},
+      "summaryFixed": {{ summary_fixed | jsonify }},
+      "summaryHueCount": {{ summary_hue_count | jsonify }},
+      "summaryMixed": {{ summary_mixed | jsonify }},
+      "summaryNeutralSuffix": {{ summary_neutral_suffix | jsonify }},
       "unavailable": {{ unavailable | jsonify }},
+      "variationRequired": {{ variation_required | jsonify }},
+      "variations": {{ variation_labels_json }},
       "zones": {{ zones_json }}
     }
   </script>

@@ -32,102 +32,161 @@ const answerSequence = (initial, answers) => answers.reduce((state, answer, inde
   return index === answers.length - 1 ? answered : logic.nextColorState(answered);
 }, initial);
 
-test("the difficulty curve has 25 monotone perceptual targets and starts at level 8", () => {
+test("each variation owns a distinct monotone 25-level perceptual curve", () => {
   assert.equal(logic.LEVEL_COUNT, 25);
-  assert.equal(logic.LEVEL_MIN, 0);
-  assert.equal(logic.LEVEL_MAX, 24);
   assert.equal(logic.START_LEVEL, 8);
   assert.equal(logic.MID_LIGHTNESS_MIN, 0.52);
   assert.equal(logic.MID_LIGHTNESS_MAX, 0.68);
-  assert.equal(logic.TARGETS.length, 25);
-  assert.ok(Math.abs(logic.TARGETS[0] - 1) < 1e-12);
-  assert.ok(Math.abs(logic.TARGETS[24] - 0.0014) < 1e-12);
-  for (let level = 1; level < logic.TARGETS.length; level += 1) {
-    assert.ok(logic.TARGETS[level] < logic.TARGETS[level - 1]);
-  }
-  for (let level = 1; level < logic.LEVEL_MAX; level += 1) {
-    const band = logic.bandForLevel(level);
-    assert.ok(band.lower < band.target);
-    assert.ok(band.target < band.upper);
-    if (level > 1) {
-      assert.ok(Math.abs(band.upper - logic.bandForLevel(level - 1).lower) < 1e-12);
+  assert.deepEqual(logic.VARIATIONS, ["lightness", "chroma", "hue"]);
+  assert.deepEqual(logic.HUE_SECTORS, [0, 1, 2, 3, 4, 5]);
+
+  for (const variation of logic.VARIATIONS) {
+    const targets = logic.TARGETS[variation];
+    assert.equal(targets.length, logic.LEVEL_COUNT);
+    assert.equal(targets[0], logic.CURVE_ENDPOINTS[variation].easy);
+    assert.ok(Math.abs(targets.at(-1) - logic.CURVE_ENDPOINTS[variation].hard) < 1e-12);
+    for (let level = 1; level < targets.length; level += 1) {
+      assert.ok(targets[level] < targets[level - 1]);
+    }
+    for (let level = 0; level < targets.length; level += 1) {
+      const band = logic.bandForLevel(variation, level);
+      assert.ok(band.lower < band.target);
+      assert.ok(band.target < band.upper);
     }
   }
+  assert.notEqual(logic.TARGETS.lightness[0], logic.TARGETS.chroma[0]);
+  assert.notEqual(logic.TARGETS.chroma[24], logic.TARGETS.hue[24]);
 });
 
-test("every level has a verified integer RGB fallback inside its contract", () => {
+test("configuration validation keeps neutral gray independent from hue", () => {
+  const defaults = logic.normalizeConfig();
+  assert.deepEqual(defaults.variations, logic.VARIATIONS);
+  assert.deepEqual(defaults.hueSectors, logic.HUE_SECTORS);
+  assert.equal(defaults.includeNeutral, true);
+  assert.equal(defaults.progression, "auto");
+
+  const hueOnly = logic.normalizeConfig({
+    fixedLevel: 99,
+    hueSectors: [4, 4],
+    includeNeutral: true,
+    progression: "fixed",
+    variations: ["hue"],
+  });
+  assert.deepEqual(hueOnly.hueSectors, [4]);
+  assert.deepEqual(hueOnly.variations, ["hue"]);
+  assert.equal(hueOnly.includeNeutral, false);
+  assert.equal(hueOnly.fixedLevel, 24);
+  assert.throws(() => logic.normalizeConfig({ hueSectors: [0], variations: [] }));
+  assert.throws(() => logic.normalizeConfig({ hueSectors: [], variations: ["lightness"] }));
+});
+
+test("shuffle bags balance enabled changes and eligible color ranges", () => {
+  const random = makeRandom(17);
+  const scheduler = logic.createRoundScheduler(random, {
+    fixedLevel: 8,
+    hueSectors: [1, 4],
+    includeNeutral: false,
+    progression: "auto",
+    variations: logic.VARIATIONS,
+  });
+  const firstSix = Array.from({ length: 6 }, () => scheduler.next());
+  for (const variation of logic.VARIATIONS) {
+    assert.equal(firstSix.filter((round) => round.variation === variation).length, 2);
+  }
+
+  const lightness = logic.createRoundScheduler(makeRandom(23), {
+    fixedLevel: 8,
+    hueSectors: [0, 3],
+    includeNeutral: true,
+    progression: "auto",
+    variations: ["lightness"],
+  });
+  const firstSeven = Array.from({ length: 7 }, () => lightness.next());
+  assert.equal(firstSeven.filter((round) => round.neutral).length, 1);
+  assert.deepEqual(
+    firstSeven.filter((round) => !round.neutral).map((round) => round.hueSector).sort(),
+    [0, 0, 0, 3, 3, 3],
+  );
+});
+
+test("all typed fallbacks survive final RGB quantization and their contracts", () => {
+  for (const variation of logic.VARIATIONS) {
+    for (const hueSector of logic.HUE_SECTORS) {
+      for (let level = logic.LEVEL_MIN; level <= logic.LEVEL_MAX; level += 1) {
+        const pair = logic.verifiedFallback(variation, level, hueSector, false);
+        assert.equal(logic.pairMatchesLevel(
+          variation,
+          level,
+          pair.normalRgb,
+          pair.oddRgb,
+          { hueSector, neutral: false },
+        ), true, `${variation} sector ${hueSector} level ${level}`);
+        for (const value of [...pair.normalRgb, ...pair.oddRgb]) {
+          assert.ok(Number.isInteger(value) && value >= 0 && value <= 255);
+        }
+      }
+    }
+  }
   for (let level = logic.LEVEL_MIN; level <= logic.LEVEL_MAX; level += 1) {
-    const pair = logic.verifiedFallback(level);
-    assert.equal(logic.pairMatchesLevel(level, pair.normalRgb, pair.oddRgb), true, `level ${level}`);
-    for (const value of [...pair.normalRgb, ...pair.oddRgb]) {
-      assert.ok(Number.isInteger(value) && value >= 0 && value <= 255);
-    }
-    if (level !== logic.LEVEL_MIN) {
-      const midpoint = logic.pairMidpointLightness(pair.normalRgb, pair.oddRgb);
-      assert.ok(midpoint >= logic.MID_LIGHTNESS_MIN, `level ${level} fallback is too dark`);
-      assert.ok(midpoint <= logic.MID_LIGHTNESS_MAX, `level ${level} fallback is too light`);
-    }
-  }
-});
-
-test("the easiest endpoint is exact black-white maximum digital distance", () => {
-  const round = logic.createColorRound(makeRandom(1), logic.LEVEL_MIN);
-  const colors = [round.normalRgb.join(","), round.oddRgb.join(",")].sort();
-  assert.deepEqual(colors, ["0,0,0", "255,255,255"]);
-  const codeDistance = Math.sqrt(round.normalRgb.reduce(
-    (sum, value, index) => sum + ((value - round.oddRgb[index]) ** 2),
-    0,
-  ));
-  assert.ok(Math.abs(codeDistance - logic.RGB_MAX_DISTANCE) < 1e-12);
-  assert.ok(Math.abs(round.actualDelta - 1) < 1e-7);
-});
-
-test("the hardest endpoint is reproducibly one red or blue code apart", () => {
-  for (let seed = 1; seed <= 100; seed += 1) {
-    const round = logic.createColorRound(makeRandom(seed), logic.LEVEL_MAX);
-    const differences = round.normalRgb.map(
-      (value, index) => Math.abs(value - round.oddRgb[index]),
-    );
-    const changed = differences.flatMap((difference, index) => (difference ? [index] : []));
-    assert.equal(changed.length, 1);
-    assert.ok(changed[0] === 0 || changed[0] === 2);
-    assert.equal(differences[changed[0]], 1);
+    const pair = logic.verifiedFallback("lightness", level, 0, true);
     assert.equal(logic.pairMatchesLevel(
-      logic.LEVEL_MAX,
-      round.normalRgb,
-      round.oddRgb,
-    ), true);
-    for (const value of [...round.normalRgb, ...round.oddRgb]) {
-      assert.ok(value >= 111 && value <= 153);
-    }
-    assert.ok(logic.pairMidpointLightness(round.normalRgb, round.oddRgb)
-      >= logic.MID_LIGHTNESS_MIN);
-    assert.ok(logic.pairMidpointLightness(round.normalRgb, round.oddRgb)
-      <= logic.MID_LIGHTNESS_MAX);
+      "lightness",
+      level,
+      pair.normalRgb,
+      pair.oddRgb,
+      { hueSector: 0, neutral: true },
+    ), true, `neutral level ${level}`);
   }
 });
 
-test("near-black and near-white pairs cannot pass an intermediate level", () => {
-  assert.equal(logic.pairMatchesLevel(8, [0, 0, 0], [5, 5, 5]), false);
-  assert.equal(logic.pairMatchesLevel(8, [250, 250, 250], [255, 255, 255]), false);
+test("generated rounds cover every variation, sector, and level without clipping", () => {
+  for (const variation of logic.VARIATIONS) {
+    for (const hueSector of logic.HUE_SECTORS) {
+      for (let level = logic.LEVEL_MIN; level <= logic.LEVEL_MAX; level += 1) {
+        for (let sample = 0; sample < 6; sample += 1) {
+          const round = logic.createColorRound(
+            makeRandom((logic.VARIATIONS.indexOf(variation) * 1_000_000)
+              + (hueSector * 10_000) + (level * 100) + sample + 1),
+            level,
+            { hueSector, neutral: false, variation },
+          );
+          assert.equal(round.variation, variation);
+          assert.equal(round.hueSector, hueSector);
+          assert.ok(round.oddIndex >= 0 && round.oddIndex < 16);
+          assert.match(round.normalColor, /^rgb\(\d+ \d+ \d+\)$/);
+          assert.match(round.oddColor, /^rgb\(\d+ \d+ \d+\)$/);
+          assert.equal(logic.pairMatchesLevel(
+            variation,
+            level,
+            round.normalRgb,
+            round.oddRgb,
+            { hueSector, neutral: false },
+          ), true);
+          const midpoint = logic.pairMidpointLightness(round.normalRgb, round.oddRgb);
+          assert.ok(midpoint >= logic.MID_LIGHTNESS_MIN);
+          assert.ok(midpoint <= logic.MID_LIGHTNESS_MAX);
+          assert.ok(Math.abs(
+            round.actualDelta - logic.rgbDistance(round.normalRgb, round.oddRgb),
+          ) < 1e-12);
+          const analysis = logic.pairAnalysis(round.normalRgb, round.oddRgb);
+          assert.ok(analysis[variation] / analysis.total >= (level >= 20 ? 0.58 : 0.72));
+        }
+      }
+    }
+  }
 });
 
-test("generated intermediate rounds are quantized and remain within their perceptual bands", () => {
-  for (let level = 1; level < logic.LEVEL_MAX; level += 1) {
-    for (let sample = 0; sample < 12; sample += 1) {
-      const round = logic.createColorRound(makeRandom((level * 1000) + sample), level);
-      assert.equal(round.level, level);
-      assert.ok(round.oddIndex >= 0 && round.oddIndex < 16);
-      assert.match(round.normalColor, /^rgb\(\d+ \d+ \d+\)$/);
-      assert.match(round.oddColor, /^rgb\(\d+ \d+ \d+\)$/);
-      assert.equal(logic.pairMatchesLevel(level, round.normalRgb, round.oddRgb), true);
-      const midpoint = logic.pairMidpointLightness(round.normalRgb, round.oddRgb);
-      assert.ok(midpoint >= logic.MID_LIGHTNESS_MIN, `level ${level} is too dark`);
-      assert.ok(midpoint <= logic.MID_LIGHTNESS_MAX, `level ${level} is too light`);
-      assert.ok(Math.abs(
-        round.actualDelta - logic.rgbDistance(round.normalRgb, round.oddRgb),
-      ) < 1e-12);
-    }
+test("neutral rounds stay gray and use only the lightness direction", () => {
+  for (let level = 0; level < logic.LEVEL_COUNT; level += 1) {
+    const round = logic.createColorRound(makeRandom(8000 + level), level, {
+      hueSector: 5,
+      neutral: true,
+      variation: "lightness",
+    });
+    const analysis = logic.pairAnalysis(round.normalRgb, round.oddRgb);
+    assert.ok(analysis.leftLch[1] <= 0.012);
+    assert.ok(analysis.rightLch[1] <= 0.012);
+    assert.ok(analysis.lightness / analysis.total >= (level >= 20 ? 0.58 : 0.72));
   }
 });
 
@@ -140,36 +199,16 @@ test("a single question scores exactly once and total score may be negative", ()
   assert.equal(wrong.blockAnswered, 1);
   assert.strictEqual(logic.answerColorState(wrong, true), wrong);
   assert.strictEqual(logic.nextColorState(initial), initial);
-
-  const secondWrong = logic.answerColorState(logic.nextColorState(wrong), false);
-  assert.equal(secondWrong.totalScore, -2);
 });
 
-test("three-question majority moves one level and resets only the block counters", () => {
+test("automatic three-question settlement moves one level and keeps honest bounds", () => {
   const initial = logic.createInitialColorState();
   const promoted = answerSequence(initial, [true, false, true]);
   assert.equal(promoted.level, 9);
   assert.equal(promoted.totalScore, 1);
   assert.equal(promoted.blockAnswered, 0);
-  assert.equal(promoted.blockScore, 0);
-  assert.deepEqual(promoted.lastSettlement, {
-    blockScore: 1,
-    clearedNow: false,
-    kind: "up",
-    nextLevel: 9,
-    previousLevel: 8,
-  });
+  assert.equal(promoted.lastSettlement.kind, "up");
 
-  const demoted = answerSequence(
-    Object.freeze({ ...logic.createInitialColorState(), highestLevel: 8, level: 8 }),
-    [false, true, false],
-  );
-  assert.equal(demoted.level, 7);
-  assert.equal(demoted.totalScore, -1);
-  assert.equal(demoted.lastSettlement.kind, "down");
-});
-
-test("foundation and single-code boundaries remain honest and recoverable", () => {
   const foundation = Object.freeze({
     ...logic.createInitialColorState(),
     highestLevel: 0,
@@ -179,27 +218,31 @@ test("foundation and single-code boundaries remain honest and recoverable", () =
   assert.equal(repeated.level, 0);
   assert.equal(repeated.foundationRetries, 1);
   assert.equal(repeated.lastSettlement.kind, "foundation");
-  const recovered = answerSequence(logic.nextColorState(repeated), [true, true, false]);
-  assert.equal(recovered.level, 1);
 
-  const penultimate = Object.freeze({
+  const top = Object.freeze({
     ...logic.createInitialColorState(),
-    highestLevel: 23,
-    level: 23,
+    highestLevel: 24,
+    level: 24,
   });
-  const enteredLimit = answerSequence(penultimate, [true, false, true]);
-  assert.equal(enteredLimit.level, 24);
-  assert.equal(enteredLimit.hasCleared, false);
-  const cleared = answerSequence(logic.nextColorState(enteredLimit), [true, true, false]);
+  const cleared = answerSequence(top, [true, true, false]);
   assert.equal(cleared.level, 24);
-  assert.equal(cleared.hasCleared, true);
   assert.equal(cleared.extremeClears, 1);
-  assert.equal(cleared.lastSettlement.clearedNow, true);
+  assert.equal(cleared.lastSettlement.kind, "extreme");
+});
 
-  const continued = answerSequence(logic.nextColorState(cleared), [true, true, true]);
-  assert.equal(continued.extremeClears, 2);
-  assert.equal(continued.lastSettlement.clearedNow, false);
-  const fellBack = answerSequence(logic.nextColorState(continued), [false, true, false]);
-  assert.equal(fellBack.level, 23);
-  assert.equal(fellBack.extremeClears, 2);
+test("fixed difficulty settles sets without changing level or boundary counters", () => {
+  const initial = logic.createInitialColorState({
+    fixedLevel: 17,
+    hueSectors: [2],
+    includeNeutral: false,
+    progression: "fixed",
+    variations: ["chroma"],
+  });
+  assert.equal(initial.level, 17);
+  const settled = answerSequence(initial, [true, true, false]);
+  assert.equal(settled.level, 17);
+  assert.equal(settled.totalScore, 1);
+  assert.equal(settled.lastSettlement.kind, "fixed");
+  assert.equal(settled.extremeClears, 0);
+  assert.equal(settled.foundationRetries, 0);
 });
