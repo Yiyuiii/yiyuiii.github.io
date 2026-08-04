@@ -1238,7 +1238,7 @@ html:lang(en) .article-header h1 {
 .page-comments__auto-load {
   display: inline-flex;
   flex: 1 1 19rem;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.52rem;
   max-width: 34rem;
   padding-top: 0.28rem;
@@ -1253,7 +1253,7 @@ html:lang(en) .article-header h1 {
   flex: 0 0 auto;
   width: 1rem;
   height: 1rem;
-  margin: 0.14rem 0 0;
+  margin: 0;
   accent-color: var(--amethyst);
   cursor: pointer;
 }
@@ -1263,23 +1263,12 @@ html:lang(en) .article-header h1 {
   outline-offset: 3px;
 }
 
-.page-comments__auto-load-copy {
-  display: grid;
-  gap: 0.08rem;
-  min-width: 0;
-}
-
 .page-comments__auto-load-label {
-  color: var(--ink);
+  color: var(--muted);
   font-size: 0.84rem;
-  font-weight: 650;
-  line-height: 1.45;
-  cursor: pointer;
-}
-
-.page-comments__auto-load-description {
-  font-size: 0.76rem;
+  font-weight: 400;
   line-height: 1.55;
+  cursor: pointer;
 }
 
 [data-comments-direct] {
@@ -1523,6 +1512,7 @@ html:lang(en) .article-header h1 {
   --article-wide-width: 72rem;
   --article-toc-width: 13rem;
   --article-toc-gap: 2rem;
+  --article-layout-half-width: 43.5rem;
 
   width: min(100%, var(--article-wide-width));
   max-width: var(--article-wide-width);
@@ -1735,6 +1725,11 @@ html:lang(en) .article-header h1 {
   text-underline-offset: 0.14em;
 }
 
+html:lang(zh) .article-cover__caption,
+html:lang(zh) .article-cover__caption em {
+  font-style: normal;
+}
+
 .post-content {
   width: 100%;
   max-width: var(--article-wide-width);
@@ -1888,6 +1883,47 @@ html:lang(en) .post-content h3 {
   height: auto;
   margin-inline: auto;
   border-radius: 0.42rem;
+}
+
+.post-content > p:has(> img:only-child) + p:has(> em:only-child),
+.post-content > p:has(> a:only-child > img:only-child) + p:has(> em:only-child) {
+  color: var(--meta);
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: center;
+}
+
+html:lang(zh)
+  .post-content
+  > p:has(> img:only-child)
+  + p:has(> em:only-child),
+html:lang(zh)
+  .post-content
+  > p:has(> a:only-child > img:only-child)
+  + p:has(> em:only-child),
+html:lang(en)
+  .post-content
+  > p:has(> img:only-child)
+  + p:has(> em:only-child),
+html:lang(en)
+  .post-content
+  > p:has(> a:only-child > img:only-child)
+  + p:has(> em:only-child) {
+  text-indent: 0;
+}
+
+html:lang(zh)
+  .post-content
+  > p:has(> img:only-child)
+  + p:has(> em:only-child)
+  > em,
+html:lang(zh)
+  .post-content
+  > p:has(> a:only-child > img:only-child)
+  + p:has(> em:only-child)
+  > em {
+  font-style: normal;
 }
 
 .post-content pre {
@@ -2120,9 +2156,10 @@ html[data-theme="dark"] .highlight .gu {
     padding: 0.1rem 1rem 0.1rem 0.2rem;
     overflow-y: auto;
     border-right: 1px solid var(--divider);
-    align-self: start;
-    position: sticky;
+    position: fixed;
     top: 1.5rem;
+    left: max(1rem, calc(50% - var(--article-layout-half-width)));
+    width: var(--article-toc-width);
     background: transparent;
     overscroll-behavior: contain;
     scrollbar-width: thin;

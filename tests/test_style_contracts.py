@@ -143,7 +143,7 @@ def test_publication_contribution_is_quiet_inline_metadata():
     assert ".publication-note" not in CSS
 
 
-def test_article_uses_prose_and_wide_content_widths_with_a_sticky_navigation():
+def test_article_uses_prose_and_wide_content_widths_with_fixed_navigation():
     article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
     desktop = article[article.index("@media (min-width: 1536px)") :]
     side = desktop[
@@ -159,17 +159,21 @@ def test_article_uses_prose_and_wide_content_widths_with_a_sticky_navigation():
     assert "--article-wide-width: 72rem" in article
     assert "--article-toc-width: 13rem" in article
     assert "--article-toc-gap: 2rem" in article
+    assert "--article-layout-half-width: 43.5rem" in article
     assert "@media (min-width: 1536px)" in CSS
     assert "grid-template-columns: var(--article-toc-width) minmax(0, var(--article-wide-width))" in CSS
     assert ".article-side-toc" in article
     assert "grid-column: 1" in side
     assert "grid-row: 1" in side
-    assert "align-self: start" in side
-    assert "position: sticky" in side
+    assert "position: fixed" in side
+    assert "top: 1.5rem" in side
+    assert "left: max(1rem, calc(50% - var(--article-layout-half-width)))" in side
+    assert "width: var(--article-toc-width)" in side
     assert "max-height: calc(100vh - 3rem)" in side
     assert "overflow-y: auto" in side
     assert "border-right: 1px solid var(--divider)" in side
-    assert "position: sticky" not in side_nav
+    assert "position: sticky" not in side
+    assert "position: fixed" not in side_nav
     assert "font-size: 0.86rem" in side_nav
     assert "font-size: 0.8rem" in side_nav
     assert ".toc-h3" in article
