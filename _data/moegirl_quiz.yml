@@ -10,15 +10,14 @@ copy:
   zh:
     eyebrow: 萌娘百科角色猜猜
     title: 根据线索，猜猜这是谁？
-    description: 阅读一段匿名化的条目导言，从四个候选中找出角色。
-    privacy: 点击开始后，本页只会向萌娘百科 API 请求一次随机条目的纯文字导言与分类，并在浏览器本地筛选本题；第三方可看到本次请求和你的 IP 地址。本站不使用 Cookie、持久化存储或跟踪，也不请求图片。
+    description: 看完线索，你能从四个选项里猜出是谁吗？
+    privacy: 点击开始后，本页只会向萌娘百科 API 请求一次，取得一批随机条目的纯文字导言与分类，再在浏览器本地筛选本题，并将线索中可识别的角色名片段替换为 ⬛。萌娘百科可看到这次请求和你的 IP 地址；本站不使用 Cookie、持久化存储或跟踪，也不请求图片。
     start: 开始一题
     again: 再来一题
     retry: 重试
     loading: 正在向萌娘百科随机发现本题候选……
     options_label: 角色选项
-    clue_label: 匿名线索
-    clue_origin: 线索取自一个随机发现条目的导言；可识别的角色名片段会替换为 ⬛。
+    clue_label: 这是谁？
     redaction: ⬛
     correct: 答对了！这是 {title}。
     incorrect: 没猜中；答案是 {title}。
@@ -32,15 +31,14 @@ copy:
   en:
     eyebrow: Moegirlpedia character quiz
     title: Who is this character?
-    description: Read an anonymized entry introduction and choose the character from four options.
-    privacy: Starting a round makes one request to the Moegirlpedia API for a random batch of text introductions and categories, then filters the round locally. The third party can see the request and your IP address. This site uses no cookies, persistent storage, tracking, or images.
+    description: Can you identify the character from a Chinese clue and four choices?
+    privacy: Starting a round makes one request to the Chinese Moegirlpedia API for a random batch of text introductions and categories. This page filters the round locally and replaces recognizable character-name fragments in the Chinese clue with ⬛. Moegirlpedia can see the request and your IP address; this site uses no cookies, persistent storage, tracking, or images.
     start: Start a round
     again: Another round
     retry: Try again
     loading: Discovering this round's candidates on Moegirlpedia…
     options_label: Character choices
-    clue_label: Anonymized clue
-    clue_origin: The clue comes from a randomly discovered Chinese introduction; recognizable character-name fragments are replaced with ⬛.
+    clue_label: Who is this character?
     redaction: ⬛
     correct: Correct! This is {title}.
     incorrect: Not quite; the answer is {title}.

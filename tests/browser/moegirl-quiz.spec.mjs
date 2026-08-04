@@ -22,8 +22,7 @@ const copy = {
     license_label: "查看 CC BY-NC-SA 3.0 协议",
     no_js: "此小玩意需要 JavaScript；未启用时不会连接萌娘百科。",
     options_label: "角色选项",
-    clue_label: "匿名线索",
-    clue_origin: "线索来自随机发现的导言，可识别的角色名片段会替换为 ⬛。",
+    clue_label: "这是谁？",
     redaction: "⬛",
   },
   en: {
@@ -41,8 +40,7 @@ const copy = {
     license_label: "Read the CC BY-NC-SA 3.0 license",
     no_js: "This toy needs JavaScript. With JavaScript disabled, it does not connect to Moegirlpedia.",
     options_label: "Character choices",
-    clue_label: "Anonymized clue",
-    clue_origin: "The clue comes from a random Chinese introduction; recognizable names become ⬛.",
+    clue_label: "Who is this character?",
     redaction: "⬛",
   },
 };
@@ -57,7 +55,6 @@ const fixture = (language = "zh") => `<!doctype html>
         <div data-quiz-clue tabindex="-1" hidden>
           <p>${copy[language].clue_label}</p>
           <p data-quiz-clue-text></p>
-          <p>${copy[language].clue_origin}</p>
         </div>
         <div data-quiz-options role="group" aria-label="${copy[language].options_label}" hidden></div>
       </div>
@@ -342,7 +339,7 @@ test("English interface uses the same black-square redaction and keeps attributi
 
   await page.getByRole("button", { name: "Start a round" }).click();
   await expect(page.locator("[data-quiz-clue-text]")).toContainText("⬛");
-  await expect(page.locator("[data-quiz-clue]")).toContainText("random Chinese introduction");
+  await expect(page.locator("[data-quiz-clue]")).toContainText("Who is this character?");
   await page.getByRole("button", { name: state.answer, exact: true }).click();
   await expect(page.locator("[data-quiz-status]")).toHaveText(`Correct! This is ${state.answer}.`);
   await expect(page.locator("[data-quiz-source]")).toContainText("source and attribution");

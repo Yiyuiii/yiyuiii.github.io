@@ -42,6 +42,10 @@ test("saved timing histories render accessible rolling-median SVGs and tables", 
 
   const ten = await openToy(page, "ten-second");
   const tenHistory = ten.locator("[data-challenge-history]");
+  await expect(ten.locator("[data-toy-ten-second] > .toy-challenge__note")).toContainText(
+    "当前浏览器最多保存 100 次完成记录",
+  );
+  await expect(tenHistory.locator("[data-history-persistence]")).toBeHidden();
   await expect(tenHistory.locator("[data-history-stats]")).toBeVisible();
   await expect(tenHistory.locator('[data-history-value="retained"]')).toHaveText("5 / 5");
   const tenChart = tenHistory.locator("svg[role=img]");
@@ -54,6 +58,10 @@ test("saved timing histories render accessible rolling-median SVGs and tables", 
 
   const reaction = await openToy(page, "reaction-time");
   const reactionHistory = reaction.locator("[data-challenge-history]");
+  await expect(reaction.locator("[data-toy-reaction-time] > .toy-challenge__note")).toContainText(
+    "当前浏览器最多保存 100 次完成记录",
+  );
+  await expect(reactionHistory.locator("[data-history-persistence]")).toBeHidden();
   await expect(reactionHistory.locator('[data-history-value="falseStarts"]')).toContainText("2 次");
   await expect(reactionHistory.locator(".toy-history-chart__trend")).toHaveCount(1);
 
@@ -65,6 +73,10 @@ test("saved timing histories render accessible rolling-median SVGs and tables", 
 
   await page.goto("/en/toys/");
   const english = await openToy(page, "ten-second");
+  await expect(english.locator("[data-toy-ten-second] > .toy-challenge__note")).toContainText(
+    "stored only in this browser",
+  );
+  await expect(english.locator("[data-history-persistence]")).toBeHidden();
   await expect(english.locator("svg title")).toHaveText("Ten-second estimate error trend");
   await expect(english.locator('[data-history-value="retained"]')).toHaveText("5 / 5");
 });

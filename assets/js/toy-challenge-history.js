@@ -508,9 +508,9 @@
         : summarizeReaction(history);
       if (historyRoot) historyRoot.hidden = false;
       if (persistenceNode) {
-        persistenceNode.textContent = store.isPersistent()
-          ? copy.persistence
-          : copy.memoryOnly;
+        const memoryOnly = !store.isPersistent();
+        persistenceNode.hidden = !memoryOnly;
+        persistenceNode.textContent = memoryOnly ? copy.memoryOnly : "";
       }
       const hasHistory = history.samples.length > 0 || history.falseStarts > 0;
       if (emptyNode) emptyNode.hidden = hasHistory;
