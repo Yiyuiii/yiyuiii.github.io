@@ -6,10 +6,10 @@ date: 2026-08-02 16:00:00 +0800
 lang: en
 permalink: /en/posts/learning-seti-board-game/
 translation_key: post-202608021600
-translation_url: /posts/像读一篇随笔一样学会-SETI/
-translation_source: _posts/2026-08-02-像读一篇随笔一样学会SETI.md
+translation_url: /posts/SETI桌游规则-从摆桌到完成第一局/
+translation_source: _posts/2026-08-02-《SETI》桌游规则：从摆桌到完成第一局.md
 translation_status: current
-source_hash: d88ebcf24b36a5bfcf5c992360ab04938ce3bbf4f3e7a7a151a9e41383e04e22
+source_hash: 06f74384f1c3222fb619a4723fdc2d15cb5954ddf21c831bff7575f4f8b3ef31
 aliases: []
 categories:
 - Board Games
@@ -28,11 +28,11 @@ article_cover:
 excerpt: 'Learn the SETI base game in play order: set up the table, understand turns and actions, resolve each checkpoint, and score the game; then add Space Agencies, its three alien species, and all four official promo cards.'
 revisions:
 - date: '2026-08-02'
-  note: Initial draft
+  note: This article was written by GPT5.6 Sol
 - date: '2026-08-03'
   note: Rechecked the rules and images against the current official rulebook and FAQ, added Space Agencies and all four official promo cards, and reorganized the article for step-by-step learning at the table
 - date: '2026-08-04'
-  note: Tightened the prose, reordered the guide around actual play, and organized eight “Further Context” boxes around internal action chains with brief external context
+  note: Tightened the prose, reordered the guide around actual play, organized eight “Further Context” boxes around internal action chains, localized the Chinese tags, and clarified the conclusions on opportunity cost and comparative advantage; external context remains brief
 ---
 
 ## 1. Scope and How to Use This Guide
@@ -299,7 +299,7 @@ A hand card can be used in one of four ways:
 
 > **Further Context — Opportunity cost**
 >
-> [Opportunity cost](https://openstax.org/books/principles-economics-2e/pages/2-key-concepts-and-summary) is the best alternative forgone when one use is chosen. A card can enter four chains: its main effect, its discard free action, long-term income, or a two-card resource exchange. If its main effect grants another action, that action skips its base cost but keeps position requirements, technology surcharges, and any resulting mission, sector, and trace resolution.
+> [Opportunity cost](https://openstax.org/books/principles-economics-2e/pages/2-key-concepts-and-summary) is the value of the best alternative lost after choosing one use. A hand card normally enters one of four chains: its main effect, discard free action, income, or a two-card resource exchange. Compare the missions completed and the final return of each chain. Conclusion: keep a card for an immediate mission or an action unavailable elsewhere; use the remainder for income or the resource currently missing. If the main effect grants another action, that action skips its base cost but retains position requirements, technology surcharges, and subsequent mission, sector, and trace resolution.
 
 ![A display of SETI project cards, each containing a cost, effect, free action, and income area](/assets/posts/202608021600/project-cards.webp)
 
@@ -551,7 +551,7 @@ Do not collect organization income at the start of round 2. Collect it only at t
 
 > **Further Context — Specialization and comparative advantage**
 >
-> [Comparative advantage](https://openstax.org/books/principles-economics-2e/pages/33-key-concepts-and-summary) asks which output has the lower opportunity cost. An organization changes the cost or return of certain actions, while quick starts pre-place orbiters, signals, or traces. Evaluate the chain quick start → organization ability → main action → mission or milestone across one round; cards, species, and Solar System positions can still change the result.
+> [Comparative advantage](https://openstax.org/books/principles-economics-2e/pages/33-key-concepts-and-summary) asks which output has the lower opportunity cost. An organization makes a class of actions relatively cheaper by reducing costs, adding rewards, or changing resolution; a quick start supplies the chain's initial positions and components. Conclusion: repeat the chain your organization improves, but recompare current position → main action → mission or milestone each round. Cards, species, or Solar System positions may temporarily make another chain cheaper.
 
 For a first expansion game, use the official simplified setup. Use only organizations numbered 1–4; give each player 1 random organization, 2 quick starts, and 4 hand cards. Do not draft organizations or choose two of three quick starts.
 

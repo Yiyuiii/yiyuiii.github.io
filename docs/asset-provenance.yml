@@ -182,7 +182,7 @@ covers:
 
   - asset: "assets/posts/202608021600/cover-seti-official-square.webp"
     posts:
-      - "_posts/2026-08-02-像读一篇随笔一样学会SETI.md"
+      - "_posts/2026-08-02-《SETI》桌游规则：从摆桌到完成第一局.md"
       - "_posts/2026-08-02-learning-seti-board-game.md"
     origin_type: "external"
     source_url: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"

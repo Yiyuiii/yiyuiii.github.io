@@ -57,6 +57,9 @@
   policy: retained
 - path: /posts/大创造时代-资源-分值量化计算思路/
   policy: retained
+- path: /posts/像读一篇随笔一样学会-SETI/
+  policy: redirected
+  target: /posts/SETI桌游规则-从摆桌到完成第一局/
 
 - path: /tags/github/
   policy: retained
