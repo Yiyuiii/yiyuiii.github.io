@@ -9,7 +9,7 @@ reviewed_on: "2026-08-03"
 copy:
   zh:
     eyebrow: 萌娘百科条目猜猜
-    title: 根据线索，猜猜这是哪个条目？
+    title: 根据线索，猜猜这是什么？
     description: 看完线索，你能从四个条目中猜出答案吗？
     privacy: 点击开始后，本页只会向萌娘百科 API 请求一次，取得一批随机条目的纯文字导言与分类，再在浏览器本地筛选本题，并将线索中可识别的条目标题片段替换为 ⬛。萌娘百科可看到这次请求和你的 IP 地址；本站不使用 Cookie、持久化存储或跟踪，也不请求图片。
     start: 开始一题
@@ -17,7 +17,7 @@ copy:
     retry: 重试
     loading: 正在向萌娘百科随机发现本题候选……
     options_label: 候选条目
-    clue_label: 这是哪个条目？
+    clue_label: 这是什么？
     redaction: ⬛
     correct: 答对了！这是 {title}。
     incorrect: 没猜中；答案是 {title}。
@@ -30,7 +30,7 @@ copy:
     no_js: 此小玩意需要 JavaScript；未启用时不会连接萌娘百科。
   en:
     eyebrow: Moegirlpedia entry quiz
-    title: Which entry is this?
+    title: What is this?
     description: Read the Chinese clue and pick the matching entry.
     privacy: Starting a round makes one request to the Chinese Moegirlpedia API for a random batch of text introductions and categories. This page filters the round locally and replaces recognizable entry-title fragments in the Chinese clue with ⬛. Moegirlpedia can see the request and your IP address; this site uses no cookies, persistent storage, tracking, or images.
     start: Start a round
@@ -38,7 +38,7 @@ copy:
     retry: Try again
     loading: Discovering this round's candidates on Moegirlpedia…
     options_label: Candidate entries
-    clue_label: Which entry is this?
+    clue_label: What is this?
     redaction: ⬛
     correct: Correct! This is {title}.
     incorrect: Not quite; the answer is {title}.
