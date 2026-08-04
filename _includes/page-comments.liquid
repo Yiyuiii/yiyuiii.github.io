@@ -7,6 +7,8 @@
   {% assign giscus_lang = 'zh-CN' %}
 {% endif %}
 {% capture heading_id %}page-comments-title-{{ comments_lang }}{% endcapture %}
+{% capture auto_load_id %}page-comments-auto-load-{{ comments_lang }}{% endcapture %}
+{% capture auto_load_description_id %}page-comments-auto-load-description-{{ comments_lang }}{% endcapture %}
 
 <section
   class="page-shell page-comments"
@@ -26,6 +28,9 @@
   data-loading-text="{{ comments_text.loading | escape }}"
   data-retry-text="{{ comments_text.retry | escape }}"
   data-error-text="{{ comments_text.error | escape }}"
+  data-auto-load-enabled-text="{{ comments_text.auto_load_enabled | escape }}"
+  data-auto-load-disabled-text="{{ comments_text.auto_load_disabled | escape }}"
+  data-auto-load-unavailable-text="{{ comments_text.auto_load_unavailable | escape }}"
   aria-labelledby="{{ heading_id }}"
 >
   <h2 id="{{ heading_id }}">{{ comments_text.heading }}</h2>
@@ -39,6 +44,18 @@
   </p>
   <div class="page-comments__actions">
     <button type="button" data-comments-load hidden>{{ comments_text.load }}</button>
+    <div class="page-comments__auto-load" data-comments-auto-option hidden>
+      <input
+        id="{{ auto_load_id }}"
+        type="checkbox"
+        data-comments-auto-load
+        aria-describedby="{{ auto_load_description_id }}"
+      >
+      <span class="page-comments__auto-load-copy">
+        <label for="{{ auto_load_id }}" class="page-comments__auto-load-label">{{ comments_text.auto_load }}</label>
+        <span id="{{ auto_load_description_id }}" class="page-comments__auto-load-description">{{ comments_text.auto_load_description }}</span>
+      </span>
+    </div>
   </div>
   <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p>
   <div class="page-comments__thread" data-comments-thread hidden></div>
