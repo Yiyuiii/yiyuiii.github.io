@@ -9,7 +9,7 @@ translation_key: post-202302032000
 translation_url: /posts/逻辑对决桌游攻略/
 translation_source: _posts/2023-02-03-逻辑对决桌游攻略.md
 translation_status: current
-source_hash: 10d54c00b36ef4e39075838c0d45178605239e2d56c4750589f14fd53bee9bda
+source_hash: 5c948b86b4e404d0d46da6fb214f3901dc62d836eb8d6dfcb7ad223a50b0353d
 thumbnail: /assets/posts/202302032000/cover-bgg-7205453-square.webp
 article_cover:
   alt: Number tiles, screens, and deduction sheets from Break the Code
@@ -23,6 +23,7 @@ tags:
 from: null
 math: true
 excerpt: By February 2023, I had played nearly 500 games of Break the Code on BGA. This guide organizes the practical approach I had developed at the time around numerical deduction, the value of questions, and endgame offense and defense.
+description: Drawn from nearly 500 BGA games, this guide treats questions as candidate-set partitions and connects them to deduction, turn order, and endgame play, so the method transfers beyond fixed rankings.
 revisions:
 - date: '2023-02-03'
   note: Initial draft

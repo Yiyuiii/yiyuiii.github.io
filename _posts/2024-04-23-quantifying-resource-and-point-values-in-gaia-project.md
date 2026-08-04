@@ -9,7 +9,7 @@ translation_key: post-202404232233
 translation_url: /posts/盖亚计划-资源-分值量化计算思路/
 translation_source: _posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md
 translation_status: current
-source_hash: 790329f7bca09ac904b032d409b743b29691d99fcda211134ea40a3ec02525c8
+source_hash: c9500c7a03c435614956f65cb6e6521cb26bf8b389edaa0661eeed6cc0b07548
 aliases: []
 categories:
 - Board Games
@@ -24,6 +24,7 @@ article_cover:
   alt: An endgame Gaia Project map and scoring board
   caption: 'Cover image: [Game board Geodens vs Automa Firaks](https://boardgamegeek.com/image/5194524/gaia-project), image by BoardGameGeek user magic_erwt, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); square crop by this site.'
 excerpt: This article develops an approximate way to quantify the different resources in Gaia Project as value, providing a basic macroscopic reference for planning a player's development.
+description: An approximate common scale for credits, ore, knowledge, QIC, buildings, and endgame points, then checked against faction exceptions to give experience-based planning a reproducible baseline.
 ---
 
 ## Preface

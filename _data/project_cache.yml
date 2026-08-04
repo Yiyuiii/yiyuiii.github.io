@@ -1,66 +1,72 @@
 - repository: Yiyuiii/codex-cc-tools
   source:
     locale: en
-    path: README.md
-    object_id: 05ff726f7531d6bf5746b8522b17fdb0be86bdaf
-    description: Claude Code task tools for Codex via MCP.
+    field: description
+    source_url: https://api.github.com/repos/Yiyuiii/codex-cc-tools
+    content_hash: 36d97a9f0ee6477c264a7f889e6b350fb9b7df0a8b0a5921d474f4fa56dec19a
+    description: MCP tools for Codex to delegate implementation and request independent Claude Code reviews with explicit authority, provider routing, and structured results.
   translations:
     zh:
-      source_object_id: 05ff726f7531d6bf5746b8522b17fdb0be86bdaf
+      source_hash: 36d97a9f0ee6477c264a7f889e6b350fb9b7df0a8b0a5921d474f4fa56dec19a
       status: current
-      description: Codex 通过 MCP 调用的 Claude Code 任务工具。
+      description: 为 Codex 提供 MCP 任务工具：可委托 Claude Code 实现或发起独立审阅，并显式约束权限、模型来源与结构化结果。
 - repository: Yiyuiii/HDBO-B
   source:
     locale: en
-    path: README.md
-    object_id: 10ca0ce7c0132aa990a1ca833ea591fa018f7d79
-    description: HDBO-B, a generalized and unified benchmark for High Dimensional Bayesian Optimization, is including testing functions, example algorithms and more examples.
+    field: description
+    source_url: https://api.github.com/repos/Yiyuiii/HDBO-B
+    content_hash: 0dba8394fa038405b9b7e8b18c4ce89cb2032cfab8960a123135abcde7f6e99f
+    description: A unified benchmark for reproducible high-dimensional Bayesian optimization experiments, combining synthetic and realistic tasks with representative algorithm wrappers.
   translations:
     zh:
-      source_object_id: 10ca0ce7c0132aa990a1ca833ea591fa018f7d79
+      source_hash: 0dba8394fa038405b9b7e8b18c4ce89cb2032cfab8960a123135abcde7f6e99f
       status: current
-      description: HDBO-B 是一个通用、统一的高维贝叶斯优化基准，包含测试函数、示例算法及更多实例。
+      description: 统一的高维贝叶斯优化基准：汇集合成与真实任务、代表性算法封装，便于开展可复现的对比实验。
 - repository: Yiyuiii/nonebot-plugin-moegoe
   source:
     locale: zh
-    path: README.md
-    object_id: 1c0002ef4357082d85222a426f449bbe92432daa
-    description: 用API让原神角色说话！
+    field: description
+    source_url: https://api.github.com/repos/Yiyuiii/nonebot-plugin-moegoe
+    content_hash: 7d88c8ffd3e564d91e848dfa67aff6d9924d07b4925a0783b1274f03a0abb39d
+    description: 把角色语音合成 API 接入 NoneBot2：用聊天指令生成中、英、日、韩语音，并可配置角色、语速、语气与接口参数。
   translations:
     en:
-      source_object_id: 1c0002ef4357082d85222a426f449bbe92432daa
+      source_hash: 7d88c8ffd3e564d91e848dfa67aff6d9924d07b4925a0783b1274f03a0abb39d
       status: current
-      description: Use an API to make Genshin Impact characters speak!
+      description: A NoneBot2 plugin that turns chat commands into multilingual character voices through configurable speech-synthesis APIs and voice parameters.
 - repository: Yiyuiii/simple_asr_llm_tts
   source:
     locale: en
-    path: README.md
-    object_id: 2c7d6ccb5ba1958191560a3678a8dae10f2f94a0
-    description: A simple voice-to-voice LLM chat repo. All is free and light-weight.
+    field: description
+    source_url: https://api.github.com/repos/Yiyuiii/simple_asr_llm_tts
+    content_hash: b79c431aad6d7e8c5341acb1abd6d2c1ae0455ed8072bcdd8e12825e9f90bc6e
+    description: A lightweight voice-to-voice LLM demo connecting local SenseVoice ASR, an OpenAI-compatible chat API, and Edge TTS with free components.
   translations:
     zh:
-      source_object_id: 2c7d6ccb5ba1958191560a3678a8dae10f2f94a0
+      source_hash: b79c431aad6d7e8c5341acb1abd6d2c1ae0455ed8072bcdd8e12825e9f90bc6e
       status: current
-      description: 一个简单的端到端语音大模型聊天仓库；全部组件免费且轻量。
+      description: 轻量语音对话示例：用免费组件串联本地 SenseVoice 语音识别、OpenAI 兼容聊天接口与 Edge TTS。
 - repository: Yiyuiii/solver4turingmachine
   source:
     locale: en
-    path: README.md
-    object_id: c9aa1b8f5e0ea2df854054dd7d7bade2139c5ee6
-    description: 'This is a solver for the board game: Turing Machine.'
+    field: description
+    source_url: https://api.github.com/repos/Yiyuiii/solver4turingmachine
+    content_hash: 4112ed45e7e516134db8343c296fef6afd21055e8f132e9de1e9a5f730f6b9b8
+    description: A lightweight solver for Turing Machine puzzles that enumerates valid codes, searches the best three-verifier questioning plan, and estimates success.
   translations:
     zh:
-      source_object_id: c9aa1b8f5e0ea2df854054dd7d7bade2139c5ee6
+      source_hash: 4112ed45e7e516134db8343c296fef6afd21055e8f132e9de1e9a5f730f6b9b8
       status: current
-      description: 这是桌游《图灵机》的求解器。
+      description: 轻量《图灵机》谜题求解器：枚举有效密码，搜索三次验证的最佳提问方案，并估算成功率。
 - repository: Yiyuiii/taco
   source:
     locale: en
-    path: README.md
-    object_id: d7cd74ad8481414001e39fe89fc5bdc99ea7f93d
-    description: TACO extends the LLM-based Bayesian optimization framework LLAMBO with active cross-task transfer. At each BO round, a single LLM call simultaneously proposes target hyperparameter candidates and selects an auxiliary query, accumulating cross-task evidence that feeds back into subsequent rounds.
+    field: description
+    source_url: https://api.github.com/repos/Yiyuiii/taco
+    content_hash: 3280ab06b9fd83ebfd10add4e703dd6f6a609aaeb7150ab6b0cc4d4f786ae858
+    description: 'Zero-shot online cross-task transfer for LLM-based hyperparameter optimization: one LLM call per BO round proposes target candidates and selects an auxiliary query.'
   translations:
     zh:
-      source_object_id: d7cd74ad8481414001e39fe89fc5bdc99ea7f93d
+      source_hash: 3280ab06b9fd83ebfd10add4e703dd6f6a609aaeb7150ab6b0cc4d4f786ae858
       status: current
-      description: TACO 在基于大语言模型的贝叶斯优化框架 LLAMBO 上加入主动跨任务迁移。每轮贝叶斯优化只需一次大语言模型调用，即可同时提出目标超参数候选并选择辅助查询；累积的跨任务证据会反馈到后续轮次中。
+      description: 面向大语言模型超参数优化的零样本在线跨任务迁移：每轮只调用一次模型，同时提出目标候选并选择辅助查询。

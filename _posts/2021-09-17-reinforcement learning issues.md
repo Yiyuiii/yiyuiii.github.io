@@ -16,6 +16,8 @@ article_cover:
   caption: >-
     Cover diagram: [Reinforcement learning diagram](https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg) by Wikimedia Commons user Megajuice, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); square layout prepared for this site.
 excerpt: This article is about Reinforcement Learning issues. 
+description: >-
+  A learning checklist built around environments, state, rewards, replay, self-play, and evaluation without baselines, exposing design and validation steps that algorithm-first introductions often skip.
 ---
 
 This article takes notes of Reinforcement Learning issues I've seen. Continuously updated.

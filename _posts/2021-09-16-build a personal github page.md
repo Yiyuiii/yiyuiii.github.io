@@ -15,6 +15,8 @@ article_cover:
   caption: >-
     Cover: this site's Chinese writing index on 30 July 2026; screenshot and site content by the author.
 excerpt: This article is about my experience of how to successfully start a Personal GitHub website. 
+description: >-
+  A reproducible route through GitHub Pages, Jekyll, Ruby, theme setup, and common build failures, joining the pieces that scattered setup guides usually leave separate.
 ---
 
 This article is about my experience of how to successfully start a Personal GitHub website. 

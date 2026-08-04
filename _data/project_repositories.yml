@@ -5,7 +5,6 @@
     source_url: https://api.github.com/repos/Yiyuiii/codex-cc-tools
     source_field: created_at
   primary_locale: en
-  readmes: {en: README.md}
 - repository: Yiyuiii/HDBO-B
   created:
     date: '2023-05-30'
@@ -13,7 +12,6 @@
     source_url: https://api.github.com/repos/Yiyuiii/HDBO-B
     source_field: created_at
   primary_locale: en
-  readmes: {en: README.md}
 - repository: Yiyuiii/nonebot-plugin-moegoe
   created:
     date: '2022-08-20'
@@ -21,7 +19,6 @@
     source_url: https://api.github.com/repos/Yiyuiii/nonebot-plugin-moegoe
     source_field: created_at
   primary_locale: zh
-  readmes: {zh: README.md}
 - repository: Yiyuiii/simple_asr_llm_tts
   created:
     date: '2025-03-15'
@@ -29,7 +26,6 @@
     source_url: https://api.github.com/repos/Yiyuiii/simple_asr_llm_tts
     source_field: created_at
   primary_locale: en
-  readmes: {en: README.md}
 - repository: Yiyuiii/solver4turingmachine
   created:
     date: '2024-06-04'
@@ -37,7 +33,6 @@
     source_url: https://api.github.com/repos/Yiyuiii/solver4turingmachine
     source_field: created_at
   primary_locale: en
-  readmes: {en: README.md}
 - repository: Yiyuiii/taco
   created:
     date: '2026-04-15'
@@ -45,4 +40,3 @@
     source_url: https://api.github.com/repos/Yiyuiii/taco
     source_field: created_at
   primary_locale: en
-  readmes: {en: README.md}

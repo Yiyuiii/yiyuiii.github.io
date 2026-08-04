@@ -4,13 +4,12 @@
 from __future__ import annotations
 
 import argparse
-import base64
+import hashlib
 import json
 import os
 import socket
 import time
 import urllib.error
-import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from datetime import datetime
@@ -19,7 +18,6 @@ from typing import Callable, Mapping
 from zoneinfo import ZoneInfo
 
 import yaml
-from markdown_it import MarkdownIt
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,7 +40,7 @@ class RateLimitError(PublicRepositoryError):
 
 
 class StaleProjectCacheError(PublicRepositoryError):
-    """The committed README-derived content no longer matches GitHub."""
+    """The committed GitHub-derived content no longer matches GitHub."""
 
 
 @dataclass(frozen=True)
@@ -155,83 +153,19 @@ def request_json(
     )
 
 
-def _inline_text(token) -> tuple[str, int, int]:
-    parts: list[str] = []
-    link_count = 0
-    image_count = 0
-    for child in token.children or []:
-        if child.type == "link_open":
-            link_count += 1
-        elif child.type == "image":
-            image_count += 1
-        elif child.type in {"text", "code_inline", "softbreak", "hardbreak"}:
-            parts.append(" " if "break" in child.type else child.content)
-    return " ".join("".join(parts).split()), link_count, image_count
+def extract_repository_description(metadata: Mapping) -> str:
+    """Return the repository's authored GitHub description as normalized text."""
+
+    raw = metadata.get("description")
+    if not isinstance(raw, str) or not raw.strip():
+        raise PublicRepositoryError("repository description is missing")
+    return " ".join(raw.split())
 
 
-def _is_language_switch(text: str, link_count: int) -> bool:
-    if link_count == 0:
-        return False
-    simplified = text.lower()
-    for separator in ("|", "·", "/", "•", "—", "-"):
-        simplified = simplified.replace(separator, " ")
-    words = set(simplified.split())
-    language_words = {
-        "english",
-        "chinese",
-        "简体中文",
-        "繁體中文",
-        "中文",
-        "中文介绍",
-        "英文介绍",
-        "en",
-        "zh",
-        "readme",
-    }
-    return bool(words) and words <= language_words
+def repository_description_hash(description: str) -> str:
+    """Create the stable revision key used by localized descriptions."""
 
-
-def extract_description(markdown: str) -> str:
-    """Extract the first meaningful top-level README paragraph as plain text."""
-
-    tokens = MarkdownIt("commonmark").parse(markdown)
-    blockquote_depth = 0
-    top_level_candidates: list[str] = []
-    fallback_candidates: list[str] = []
-    for index, token in enumerate(tokens):
-        if token.type == "blockquote_open":
-            blockquote_depth += 1
-        elif token.type == "blockquote_close":
-            blockquote_depth -= 1
-        elif token.type == "paragraph_open":
-            inline = next(
-                (
-                    candidate
-                    for candidate in tokens[index + 1 :]
-                    if candidate.type in {"inline", "paragraph_close"}
-                ),
-                None,
-            )
-            if inline is None or inline.type != "inline":
-                continue
-            text, links, images = _inline_text(inline)
-            if not text or (images and not text.strip()):
-                continue
-            if _is_language_switch(text, links):
-                continue
-            if text.lower() in {"table of contents", "contents", "目录"}:
-                continue
-            if text.lower().startswith("official code repository for"):
-                continue
-            if blockquote_depth:
-                fallback_candidates.append(text)
-            else:
-                top_level_candidates.append(text)
-    if top_level_candidates:
-        return top_level_candidates[0]
-    if fallback_candidates:
-        return fallback_candidates[0]
-    raise PublicRepositoryError("README has no meaningful description paragraph")
+    return hashlib.sha256(description.encode("utf-8")).hexdigest()
 
 
 def validate_repository(metadata: Mapping) -> None:
@@ -253,10 +187,10 @@ def _valid_translations(
                     f"{cache_item['repository']} has stale translation {locale}"
                 )
             continue
-        if translation.get("source_object_id") != source["object_id"]:
+        if translation.get("source_hash") != source["content_hash"]:
             raise StaleProjectCacheError(
                 f"{cache_item['repository']} translation {locale} references "
-                f"{translation.get('source_object_id')}, expected {source['object_id']}"
+                f"{translation.get('source_hash')}, expected {source['content_hash']}"
             )
         descriptions[locale] = translation["description"]
     return descriptions
@@ -346,24 +280,6 @@ def merge_runtime(
     }
 
 
-def _readme_url(repository: str, path: str) -> str:
-    encoded_path = "/".join(
-        urllib.parse.quote(segment, safe="") for segment in path.split("/")
-    )
-    return f"{API_ROOT}/repos/{repository}/contents/{encoded_path}"
-
-
-def _decode_readme(payload: Mapping) -> str:
-    if payload.get("type") != "file":
-        raise PublicRepositoryError("configured README path is not a file")
-    if payload.get("encoding") != "base64":
-        raise PublicRepositoryError("GitHub README content is not base64 encoded")
-    try:
-        return base64.b64decode(payload["content"], validate=False).decode("utf-8")
-    except (KeyError, ValueError, UnicodeDecodeError) as error:
-        raise PublicRepositoryError(f"cannot decode README: {error}") from error
-
-
 def sync_records(
     allowlist: list[Mapping],
     cache: list[Mapping] | None,
@@ -382,53 +298,50 @@ def sync_records(
     for config in sorted(allowlist, key=lambda item: item["repository"].casefold()):
         repository = config["repository"]
         primary_locale = config["primary_locale"]
-        readme_path = config["readmes"][primary_locale]
+        source_url = f"{API_ROOT}/repos/{repository}"
         metadata = request_json(
-            f"{API_ROOT}/repos/{repository}",
+            source_url,
             token=token,
             transport=transport,
         )
         validate_repository(metadata)
         validate_created_marker(config, metadata)
-        readme_payload = request_json(
-            _readme_url(repository, readme_path),
-            token=token,
-            transport=transport,
-        )
-        object_id = readme_payload.get("sha")
-        if not object_id:
-            raise PublicRepositoryError(f"{repository} README has no Git object ID")
-        description = extract_description(_decode_readme(readme_payload))
+        description = extract_repository_description(metadata)
+        content_hash = repository_description_hash(description)
 
         old = cache_by_repository.get(repository)
         if old is None and not update_cache:
             raise StaleProjectCacheError(f"{repository} has no committed cache record")
 
-        if old:
+        if old and not update_cache:
             old_source = old["source"]
-            if old_source.get("path") != readme_path:
+            if old_source.get("field") != "description":
                 raise StaleProjectCacheError(
-                    f"{repository} cache path {old_source.get('path')} "
-                    f"does not match {readme_path}"
+                    f"{repository} cache source field is not description"
                 )
-            if old_source.get("object_id") != object_id and not update_cache:
+            if old_source.get("source_url") != source_url:
                 raise StaleProjectCacheError(
-                    f"{repository} README changed from "
-                    f"{old_source.get('object_id')} to {object_id}"
+                    f"{repository} cache source URL does not match GitHub"
+                )
+            if old_source.get("content_hash") != content_hash and not update_cache:
+                raise StaleProjectCacheError(
+                    f"{repository} description changed from "
+                    f"{old_source.get('content_hash')} to {content_hash}"
                 )
 
         if update_cache:
             translations = dict((old or {}).get("translations") or {})
-            old_object_id = (old or {}).get("source", {}).get("object_id")
-            if old_object_id and old_object_id != object_id:
+            old_content_hash = (old or {}).get("source", {}).get("content_hash")
+            if translations and old_content_hash != content_hash:
                 for translation in translations.values():
                     translation["status"] = "stale"
             cache_item = {
                 "repository": repository,
                 "source": {
                     "locale": primary_locale,
-                    "path": readme_path,
-                    "object_id": object_id,
+                    "field": "description",
+                    "source_url": source_url,
+                    "content_hash": content_hash,
                     "description": description,
                 },
             }
@@ -475,7 +388,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--update-cache",
         action="store_true",
-        help="refresh README-derived cache and mark translations stale when needed",
+        help="refresh GitHub-description cache and mark translations stale when needed",
     )
     parser.add_argument(
         "--no-production",

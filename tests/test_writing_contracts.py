@@ -123,6 +123,22 @@ def test_every_post_has_a_nonempty_authored_excerpt():
     ), excerpts
 
 
+def test_every_post_has_a_concise_authored_value_description():
+    posts = sorted((ROOT / "_posts").glob("*.md"))
+
+    for path in posts:
+        data = frontmatter(path)
+        description = data.get("description")
+        assert isinstance(description, str) and description.strip(), path
+        assert description == description.strip(), path
+        assert "\n" not in description, path
+        assert description != data["excerpt"], path
+        limit = 100 if data["lang"] == "zh" else 200
+        assert len(description) <= limit, (
+            f"{path.name} index description exceeds {limit} characters"
+        )
+
+
 def test_writing_index_uses_complete_summaries_and_real_tags():
     include = text("_includes/post-list.liquid")
     responsive_thumbnail = text("_includes/responsive-thumbnail.liquid")

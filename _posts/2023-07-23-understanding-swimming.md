@@ -9,7 +9,7 @@ translation_key: post-202307232000
 translation_url: /posts/了解游泳/
 translation_source: _posts/2023-07-23-了解游泳.md
 translation_status: current
-source_hash: 45ef19a36c66ef2f9aa47306b6db8d370f770e112a37ad62c9fdfeb018daf400
+source_hash: e5b38d63bd188a42b1356892248d702e29bfe8dda112fa53a2d7287ffa8e2962
 aliases: []
 categories:
 - Swimming
@@ -23,6 +23,7 @@ article_cover:
   alt: Breaststroke practice in a regular swimming pool
   caption: 'Cover: [Swimming.breaststroke.arp.750pix](https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg), photograph by Adrian Pingstone, Public domain; cropped to a square for this site.'
 excerpt: After several months of teaching myself to swim, I progressed from fearing the water and struggling to float or breathe to swimming 50 metres of breaststroke with reasonable speed. This essay gathers the lessons, mistakes, instructional resources, and practical impressions from that process into a beginner's route into swimming.
+description: A step-by-step route from fear of water to a 50-metre breaststroke, covering safety, equipment, buoyancy, breathing, and drills in an order that is easier to revisit than scattered videos.
 ---
 
 ## 0 Preface
