@@ -922,7 +922,7 @@ test("publication recognition wraps without horizontal overflow at 320px", async
   }
 });
 
-test("article desktop left rail stays fixed through comments and readable while article controls work", async ({
+test("article desktop left rail stays sticky through comments without crossing page boundaries", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1536, height: 900 });
@@ -945,16 +945,25 @@ test("article desktop left rail stays fixed through comments and readable while 
     const articleBox = article.getBoundingClientRect();
     return {
       railPosition: getComputedStyle(rail).position,
+      railTop: railBox.top,
       railRight: railBox.right,
       articleLeft: articleBox.left,
+      headerBottom: document
+        .querySelector(".site-header")
+        .getBoundingClientRect().bottom,
+      commentsShareShell:
+        document.querySelector("[data-page-comments]")?.parentElement ===
+        document.querySelector(".article-shell"),
       h2FontSize: Number.parseFloat(getComputedStyle(h2Link).fontSize),
       h3FontSize: Number.parseFloat(getComputedStyle(h3Link).fontSize),
       htmlOverflowY: getComputedStyle(document.documentElement).overflowY,
       bodyOverflowY: getComputedStyle(document.body).overflowY,
     };
   });
-  expect(desktopRail.railPosition).toBe("fixed");
+  expect(desktopRail.railPosition).toBe("sticky");
+  expect(desktopRail.railTop).toBeGreaterThanOrEqual(desktopRail.headerBottom);
   expect(desktopRail.railRight).toBeLessThan(desktopRail.articleLeft);
+  expect(desktopRail.commentsShareShell).toBe(true);
   expect(desktopRail.h2FontSize).toBeGreaterThanOrEqual(13.5);
   expect(desktopRail.h3FontSize).toBeGreaterThanOrEqual(12.5);
   expect(desktopRail.htmlOverflowY).toBe("visible");
@@ -1044,7 +1053,14 @@ test("article desktop left rail stays fixed through comments and readable while 
   expect(readingWidth.centerDelta).toBeLessThanOrEqual(1);
   expect(readingWidth.overflow).toBe(false);
 
-  await page.locator("[data-page-comments]").scrollIntoViewIfNeeded();
+  await page.locator("[data-comments-thread]").evaluate((node) => {
+    node.hidden = false;
+    node.style.minHeight = "1200px";
+  });
+  await page.locator("[data-page-comments]").evaluate((node) => {
+    const documentTop = node.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, documentTop + 200);
+  });
   await expect
     .poll(() =>
       page
@@ -1053,6 +1069,18 @@ test("article desktop left rail stays fixed through comments and readable while 
     )
     .toBe(fixedTop);
   await expect(page.locator(".article-side-toc")).toBeVisible();
+
+  await page.evaluate(() =>
+    window.scrollTo(0, document.documentElement.scrollHeight),
+  );
+  const pageBoundary = await page.evaluate(() => {
+    const rail = document
+      .querySelector(".article-side-toc")
+      .getBoundingClientRect();
+    const footer = document.querySelector(".site-footer").getBoundingClientRect();
+    return { railBottom: rail.bottom, footerTop: footer.top };
+  });
+  expect(pageBoundary.railBottom).toBeLessThanOrEqual(pageBoundary.footerTop + 1);
 });
 
 test("Chinese figure captions use upright hierarchy while English captions keep their language style", async ({

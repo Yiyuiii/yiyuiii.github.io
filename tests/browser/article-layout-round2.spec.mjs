@@ -29,7 +29,7 @@ test("1280px articles use the inline disclosure instead of the side rail", async
 });
 
 for (const width of [1536, 1920]) {
-  test(`${width}px articles use a non-overlapping fixed left rail through comments`, async ({
+  test(`${width}px articles use a bounded sticky left rail through comments`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -54,22 +54,30 @@ for (const width of [1536, 1920]) {
       return {
         shellDisplay: getComputedStyle(shell).display,
         railPosition: getComputedStyle(rail).position,
+        railTop: railBox.top,
         railWidth: railBox.width,
         gap: columnBox.left - railBox.right,
         columnWidth: columnBox.width,
         proseWidth: prose.getBoundingClientRect().width,
+        headerBottom: document
+          .querySelector(".site-header")
+          .getBoundingClientRect().bottom,
+        commentsShareShell:
+          document.querySelector("[data-page-comments]")?.parentElement === shell,
         pageOverflows: document.documentElement.scrollWidth > innerWidth,
       };
     });
 
     expect(geometry.shellDisplay).toBe("grid");
-    expect(geometry.railPosition).toBe("fixed");
+    expect(geometry.railPosition).toBe("sticky");
+    expect(geometry.railTop).toBeGreaterThanOrEqual(geometry.headerBottom);
     expect(geometry.railWidth).toBeGreaterThanOrEqual(207);
     expect(geometry.railWidth).toBeLessThanOrEqual(209);
     expect(geometry.gap).toBeGreaterThanOrEqual(31);
     expect(geometry.columnWidth).toBeGreaterThanOrEqual(1150);
     expect(geometry.proseWidth).toBeGreaterThanOrEqual(798);
     expect(geometry.proseWidth).toBeLessThanOrEqual(802);
+    expect(geometry.commentsShareShell).toBe(true);
     expect(geometry.pageOverflows).toBe(false);
 
     await page.evaluate(() => window.scrollTo(0, 900));
@@ -79,12 +87,31 @@ for (const width of [1536, 1920]) {
       )
       .toBe(24);
 
-    await page.locator("[data-page-comments]").scrollIntoViewIfNeeded();
+    await page.locator("[data-comments-thread]").evaluate((node) => {
+      node.hidden = false;
+      node.style.minHeight = "1200px";
+    });
+    await page.locator("[data-page-comments]").evaluate((node) => {
+      const documentTop = node.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo(0, documentTop + 200);
+    });
     await expect
       .poll(() =>
         sideToc.evaluate((node) => Math.round(node.getBoundingClientRect().top)),
       )
       .toBe(24);
+
+    await page.evaluate(() =>
+      window.scrollTo(0, document.documentElement.scrollHeight),
+    );
+    const lowerBoundary = await page.evaluate(() => {
+      const rail = document
+        .querySelector(".article-side-toc")
+        .getBoundingClientRect();
+      const footer = document.querySelector(".site-footer").getBoundingClientRect();
+      return { railBottom: rail.bottom, footerTop: footer.top };
+    });
+    expect(lowerBoundary.railBottom).toBeLessThanOrEqual(lowerBoundary.footerTop + 1);
   });
 }
 

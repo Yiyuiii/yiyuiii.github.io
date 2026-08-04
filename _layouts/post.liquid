@@ -10,8 +10,8 @@ layout: default
 {% if article_toc_markup contains '<li' %}
   {% assign has_article_toc = true %}
 {% endif %}
-<article class="article-shell">
-  <div class="article-column">
+<div class="article-shell">
+  <article class="article-column">
     <header class="article-header">
       <h1>{{ page.title }}</h1>
       <div class="article-meta">
@@ -87,7 +87,7 @@ layout: default
     <div class="post-content" id="markdown-content">
       {{ content }}
     </div>
-  </div>
+  </article>
 
   {% if has_article_toc %}
     <aside class="article-side-toc">
@@ -96,7 +96,11 @@ layout: default
       </nav>
     </aside>
   {% endif %}
-</article>
+
+  {% unless page.redirect %}
+    {% include page-comments.liquid lang=lang_key %}
+  {% endunless %}
+</div>
 
 {% if has_article_toc %}
   <script src="{{ '/assets/js/article-navigation.js' | relative_url | bust_file_cache }}" defer></script>

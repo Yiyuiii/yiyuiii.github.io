@@ -1512,7 +1512,6 @@ html:lang(en) .article-header h1 {
   --article-wide-width: 72rem;
   --article-toc-width: 13rem;
   --article-toc-gap: 2rem;
-  --article-layout-half-width: 43.5rem;
 
   width: min(100%, var(--article-wide-width));
   max-width: var(--article-wide-width);
@@ -2141,6 +2140,7 @@ html[data-theme="dark"] .highlight .gu {
 
   .article-column {
     grid-column: 2;
+    grid-row: 1;
   }
 
   .article-inline-toc {
@@ -2150,19 +2150,23 @@ html[data-theme="dark"] .highlight .gu {
   .article-side-toc {
     display: block;
     grid-column: 1;
-    grid-row: 1;
+    grid-row: 1 / span 2;
     min-width: 0;
     max-height: calc(100vh - 3rem);
     padding: 0.1rem 1rem 0.1rem 0.2rem;
     overflow-y: auto;
     border-right: 1px solid var(--divider);
-    position: fixed;
+    align-self: start;
+    position: sticky;
     top: 1.5rem;
-    left: max(1rem, calc(50% - var(--article-layout-half-width)));
-    width: var(--article-toc-width);
     background: transparent;
     overscroll-behavior: contain;
     scrollbar-width: thin;
+  }
+
+  .article-shell > .page-comments {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   .article-side-toc nav {

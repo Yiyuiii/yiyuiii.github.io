@@ -98,11 +98,20 @@ def test_comment_include_is_static_until_the_reader_explicitly_loads_it():
 
 def test_default_layout_uses_comments_as_the_only_post_content_module():
     layout = text("_layouts/default.liquid")
+    post_layout = text("_layouts/post.liquid")
     not_found = text("_layouts/not-found.liquid")
 
     assert layout.count("include page-comments.liquid") == 1
+    assert post_layout.count("include page-comments.liquid") == 1
     assert layout.count("assets/js/page-comments.js") == 1
     assert "{% unless page.redirect %}" in layout
+    assert "{% unless page.layout == 'post' %}" in layout
+    assert post_layout.index("</article>") < post_layout.index(
+        "include page-comments.liquid"
+    )
+    assert post_layout.index("include page-comments.liquid") < post_layout.rindex(
+        "</div>"
+    )
     assert "include page-feedback.liquid" not in layout
     assert layout.index("include page-comments.liquid") < layout.index("include footer.liquid")
     assert "include page-comments.liquid" not in not_found
