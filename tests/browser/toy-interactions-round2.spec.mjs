@@ -139,6 +139,65 @@ test("color challenge scores negative answers and advances by a three-question m
   await finishAudit();
 });
 
+test("color challenge applies typed hue and fixed-level settings as a new local game", async ({
+  page,
+}) => {
+  await page.goto("/toys/");
+  await openToy(page, "color-challenge");
+  const finishAudit = await beginLocalOnlyAudit(page);
+  const root = page.locator("[data-toy-color-challenge]");
+  const settings = root.locator("[data-color-settings]");
+
+  await clickMatchingColor(page);
+  await expect(root.locator("[data-color-score]")).toHaveText("-1");
+  await settings.locator(":scope > summary").click();
+  await settings.locator('[data-color-preset="hue"]').click();
+  await settings.locator('[data-color-hue-scope][value="custom"]').check();
+  for (const sector of await settings.locator("[data-color-hue-sector]").all()) {
+    await sector.uncheck();
+  }
+  await settings.locator('[data-color-hue-sector][value="4"]').check();
+  await settings.locator('[data-color-progression][value="fixed"]').check();
+  await settings.locator("[data-color-fixed-level]").fill("12");
+  await settings.locator("[data-color-apply]").click();
+
+  await expect(settings).not.toHaveAttribute("open", "");
+  await expect(settings.locator("[data-color-settings-summary]")).toHaveText(
+    "色相 · 1 段色相 · 固定 12/25",
+  );
+  await expect(root).toHaveAttribute("data-mode", "fixed");
+  await expect(root).toHaveAttribute("data-variation", "hue");
+  await expect(root).toHaveAttribute("data-difficulty", "11");
+  await expect(root.locator("[data-color-score]")).toHaveText("0");
+
+  await finishAudit();
+});
+
+test("color challenge settings remain touchable without horizontal overflow at 320px", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/toys/");
+  await openToy(page, "color-challenge");
+  const root = page.locator("[data-toy-color-challenge]");
+  const settings = root.locator("[data-color-settings]");
+  await settings.locator(":scope > summary").click();
+  await settings.locator('[data-color-hue-scope][value="custom"]').check();
+
+  const metrics = await page.evaluate(() => {
+    const labels = [...document.querySelectorAll("[data-color-custom-hues] label")];
+    const hueGrid = document.querySelector("[data-color-custom-hues]");
+    return {
+      columns: getComputedStyle(hueGrid).gridTemplateColumns.split(" ").length,
+      minimumHueHeight: Math.min(...labels.map((label) => label.getBoundingClientRect().height)),
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    };
+  });
+  expect(metrics.columns).toBe(2);
+  expect(metrics.minimumHueHeight).toBeGreaterThanOrEqual(44);
+  expect(metrics.overflow).toBeLessThanOrEqual(0);
+});
+
 test("ten-second estimate supports start, stop, restart, and fold cancellation", async ({
   page,
 }) => {

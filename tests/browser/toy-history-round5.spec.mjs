@@ -157,12 +157,12 @@ test("malformed saved history is replaced by the next valid completion", async (
   expect(saved.samples).toHaveLength(1);
 });
 
-test("browser color rendering preserves both digital endpoints", async ({ page }) => {
+test("browser color rendering preserves quantized typed endpoints", async ({ page }) => {
   await page.goto("/toys/");
   const endpoints = await page.evaluate(() => {
     const logic = globalThis.yiyuiiiToyColorChallengeLogic;
-    const sample = (level) => {
-      const pair = logic.verifiedFallback(level);
+    const sample = (variation, level) => {
+      const pair = logic.verifiedFallback(variation, level, 3, false);
       const canvas = document.createElement("canvas");
       canvas.width = 2;
       canvas.height = 1;
@@ -172,13 +172,25 @@ test("browser color rendering preserves both digital endpoints", async ({ page }
       context.fillStyle = `rgb(${pair.oddRgb.join(" ")})`;
       context.fillRect(1, 0, 1, 1);
       const pixels = [...context.getImageData(0, 0, 2, 1).data];
-      return [pixels.slice(0, 3), pixels.slice(4, 7)];
+      return {
+        expected: [pair.normalRgb, pair.oddRgb],
+        matches: logic.pairMatchesLevel(
+          variation,
+          level,
+          pair.normalRgb,
+          pair.oddRgb,
+          { hueSector: 3, neutral: false },
+        ),
+        pixels: [pixels.slice(0, 3), pixels.slice(4, 7)],
+      };
     };
-    return { easiest: sample(logic.LEVEL_MIN), hardest: sample(logic.LEVEL_MAX) };
+    return logic.VARIATIONS.flatMap((variation) => [
+      sample(variation, logic.LEVEL_MIN),
+      sample(variation, logic.LEVEL_MAX),
+    ]);
   });
-  expect(endpoints.easiest).toEqual([[0, 0, 0], [255, 255, 255]]);
-  const differences = endpoints.hardest[0].map(
-    (value, index) => Math.abs(value - endpoints.hardest[1][index]),
-  );
-  expect(differences.filter(Boolean)).toEqual([1]);
+  for (const endpoint of endpoints) {
+    expect(endpoint.matches).toBe(true);
+    expect(endpoint.pixels).toEqual(endpoint.expected);
+  }
 });
