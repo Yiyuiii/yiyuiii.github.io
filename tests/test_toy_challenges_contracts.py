@@ -45,6 +45,9 @@ def test_codebreaker_is_strict_local_and_keeps_leading_zeroes():
     assert "每个匹配数字只会计入一类" in include
     assert "完全命中" in include
     assert "仅数字命中" in include
+    assert "重置题目" in include
+    assert "Reset puzzle" in include
+    assert "换一个答案" not in include
     assert "位置正确 {exact}" not in include
     assert "数字正确 {misplaced}" not in include
     assert "candidateCount" in script

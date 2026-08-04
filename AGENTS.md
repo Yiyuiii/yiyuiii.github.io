@@ -73,6 +73,8 @@ python scripts/run_browser_tests.py --site _site
 - 随机生成器：docs/toy-generators.md
 - 小玩意扩充路线：docs/toy-expansion-roadmap-2026-08-04.md
 - 数字 Wordle：docs/toy-codebreaker.md
+- 凑成 24：docs/toy-make-24.md
+- 翻灯：docs/toy-lights-out.md
 - MathJax 同源资产：docs/mathjax-localization.md
 - 性能与语义标题基线：docs/experience-quality-baseline-2026-08-03.md
 - 内容体验集中优化：docs/superpowers/plans/2026-08-03-content-experience-round5.md
