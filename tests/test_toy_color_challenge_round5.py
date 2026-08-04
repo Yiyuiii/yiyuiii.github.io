@@ -57,8 +57,12 @@ def test_color_challenge_runtime_has_the_required_levels_and_endpoints():
     script = SCRIPT.read_text(encoding="utf-8")
     assert "const LEVEL_COUNT = 25" in script
     assert "const START_LEVEL = 8" in script
+    assert "const MID_LIGHTNESS_MIN = 0.52" in script
+    assert "const MID_LIGHTNESS_MAX = 0.68" in script
     assert "normalRgb: Object.freeze([0, 0, 0])" in script
     assert "oddRgb: Object.freeze([255, 255, 255])" in script
+    assert "normalRgb: Object.freeze([128, 128, 128])" in script
+    assert "randomApi.intInclusive(112, 152)" in script
     assert "randomApi.pick([0, 2])" in script
     assert "Math.max(...channelDifferences) === 1" in script
     assert "level <= 19" in script

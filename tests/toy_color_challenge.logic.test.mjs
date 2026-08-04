@@ -37,6 +37,8 @@ test("the difficulty curve has 25 monotone perceptual targets and starts at leve
   assert.equal(logic.LEVEL_MIN, 0);
   assert.equal(logic.LEVEL_MAX, 24);
   assert.equal(logic.START_LEVEL, 8);
+  assert.equal(logic.MID_LIGHTNESS_MIN, 0.52);
+  assert.equal(logic.MID_LIGHTNESS_MAX, 0.68);
   assert.equal(logic.TARGETS.length, 25);
   assert.ok(Math.abs(logic.TARGETS[0] - 1) < 1e-12);
   assert.ok(Math.abs(logic.TARGETS[24] - 0.0014) < 1e-12);
@@ -59,6 +61,11 @@ test("every level has a verified integer RGB fallback inside its contract", () =
     assert.equal(logic.pairMatchesLevel(level, pair.normalRgb, pair.oddRgb), true, `level ${level}`);
     for (const value of [...pair.normalRgb, ...pair.oddRgb]) {
       assert.ok(Number.isInteger(value) && value >= 0 && value <= 255);
+    }
+    if (level !== logic.LEVEL_MIN) {
+      const midpoint = logic.pairMidpointLightness(pair.normalRgb, pair.oddRgb);
+      assert.ok(midpoint >= logic.MID_LIGHTNESS_MIN, `level ${level} fallback is too dark`);
+      assert.ok(midpoint <= logic.MID_LIGHTNESS_MAX, `level ${level} fallback is too light`);
     }
   }
 });
@@ -90,7 +97,19 @@ test("the hardest endpoint is reproducibly one red or blue code apart", () => {
       round.normalRgb,
       round.oddRgb,
     ), true);
+    for (const value of [...round.normalRgb, ...round.oddRgb]) {
+      assert.ok(value >= 111 && value <= 153);
+    }
+    assert.ok(logic.pairMidpointLightness(round.normalRgb, round.oddRgb)
+      >= logic.MID_LIGHTNESS_MIN);
+    assert.ok(logic.pairMidpointLightness(round.normalRgb, round.oddRgb)
+      <= logic.MID_LIGHTNESS_MAX);
   }
+});
+
+test("near-black and near-white pairs cannot pass an intermediate level", () => {
+  assert.equal(logic.pairMatchesLevel(8, [0, 0, 0], [5, 5, 5]), false);
+  assert.equal(logic.pairMatchesLevel(8, [250, 250, 250], [255, 255, 255]), false);
 });
 
 test("generated intermediate rounds are quantized and remain within their perceptual bands", () => {
@@ -102,6 +121,9 @@ test("generated intermediate rounds are quantized and remain within their percep
       assert.match(round.normalColor, /^rgb\(\d+ \d+ \d+\)$/);
       assert.match(round.oddColor, /^rgb\(\d+ \d+ \d+\)$/);
       assert.equal(logic.pairMatchesLevel(level, round.normalRgb, round.oddRgb), true);
+      const midpoint = logic.pairMidpointLightness(round.normalRgb, round.oddRgb);
+      assert.ok(midpoint >= logic.MID_LIGHTNESS_MIN, `level ${level} is too dark`);
+      assert.ok(midpoint <= logic.MID_LIGHTNESS_MAX, `level ${level} is too light`);
       assert.ok(Math.abs(
         round.actualDelta - logic.rgbDistance(round.normalRgb, round.oddRgb),
       ) < 1e-12);
