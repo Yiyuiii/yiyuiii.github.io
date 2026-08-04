@@ -51,6 +51,11 @@ def test_comment_copy_is_complete_parallel_and_explicit_about_public_loading():
         "direct_link",
         "introduction_after",
         "load",
+        "auto_load",
+        "auto_load_description",
+        "auto_load_enabled",
+        "auto_load_disabled",
+        "auto_load_unavailable",
         "loading",
         "retry",
         "error",
@@ -69,6 +74,10 @@ def test_comment_include_is_static_until_the_reader_explicitly_loads_it():
     assert include.count("data-page-comments") == 1
     assert "site.data.site_text[comments_lang].comments" in include
     assert "data-comments-load hidden" in include
+    assert "data-comments-auto-option hidden" in include
+    assert "data-comments-auto-load" in include
+    assert 'aria-describedby="{{ auto_load_description_id }}"' in include
+    assert 'for="{{ auto_load_id }}"' in include
     assert "data-comments-thread hidden" in include
     assert "data-giscus-lang=\"{{ giscus_lang }}\"" in include
     assert "site.giscus.repo_id" in include
@@ -107,12 +116,20 @@ def test_retired_page_feedback_module_has_no_dead_site_copy_or_include():
     assert not (ROOT / "_includes/page-feedback.liquid").exists()
 
 
-def test_comment_loader_uses_one_click_giscus_config_retry_and_theme_sync():
+def test_comment_loader_uses_explicit_minimal_auto_load_preference_and_theme_sync():
     script = text("assets/js/page-comments.js")
 
     assert 'const GISCUS_ORIGIN = "https://giscus.app"' in script
+    assert 'const AUTO_LOAD_STORAGE_KEY = "yiyuiii.comments.v1"' in script
+    assert 'const AUTO_LOAD_STORAGE_VALUE = "auto"' in script
     assert 'script.src = `${GISCUS_ORIGIN}/client.js`' in script
     assert 'button.addEventListener("click", load)' in script
+    assert 'autoLoad.addEventListener("change"' in script
+    assert 'localStorage.getItem(AUTO_LOAD_STORAGE_KEY)' in script
+    assert 'localStorage.setItem(AUTO_LOAD_STORAGE_KEY, AUTO_LOAD_STORAGE_VALUE)' in script
+    assert 'localStorage.removeItem(AUTO_LOAD_STORAGE_KEY)' in script
+    assert 'window.addEventListener("storage"' in script
+    assert "if (autoLoad.checked) load();" in script
     assert 'root.dataset.state === "loading"' in script
     assert 'root.dataset.state === "loaded"' in script
     assert 'script.addEventListener("error"' in script
@@ -121,7 +138,7 @@ def test_comment_loader_uses_one_click_giscus_config_retry_and_theme_sync():
     assert 'script.dataset.lang = root.dataset.giscusLang' in script
     assert 'script.dataset.mapping = root.dataset.mapping' in script
     assert "fetch(" not in script.lower()
-    assert "localstorage" not in script.lower()
+    assert "sessionstorage" not in script.lower()
     assert "document.cookie" not in script.lower()
 
 

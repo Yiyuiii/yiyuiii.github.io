@@ -1203,7 +1203,7 @@ html:lang(en) .article-header h1 {
 .page-comments__actions {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.7rem 1rem;
   margin-top: 0.9rem;
 }
@@ -1233,6 +1233,53 @@ html:lang(en) .article-header h1 {
 [data-comments-load]:disabled {
   cursor: wait;
   opacity: 0.65;
+}
+
+.page-comments__auto-load {
+  display: inline-flex;
+  flex: 1 1 19rem;
+  align-items: flex-start;
+  gap: 0.52rem;
+  max-width: 34rem;
+  padding-top: 0.28rem;
+  color: var(--muted);
+}
+
+.page-comments__auto-load[hidden] {
+  display: none;
+}
+
+.page-comments__auto-load input {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin: 0.14rem 0 0;
+  accent-color: var(--amethyst);
+  cursor: pointer;
+}
+
+.page-comments__auto-load input:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--focus) 72%, white);
+  outline-offset: 3px;
+}
+
+.page-comments__auto-load-copy {
+  display: grid;
+  gap: 0.08rem;
+  min-width: 0;
+}
+
+.page-comments__auto-load-label {
+  color: var(--ink);
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.page-comments__auto-load-description {
+  font-size: 0.76rem;
+  line-height: 1.55;
 }
 
 [data-comments-direct] {

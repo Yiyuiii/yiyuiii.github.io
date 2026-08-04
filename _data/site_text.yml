@@ -43,8 +43,13 @@ zh:
     heading: 评论
     introduction_before: 评论公开保存在
     direct_link: GitHub Discussions
-    introduction_after: 。只有在你选择显示评论后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。
+    introduction_after: 。只有在你手动显示评论或开启自动加载后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。
     load: 显示评论（首次约 0.13 MB）
+    auto_load: 自动加载评论
+    auto_load_description: 开启后，今后访问本站页面时会自动连接 giscus.app 与 GitHub，并发送当前页面路径。
+    auto_load_enabled: 已开启自动加载评论。
+    auto_load_disabled: 已关闭自动加载评论。
+    auto_load_unavailable: 浏览器无法保存自动加载设置；你仍可手动显示评论。
     loading: 正在加载评论……
     retry: 重新加载
     error: 评论暂时无法加载；你可以重试，或使用上方 GitHub Discussions 链接。
@@ -128,8 +133,13 @@ en:
     heading: Comments
     introduction_before: Comments are public and stored in
     direct_link: GitHub Discussions
-    introduction_after: . This page connects to giscus.app and GitHub and sends the current page path only after you choose to show them. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information.
+    introduction_after: . This page connects to giscus.app and GitHub and sends the current page path only after you show comments manually or enable automatic loading. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information.
     load: Show comments (~0.13 MB first load)
+    auto_load: Auto-load comments
+    auto_load_description: When enabled, future pages automatically connect to giscus.app and GitHub and send the current page path.
+    auto_load_enabled: Automatic comment loading is on.
+    auto_load_disabled: Automatic comment loading is off.
+    auto_load_unavailable: Your browser could not save this setting. You can still show comments manually.
     loading: Loading comments…
     retry: Try again
     error: Comments could not be loaded. Try again, or use the GitHub Discussions link above.

@@ -467,13 +467,15 @@ recognition:
 
 ### 页面评论维护
 
-默认布局在正文之后只渲染 `_includes/page-comments.liquid`。评论由 `assets/js/page-comments.js` 渐进增强，只有读者点击当前语言的“显示评论”按钮后才注入 `https://giscus.app/client.js`。不要把 Giscus 的远程脚本或 iframe 直接写入 Liquid，也不要改成页面打开即加载。此前的全站页面反馈组件、Issue 与邮件提示已经移除；仓库仍保留 `.github/ISSUE_TEMPLATE/page-feedback.yml` 供直接进入 GitHub Issues 的用户使用，但站内不再渲染或链接它。
+默认布局在正文之后只渲染 `_includes/page-comments.liquid`。评论由 `assets/js/page-comments.js` 渐进增强：默认情况下，只有读者点击当前语言的“显示评论”按钮后才注入 `https://giscus.app/client.js`；普通显示只作用于当前页面，不会被解释为长期同意。读者明确勾选“自动加载评论”后，当前页面立即加载，并在今后访问正式页面时自动加载。不要把 Giscus 的远程脚本或 iframe 直接写入 Liquid，也不要绕过这一显式选择直接为默认用户加载。此前的全站页面反馈组件、Issue 与邮件提示已经移除；仓库仍保留 `.github/ISSUE_TEMPLATE/page-feedback.yml` 供直接进入 GitHub Issues 的用户使用，但站内不再渲染或链接它。
 
 评论仓库、仓库 Node ID、分类、分类 Node ID、严格路径映射和主题名集中在 `_config.yml` 的 `giscus`。当前使用 `Yiyuiii/yiyuiii.github.io` 的 `Announcements` 公告分类；中英文 URL 按 `pathname` 分别形成讨论。页面说明、加载、重试、错误和 Discussions 链接文案只维护 `_data/site_text.yml` 的 `comments` 中英文平行字段；Discussions 链接嵌在“评论公开保存在……”说明句中，不另设一行操作入口。`_includes/bilingual-seo.liquid` 输出正式 canonical backlink，避免本地预览生成的讨论回链到 loopback 地址。
 
 根目录 `giscus.json` 只允许 `https://yiyuiii.github.io` 以及带任意端口的 `localhost` / `127.0.0.1` 预览来源，并固定评论按最早在前排列。扩展来源前必须确认确有站点部署需要；不要添加通配公网来源。仓库侧必须保持 Discussions 开启，并确认 Giscus GitHub App 只授权本仓库。若以后需要用 `Announcements` 发布真正公告，再新建专用的 `Comments` 公告分类、更新 `_config.yml` 的分类名称与 Node ID，并同时更新契约测试。
 
-重定向兼容页和 404 不渲染评论。评论脚本必须继续监听 `yiyuiii:themechange`，通过 Giscus 官方 `setConfig` 消息同步明暗主题；明亮和夜晚分别使用 Giscus 官方 `light`、`dark` 主题，官方署名保留在上游组件的原生位置。不要通过自定义 Giscus 主题依赖 iframe 内部 DOM、隐藏或重排官方署名，也不得为评论新增 Cookie、localStorage 或 sessionStorage。修改评论相关文件后至少运行：
+重定向兼容页和 404 不渲染评论。评论脚本必须继续监听 `yiyuiii:themechange`，通过 Giscus 官方 `setConfig` 消息同步明暗主题；明亮和夜晚分别使用 Giscus 官方 `light`、`dark` 主题，官方署名保留在上游组件的原生位置。不要通过自定义 Giscus 主题依赖 iframe 内部 DOM、隐藏或重排官方署名。
+
+自动加载偏好只允许使用 `localStorage` 键 `yiyuiii.comments.v1` 和严格值 `auto`：默认与手动显示均不创建它，开启时写入，关闭时删除；不得保存页面路径、时间、身份或其它访问数据，也不得增加 Cookie、`sessionStorage` 或额外键。无效值保持不动并按关闭处理；读写存储失败时不得自动联网，选项回到未选中并保留手动加载。关闭自动加载只影响后续页面，不应伪装成可以撤回当前页面已经发出的请求或强行移除已经显示的评论。修改评论相关文件后至少运行：
 
 ```powershell
 node --check assets/js/page-comments.js

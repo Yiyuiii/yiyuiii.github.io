@@ -2,6 +2,29 @@
   "use strict";
 
   const GISCUS_ORIGIN = "https://giscus.app";
+  const AUTO_LOAD_STORAGE_KEY = "yiyuiii.comments.v1";
+  const AUTO_LOAD_STORAGE_VALUE = "auto";
+
+  const readsAutoLoadPreference = () => {
+    try {
+      return localStorage.getItem(AUTO_LOAD_STORAGE_KEY) === AUTO_LOAD_STORAGE_VALUE;
+    } catch {
+      return false;
+    }
+  };
+
+  const savesAutoLoadPreference = (enabled) => {
+    try {
+      if (enabled) {
+        localStorage.setItem(AUTO_LOAD_STORAGE_KEY, AUTO_LOAD_STORAGE_VALUE);
+      } else {
+        localStorage.removeItem(AUTO_LOAD_STORAGE_KEY);
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
   const currentTheme = (root) =>
     document.documentElement.dataset.theme === "dark"
@@ -39,12 +62,16 @@
 
   const initialize = (root) => {
     const button = root.querySelector("[data-comments-load]");
+    const autoLoad = root.querySelector("[data-comments-auto-load]");
+    const autoLoadOption = root.querySelector("[data-comments-auto-option]");
     const status = root.querySelector("[data-comments-status]");
     const thread = root.querySelector("[data-comments-thread]");
-    if (!button || !status || !thread) return;
+    if (!button || !autoLoad || !autoLoadOption || !status || !thread) return;
 
     root.dataset.state = "idle";
     button.hidden = false;
+    autoLoad.checked = readsAutoLoadPreference();
+    autoLoadOption.hidden = false;
 
     const load = () => {
       if (root.dataset.state === "loading" || root.dataset.state === "loaded") return;
@@ -75,7 +102,27 @@
     };
 
     button.addEventListener("click", load);
+    autoLoad.addEventListener("change", () => {
+      const enabled = autoLoad.checked;
+      if (!savesAutoLoadPreference(enabled)) {
+        autoLoad.checked = readsAutoLoadPreference();
+        status.textContent = root.dataset.autoLoadUnavailableText;
+        return;
+      }
+
+      status.textContent = enabled
+        ? root.dataset.autoLoadEnabledText
+        : root.dataset.autoLoadDisabledText;
+      if (enabled) load();
+    });
+    window.addEventListener("storage", (event) => {
+      if (event.key !== AUTO_LOAD_STORAGE_KEY && event.key !== null) return;
+      autoLoad.checked =
+        event.key === AUTO_LOAD_STORAGE_KEY && event.newValue === AUTO_LOAD_STORAGE_VALUE;
+      if (autoLoad.checked) load();
+    });
     window.addEventListener("yiyuiii:themechange", () => syncTheme(root));
+    if (autoLoad.checked) load();
   };
 
   document.querySelectorAll("[data-page-comments]").forEach(initialize);
