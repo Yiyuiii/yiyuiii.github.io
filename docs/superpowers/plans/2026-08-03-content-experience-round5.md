@@ -98,6 +98,8 @@ yiyuiii.toy.reaction-time.v1
 
 ## 三、页面反馈
 
+> 后续状态（2026-08-04）：本节记录当时已落地的历史方案。Giscus 评论上线后，用户决定用评论取代站内重复的 Issue／邮件反馈提示；全站反馈组件及文案已经移除，仓库原生 Issue Form 仍保留但不再由站内链接。当前状态与验收边界以 `2026-08-03-page-comments.md` 和现有测试为准。
+
 ### 3.1 本轮落地
 
 - 新增 `.github/ISSUE_TEMPLATE/page-feedback.yml`，使用一个中英并列的 Issue Form，必填页面 URL、反馈类型、问题描述和公开信息确认；建议、证据和截图为可选。

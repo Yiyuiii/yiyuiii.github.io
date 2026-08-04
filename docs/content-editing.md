@@ -461,20 +461,20 @@ recognition:
 
 头像旁的 `yiyuiii` 始终返回当前语言欢迎页。JavaScript 可用时头像渐进增强为环境光开关；不可用时头像必须保留为首页链接。404、无 JavaScript、reduced-motion 与暗色搜索框的边界以实施规格和自动化测试为准。
 
-### 页面反馈与评论维护
+### 页面评论维护
 
-默认布局在正文之后依次渲染 `_includes/page-feedback.liquid` 和 `_includes/page-comments.liquid`。反馈仍是无脚本的 GitHub Issue Form／邮件链接；评论由 `assets/js/page-comments.js` 渐进增强，只有读者点击当前语言的“加载评论”按钮后才注入 `https://giscus.app/client.js`。不要把 Giscus 的远程脚本或 iframe 直接写入 Liquid，也不要改成页面打开即加载。
+默认布局在正文之后只渲染 `_includes/page-comments.liquid`。评论由 `assets/js/page-comments.js` 渐进增强，只有读者点击当前语言的“显示评论”按钮后才注入 `https://giscus.app/client.js`。不要把 Giscus 的远程脚本或 iframe 直接写入 Liquid，也不要改成页面打开即加载。此前的全站页面反馈组件、Issue 与邮件提示已经移除；仓库仍保留 `.github/ISSUE_TEMPLATE/page-feedback.yml` 供直接进入 GitHub Issues 的用户使用，但站内不再渲染或链接它。
 
-评论仓库、仓库 Node ID、分类、分类 Node ID、严格路径映射和主题名集中在 `_config.yml` 的 `giscus`。当前使用 `Yiyuiii/yiyuiii.github.io` 的 `Announcements` 公告分类；中英文 URL 按 `pathname` 分别形成讨论。页面说明、加载、重试、错误和直达链接文案只维护 `_data/site_text.yml` 的 `comments` 中英文平行字段。`_includes/bilingual-seo.liquid` 输出正式 canonical backlink，避免本地预览生成的讨论回链到 loopback 地址。
+评论仓库、仓库 Node ID、分类、分类 Node ID、严格路径映射和主题名集中在 `_config.yml` 的 `giscus`。当前使用 `Yiyuiii/yiyuiii.github.io` 的 `Announcements` 公告分类；中英文 URL 按 `pathname` 分别形成讨论。页面说明、加载、重试、错误和 Discussions 链接文案只维护 `_data/site_text.yml` 的 `comments` 中英文平行字段；Discussions 链接嵌在“评论公开保存在……”说明句中，不另设一行操作入口。`_includes/bilingual-seo.liquid` 输出正式 canonical backlink，避免本地预览生成的讨论回链到 loopback 地址。
 
 根目录 `giscus.json` 只允许 `https://yiyuiii.github.io` 以及带任意端口的 `localhost` / `127.0.0.1` 预览来源，并固定评论按最早在前排列。扩展来源前必须确认确有站点部署需要；不要添加通配公网来源。仓库侧必须保持 Discussions 开启，并确认 Giscus GitHub App 只授权本仓库。若以后需要用 `Announcements` 发布真正公告，再新建专用的 `Comments` 公告分类、更新 `_config.yml` 的分类名称与 Node ID，并同时更新契约测试。
 
-重定向兼容页和 404 不渲染评论。评论脚本必须继续监听 `yiyuiii:themechange`，通过 Giscus 官方 `setConfig` 消息同步明暗主题；不得为评论新增 Cookie、localStorage 或 sessionStorage。修改评论相关文件后至少运行：
+重定向兼容页和 404 不渲染评论。评论脚本必须继续监听 `yiyuiii:themechange`，通过 Giscus 官方 `setConfig` 消息同步明暗主题；明亮和夜晚分别使用 Giscus 官方 `light`、`dark` 主题，官方署名保留在上游组件的原生位置。不要通过自定义 Giscus 主题依赖 iframe 内部 DOM、隐藏或重排官方署名，也不得为评论新增 Cookie、localStorage 或 sessionStorage。修改评论相关文件后至少运行：
 
 ```powershell
 node --check assets/js/page-comments.js
-python -m pytest -q tests/test_comments_contracts.py tests/test_feedback_contracts.py
-python scripts/run_browser_tests.py --site _site tests/browser/page-comments.spec.mjs
+python -m pytest -q tests/test_comments_contracts.py tests/test_issue_form_contracts.py
+python scripts/run_browser_tests.py --site _site -- tests/browser/page-comments.spec.mjs
 ```
 
 本机无需 Ruby 即可运行：

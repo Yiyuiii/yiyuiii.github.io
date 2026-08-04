@@ -13,7 +13,7 @@
 - 中文与英文 URL 分别映射到自己的讨论，避免两种语言被迫混在同一线程。
 - 页面首次打开不请求 `giscus.app` 或 GitHub。读者明确点击“显示评论”后才加载 Giscus。
 - 加载前明确说明评论公开、会连接 `giscus.app` 与 GitHub、发送当前页面路径，以及当前空评论区首次加载约 `0.13 MB`；按钮同步显示这一近似体积。站点自身不为评论增加 Cookie 或存储。
-- JavaScript 不可用或评论加载失败时，保留前往 GitHub Discussions 的普通链接。
+- “评论公开保存在 GitHub Discussions”中的 `GitHub Discussions` 直接链接到当前评论分类；JavaScript 不可用或评论加载失败时，这个普通链接仍然可用。
 
 ## GitHub 配置
 
@@ -26,10 +26,10 @@
 ## 页面组件
 
 - `_includes/page-comments.liquid` 保存结构和由 `_data/site_text.yml` 提供的双语文案。
-- `_layouts/default.liquid` 在页面反馈之后、页脚之前渲染评论；`page.redirect` 时同时排除反馈和评论。
+- `_layouts/default.liquid` 在正文之后、页脚之前只渲染评论；`page.redirect` 时排除评论，404 布局也不渲染评论。
 - `assets/js/page-comments.js` 只处理显式加载、配置注入、失败重试与主题同步。
 - Giscus 使用 `pathname`、严格匹配、分类严格筛选、公开 reactions、底部输入框和按页面语言选择的 `zh-CN` / `en`。
-- 初始与切换后的站点主题都通过 Giscus 官方 `setConfig` 消息同步；明亮使用 `light`，夜晚使用 `dark`。
+- 初始与切换后的站点主题都通过 Giscus 官方 `setConfig` 消息同步；明亮使用官方 `light`，夜晚使用官方 `dark`。保留 Giscus 原生署名位置，不以自定义主题依赖、隐藏或重排 iframe 内部结构。
 
 ## 验收
 
@@ -46,6 +46,7 @@
 - 2026-08-03：仓库 GitHub Discussions 已启用，选用默认的 `Announcements` 公告分类。
 - 2026-08-04：用户完成 Giscus GitHub App 的仓库级授权；Giscus 官方分类接口返回配置中的仓库与分类 Node ID。
 - 2026-08-04：在 PR #10 的 CI `site-preview` artifact 上验证中文与英文真实 Giscus iframe、GitHub 登录入口和明暗主题切换；未创建讨论、回应或评论。
+- 2026-08-04：用户决定由评论取代站内重复的 Issue／邮件反馈提示，因此移除全站页面反馈组件；仓库原生 Issue Form 仍保留。Discussions 入口并入公开存储说明句。评估过将 Giscus 署名移到评论框下方的方案后，为避免依赖上游 iframe 内部结构，最终保留官方主题与原生署名位置，不修改 Giscus 源码。
 
 ## 加载体积与交互取舍
 

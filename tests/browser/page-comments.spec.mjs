@@ -3,10 +3,10 @@ import { expect, test } from "@playwright/test";
 const commentHosts = new Set(["github.com", "giscus.app"]);
 
 for (const [route, heading, loadLabel, disclosure, directLabel, giscusLanguage] of [
-  ["/", "评论", "显示评论（首次约 0.13 MB）", "首次加载约 0.13 MB", "直接前往 GitHub Discussions", "zh-CN"],
-  ["/en/", "Comments", "Show comments (~0.13 MB first load)", "The first load is about 0.13 MB", "Open GitHub Discussions", "en"],
-  ["/posts/装机记录/", "评论", "显示评论（首次约 0.13 MB）", "首次加载约 0.13 MB", "直接前往 GitHub Discussions", "zh-CN"],
-  ["/en/posts/pc-build-log/", "Comments", "Show comments (~0.13 MB first load)", "The first load is about 0.13 MB", "Open GitHub Discussions", "en"],
+  ["/", "评论", "显示评论（首次约 0.13 MB）", "首次加载约 0.13 MB", "GitHub Discussions", "zh-CN"],
+  ["/en/", "Comments", "Show comments (~0.13 MB first load)", "The first load is about 0.13 MB", "GitHub Discussions", "en"],
+  ["/posts/装机记录/", "评论", "显示评论（首次约 0.13 MB）", "首次加载约 0.13 MB", "GitHub Discussions", "zh-CN"],
+  ["/en/posts/pc-build-log/", "Comments", "Show comments (~0.13 MB first load)", "The first load is about 0.13 MB", "GitHub Discussions", "en"],
 ]) {
   test(`${route} keeps localized comments private until an explicit click`, async ({ page }) => {
     const externalRequests = [];
@@ -20,7 +20,10 @@ for (const [route, heading, loadLabel, disclosure, directLabel, giscusLanguage] 
     await expect(comments.getByRole("heading", { name: heading })).toBeVisible();
     await expect(comments.getByText(disclosure, { exact: false })).toBeVisible();
     await expect(comments.getByRole("button", { name: loadLabel })).toBeVisible();
-    await expect(comments.getByRole("link", { name: directLabel })).toBeVisible();
+    const discussions = comments.getByRole("link", { name: directLabel });
+    await expect(discussions).toBeVisible();
+    await expect(discussions).toHaveAttribute("href", "https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements");
+    await expect(page.locator("[data-page-feedback]")).toHaveCount(0);
     await expect(comments.locator('script[src="https://giscus.app/client.js"]')).toHaveCount(0);
     await expect(comments.locator("iframe.giscus-frame")).toHaveCount(0);
     expect(externalRequests).toEqual([]);
@@ -121,11 +124,15 @@ test("comments start with the saved theme and receive later theme changes", asyn
 test("redirect and 404 outputs do not render comments", async ({ request }) => {
   const redirect = await request.get("/page2/");
   expect(redirect.ok()).toBeTruthy();
-  expect(await redirect.text()).not.toContain("data-page-comments");
+  const redirectBody = await redirect.text();
+  expect(redirectBody).not.toContain("data-page-comments");
+  expect(redirectBody).not.toContain("data-page-feedback");
 
   const missing = await request.get("/definitely-missing-comments");
   expect(missing.status()).toBe(404);
-  expect(await missing.text()).not.toContain("data-page-comments");
+  const missingBody = await missing.text();
+  expect(missingBody).not.toContain("data-page-comments");
+  expect(missingBody).not.toContain("data-page-feedback");
 });
 
 test("the no-JavaScript fallback remains useful at 320 px", async ({ browser }) => {
@@ -136,7 +143,7 @@ test("the no-JavaScript fallback remains useful at 320 px", async ({ browser }) 
 
   const comments = page.locator("[data-page-comments]");
   await expect(comments.getByRole("button", { name: "Show comments (~0.13 MB first load)" })).toBeHidden();
-  await expect(comments.getByRole("link", { name: "Open GitHub Discussions" })).toBeVisible();
+  await expect(comments.getByRole("link", { name: "GitHub Discussions" })).toBeVisible();
   const widths = await page.evaluate(() => ({
     viewport: window.innerWidth,
     document: document.documentElement.scrollWidth,

@@ -39,25 +39,16 @@ zh:
     enable_dark: 切换到夜晚样式
     status_light: 已切换到明亮样式
     status_dark: 已切换到夜晚样式
-  feedback:
-    heading: 页面反馈
-    prompt: 发现错误、失效链接或显示问题？
-    public_link: 提交公开反馈
-    private_link: 发送私人邮件
-    privacy_note: GitHub Issue 是公开的；不适合公开的信息请使用邮件，且不要在公开反馈中填写私人信息。
-    page_issue_prefix: "[页面反馈]"
-    post_issue_prefix: "[文章纠错]"
-    email_subject: "页面反馈：{title}"
-    email_body: "页面：{url}\n\n请在这里描述问题："
   comments:
     heading: 评论
-    introduction: 评论公开保存在 GitHub Discussions。只有在你选择显示评论后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。
+    introduction_before: 评论公开保存在
+    direct_link: GitHub Discussions
+    introduction_after: 。只有在你选择显示评论后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。
     load: 显示评论（首次约 0.13 MB）
     loading: 正在加载评论……
     retry: 重新加载
-    error: 评论暂时无法加载；你可以重试或直接前往 GitHub Discussions。
-    direct_link: 直接前往 GitHub Discussions
-    no_script: 请启用 JavaScript 加载评论，或使用上方链接前往 GitHub Discussions。
+    error: 评论暂时无法加载；你可以重试，或使用上方 GitHub Discussions 链接。
+    no_script: 请启用 JavaScript 后选择上方按钮显示评论，或使用上方 GitHub Discussions 链接。
   project:
     stars: Star
     forks: Fork
@@ -133,25 +124,16 @@ en:
     enable_dark: Switch to the night appearance
     status_light: Light appearance is on
     status_dark: Night appearance is on
-  feedback:
-    heading: Page feedback
-    prompt: Found an error, broken link, or display problem?
-    public_link: Submit public feedback
-    private_link: Send a private email
-    privacy_note: GitHub Issues are public. Use email for anything that should stay private, and do not include private information in public feedback.
-    page_issue_prefix: "[Page feedback]"
-    post_issue_prefix: "[Writing correction]"
-    email_subject: "Page feedback: {title}"
-    email_body: "Page: {url}\n\nDescribe the problem here:"
   comments:
     heading: Comments
-    introduction: Comments are public and stored in GitHub Discussions. This page connects to giscus.app and GitHub and sends the current page path only after you choose to show them. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information.
+    introduction_before: Comments are public and stored in
+    direct_link: GitHub Discussions
+    introduction_after: . This page connects to giscus.app and GitHub and sends the current page path only after you choose to show them. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information.
     load: Show comments (~0.13 MB first load)
     loading: Loading comments…
     retry: Try again
-    error: Comments could not be loaded. You can try again or open GitHub Discussions directly.
-    direct_link: Open GitHub Discussions
-    no_script: Enable JavaScript to load comments, or use the link above to open GitHub Discussions.
+    error: Comments could not be loaded. Try again, or use the GitHub Discussions link above.
+    no_script: Enable JavaScript and use the button above to show comments, or use the GitHub Discussions link above.
   project:
     stars: Stars
     forks: Forks

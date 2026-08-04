@@ -22,7 +22,6 @@
     <main id="main-content" class="site-main" tabindex="-1">
       {{ content }}
       {% unless page.redirect %}
-        {% include page-feedback.liquid lang=lang_key %}
         {% include page-comments.liquid lang=lang_key %}
       {% endunless %}
     </main>
