@@ -14,6 +14,7 @@ rights_basis:
 source_urls:
   base_media: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
   base_rulebook: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+  base_alien_aid: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf"
   expansion_media: "https://www.czechgames.com/for-press-games/seti-space-agencies"
   expansion_rulebook: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/rules/SE2%20rulebook%20ZH-S%2002.pdf"
   alien_aid: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/alien-species/SE2%20aliens%20aid%20ZH-S%2002.pdf"
@@ -159,3 +160,101 @@ assets:
     transform: "Cropped [140, 450, 525, 975] from each 1359 × 1890 page render, arranged as a 2 × 2 contact sheet on a neutral background; WebP quality 84."
     dimensions: [858, 1138]
     sha256: "bddccb5c842f59440ee9e5413e4828cc4fce2b5ab7ebf37c96aeb036b8ff6a54"
+
+  - asset: "assets/posts/202608021600/probe-movement.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 9"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [0, 80, 1260, 1145] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1260, 1065]
+    sha256: "a9bd9c096dfcd9b03cace1152afd5edee6a5026330aa7b2626bfb77801f7b01e"
+
+  - asset: "assets/posts/202608021600/orbit-action.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 10"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [90, 450, 1290, 1880] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1200, 1430]
+    sha256: "d99ca9e31ee145e05c269724286b8e0e76effd6bd202bc5dfdf1f74edab14f65"
+
+  - asset: "assets/posts/202608021600/landing-action.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 11"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [160, 120, 1320, 900] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1160, 780]
+    sha256: "2bfa2aa7fed345bae5fdeb648b02eb2e09e7979a94a267f9c833c3bafed96ed6"
+
+  - asset: "assets/posts/202608021600/probe-telescope-tech.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 17"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [60, 110, 1300, 1365] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1240, 1255]
+    sha256: "150a392757bb108091bcaa4003e0d967eb7ec4b84622128fd308763716531b62"
+
+  - asset: "assets/posts/202608021600/solo-components.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 22"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [90, 120, 1290, 650] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1200, 530]
+    sha256: "548867e6ce4604ceceaa5252abd6b6c9b60ba83ea4b0709c85b79fd27b51595a"
+
+  - asset: "assets/posts/202608021600/solo-rival-turn.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 24"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [90, 120, 1290, 620] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1200, 500]
+    sha256: "f8c9bf31c2e121e46e8a8911d7163aeec70163ec4749411ad6d29e96dfcb00f7"
+
+  - asset: "assets/posts/202608021600/alien-mascamites-board.webp"
+    source: "Official base-species aid, Mascamites component page"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf"
+    transform: "Cropped [100, 430, 710, 1570] from a 1938 × 1596 page render; WebP quality 84."
+    dimensions: [610, 1140]
+    sha256: "005e83f4024f6c4fb0ffb9ff163e91acb0f233d12ced68f5413419a68d17b04a"
+
+  - asset: "assets/posts/202608021600/alien-anomalies-board.webp"
+    source: "Official base-species aid, Anomalies component page"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf"
+    transform: "Cropped [100, 430, 710, 1570] from a 1938 × 1596 page render; WebP quality 84."
+    dimensions: [610, 1140]
+    sha256: "fafc4a1f39bd5bc51c7b9119c01f1acc51c618a8842f7ebe545698455a33f761"
+
+  - asset: "assets/posts/202608021600/alien-oumuamua-board.webp"
+    source: "Official base-species aid, ‘Oumuamua component page"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf"
+    transform: "Cropped [100, 430, 710, 1570] from a 1938 × 1596 page render; WebP quality 84."
+    dimensions: [610, 1140]
+    sha256: "ecd0589f8b6c1ea11dccb75c4dcc0e71a94b96e1e2b5d86e3f99983d6cc810fc"
+
+  - asset: "assets/posts/202608021600/alien-centaurians-board.webp"
+    source: "Official base-species aid, Centaurians component page"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf"
+    transform: "Cropped [100, 430, 710, 1570] from a 1938 × 1596 page render; WebP quality 84."
+    dimensions: [610, 1140]
+    sha256: "9575ee81599ce6f25022efc7aebf0bcd779cce326bc0e7f08b41a282e5a71906"
+
+  - asset: "assets/posts/202608021600/alien-exertians-board.webp"
+    source: "Official base-species aid, Exertians component page"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf"
+    transform: "Cropped [100, 430, 710, 1570] from a 1938 × 1596 page render; WebP quality 84."
+    dimensions: [610, 1140]
+    sha256: "aa7415e784162cf7d98c7ca33493ee2754a4dc9b508e876ff9022cbc209ac4e6"
+
+  - asset: "assets/posts/202608021600/alien-origin-ark-board.webp"
+    source: "Official Simplified Chinese Space Agencies alien aid, Origin Ark component page"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/alien-species/SE2%20aliens%20aid%20ZH-S%2002.pdf"
+    transform: "Cropped [80, 470, 720, 1570] from a 1938 × 1596 page render; WebP quality 84."
+    dimensions: [640, 1100]
+    sha256: "8c7b860783a6f05975d571ce0f035946759a10208658339ecaf624453e4cbefa"
+
+  - asset: "assets/posts/202608021600/alien-glyphids-board.webp"
+    source: "Official Simplified Chinese Space Agencies alien aid, Glyphids component page"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/alien-species/SE2%20aliens%20aid%20ZH-S%2002.pdf"
+    transform: "Cropped [80, 360, 720, 1570] from a 1938 × 1596 page render; WebP quality 84."
+    dimensions: [640, 1210]
+    sha256: "485c43f37d566a99bf77c18549867b5593a61d55ad51ae28b33015c50b89c5c9"
+
+  - asset: "assets/posts/202608021600/alien-amoeba-board.webp"
+    source: "Official Simplified Chinese Space Agencies alien aid, Amoeba component page"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/alien-species/SE2%20aliens%20aid%20ZH-S%2002.pdf"
+    transform: "Cropped [80, 500, 720, 1570] from a 1938 × 1596 page render; WebP quality 84."
+    dimensions: [640, 1070]
+    sha256: "fb34e1b67573fa742c737b55216a97ad7de9100a28e0cef51458c1ce9ff84ba7"
