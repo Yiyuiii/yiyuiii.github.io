@@ -1198,6 +1198,84 @@ html:lang(en) .article-header h1 {
   font-weight: 650;
 }
 
+.page-comments {
+  margin-top: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+.page-comments h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.25rem, 2.6vw, 1.55rem);
+  line-height: 1.3;
+}
+
+.page-comments__introduction,
+.page-comments__noscript {
+  max-width: 46rem;
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.page-comments__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem 1rem;
+  margin-top: 0.9rem;
+}
+
+[data-comments-load] {
+  min-height: 44px;
+  padding: 0.62rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--amethyst) 55%, var(--divider));
+  border-radius: 0.35rem;
+  color: var(--surface);
+  background: var(--amethyst);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+[data-comments-load]:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--amethyst) 84%, var(--jade));
+}
+
+[data-comments-load]:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--focus) 72%, white);
+  outline-offset: 3px;
+}
+
+[data-comments-load]:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+[data-comments-direct] {
+  color: var(--amethyst);
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.page-comments__status {
+  min-height: 1.5em;
+  margin: 0.55rem 0 0;
+  color: var(--meta);
+  font-size: 0.8rem;
+}
+
+.page-comments__thread {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.page-comments__thread .giscus,
+.page-comments__thread .giscus-frame {
+  width: 100%;
+}
+
 .toy-entry__body [hidden] {
   display: none;
 }

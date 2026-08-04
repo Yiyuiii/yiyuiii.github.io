@@ -23,6 +23,7 @@
       {{ content }}
       {% unless page.redirect %}
         {% include page-feedback.liquid lang=lang_key %}
+        {% include page-comments.liquid lang=lang_key %}
       {% endunless %}
     </main>
     {% include search-modal.liquid %}
@@ -31,6 +32,7 @@
     {% include scripts.liquid %}
     <script src="{{ '/assets/js/site-search.js' | relative_url | bust_file_cache }}"></script>
     <script src="{{ '/assets/js/theme.js' | relative_url | bust_file_cache }}"></script>
+    <script src="{{ '/assets/js/page-comments.js' | relative_url | bust_file_cache }}"></script>
     <script src="{{ '/assets/js/sunlight.js' | relative_url | bust_file_cache }}"></script>
     {% if page.home %}<script src="{{ '/assets/js/home-feed.js' | relative_url | bust_file_cache }}"></script>{% endif %}
   </body>
