@@ -45,7 +45,6 @@
         <h1 id="not-found-title-zh">{{ site.data.site_text.zh.not_found.title }}</h1>
         <p>{{ site.data.site_text.zh.not_found.description }}</p>
         <a class="not-found-back" href="{{ '/' | relative_url }}">{{ site.data.site_text.zh.not_found.back }}</a>
-        {% include page-feedback.liquid lang='zh' page_title=site.data.site_text.zh.not_found.title page_url='/404.html' %}
       </section>
 
       <section data-language="en" aria-labelledby="not-found-title-en">
@@ -53,7 +52,6 @@
         <h1 id="not-found-title-en">{{ site.data.site_text.en.not_found.title }}</h1>
         <p>{{ site.data.site_text.en.not_found.description }}</p>
         <a class="not-found-back" href="{{ '/en/' | relative_url }}">{{ site.data.site_text.en.not_found.back }}</a>
-        {% include page-feedback.liquid lang='en' page_title=site.data.site_text.en.not_found.title page_url='/404.html' %}
       </section>
     </main>
   </body>

@@ -11,7 +11,7 @@ def text(path):
     return (ROOT / path).read_text(encoding="utf-8")
 
 
-def test_giscus_uses_stable_github_discussions_ids_and_pathname_mapping():
+def test_giscus_uses_stable_ids_pathname_mapping_and_official_themes():
     config = yaml.safe_load(text("_config.yml"))["giscus"]
 
     assert config == {
@@ -47,19 +47,20 @@ def test_comment_copy_is_complete_parallel_and_explicit_about_public_loading():
     assert zh.keys() == en.keys()
     assert set(zh) == {
         "heading",
-        "introduction",
+        "introduction_before",
+        "direct_link",
+        "introduction_after",
         "load",
         "loading",
         "retry",
         "error",
-        "direct_link",
         "no_script",
     }
-    assert "公开" in zh["introduction"] and "public" in en["introduction"]
-    assert "当前页面路径" in zh["introduction"] and "current page path" in en["introduction"]
+    assert "公开" in zh["introduction_before"] and "public" in en["introduction_before"]
+    assert "当前页面路径" in zh["introduction_after"] and "current page path" in en["introduction_after"]
     for copy in (zh, en):
-        assert "GitHub Discussions" in copy["introduction"]
-        assert "giscus.app" in copy["introduction"]
+        assert copy["direct_link"] == "GitHub Discussions"
+        assert "giscus.app" in copy["introduction_after"]
 
 
 def test_comment_include_is_static_until_the_reader_explicitly_loads_it():
@@ -73,6 +74,9 @@ def test_comment_include_is_static_until_the_reader_explicitly_loads_it():
     assert "site.giscus.repo_id" in include
     assert "site.giscus.category_id" in include
     assert "discussions/categories/" in include
+    assert "&#32;<a" in include
+    assert include.index('class="page-comments__introduction"') < include.index("data-comments-direct")
+    assert include.index("data-comments-direct") < include.index('class="page-comments__actions"')
     assert 'rel="external nofollow noopener noreferrer"' in include
     assert 'referrerpolicy="no-referrer"' in include
     assert "<noscript>" in include
@@ -81,17 +85,26 @@ def test_comment_include_is_static_until_the_reader_explicitly_loads_it():
     assert "<iframe" not in lowered
 
 
-def test_default_layout_places_comments_after_feedback_and_excludes_noncanonical_layouts():
+def test_default_layout_uses_comments_as_the_only_post_content_module():
     layout = text("_layouts/default.liquid")
     not_found = text("_layouts/not-found.liquid")
 
     assert layout.count("include page-comments.liquid") == 1
     assert layout.count("assets/js/page-comments.js") == 1
     assert "{% unless page.redirect %}" in layout
-    assert layout.index("include page-feedback.liquid") < layout.index("include page-comments.liquid")
+    assert "include page-feedback.liquid" not in layout
     assert layout.index("include page-comments.liquid") < layout.index("include footer.liquid")
     assert "include page-comments.liquid" not in not_found
+    assert "include page-feedback.liquid" not in not_found
     assert "assets/js/page-comments.js" not in not_found
+
+
+def test_retired_page_feedback_module_has_no_dead_site_copy_or_include():
+    data = yaml.safe_load(text("_data/site_text.yml"))
+
+    assert "feedback" not in data["zh"]
+    assert "feedback" not in data["en"]
+    assert not (ROOT / "_includes/page-feedback.liquid").exists()
 
 
 def test_comment_loader_uses_one_click_giscus_config_retry_and_theme_sync():

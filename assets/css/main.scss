@@ -1178,28 +1178,10 @@ html:lang(en) .article-header h1 {
   background: var(--jade-soft) !important;
 }
 
-[data-page-feedback] {
+.page-comments {
   margin-top: clamp(2.5rem, 6vw, 4.5rem);
   padding-top: 1rem;
   border-top: 1px solid color-mix(in srgb, var(--divider) 62%, transparent);
-}
-
-[data-page-feedback] .article-meta {
-  flex-wrap: wrap;
-  margin: 0;
-}
-
-[data-page-feedback] .article-meta + .article-meta {
-  margin-top: 0.28rem;
-  font-size: 0.72rem;
-}
-
-[data-page-feedback] a {
-  font-weight: 650;
-}
-
-.page-comments {
-  margin-top: clamp(1.8rem, 4vw, 2.8rem);
 }
 
 .page-comments h2 {
@@ -1255,7 +1237,6 @@ html:lang(en) .article-header h1 {
 
 [data-comments-direct] {
   color: var(--amethyst);
-  font-size: 0.84rem;
   font-weight: 650;
 }
 
