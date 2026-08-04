@@ -73,6 +73,28 @@ groups:
           zh: [数字 Wordle, 数字码, 推理, 排除, 逻辑, 游戏]
           en: [number Wordle, codebreaker, deduction, logic, numbers, game]
 
+      - id: make-24
+        title:
+          zh: 凑成 24
+          en: Make 24
+        description:
+          zh: 四个数各用一次，选择运算顺序，让最后的精确结果等于 24。
+          en: Use each of four numbers once and combine them to make exactly 24.
+        keywords:
+          zh: [凑成 24, 四则运算, 分数, 心算, 逻辑, 游戏]
+          en: [make 24, arithmetic, fractions, mental math, logic, game]
+
+      - id: lights-out
+        title:
+          zh: 翻灯
+          en: Lights Out
+        description:
+          zh: 每次翻转一格和它的四邻格，用尽量清晰的规划让所有灯熄灭。
+          en: Flip a cell and its neighbours, then plan a route to turn every light off.
+        keywords:
+          zh: [翻灯, 网格, 最短步数, 规划, 逻辑, 游戏]
+          en: [lights out, grid, minimum moves, planning, logic, game]
+
   - id: random-generators
     title:
       zh: 随机生成

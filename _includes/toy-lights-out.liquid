@@ -1,0 +1,151 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% if lang_key == 'en' %}
+  {% assign challenge_label = 'Lights Out' %}
+  {% assign instructions = 'Pressing a cell flips it and its orthogonal neighbours. Turn every light off; there is no move limit.' %}
+  {% assign disclaimer = 'The board, settings, and moves stay only in this page’s memory. Nothing is sent or stored, and the result is not an assessment.' %}
+  {% assign settings_title = 'Puzzle range' %}
+  {% assign settings_adjust = 'Adjust' %}
+  {% assign size_label = 'Board size' %}
+  {% assign band_label = 'Minimum moves' %}
+  {% assign band_short = '2–3 moves' %}
+  {% assign band_medium = '4–5 moves' %}
+  {% assign band_long = '6–{max} moves' %}
+  {% assign board_count = '{count} distinct boards' %}
+  {% assign settings_notice = 'Changes take effect only after you apply them. Applying clears the current puzzle.' %}
+  {% assign settings_reset = 'Restore defaults' %}
+  {% assign settings_apply = 'Apply and change puzzle' %}
+  {% assign defaults_ready = 'Default size and range restored in the panel. Apply them to change puzzle.' %}
+  {% assign applied = 'Puzzle-range settings applied. A new puzzle is ready.' %}
+  {% assign summary = '{size} · {band} · {count} boards' %}
+  {% assign grid_label = '{size} Lights Out board' %}
+  {% assign cell_label = 'Row {row}, column {column}, {state}' %}
+  {% assign light_on = 'on' %}
+  {% assign light_off = 'off' %}
+  {% assign lit_label = 'Lights on' %}
+  {% assign moves_label = 'Moves' %}
+  {% assign pressed = 'Pressed row {row}, column {column}. {lit} lights on after {moves} moves.' %}
+  {% assign won = 'All lights are off in {moves} moves; the minimum was {optimal}.' %}
+  {% assign undo = 'Undid the last move. {lit} lights on after {moves} moves.' %}
+  {% assign reset = 'The current puzzle has been reset.' %}
+  {% assign new_game = 'A new puzzle is ready.' %}
+  {% assign undo_label = 'Undo' %}
+  {% assign reset_label = 'Reset puzzle' %}
+  {% assign new_label = 'Change puzzle' %}
+  {% assign unavailable = 'The exact board pool or secure local randomness is unavailable, so this game has been disabled.' %}
+  {% assign no_js = 'This local game requires JavaScript. Nothing is sent or stored.' %}
+  {% assign locale = 'en' %}
+{% else %}
+  {% assign challenge_label = '翻灯' %}
+  {% assign instructions = '按下一格会翻转它自己和上下左右的有效邻格。让所有灯熄灭；步数没有上限。' %}
+  {% assign disclaimer = '棋盘、设置和操作只保留在当前页面内存中，不会发送或保存；结果也不是能力评估。' %}
+  {% assign settings_title = '题目范围' %}
+  {% assign settings_adjust = '调整' %}
+  {% assign size_label = '棋盘尺寸' %}
+  {% assign band_label = '最少步数' %}
+  {% assign band_short = '2–3 步' %}
+  {% assign band_medium = '4–5 步' %}
+  {% assign band_long = '6–{max} 步' %}
+  {% assign board_count = '{count} 个不同局面' %}
+  {% assign settings_notice = '调整只会在点击应用后生效；应用会清空当前题目。' %}
+  {% assign settings_reset = '恢复默认' %}
+  {% assign settings_apply = '应用并换题' %}
+  {% assign defaults_ready = '默认尺寸和范围已填入；应用后会换题。' %}
+  {% assign applied = '题目范围已应用，新题目已经准备好。' %}
+  {% assign summary = '{size} · {band} · {count} 个局面' %}
+  {% assign grid_label = '{size} 翻灯棋盘' %}
+  {% assign cell_label = '第 {row} 行，第 {column} 列，{state}' %}
+  {% assign light_on = '亮' %}
+  {% assign light_off = '暗' %}
+  {% assign lit_label = '当前亮灯' %}
+  {% assign moves_label = '已走步数' %}
+  {% assign pressed = '按下第 {row} 行、第 {column} 列；第 {moves} 步后还有 {lit} 盏灯亮。' %}
+  {% assign won = '所有灯都熄灭了，共走 {moves} 步；本题最少需要 {optimal} 步。' %}
+  {% assign undo = '已撤销上一步；走了 {moves} 步，还有 {lit} 盏灯亮。' %}
+  {% assign reset = '当前题目已重置。' %}
+  {% assign new_game = '新题目已经准备好。' %}
+  {% assign undo_label = '撤销' %}
+  {% assign reset_label = '重置题目' %}
+  {% assign new_label = '换一道题' %}
+  {% assign unavailable = '当前无法生成精确题池或取得安全的本地随机数，因此这项游戏已停用。' %}
+  {% assign no_js = '这项本地游戏需要 JavaScript；不会发送或保存任何内容。' %}
+  {% assign locale = 'zh-CN' %}
+{% endif %}
+
+<section class="toy-challenge toy-lights-out" data-toy-lights-out aria-label="{{ challenge_label | escape }}">
+  <p class="toy-challenge__instructions">{{ instructions }}</p>
+  <p class="toy-challenge__note">{{ disclaimer }}</p>
+
+  <div class="toy-challenge__interactive" data-challenge-interactive data-lights-interactive hidden>
+    <details class="toy-settings toy-lights-settings" data-lights-settings>
+      <summary>
+        <span class="toy-settings__title">{{ settings_title }}</span>
+        <span class="toy-settings__summary" data-lights-settings-summary></span>
+        <span class="toy-settings__adjust">{{ settings_adjust }}</span>
+      </summary>
+      <div class="toy-settings__panel">
+        <label class="toy-settings__field" for="lights-size">
+          <span>{{ size_label }}</span>
+          <select id="lights-size" data-lights-size>
+            <option value="3">3 × 3</option>
+            <option value="4" selected>4 × 4</option>
+          </select>
+        </label>
+        <label class="toy-settings__field" for="lights-band">
+          <span>{{ band_label }}</span>
+          <select id="lights-band" data-lights-band>
+            <option value="short">{{ band_short }}</option>
+            <option value="medium" selected>{{ band_medium }}</option>
+            <option value="long" data-lights-long-option></option>
+          </select>
+        </label>
+        <output class="toy-settings__candidate" for="lights-size lights-band" data-lights-pool-count></output>
+        <p class="toy-settings__notice">{{ settings_notice }}</p>
+        <div class="toy-settings__actions">
+          <button type="button" data-lights-settings-reset>{{ settings_reset }}</button>
+          <button type="button" class="toy-settings__apply" data-lights-settings-apply>{{ settings_apply }}</button>
+        </div>
+        <p class="toy-settings__status" data-lights-settings-status aria-live="polite" aria-atomic="true"></p>
+      </div>
+    </details>
+
+    <dl class="toy-lights-out__stats">
+      <div><dt>{{ lit_label }}</dt><dd data-lights-lit>0</dd></div>
+      <div><dt>{{ moves_label }}</dt><dd data-lights-moves>0</dd></div>
+    </dl>
+    <div class="toy-lights-out__grid" data-lights-grid role="grid"></div>
+
+    <div class="toy-challenge__actions toy-lights-out__actions">
+      <button type="button" data-lights-undo>{{ undo_label }}</button>
+      <button type="button" data-lights-reset>{{ reset_label }}</button>
+      <button type="button" data-lights-new>{{ new_label }}</button>
+    </div>
+    <p class="toy-challenge__status" data-lights-status aria-live="polite" aria-atomic="true"></p>
+  </div>
+
+  <p class="toy-challenge__unavailable" data-challenge-unavailable data-lights-unavailable hidden>{{ unavailable }}</p>
+  <noscript><p class="toy-challenge__noscript">{{ no_js }}</p></noscript>
+
+  <script type="application/json" data-lights-copy>
+    {
+      "applied": {{ applied | jsonify }},
+      "bandLong": {{ band_long | jsonify }},
+      "bandMedium": {{ band_medium | jsonify }},
+      "bandShort": {{ band_short | jsonify }},
+      "boardCount": {{ board_count | jsonify }},
+      "cellLabel": {{ cell_label | jsonify }},
+      "defaultsReady": {{ defaults_ready | jsonify }},
+      "gridLabel": {{ grid_label | jsonify }},
+      "lightOff": {{ light_off | jsonify }},
+      "lightOn": {{ light_on | jsonify }},
+      "locale": {{ locale | jsonify }},
+      "newGame": {{ new_game | jsonify }},
+      "pressed": {{ pressed | jsonify }},
+      "reset": {{ reset | jsonify }},
+      "settingsSummary": {{ summary | jsonify }},
+      "undo": {{ undo | jsonify }},
+      "unavailable": {{ unavailable | jsonify }},
+      "won": {{ won | jsonify }}
+    }
+  </script>
+</section>

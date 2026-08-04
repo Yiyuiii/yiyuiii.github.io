@@ -388,13 +388,15 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     ).toBe(true);
     await expect(page.locator(".toy-group__title")).toHaveText(groupHeadings);
     const disclosures = page.locator(".toy-group__items > details.toy-entry");
-    await expect(disclosures).toHaveCount(7);
+    await expect(disclosures).toHaveCount(9);
     expect(await disclosures.evaluateAll((items) => items.map((item) => item.id))).toEqual([
       "moegirl-quiz",
       "color-challenge",
       "ten-second",
       "reaction-time",
       "codebreaker",
+      "make-24",
+      "lights-out",
       "random-password",
       "random-number",
     ]);

@@ -180,6 +180,8 @@ def valid_site(root):
                     ("ten-second", "盲估十秒"),
                     ("reaction-time", "反应时间"),
                     ("codebreaker", "数字 Wordle"),
+                    ("make-24", "凑成 24"),
+                    ("lights-out", "翻灯"),
                     ("random-password", "随机密码"),
                     ("random-number", "随机数字"),
                 ],
@@ -195,6 +197,8 @@ def valid_site(root):
                     ("ten-second", "Ten-second estimate"),
                     ("reaction-time", "Reaction time"),
                     ("codebreaker", "Number Wordle"),
+                    ("make-24", "Make 24"),
+                    ("lights-out", "Lights Out"),
                     ("random-password", "Random password"),
                     ("random-number", "Random numbers"),
                 ],
@@ -231,10 +235,10 @@ def valid_site(root):
             f'<div class="toy-group__items">{"".join(entries[1:4])}</div></section>'
             '<section class="toy-group" data-toy-group="logic-puzzles">'
             f'<h2 class="toy-group__title">{localized["logic"]}</h2>'
-            f'<div class="toy-group__items">{entries[4]}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[4:7])}</div></section>'
             '<section class="toy-group" data-toy-group="random-generators">'
             f'<h2 class="toy-group__title">{localized["random"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[5:])}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[7:])}</div></section>'
             "</div></div>"
         )
 

@@ -45,6 +45,8 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
         "ten-second",
         "reaction-time",
         "codebreaker",
+        "make-24",
+        "lights-out",
         "random-password",
         "random-number",
     ]
@@ -112,6 +114,8 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
         "toy-ten-second.liquid",
         "toy-reaction-time.liquid",
         "toy-codebreaker.liquid",
+        "toy-make-24.liquid",
+        "toy-lights-out.liquid",
         "toy-random-password.liquid",
         "toy-random-number.liquid",
     ]
@@ -125,11 +129,13 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
         "toy-challenges.js",
         "toy-color-challenge.js",
         "toy-codebreaker.js",
+        "toy-make-24.js",
+        "toy-lights-out.js",
         "toy-disclosure.js",
     ]
     positions = [include.index(script) for script in expected_scripts]
     assert positions == sorted(positions)
-    assert include.count(" defer></script>") == 7
+    assert include.count(" defer></script>") == 9
 
 
 def test_moegirl_component_uses_the_disclosure_heading_without_repeating_it():

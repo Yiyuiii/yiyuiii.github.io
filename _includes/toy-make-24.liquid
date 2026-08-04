@@ -1,0 +1,169 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% if lang_key == 'en' %}
+  {% assign challenge_label = 'Make 24' %}
+  {% assign instructions = 'Use all four numbers exactly once. Choose a left number, an operator, then a right number; after three exact operations, the last value must be 24.' %}
+  {% assign disclaimer = 'The puzzle, settings, and steps stay only in this page’s memory. Nothing is sent or stored, and the result is not an assessment of mathematical ability.' %}
+  {% assign settings_title = 'Puzzle pool' %}
+  {% assign settings_adjust = 'Adjust' %}
+  {% assign pool_label = 'Numbers included' %}
+  {% assign pool_integer = 'Integer path' %}
+  {% assign pool_fraction = 'Fractions required' %}
+  {% assign pool_all = 'All solvable sets' %}
+  {% assign pool_count = '{count} distinct number sets' %}
+  {% assign settings_notice = 'Changes take effect only after you apply them. Applying clears the current puzzle.' %}
+  {% assign settings_reset = 'Restore defaults' %}
+  {% assign settings_apply = 'Apply and change puzzle' %}
+  {% assign values_label = 'Current numbers' %}
+  {% assign operators_label = 'Operators' %}
+  {% assign add_label = 'Add' %}
+  {% assign subtract_label = 'Subtract' %}
+  {% assign multiply_label = 'Multiply' %}
+  {% assign divide_label = 'Divide' %}
+  {% assign steps_label = 'Completed steps' %}
+  {% assign prompt_idle = 'Choose the left number.' %}
+  {% assign prompt_operator = '{value} selected. Choose an operator.' %}
+  {% assign prompt_right = '{value} {operator} … Choose the right number.' %}
+  {% assign value_name = 'Value {value}, item {index}' %}
+  {% assign undo_label = 'Undo' %}
+  {% assign reset_label = 'Reset puzzle' %}
+  {% assign new_label = 'Change puzzle' %}
+  {% assign merged = '{equation}. Remaining: {values}.' %}
+  {% assign divided_by_zero = 'Division by zero is not allowed. Choose another right number.' %}
+  {% assign won = 'Made 24 in three steps.' %}
+  {% assign stuck = 'The final value is {value}, not 24. Undo a step or reset the puzzle.' %}
+  {% assign reset = 'The current puzzle has been reset.' %}
+  {% assign undone = 'Undid one step. {count} values remain.' %}
+  {% assign selection_cleared = 'The unfinished selection has been cleared.' %}
+  {% assign new_game = 'A new puzzle is ready.' %}
+  {% assign applied = 'Puzzle-pool setting applied. A new puzzle is ready.' %}
+  {% assign defaults_ready = 'Default pool restored in the panel. Apply it to change puzzle.' %}
+  {% assign summary = '{pool} · {count} sets' %}
+  {% assign unavailable = 'The exact puzzle pool or secure local randomness is unavailable, so this game has been disabled.' %}
+  {% assign no_js = 'This local game requires JavaScript. Nothing is sent or stored.' %}
+  {% assign locale = 'en' %}
+{% else %}
+  {% assign challenge_label = '凑成 24' %}
+  {% assign instructions = '四个数都要恰好使用一次。依次选择左边的数、运算符和右边的数；经过三次精确运算后，让最后一个值等于 24。' %}
+  {% assign disclaimer = '题目、设置和步骤只保留在当前页面内存中，不会发送或保存；结果也不是数学能力评估。' %}
+  {% assign settings_title = '题目范围' %}
+  {% assign settings_adjust = '调整' %}
+  {% assign pool_label = '数字组合范围' %}
+  {% assign pool_integer = '整数过程' %}
+  {% assign pool_fraction = '需要分数' %}
+  {% assign pool_all = '完整题池' %}
+  {% assign pool_count = '{count} 组不同数字' %}
+  {% assign settings_notice = '调整只会在点击应用后生效；应用会清空当前题目。' %}
+  {% assign settings_reset = '恢复默认' %}
+  {% assign settings_apply = '应用并换题' %}
+  {% assign values_label = '当前数字' %}
+  {% assign operators_label = '运算符' %}
+  {% assign add_label = '加' %}
+  {% assign subtract_label = '减' %}
+  {% assign multiply_label = '乘' %}
+  {% assign divide_label = '除' %}
+  {% assign steps_label = '已完成步骤' %}
+  {% assign prompt_idle = '先选择左边的数。' %}
+  {% assign prompt_operator = '已选择 {value}，请选择运算符。' %}
+  {% assign prompt_right = '{value} {operator} … 请选择右边的数。' %}
+  {% assign value_name = '数值 {value}，第 {index} 项' %}
+  {% assign undo_label = '撤销' %}
+  {% assign reset_label = '重置题目' %}
+  {% assign new_label = '换一道题' %}
+  {% assign merged = '{equation}；还剩 {values}。' %}
+  {% assign divided_by_zero = '不能除以零，请另选右边的数。' %}
+  {% assign won = '三步正好得到 24。' %}
+  {% assign stuck = '最后得到 {value}，不是 24；请撤销一步或重置题目。' %}
+  {% assign reset = '当前题目已重置。' %}
+  {% assign undone = '已撤销一步；还剩 {count} 个数。' %}
+  {% assign selection_cleared = '未完成的选择已清除。' %}
+  {% assign new_game = '新题目已经准备好。' %}
+  {% assign applied = '题目范围已应用，新题目已经准备好。' %}
+  {% assign defaults_ready = '默认题目范围已填入；应用后会换题。' %}
+  {% assign summary = '{pool} · {count} 组' %}
+  {% assign unavailable = '当前无法生成精确题池或取得安全的本地随机数，因此这项游戏已停用。' %}
+  {% assign no_js = '这项本地游戏需要 JavaScript；不会发送或保存任何内容。' %}
+  {% assign locale = 'zh-CN' %}
+{% endif %}
+
+<section class="toy-challenge toy-make-24" data-toy-make-24 aria-label="{{ challenge_label | escape }}">
+  <p class="toy-challenge__instructions">{{ instructions }}</p>
+  <p class="toy-challenge__note">{{ disclaimer }}</p>
+
+  <div class="toy-challenge__interactive" data-challenge-interactive data-make24-interactive hidden>
+    <details class="toy-settings toy-make-24-settings" data-make24-settings>
+      <summary>
+        <span class="toy-settings__title">{{ settings_title }}</span>
+        <span class="toy-settings__summary" data-make24-settings-summary></span>
+        <span class="toy-settings__adjust">{{ settings_adjust }}</span>
+      </summary>
+      <div class="toy-settings__panel">
+        <label class="toy-settings__field" for="make24-pool">
+          <span>{{ pool_label }}</span>
+          <select id="make24-pool" data-make24-pool>
+            <option value="integer">{{ pool_integer }}</option>
+            <option value="fraction">{{ pool_fraction }}</option>
+            <option value="all">{{ pool_all }}</option>
+          </select>
+        </label>
+        <output class="toy-settings__candidate" for="make24-pool" data-make24-pool-count></output>
+        <p class="toy-settings__notice">{{ settings_notice }}</p>
+        <div class="toy-settings__actions">
+          <button type="button" data-make24-settings-reset>{{ settings_reset }}</button>
+          <button type="button" class="toy-settings__apply" data-make24-settings-apply>{{ settings_apply }}</button>
+        </div>
+        <p class="toy-settings__status" data-make24-settings-status aria-live="polite" aria-atomic="true"></p>
+      </div>
+    </details>
+
+    <p id="make24-prompt" class="toy-make-24__prompt" data-make24-prompt aria-live="polite" aria-atomic="true"></p>
+    <div class="toy-make-24__values" data-make24-values role="group" aria-label="{{ values_label | escape }}" aria-describedby="make24-prompt"></div>
+    <div class="toy-make-24__operators" data-make24-operators role="group" aria-label="{{ operators_label | escape }}">
+      <button type="button" data-make24-operator="+" aria-pressed="false" aria-label="{{ add_label }}">+</button>
+      <button type="button" data-make24-operator="-" aria-pressed="false" aria-label="{{ subtract_label }}">−</button>
+      <button type="button" data-make24-operator="*" aria-pressed="false" aria-label="{{ multiply_label }}">×</button>
+      <button type="button" data-make24-operator="/" aria-pressed="false" aria-label="{{ divide_label }}">÷</button>
+    </div>
+
+    <div class="toy-make-24__steps" data-make24-steps hidden>
+      <p>{{ steps_label }}</p>
+      <ol data-make24-step-list></ol>
+    </div>
+
+    <div class="toy-challenge__actions toy-make-24__actions">
+      <button type="button" data-make24-undo>{{ undo_label }}</button>
+      <button type="button" data-make24-reset>{{ reset_label }}</button>
+      <button type="button" data-make24-new>{{ new_label }}</button>
+    </div>
+    <p class="toy-challenge__status" data-make24-status aria-live="polite" aria-atomic="true"></p>
+  </div>
+
+  <p class="toy-challenge__unavailable" data-challenge-unavailable data-make24-unavailable hidden>{{ unavailable }}</p>
+  <noscript><p class="toy-challenge__noscript">{{ no_js }}</p></noscript>
+
+  <script type="application/json" data-make24-copy>
+    {
+      "applied": {{ applied | jsonify }},
+      "defaultsReady": {{ defaults_ready | jsonify }},
+      "dividedByZero": {{ divided_by_zero | jsonify }},
+      "locale": {{ locale | jsonify }},
+      "merged": {{ merged | jsonify }},
+      "newGame": {{ new_game | jsonify }},
+      "poolAll": {{ pool_all | jsonify }},
+      "poolCount": {{ pool_count | jsonify }},
+      "poolFraction": {{ pool_fraction | jsonify }},
+      "poolInteger": {{ pool_integer | jsonify }},
+      "promptIdle": {{ prompt_idle | jsonify }},
+      "promptOperator": {{ prompt_operator | jsonify }},
+      "promptRight": {{ prompt_right | jsonify }},
+      "reset": {{ reset | jsonify }},
+      "selectionCleared": {{ selection_cleared | jsonify }},
+      "settingsSummary": {{ summary | jsonify }},
+      "stuck": {{ stuck | jsonify }},
+      "unavailable": {{ unavailable | jsonify }},
+      "valueName": {{ value_name | jsonify }},
+      "undone": {{ undone | jsonify }},
+      "won": {{ won | jsonify }}
+    }
+  </script>
+</section>

@@ -48,6 +48,10 @@
                     {% include toy-reaction-time.liquid %}
                   {% when 'codebreaker' %}
                     {% include toy-codebreaker.liquid %}
+                  {% when 'make-24' %}
+                    {% include toy-make-24.liquid %}
+                  {% when 'lights-out' %}
+                    {% include toy-lights-out.liquid %}
                   {% when 'random-password' %}
                     {% include toy-random-password.liquid %}
                   {% when 'random-number' %}
@@ -67,5 +71,7 @@
   <script src="{{ '/assets/js/toy-challenges.js' | relative_url | bust_file_cache }}" defer></script>
   <script src="{{ '/assets/js/toy-color-challenge.js' | relative_url | bust_file_cache }}" defer></script>
   <script src="{{ '/assets/js/toy-codebreaker.js' | relative_url | bust_file_cache }}" defer></script>
+  <script src="{{ '/assets/js/toy-make-24.js' | relative_url | bust_file_cache }}" defer></script>
+  <script src="{{ '/assets/js/toy-lights-out.js' | relative_url | bust_file_cache }}" defer></script>
   <script src="{{ '/assets/js/toy-disclosure.js' | relative_url | bust_file_cache }}" defer></script>
 </div>

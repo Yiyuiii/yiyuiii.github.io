@@ -5,6 +5,8 @@ const toyIds = [
   "ten-second",
   "reaction-time",
   "codebreaker",
+  "make-24",
+  "lights-out",
   "random-password",
   "random-number",
 ];
@@ -99,7 +101,7 @@ const clickMatchingColor = async (page) => {
 };
 
 for (const route of ["/toys/", "/en/toys/"]) {
-  test(`${route} renders all six local interactions`, async ({ page }) => {
+  test(`${route} renders all eight local interactions`, async ({ page }) => {
     await page.goto(route);
     const finishAudit = await beginLocalOnlyAudit(page);
     for (const id of toyIds) {

@@ -179,6 +179,14 @@ test("quotes, evidence, and code follow their intended prose or wide canvas", as
 test("narrative paragraphs indent while the compact conversion block stays aligned", async ({
   page,
 }) => {
+  await page.route(/^https?:\/\//u, async (route) => {
+    const hostname = new URL(route.request().url()).hostname;
+    if (hostname === "127.0.0.1" || hostname === "localhost") {
+      await route.continue();
+    } else {
+      await route.abort("blockedbyclient");
+    }
+  });
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/posts/大创造时代-资源-分值量化计算思路/", {
     waitUntil: "domcontentloaded",

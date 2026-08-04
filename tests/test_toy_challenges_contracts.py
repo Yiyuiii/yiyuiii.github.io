@@ -14,6 +14,8 @@ def test_challenge_includes_are_bilingual_embeddable_components():
         "_includes/toy-ten-second.liquid": "data-toy-ten-second",
         "_includes/toy-reaction-time.liquid": "data-toy-reaction-time",
         "_includes/toy-codebreaker.liquid": "data-toy-codebreaker",
+        "_includes/toy-make-24.liquid": "data-toy-make-24",
+        "_includes/toy-lights-out.liquid": "data-toy-lights-out",
     }
     for path, selector in selectors.items():
         include = text(path)
@@ -52,6 +54,61 @@ def test_codebreaker_is_strict_local_and_keeps_leading_zeroes():
     assert "数字正确 {misplaced}" not in include
     assert "candidateCount" in script
     assert "scoreGuess" in script
+    assert "Math" + ".random" not in script
+    for token in (
+        "fetch(",
+        "XMLHttpRequest",
+        "WebSocket",
+        "localStorage",
+        "sessionStorage",
+        "document.cookie",
+        "indexedDB",
+    ):
+        assert token not in script
+
+
+def test_make24_is_exact_local_and_exposes_reversible_controls():
+    include = text("_includes/toy-make-24.liquid")
+    script = text("assets/js/toy-make-24.js")
+    assert "四个数都要恰好使用一次" in include
+    assert "Use all four numbers exactly once" in include
+    assert "整数过程" in include and "需要分数" in include
+    assert "Integer path" in include and "Fractions required" in include
+    assert "data-make24-undo" in include
+    assert "data-make24-reset" in include
+    assert "data-make24-new" in include
+    assert 'data-make24-prompt aria-live="polite"' in include
+    assert 'aria-describedby="make24-prompt"' in include
+    assert "fractionRequired.length !== 10" in script
+    assert "positiveIntegerOnly" in script
+    assert "Math" + ".random" not in script
+    for token in (
+        "fetch(",
+        "XMLHttpRequest",
+        "WebSocket",
+        "localStorage",
+        "sessionStorage",
+        "document.cookie",
+        "indexedDB",
+    ):
+        assert token not in script
+
+
+def test_lights_out_is_exact_local_and_has_redundant_grid_semantics():
+    include = text("_includes/toy-lights-out.liquid")
+    script = text("assets/js/toy-lights-out.js")
+    assert 'role="grid"' in include
+    assert 'setAttribute("role", "row")' in script
+    assert '"gridcell"' in script
+    assert '"aria-rowindex"' in script and '"aria-colindex"' in script
+    assert "ArrowLeft" in script and "ArrowRight" in script
+    assert "ArrowUp" in script and "ArrowDown" in script
+    assert 'event.key === "Enter" || event.key === " "' in script
+    assert "●" in script and "○" in script
+    assert "copy.lightOn" in script and "copy.lightOff" in script
+    assert "data-lights-undo" in include
+    assert "data-lights-reset" in include
+    assert "data-lights-new" in include
     assert "Math" + ".random" not in script
     for token in (
         "fetch(",

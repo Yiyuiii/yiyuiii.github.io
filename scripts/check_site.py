@@ -132,6 +132,8 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         "ten-second",
         "reaction-time",
         "codebreaker",
+        "make-24",
+        "lights-out",
         "random-password",
         "random-number",
     ]
