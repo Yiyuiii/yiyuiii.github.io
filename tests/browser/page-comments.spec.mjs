@@ -275,7 +275,7 @@ test("the automatic-loading option stays usable at 320 px without connecting", a
 
   const comments = page.locator("[data-page-comments]");
   await expect(comments.getByRole("checkbox", { name: "Auto-load comments" })).toBeVisible();
-  await expect(comments.getByText("future pages automatically connect", { exact: false })).toBeVisible();
+  await expect(comments.getByText("Auto-load comments on this site")).toBeVisible();
   await expect(comments.locator('script[src="https://giscus.app/client.js"]')).toHaveCount(0);
   const widths = await page.evaluate(() => ({
     viewport: window.innerWidth,
