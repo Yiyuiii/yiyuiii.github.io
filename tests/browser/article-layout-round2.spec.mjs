@@ -28,7 +28,7 @@ test("1280px articles use the inline disclosure instead of the side rail", async
 });
 
 for (const width of [1536, 1920]) {
-  test(`${width}px articles use a non-overlapping sticky left rail`, async ({
+  test(`${width}px articles use a non-overlapping fixed left rail through comments`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -62,7 +62,7 @@ for (const width of [1536, 1920]) {
     });
 
     expect(geometry.shellDisplay).toBe("grid");
-    expect(geometry.railPosition).toBe("sticky");
+    expect(geometry.railPosition).toBe("fixed");
     expect(geometry.railWidth).toBeGreaterThanOrEqual(207);
     expect(geometry.railWidth).toBeLessThanOrEqual(209);
     expect(geometry.gap).toBeGreaterThanOrEqual(31);
@@ -72,6 +72,13 @@ for (const width of [1536, 1920]) {
     expect(geometry.pageOverflows).toBe(false);
 
     await page.evaluate(() => window.scrollTo(0, 900));
+    await expect
+      .poll(() =>
+        sideToc.evaluate((node) => Math.round(node.getBoundingClientRect().top)),
+      )
+      .toBe(24);
+
+    await page.locator("[data-page-comments]").scrollIntoViewIfNeeded();
     await expect
       .poll(() =>
         sideToc.evaluate((node) => Math.round(node.getBoundingClientRect().top)),

@@ -8,7 +8,6 @@
 {% endif %}
 {% capture heading_id %}page-comments-title-{{ comments_lang }}{% endcapture %}
 {% capture auto_load_id %}page-comments-auto-load-{{ comments_lang }}{% endcapture %}
-{% capture auto_load_description_id %}page-comments-auto-load-description-{{ comments_lang }}{% endcapture %}
 
 <section
   class="page-shell page-comments"
@@ -49,12 +48,8 @@
         id="{{ auto_load_id }}"
         type="checkbox"
         data-comments-auto-load
-        aria-describedby="{{ auto_load_description_id }}"
       >
-      <span class="page-comments__auto-load-copy">
-        <label for="{{ auto_load_id }}" class="page-comments__auto-load-label">{{ comments_text.auto_load }}</label>
-        <span id="{{ auto_load_description_id }}" class="page-comments__auto-load-description">{{ comments_text.auto_load_description }}</span>
-      </span>
+      <label for="{{ auto_load_id }}" class="page-comments__auto-load-label">{{ comments_text.auto_load }}</label>
     </div>
   </div>
   <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p>

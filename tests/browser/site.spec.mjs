@@ -922,7 +922,7 @@ test("publication recognition wraps without horizontal overflow at 320px", async
   }
 });
 
-test("article desktop left rail stays sticky and readable while article controls work", async ({
+test("article desktop left rail stays fixed through comments and readable while article controls work", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1536, height: 900 });
@@ -953,7 +953,7 @@ test("article desktop left rail stays sticky and readable while article controls
       bodyOverflowY: getComputedStyle(document.body).overflowY,
     };
   });
-  expect(desktopRail.railPosition).toBe("sticky");
+  expect(desktopRail.railPosition).toBe("fixed");
   expect(desktopRail.railRight).toBeLessThan(desktopRail.articleLeft);
   expect(desktopRail.h2FontSize).toBeGreaterThanOrEqual(13.5);
   expect(desktopRail.h3FontSize).toBeGreaterThanOrEqual(12.5);
@@ -1008,7 +1008,7 @@ test("article desktop left rail stays sticky and readable while article controls
   expect(evidenceVisual.background).toBe("rgba(0, 0, 0, 0)");
 
   const firstSubsection = page.locator(".article-side-toc .toc-h3 a").first();
-  const stickyTop = await page.evaluate(() =>
+  const fixedTop = await page.evaluate(() =>
     Math.round(
       Number.parseFloat(getComputedStyle(document.documentElement).fontSize) *
         1.5,
@@ -1022,7 +1022,7 @@ test("article desktop left rail stays sticky and readable while article controls
         .locator(".article-side-toc")
         .evaluate((node) => Math.round(node.getBoundingClientRect().top)),
     )
-    .toBe(stickyTop);
+    .toBe(fixedTop);
   await expect(
     page.locator(
       '.article-inline-toc .toc-h3 a[aria-current="location"]',
@@ -1043,6 +1043,55 @@ test("article desktop left rail stays sticky and readable while article controls
   expect(readingWidth.width).toBeGreaterThanOrEqual(1150);
   expect(readingWidth.centerDelta).toBeLessThanOrEqual(1);
   expect(readingWidth.overflow).toBe(false);
+
+  await page.locator("[data-page-comments]").scrollIntoViewIfNeeded();
+  await expect
+    .poll(() =>
+      page
+        .locator(".article-side-toc")
+        .evaluate((node) => Math.round(node.getBoundingClientRect().top)),
+    )
+    .toBe(fixedTop);
+  await expect(page.locator(".article-side-toc")).toBeVisible();
+});
+
+test("Chinese figure captions use upright hierarchy while English captions keep their language style", async ({
+  page,
+}) => {
+  await page.goto("/posts/SETI%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E5%AE%8C%E6%88%90%E7%AC%AC%E4%B8%80%E5%B1%80/");
+
+  const chineseCaption = page
+    .locator(".post-content > p")
+    .filter({ hasText: "图：一桌游戏的全景。" })
+    .first();
+  await expect(chineseCaption).toBeVisible();
+  await expect(chineseCaption.locator(":scope > em")).toHaveCount(1);
+  const chineseStyle = await chineseCaption.evaluate((node) => {
+    const style = getComputedStyle(node);
+    const emphasisStyle = getComputedStyle(node.firstElementChild);
+    const bodyStyle = getComputedStyle(node.closest(".post-content"));
+    return {
+      fontStyle: emphasisStyle.fontStyle,
+      fontSize: Number.parseFloat(style.fontSize),
+      bodyFontSize: Number.parseFloat(bodyStyle.fontSize),
+      textIndent: style.textIndent,
+      color: style.color,
+      bodyColor: bodyStyle.color,
+    };
+  });
+  expect(chineseStyle.fontStyle).toBe("normal");
+  expect(chineseStyle.fontSize).toBeLessThan(chineseStyle.bodyFontSize);
+  expect(chineseStyle.textIndent).toBe("0px");
+  expect(chineseStyle.color).not.toBe(chineseStyle.bodyColor);
+  await expect(page.locator(".article-cover__caption")).toHaveCSS("font-style", "normal");
+
+  await page.goto("/en/posts/learning-seti-board-game/");
+  const englishCaption = page
+    .locator(".post-content > p")
+    .filter({ hasText: "Figure: A complete game at a glance." })
+    .first();
+  await expect(englishCaption).toBeVisible();
+  await expect(englishCaption.locator(":scope > em")).toHaveCSS("font-style", "italic");
 });
 
 for (const viewport of viewports) {

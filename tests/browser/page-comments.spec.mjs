@@ -4,10 +4,10 @@ const commentHosts = new Set(["github.com", "giscus.app"]);
 const autoLoadKey = "yiyuiii.comments.v1";
 
 for (const [route, heading, loadLabel, autoLoadLabel, disclosure, directLabel, giscusLanguage] of [
-  ["/", "评论", "显示评论（首次约 0.13 MB）", "自动加载评论", "首次加载约 0.13 MB", "GitHub Discussions", "zh-CN"],
-  ["/en/", "Comments", "Show comments (~0.13 MB first load)", "Auto-load comments", "The first load is about 0.13 MB", "GitHub Discussions", "en"],
-  ["/posts/装机记录/", "评论", "显示评论（首次约 0.13 MB）", "自动加载评论", "首次加载约 0.13 MB", "GitHub Discussions", "zh-CN"],
-  ["/en/posts/pc-build-log/", "Comments", "Show comments (~0.13 MB first load)", "Auto-load comments", "The first load is about 0.13 MB", "GitHub Discussions", "en"],
+  ["/", "评论", "显示评论（首次约 0.13 MB）", "在本站自动加载评论", "首次加载约 0.13 MB", "GitHub Discussions", "zh-CN"],
+  ["/en/", "Comments", "Show comments (~0.13 MB first load)", "Auto-load comments on this site", "The first load is about 0.13 MB", "GitHub Discussions", "en"],
+  ["/posts/装机记录/", "评论", "显示评论（首次约 0.13 MB）", "在本站自动加载评论", "首次加载约 0.13 MB", "GitHub Discussions", "zh-CN"],
+  ["/en/posts/pc-build-log/", "Comments", "Show comments (~0.13 MB first load)", "Auto-load comments on this site", "The first load is about 0.13 MB", "GitHub Discussions", "en"],
 ]) {
   test(`${route} keeps localized comments private until an explicit click`, async ({ page }) => {
     const externalRequests = [];
@@ -24,6 +24,7 @@ for (const [route, heading, loadLabel, autoLoadLabel, disclosure, directLabel, g
     const autoLoad = comments.getByRole("checkbox", { name: autoLoadLabel });
     await expect(autoLoad).toBeVisible();
     await expect(autoLoad).not.toBeChecked();
+    await expect(comments.locator(".page-comments__auto-load-description")).toHaveCount(0);
     expect(await page.evaluate((key) => localStorage.getItem(key), autoLoadKey)).toBeNull();
     const discussions = comments.getByRole("link", { name: directLabel });
     await expect(discussions).toBeVisible();
@@ -78,7 +79,7 @@ test("automatic loading requires explicit persistent consent and can be turned o
 
   await page.goto("/en/");
   let comments = page.locator("[data-page-comments]");
-  let autoLoad = comments.getByRole("checkbox", { name: "Auto-load comments" });
+  let autoLoad = comments.getByRole("checkbox", { name: "Auto-load comments on this site" });
   await autoLoad.check();
   await expect(autoLoad).toBeChecked();
   await expect(comments.locator("iframe.giscus-frame")).toHaveCount(1);
@@ -86,7 +87,7 @@ test("automatic loading requires explicit persistent consent and can be turned o
 
   await page.goto("/en/about/");
   comments = page.locator("[data-page-comments]");
-  autoLoad = comments.getByRole("checkbox", { name: "Auto-load comments" });
+  autoLoad = comments.getByRole("checkbox", { name: "Auto-load comments on this site" });
   await expect(autoLoad).toBeChecked();
   await expect(comments.locator("iframe.giscus-frame")).toHaveCount(1);
 
@@ -98,7 +99,7 @@ test("automatic loading requires explicit persistent consent and can be turned o
 
   await page.goto("/en/projects/");
   comments = page.locator("[data-page-comments]");
-  await expect(comments.getByRole("checkbox", { name: "Auto-load comments" })).not.toBeChecked();
+  await expect(comments.getByRole("checkbox", { name: "Auto-load comments on this site" })).not.toBeChecked();
   await expect(comments.locator('script[src="https://giscus.app/client.js"]')).toHaveCount(0);
   await expect(comments.getByRole("button", { name: "Show comments (~0.13 MB first load)" })).toBeVisible();
 });
@@ -119,9 +120,9 @@ test("automatic-loading changes stay synchronized across tabs", async ({ context
   const second = await context.newPage();
   await Promise.all([first.goto("/en/"), second.goto("/en/about/")]);
 
-  const firstAutoLoad = first.getByRole("checkbox", { name: "Auto-load comments" });
+  const firstAutoLoad = first.getByRole("checkbox", { name: "Auto-load comments on this site" });
   const secondComments = second.locator("[data-page-comments]");
-  const secondAutoLoad = secondComments.getByRole("checkbox", { name: "Auto-load comments" });
+  const secondAutoLoad = secondComments.getByRole("checkbox", { name: "Auto-load comments on this site" });
 
   await firstAutoLoad.check();
   await expect(secondAutoLoad).toBeChecked();
@@ -142,7 +143,7 @@ test("an invalid automatic-loading value stays inert and untouched", async ({ pa
   await page.goto("/en/");
 
   const comments = page.locator("[data-page-comments]");
-  await expect(comments.getByRole("checkbox", { name: "Auto-load comments" })).not.toBeChecked();
+  await expect(comments.getByRole("checkbox", { name: "Auto-load comments on this site" })).not.toBeChecked();
   await expect(comments.locator('script[src="https://giscus.app/client.js"]')).toHaveCount(0);
   expect(await page.evaluate((key) => localStorage.getItem(key), autoLoadKey)).toBe("invalid");
 });
@@ -161,7 +162,7 @@ test("a storage failure keeps automatic loading off and manual loading available
   await page.goto("/en/");
 
   const comments = page.locator("[data-page-comments]");
-  const autoLoad = comments.getByRole("checkbox", { name: "Auto-load comments" });
+  const autoLoad = comments.getByRole("checkbox", { name: "Auto-load comments on this site" });
   await autoLoad.click();
   await expect(autoLoad).not.toBeChecked();
   await expect(comments.getByText("Your browser could not save this setting.", { exact: false })).toBeVisible();
@@ -258,7 +259,7 @@ test("the no-JavaScript fallback remains useful at 320 px", async ({ browser }) 
 
   const comments = page.locator("[data-page-comments]");
   await expect(comments.getByRole("button", { name: "Show comments (~0.13 MB first load)" })).toBeHidden();
-  await expect(comments.getByRole("checkbox", { name: "Auto-load comments" })).toBeHidden();
+  await expect(comments.getByRole("checkbox", { name: "Auto-load comments on this site" })).toBeHidden();
   await expect(comments.getByRole("link", { name: "GitHub Discussions" })).toBeVisible();
   const widths = await page.evaluate(() => ({
     viewport: window.innerWidth,
@@ -274,8 +275,10 @@ test("the automatic-loading option stays usable at 320 px without connecting", a
   await page.goto("/en/");
 
   const comments = page.locator("[data-page-comments]");
-  await expect(comments.getByRole("checkbox", { name: "Auto-load comments" })).toBeVisible();
-  await expect(comments.getByText("Auto-load comments on this site")).toBeVisible();
+  const autoLoad = comments.getByRole("checkbox", { name: "Auto-load comments on this site" });
+  await expect(autoLoad).toBeVisible();
+  await expect(comments.locator(".page-comments__auto-load-label")).toHaveText("Auto-load comments on this site");
+  await expect(comments.locator(".page-comments__auto-load-label")).toHaveCSS("font-weight", "400");
   await expect(comments.locator('script[src="https://giscus.app/client.js"]')).toHaveCount(0);
   const widths = await page.evaluate(() => ({
     viewport: window.innerWidth,

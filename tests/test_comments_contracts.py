@@ -52,7 +52,6 @@ def test_comment_copy_is_complete_parallel_and_explicit_about_public_loading():
         "introduction_after",
         "load",
         "auto_load",
-        "auto_load_description",
         "auto_load_enabled",
         "auto_load_disabled",
         "auto_load_unavailable",
@@ -63,6 +62,8 @@ def test_comment_copy_is_complete_parallel_and_explicit_about_public_loading():
     }
     assert "公开" in zh["introduction_before"] and "public" in en["introduction_before"]
     assert "当前页面路径" in zh["introduction_after"] and "current page path" in en["introduction_after"]
+    assert zh["auto_load"] == "在本站自动加载评论"
+    assert en["auto_load"] == "Auto-load comments on this site"
     for copy in (zh, en):
         assert copy["direct_link"] == "GitHub Discussions"
         assert "giscus.app" in copy["introduction_after"]
@@ -76,8 +77,9 @@ def test_comment_include_is_static_until_the_reader_explicitly_loads_it():
     assert "data-comments-load hidden" in include
     assert "data-comments-auto-option hidden" in include
     assert "data-comments-auto-load" in include
-    assert 'aria-describedby="{{ auto_load_description_id }}"' in include
     assert 'for="{{ auto_load_id }}"' in include
+    assert "auto_load_description" not in include
+    assert "page-comments__auto-load-description" not in include
     assert "data-comments-thread hidden" in include
     assert "data-giscus-lang=\"{{ giscus_lang }}\"" in include
     assert "site.giscus.repo_id" in include
