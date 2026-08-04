@@ -131,7 +131,7 @@ def test_committed_posts_have_stable_identity_urls_and_no_translation_exemptions
     for document in documents:
         groups.setdefault(document.frontmatter["translation_key"], []).append(document)
 
-    assert len(groups) == 11
+    assert len(groups) == 12
     singleton_keys = {key for key, members in groups.items() if len(members) == 1}
     assert exemptions == {}
     assert singleton_keys == set()

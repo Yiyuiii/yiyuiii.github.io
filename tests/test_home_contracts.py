@@ -85,7 +85,7 @@ def test_home_feed_manifest_is_complete_stable_and_has_no_duplicated_dates():
     items = manifest["items"]
 
     assert manifest["date_semantics"].strip()
-    assert len(items) == 25
+    assert len(items) == 26
     assert len({item["id"] for item in items}) == len(items)
     assert "type-defined marker date" in manifest["date_semantics"]
     assert all(set(item) == {"id", "kind", "ref"} for item in items)
@@ -165,6 +165,7 @@ def test_all_marker_dates_have_explicit_sources_and_expected_values():
         "writing:202404232233": "2024-04-23",
         "writing:202407012233": "2024-07-01",
         "writing:202510112233": "2025-10-11",
+        "writing:202608021600": "2026-08-02",
         "project:Yiyuiii/codex-cc-tools": "2026-05-22",
         "project:Yiyuiii/HDBO-B": "2023-05-30",
         "project:Yiyuiii/nonebot-plugin-moegoe": "2022-08-20",
@@ -184,6 +185,7 @@ def test_all_marker_dates_have_explicit_sources_and_expected_values():
 
     ordered = sorted(actual, key=lambda item_id: (-date.fromisoformat(actual[item_id]).toordinal(), item_id))
     assert ordered[:8] == [
+        "writing:202608021600",
         "project:Yiyuiii/codex-cc-tools",
         "project:Yiyuiii/taco",
         "writing:202510112233",
@@ -191,7 +193,6 @@ def test_all_marker_dates_have_explicit_sources_and_expected_values():
         "publication:hdbo-b-ijcnn-2025",
         "project:Yiyuiii/simple_asr_llm_tts",
         "publication:hdbo-survey-2025",
-        "publication:supervised-dr-ppsn-2024",
     ]
 
 

@@ -1,0 +1,161 @@
+version: 1
+article_uid: "202608021600"
+title: "SETI step-by-step rules guide"
+publisher: "Czech Games Edition"
+rights_basis:
+  media_assets: >-
+    Product artwork, renders, and photos come from CGE's official press and
+    content-creator media pages. They are used only within an attributed,
+    instructional review article and are not redistributed as an asset pack.
+  rulebook_excerpts: >-
+    Rulebook images are small, necessary excerpts used for commentary and
+    instruction. Each appears beside original explanation and a page citation;
+    no complete rulebook or player aid is republished.
+source_urls:
+  base_media: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
+  base_rulebook: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+  expansion_media: "https://www.czechgames.com/for-press-games/seti-space-agencies"
+  expansion_rulebook: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/rules/SE2%20rulebook%20ZH-S%2002.pdf"
+  alien_aid: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/alien-species/SE2%20aliens%20aid%20ZH-S%2002.pdf"
+  promo_rules: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/promo-rule-sheets/SETI%20promos.pdf"
+  glyphid_correction: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/additional-content/seti-space-agencies-glyphid-correction-sticker-A4-2025-11-10.pdf"
+assets:
+  - asset: "assets/posts/202608021600/cover-seti-official-square.webp"
+    source: "Official base-game media pack: banners-and-social-media-artwork-no-text-03.png"
+    source_url: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
+    transform: "Resized 1080 × 1080 to 1024 × 1024 with Lanczos; WebP quality 82."
+    dimensions: [1024, 1024]
+    sha256: "ce94c7e409f683649540e842eb06bb76e022625246dacf2ffb2dc611cb82d47f"
+
+  - asset: "assets/posts/202608021600/setup-overview.webp"
+    source: "Official base-game media pack: product render 02"
+    source_url: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
+    transform: "Trimmed transparent margins, resized within 1500 × 1500, added a 32 px neutral border and background; WebP quality 82."
+    dimensions: [1564, 1426]
+    sha256: "a6f0de5bea41505b6ba50fd558608b113c41f96eb090d3a5c03406bc6e1d182b"
+
+  - asset: "assets/posts/202608021600/player-board.webp"
+    source: "Official base-game media pack: product render 07"
+    source_url: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
+    transform: "Trimmed transparent margins, resized within 1500 × 1000, added a 28 px neutral border and background; WebP quality 82."
+    dimensions: [1556, 549]
+    sha256: "ab9767b6523873554a6c8eaae0c7e471c389d4b5ec33cb8c818922676fc3f3fb"
+
+  - asset: "assets/posts/202608021600/probes.webp"
+    source: "Official base-game media pack: white-background product photo 33"
+    source_url: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
+    transform: "Resized within 1500 × 1000 and stripped metadata; WebP quality 82."
+    dimensions: [1500, 889]
+    sha256: "175d44a38783458b020517cff5257252a82a84b15074d56d55cfb37da4a3d929"
+
+  - asset: "assets/posts/202608021600/project-cards.webp"
+    source: "Official base-game media pack: white-background product photo 10"
+    source_url: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
+    transform: "Resized within 1500 × 1000 and stripped metadata; WebP quality 82."
+    dimensions: [1499, 1000]
+    sha256: "a8b2c6458f14ce65ed81a6f3337aff185b4b8748b8c780baa2a9f018a44d6b72"
+
+  - asset: "assets/posts/202608021600/technology-tiles.webp"
+    source: "Official base-game media pack: white-background product photo 15"
+    source_url: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
+    transform: "Resized within 1500 × 1000 and stripped metadata; WebP quality 82."
+    dimensions: [1500, 1000]
+    sha256: "d37abf79ab09896f6516d6d4b2a16b109b170f71240c457681b7e3bf4438faf2"
+
+  - asset: "assets/posts/202608021600/main-actions.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 7"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [920, 200, 1270, 1040] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [350, 840]
+    sha256: "7db61ef61e26142bd07323c5e47eadc355623da6162b9bfb20c94e62dc8a51d5"
+
+  - asset: "assets/posts/202608021600/card-anatomy.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 7"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [55, 1050, 1275, 1830] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1220, 780]
+    sha256: "e71a17bae2f55ef5cee1cbaec4e899634a30da5e0010816b637a53e8d6ac2667"
+
+  - asset: "assets/posts/202608021600/scan-flow.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 12"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [85, 125, 1275, 1160] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1190, 1035]
+    sha256: "b9d222312cfb5034025bfa3c83373784488e6e57c31129920d7523c5b96c88fc"
+
+  - asset: "assets/posts/202608021600/sector-resolution.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 13"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [55, 665, 1265, 1285] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1210, 620]
+    sha256: "edf5fd22d23790b2cf023ee70c99dfc84d19f405bdf0d36db415d7056013e7f4"
+
+  - asset: "assets/posts/202608021600/data-computer.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 14"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [85, 120, 1270, 1190] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1185, 1070]
+    sha256: "4babe0d32b0be568a5999df24eaf4abd4e126cb52e1de9e6cfb5c1e50004f14c"
+
+  - asset: "assets/posts/202608021600/rotation-sequence.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 16"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [75, 930, 1280, 1845] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1205, 915]
+    sha256: "490009299fde6e384258ad0d87f92a00a10986ba58489b0aaea4bef982cb91f4"
+
+  - asset: "assets/posts/202608021600/pass-steps.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 19"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [55, 45, 1290, 970] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1235, 925]
+    sha256: "61904542d4cb40116f00019da5584b1719877bd57013a083ef94fb4544a0fcd0"
+
+  - asset: "assets/posts/202608021600/alien-discovery.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 20"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [65, 45, 1290, 1035] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1225, 990]
+    sha256: "2750f08595b7526bb1bd199f4228a99e61908def27cebb8c9a177532608f5ea4"
+
+  - asset: "assets/posts/202608021600/endgame-formula.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 21"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [60, 45, 1290, 690] from a 1359 × 1890 page render; WebP quality 84."
+    dimensions: [1230, 645]
+    sha256: "c8822b42e335d5544f7408c945b55c7b79f1e43e181464b09836f845e8f7ef5c"
+
+  - asset: "assets/posts/202608021600/space-agencies-organizations.webp"
+    source: "Official expansion media pack: 774678398-se2_rulebook-render_01.png"
+    source_url: "https://www.czechgames.com/for-press-games/seti-space-agencies"
+    transform: "Trimmed transparent margins, resized within 1500 × 900, added a 32 px neutral border and background; WebP quality 84."
+    dimensions: [1564, 797]
+    sha256: "5c36d676f09d3de792ff06d3f3d4ab5ed0e90ed09e3be44dbfe41e303163c128"
+
+  - asset: "assets/posts/202608021600/space-agencies-quick-start.webp"
+    source: "Official expansion media pack: SE2_rulebook render_12.png"
+    source_url: "https://www.czechgames.com/for-press-games/seti-space-agencies"
+    transform: "Trimmed transparent margins, resized within 1500 × 900, added a 32 px neutral border and background; WebP quality 84."
+    dimensions: [1312, 964]
+    sha256: "cecfd15d39b5b5f758aa7b522b146da465783c4e3b9837d0d96cf36f11c6586e"
+
+  - asset: "assets/posts/202608021600/space-agencies-signal-tokens.webp"
+    source: "Official Simplified Chinese Space Agencies rulebook, page 8"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/rules/SE2%20rulebook%20ZH-S%2002.pdf"
+    transform: "Cropped [45, 35, 960, 600] from a 1004 × 1441 page render; WebP quality 84."
+    dimensions: [915, 565]
+    sha256: "fb7884693ab58ecb1db6380fe1688a2117b9083e41416214ffef0a79dc800048"
+
+  - asset: "assets/posts/202608021600/space-agencies-aliens.webp"
+    source: "Official expansion media pack: SE_aliens.png"
+    source_url: "https://www.czechgames.com/for-press-games/seti-space-agencies"
+    transform: "Trimmed transparent margins, resized within 1000 × 1000, added a 28 px neutral border and background; WebP quality 84."
+    dimensions: [815, 700]
+    sha256: "c357c60bb4278958bd8396323a2066cc8e986de4cad918b2188104c47e17cfd2"
+
+  - asset: "assets/posts/202608021600/seti-official-promos.webp"
+    source: "Official four-page SETI promo rules: one unmodified card crop from each page"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/promo-rule-sheets/SETI%20promos.pdf"
+    transform: "Cropped [140, 450, 525, 975] from each 1359 × 1890 page render, arranged as a 2 × 2 contact sheet on a neutral background; WebP quality 84."
+    dimensions: [858, 1138]
+    sha256: "bddccb5c842f59440ee9e5413e4828cc4fce2b5ab7ebf37c96aeb036b8ff6a54"

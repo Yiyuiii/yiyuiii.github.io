@@ -33,7 +33,7 @@
 - 抽样使用浏览器 `crypto.getRandomValues()` 产生 32 位无符号整数，并通过拒绝采样消除直接取模的偏差。不要改用 `Math.random`，也不要使用日期、手写随机表或访问历史影响结果。
 - 随机发现只读取构建产物中的候选列表，不记录访问，不使用 Cookie、`localStorage`、`sessionStorage` 或外部请求。禁用 JavaScript、候选为空或随机源不可用时显示预渲染的固定“浏览起点”，不伪装成随机结果。
 - 后续修订、GitHub push、Star/Fork、本站构建与整理日期都不得改变“最近更新”顺序或随机候选边界。
-- 当前 25 条日期及其来源见 `docs/home-feed-date-sources.md`；修改日期字段时必须同步复核该清单与契约测试。
+- 当前 26 条日期及其来源见 `docs/home-feed-date-sources.md`；修改日期字段时必须同步复核该清单与契约测试。
 
 修改欢迎文案或内容流后运行：
 
@@ -263,7 +263,7 @@ node --test tests/toy_challenges.logic.test.mjs tests/toy_challenge_history.logi
 
 - 正文：`_posts/*.md`
 - 中文文章使用 `lang: zh`，英文文章使用 `lang: en`
-- 新文章必须同时提供完整中英文版本；现有 11 组、22 篇随笔已经全部配对，`_data/translation_exemptions.yml` 必须保持空闭集，不能加入新豁免
+- 新文章必须同时提供完整中英文版本；当前 12 组、24 篇随笔已经全部配对，`_data/translation_exemptions.yml` 必须保持空闭集，不能加入新豁免
 - 每组共用引号包裹的 12 位 `uid` 和 `post-<uid>` 形式的 `translation_key`
 - 中文 URL 位于 `/posts/`，英文 URL 位于 `/en/posts/`，并且全部使用显式 `permalink`
 - `tags` 是文章自己的真实标签；随笔索引会按当前语言中的全局出现频率自动排序
@@ -384,7 +384,11 @@ python scripts/generate_post_thumbnails.py --write
 python scripts/generate_post_thumbnails.py --check
 ```
 
-派生图与原图同目录，命名为 `<原文件名去扩展名>-index-v1-160.webp` 和 `-index-v1-320.webp`；原分辨率正式封面继续供文章正文使用，不得被派生图替换。派生图不在清单中重复保存 22 组路径和 SHA-256：每张原图已有受检 SHA-256，`index_derivatives` 又完整固定了尺寸、编码参数、Pillow 与 libwebp 版本，`--check` 和测试会从原图重新编码并逐字节比较提交文件。这条“原图哈希 + 固定编码器与策略 + 逐字节重算”链路是派生文件哈希的单一等价证据，避免两份清单失步。编码器版本不一致时脚本会在处理前明确失败。
+派生图与原图同目录，命名为 `<原文件名去扩展名>-index-v1-160.webp` 和 `-index-v1-320.webp`；原分辨率正式封面继续供文章正文使用，不得被派生图替换。派生图不在清单中逐项重复保存路径和 SHA-256：每张原图已有受检 SHA-256，`index_derivatives` 又完整固定了尺寸、编码参数、Pillow 与 libwebp 版本，`--check` 和测试会从原图重新编码并逐字节比较提交文件。这条“原图哈希 + 固定编码器与策略 + 逐字节重算”链路是派生文件哈希的单一等价证据，避免两份清单失步。编码器版本不一致时脚本会在处理前明确失败。
+
+### 正文外部图片的来源记录
+
+`docs/asset-provenance.yml` 仍是所有正式题图的唯一生产契约。若单篇随笔还使用了较多外部正文图片、官方媒体包素材或规则书必要裁图，可在 `docs/article-assets/<uid>.yml` 另存一份文章级来源记录，逐项保存正式资产路径、直接来源、处理方式、尺寸与 SHA-256。它只补充正文素材的可追溯性，不替代题图契约，也不保存下载包、完整规则书、未采用候选或过程截图。当前实例见 `docs/article-assets/202608021600.yml`。
 
 计算当前文件 SHA-256：
 

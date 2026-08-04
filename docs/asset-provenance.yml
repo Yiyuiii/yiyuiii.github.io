@@ -179,3 +179,17 @@ covers:
     sha256: "c6e4afcf62b37df698f5858326805f8713f8017b676003c404d7e8b40d943dd0"
     dimensions: [1024, 1024]
     attribution: "Hipopotam"
+
+  - asset: "assets/posts/202608021600/cover-seti-official-square.webp"
+    posts:
+      - "_posts/2026-08-02-像读一篇随笔一样学会SETI.md"
+      - "_posts/2026-08-02-learning-seti-board-game.md"
+    origin_type: "external"
+    source_url: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
+    author: "Czech Games Edition"
+    license: "CGE press/content-creator media use"
+    license_url: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
+    transform: "Resized the official 1080 × 1080 no-text social artwork to 1024 × 1024 with Lanczos and exported it as WebP quality 82 without changing the composition."
+    sha256: "ce94c7e409f683649540e842eb06bb76e022625246dacf2ffb2dc611cb82d47f"
+    dimensions: [1024, 1024]
+    attribution: "© Czech Games Edition"
