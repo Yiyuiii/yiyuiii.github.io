@@ -64,14 +64,14 @@ groups:
     items:
       - id: codebreaker
         title:
-          zh: 破译数字码
-          en: Codebreaker
+          zh: 数字 Wordle
+          en: Number Wordle
         description:
-          zh: 根据位置与数字命中数，逐步排除隐藏答案。
-          en: Use exact and misplaced matches to deduce the hidden number code.
+          zh: 根据“完全命中”和“仅数字命中”，逐步排除隐藏答案。
+          en: Use exact and digit-only matches to deduce the hidden number code.
         keywords:
-          zh: [数字码, 推理, 排除, 逻辑, 游戏]
-          en: [codebreaker, deduction, logic, numbers, game]
+          zh: [数字 Wordle, 数字码, 推理, 排除, 逻辑, 游戏]
+          en: [number Wordle, codebreaker, deduction, logic, numbers, game]
 
   - id: random-generators
     title:

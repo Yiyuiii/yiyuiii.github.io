@@ -42,6 +42,11 @@ def test_codebreaker_is_strict_local_and_keeps_leading_zeroes():
     assert 'inputmode="numeric"' in include
     assert "不会发送或保存" in include
     assert "Nothing is sent or stored" in include
+    assert "每个匹配数字只会计入一类" in include
+    assert "完全命中" in include
+    assert "仅数字命中" in include
+    assert "位置正确 {exact}" not in include
+    assert "数字正确 {misplaced}" not in include
     assert "candidateCount" in script
     assert "scoreGuess" in script
     assert "Math" + ".random" not in script

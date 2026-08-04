@@ -1,8 +1,8 @@
 {% assign lang_key = page.lang | default: 'zh' %}
 {% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
 {% if lang_key == 'en' %}
-  {% assign challenge_label = 'Codebreaker' %}
-  {% assign instructions = 'Guess the hidden number code. After each guess, you will see how many digits are exact matches and how many are present in another position.' %}
+  {% assign challenge_label = 'Number Wordle' %}
+  {% assign instructions = 'Guess the hidden number code. Each matched digit counts in exactly one category: “Exact” means the digit and position both match; “Digit only” means the digit is present in a different position.' %}
   {% assign disclaimer = 'The code, settings, and round history stay only in this page’s memory. Nothing is sent or stored, and the result is not an assessment of intelligence or logical ability.' %}
   {% assign settings_title = 'Game rules' %}
   {% assign settings_adjust = 'Adjust' %}
@@ -29,12 +29,12 @@
   {% assign history_attempt = 'No.' %}
   {% assign history_guess = 'Guess' %}
   {% assign history_exact = 'Exact' %}
-  {% assign history_misplaced = 'Misplaced' %}
-  {% assign exact_explanation = 'right digit and position' %}
-  {% assign misplaced_explanation = 'right digit, different position' %}
+  {% assign history_misplaced = 'Digit only' %}
+  {% assign exact_explanation = 'digit and position both match' %}
+  {% assign misplaced_explanation = 'digit matches but the position differs' %}
   {% assign invalid_digits = 'Enter exactly {length} digits from 0 to 9.' %}
   {% assign invalid_duplicates = 'Use each digit at most once under the current rules.' %}
-  {% assign feedback = '{guess}: {exact} exact, {misplaced} misplaced. {remaining} guesses left.' %}
+  {% assign feedback = '{guess}: {exact} exact, {misplaced} digit only. {remaining} guesses left.' %}
   {% assign won = 'Correct—the code was {secret}. Solved in {attempts} guesses.' %}
   {% assign lost = 'No guesses left. The code was {secret}.' %}
   {% assign new_game = 'A new code is ready.' %}
@@ -49,8 +49,8 @@
   {% assign no_js = 'This local game requires JavaScript. Nothing is sent or stored.' %}
   {% assign locale = 'en' %}
 {% else %}
-  {% assign challenge_label = '破译数字码' %}
-  {% assign instructions = '猜出隐藏的数字码。每次提交后，只会告诉你有几个数字和位置都正确，以及有几个数字正确但位置不对。' %}
+  {% assign challenge_label = '数字 Wordle' %}
+  {% assign instructions = '猜出隐藏的数字码。每个匹配数字只会计入一类：“完全命中”表示数字和位置都对；“仅数字命中”表示数字存在但位置不同。' %}
   {% assign disclaimer = '答案、设置和本局记录只保留在当前页面内存中，不会发送或保存；结果也不是智力或逻辑能力评估。' %}
   {% assign settings_title = '玩法规则' %}
   {% assign settings_adjust = '调整' %}
@@ -76,13 +76,13 @@
   {% assign history_caption = '本局猜测记录' %}
   {% assign history_attempt = '次数' %}
   {% assign history_guess = '猜测' %}
-  {% assign history_exact = '位置正确' %}
-  {% assign history_misplaced = '数字正确' %}
-  {% assign exact_explanation = '数字和位置都正确' %}
-  {% assign misplaced_explanation = '数字正确但位置不对' %}
+  {% assign history_exact = '完全命中' %}
+  {% assign history_misplaced = '仅数字命中' %}
+  {% assign exact_explanation = '数字和位置都匹配' %}
+  {% assign misplaced_explanation = '数字匹配但位置不同' %}
   {% assign invalid_digits = '请输入恰好 {length} 位 0 到 9 的数字。' %}
   {% assign invalid_duplicates = '当前规则下，每个数字最多使用一次。' %}
-  {% assign feedback = '{guess}：位置正确 {exact} 个，数字正确 {misplaced} 个；还剩 {remaining} 次。' %}
+  {% assign feedback = '{guess}：完全命中 {exact} 位，仅数字命中 {misplaced} 位；还剩 {remaining} 次。' %}
   {% assign won = '答对了，数字码是 {secret}；共使用 {attempts} 次。' %}
   {% assign lost = '机会已经用完，数字码是 {secret}。' %}
   {% assign new_game = '新的数字码已经准备好。' %}

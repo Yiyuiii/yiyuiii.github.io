@@ -1411,30 +1411,36 @@ html:lang(en) .article-header h1 {
 }
 
 .toy-codebreaker__history {
-  margin-top: 1rem;
+  max-width: 100%;
+  margin-top: 0.8rem;
 }
 
 .toy-codebreaker__table-wrap {
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
   max-height: 20rem;
   overflow: auto;
   border: 1px solid color-mix(in srgb, var(--divider) 72%, transparent);
   border-radius: 0.45rem;
+  vertical-align: top;
 }
 
 .toy-codebreaker__table-wrap table {
-  width: 100%;
+  width: auto;
   margin: 0;
   border-collapse: collapse;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
 }
 
 .toy-codebreaker__table-wrap th,
 .toy-codebreaker__table-wrap td {
-  padding: 0.5rem 0.58rem;
+  padding: 0.38rem 0.5rem;
   border-bottom: 1px solid color-mix(in srgb, var(--divider) 58%, transparent);
-  text-align: left;
-  vertical-align: top;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
 .toy-codebreaker__table-wrap thead th {
@@ -1443,6 +1449,10 @@ html:lang(en) .article-header h1 {
   top: 0;
   color: var(--ink);
   background: var(--surface);
+}
+
+.toy-codebreaker__table-wrap tbody tr:last-child > * {
+  border-bottom: 0;
 }
 
 .toy-codebreaker__guess {

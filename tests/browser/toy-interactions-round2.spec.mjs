@@ -236,7 +236,14 @@ test("codebreaker validates guesses, scores exact matches, and applies duplicate
     await input.fill("4567");
     await input.press("Enter");
     await expect(root.locator("[data-code-history-body] tr")).toHaveCount(1);
+    await expect(root.locator("[data-code-status]")).toContainText("完全命中");
+    await expect(root.locator("[data-code-status]")).toContainText("仅数字命中");
     await expect(root.locator("[data-code-status]")).toContainText("还剩 7 次");
+    const tableMetrics = await page.evaluate(() => ({
+      rootWidth: document.querySelector("[data-toy-codebreaker]").getBoundingClientRect().width,
+      tableWidth: document.querySelector(".toy-codebreaker__table-wrap").getBoundingClientRect().width,
+    }));
+    expect(tableMetrics.tableWidth).toBeLessThan(tableMetrics.rootWidth * 0.75);
     await input.fill("0123");
     await input.press("Enter");
     await expect(root).toHaveAttribute("data-state", "won");
