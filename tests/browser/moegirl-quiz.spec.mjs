@@ -22,7 +22,7 @@ const copy = {
     license_label: "查看 CC BY-NC-SA 3.0 协议",
     no_js: "此小玩意需要 JavaScript；未启用时不会连接萌娘百科。",
     options_label: "候选条目",
-    clue_label: "这是哪个条目？",
+    clue_label: "这是什么？",
     redaction: "⬛",
   },
   en: {
@@ -40,7 +40,7 @@ const copy = {
     license_label: "Read the CC BY-NC-SA 3.0 license",
     no_js: "This toy needs JavaScript. With JavaScript disabled, it does not connect to Moegirlpedia.",
     options_label: "Candidate entries",
-    clue_label: "Which entry is this?",
+    clue_label: "What is this?",
     redaction: "⬛",
   },
 };
@@ -339,7 +339,7 @@ test("English interface uses the same black-square redaction and keeps attributi
 
   await page.getByRole("button", { name: "Start a round" }).click();
   await expect(page.locator("[data-quiz-clue-text]")).toContainText("⬛");
-  await expect(page.locator("[data-quiz-clue]")).toContainText("Which entry is this?");
+  await expect(page.locator("[data-quiz-clue]")).toContainText("What is this?");
   await page.getByRole("button", { name: state.answer, exact: true }).click();
   await expect(page.locator("[data-quiz-status]")).toHaveText(`Correct! This is ${state.answer}.`);
   await expect(page.locator("[data-quiz-source]")).toContainText("source and attribution");
