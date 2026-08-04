@@ -3,7 +3,7 @@
 {% if lang_key == 'en' %}
   {% assign challenge_label = 'Estimate ten seconds' %}
   {% assign instructions = 'Start, count ten seconds in your head, then stop. No running clock is shown.' %}
-  {% assign local_note = 'Results stay on this device. Up to 100 completed attempts are kept in this browser; nothing is uploaded or ranked.' %}
+  {% assign local_note = 'Up to 100 completed attempts are stored only in this browser. They are not uploaded, synced across devices, or ranked, and you can clear them from the history section.' %}
   {% assign start = 'Start' %}
   {% assign stop = 'Stop' %}
   {% assign again = 'Try again' %}
@@ -33,7 +33,6 @@
   {% assign clear_question = 'Clear all locally saved ten-second results?' %}
   {% assign confirm_clear = 'Confirm clear' %}
   {% assign cancel_clear = 'Cancel' %}
-  {% assign persistence_copy = 'Results are stored only in this browser (up to 100 completed attempts), are not uploaded or synced, and can be cleared here.' %}
   {% assign memory_only_copy = 'This browser did not allow local storage. Statistics work for this open page only.' %}
   {% assign seconds_value_copy = '{value} s' %}
   {% assign signed_seconds_value_copy = '{direction} by {value} s' %}
@@ -51,7 +50,7 @@
 {% else %}
   {% assign challenge_label = '盲估十秒' %}
   {% assign instructions = '点击开始后在心里默数十秒，再点击停止；过程中不会显示实时计时。' %}
-  {% assign local_note = '结果仅留在当前设备；浏览器最多保存 100 次完成记录，不上传，也不排名。' %}
+  {% assign local_note = '当前浏览器最多保存 100 次完成记录；这些记录不会上传、跨设备同步或参与排名，并可在历史区随时清空。' %}
   {% assign start = '开始' %}
   {% assign stop = '停止' %}
   {% assign again = '再试一次' %}
@@ -81,7 +80,6 @@
   {% assign clear_question = '确定清空本机保存的全部盲估结果吗？' %}
   {% assign confirm_clear = '确认清空' %}
   {% assign cancel_clear = '取消' %}
-  {% assign persistence_copy = '结果仅保存在当前浏览器中（最多 100 次完成记录），不会上传或跨设备同步，可在这里随时清空。' %}
   {% assign memory_only_copy = '当前浏览器不允许本地存储；统计仅在本次打开页面期间有效。' %}
   {% assign seconds_value_copy = '{value} 秒' %}
   {% assign signed_seconds_value_copy = '{direction}{value} 秒' %}
@@ -125,7 +123,7 @@
     aria-label="{{ history_label | escape }}"
     hidden
   >
-    <p class="toy-challenge__note" data-history-persistence></p>
+    <p class="toy-challenge__note" data-history-persistence hidden></p>
     <p class="toy-history__empty" data-history-empty>{{ empty_history }}</p>
 
     <div data-history-stats hidden>
@@ -186,7 +184,6 @@
       "exact": {{ exact | jsonify }},
       "cancelled": {{ cancelled | jsonify }},
       "unavailable": {{ unavailable | jsonify }},
-      "persistence": {{ persistence_copy | jsonify }},
       "memoryOnly": {{ memory_only_copy | jsonify }},
       "notAvailable": {{ '—' | jsonify }},
       "secondsValue": {{ seconds_value_copy | jsonify }},

@@ -31,6 +31,8 @@ def test_chinese_and_english_copy_have_the_same_complete_interface():
         assert "{title}" in zh[key]
         assert "{title}" in en[key]
     assert "IP" in zh["privacy"] and "IP" in en["privacy"]
+    assert "可识别的角色名片段" in zh["privacy"] and "⬛" in zh["privacy"]
+    assert "Chinese clue" in en["privacy"] and "⬛" in en["privacy"]
     assert "不请求图片" in zh["privacy"]
     assert "no cookies, persistent storage, tracking, or images" in en["privacy"]
     assert "来源与署名" in zh["license"]
@@ -51,6 +53,7 @@ def test_include_is_progressively_enhanced_and_discloses_remote_boundaries():
     assert "assets/js/moegirl-quiz.js" in include
     assert "data-quiz-clue" in include
     assert "data-quiz-clue-text" in include
+    assert "copy.clue_origin" not in include
     assert "data-quiz-image" not in include
     assert "<img" not in include
     assert 'referrerpolicy="no-referrer"' in include
@@ -109,6 +112,7 @@ def test_quiz_styles_are_scoped_responsive_and_theme_aware():
     assert 'html[data-theme="dark"] .moegirl-quiz' in component
     assert ".moegirl-quiz__clue" in component
     assert ".moegirl-quiz__clue-text" in component
+    assert ".moegirl-quiz__clue-origin" not in component
     assert ".moegirl-quiz__figure" not in component
     assert "@media (max-width: 560px)" in component
     assert "grid-template-columns: minmax(0, 1fr)" in component

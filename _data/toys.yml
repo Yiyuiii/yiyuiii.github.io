@@ -1,6 +1,6 @@
 page:
   zh:
-    introduction: 几个随时可以展开、用完即走的轻量互动。
+    introduction: 点开玩~
   en:
     introduction: A few lightweight interactions to open, try, and leave at any time.
 
@@ -13,8 +13,8 @@ groups:
           zh: 萌娘百科角色猜猜
           en: Moegirlpedia character quiz
         description:
-          zh: 阅读匿名化的条目导言，从四个候选中找出角色。
-          en: Read an anonymized entry introduction and choose the character from four candidates.
+          zh: 看完线索，你能从四个选项里猜出是谁吗？
+          en: Can you identify the character from a Chinese clue and four choices?
         keywords:
           zh: [萌娘百科, 角色, 问答, 动漫, 游戏]
           en: [Moegirlpedia, character, quiz, anime, games]
