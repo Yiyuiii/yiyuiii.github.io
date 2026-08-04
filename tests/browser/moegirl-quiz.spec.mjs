@@ -15,14 +15,14 @@ const copy = {
     correct: "答对了！这是 {title}。",
     incorrect: "没猜中；答案是 {title}。",
     network_error: "暂时没能取得文字线索，请稍后重试。",
-    no_clue_error: "本次随机结果里没有足够的合适角色线索，请再试一次。",
+    no_clue_error: "本次随机结果里没有足够的合适条目线索，请再试一次。",
     random_error: "浏览器无法提供可靠随机数，暂时不能出题。",
     source_label: "查看萌娘百科来源条目：{title}",
     license: "线索是来源条目的匿名化节选；再次使用时请保留来源与署名。",
     license_label: "查看 CC BY-NC-SA 3.0 协议",
     no_js: "此小玩意需要 JavaScript；未启用时不会连接萌娘百科。",
-    options_label: "角色选项",
-    clue_label: "这是谁？",
+    options_label: "候选条目",
+    clue_label: "这是哪个条目？",
     redaction: "⬛",
   },
   en: {
@@ -33,14 +33,14 @@ const copy = {
     correct: "Correct! This is {title}.",
     incorrect: "Not quite; the answer is {title}.",
     network_error: "The text clue could not be retrieved just now. Please try again later.",
-    no_clue_error: "This random batch did not contain enough suitable character clues. Please try again.",
+    no_clue_error: "This random batch did not contain enough suitable entry clues. Please try again.",
     random_error: "This browser cannot provide secure randomness, so a round cannot be created.",
     source_label: "Open the source entry on Moegirlpedia: {title}",
     license: "The clue is an anonymized excerpt; preserve its source and attribution.",
     license_label: "Read the CC BY-NC-SA 3.0 license",
     no_js: "This toy needs JavaScript. With JavaScript disabled, it does not connect to Moegirlpedia.",
-    options_label: "Character choices",
-    clue_label: "Who is this character?",
+    options_label: "Candidate entries",
+    clue_label: "Which entry is this?",
     redaction: "⬛",
   },
 };
@@ -339,7 +339,7 @@ test("English interface uses the same black-square redaction and keeps attributi
 
   await page.getByRole("button", { name: "Start a round" }).click();
   await expect(page.locator("[data-quiz-clue-text]")).toContainText("⬛");
-  await expect(page.locator("[data-quiz-clue]")).toContainText("Who is this character?");
+  await expect(page.locator("[data-quiz-clue]")).toContainText("Which entry is this?");
   await page.getByRole("button", { name: state.answer, exact: true }).click();
   await expect(page.locator("[data-quiz-status]")).toHaveText(`Correct! This is ${state.answer}.`);
   await expect(page.locator("[data-quiz-source]")).toContainText("source and attribution");

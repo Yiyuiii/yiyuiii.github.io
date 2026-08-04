@@ -10,14 +10,14 @@ groups:
     items:
       - id: moegirl-quiz
         title:
-          zh: 萌娘百科角色猜猜
-          en: Moegirlpedia character quiz
+          zh: 萌娘百科条目猜猜
+          en: Moegirlpedia entry quiz
         description:
-          zh: 看完线索，你能从四个选项里猜出是谁吗？
-          en: Can you identify the character from a Chinese clue and four choices?
+          zh: 看完线索，你能从四个条目中猜出答案吗？
+          en: Read the Chinese clue and pick the matching entry.
         keywords:
-          zh: [萌娘百科, 角色, 问答, 动漫, 游戏]
-          en: [Moegirlpedia, character, quiz, anime, games]
+          zh: [萌娘百科, 条目, 问答, 动漫, 游戏]
+          en: [Moegirlpedia, entry, quiz, anime, games]
 
   - id: quick-challenges
     title:
