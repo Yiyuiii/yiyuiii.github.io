@@ -186,9 +186,9 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         raise SiteCheckError(f"{route}: expected exactly one Moegirl quiz component")
     quiz_title = soup.select("#moegirl-quiz-title")
     expected_quiz_title = (
-        "萌娘百科角色猜猜"
+        "萌娘百科条目猜猜"
         if language == "zh"
-        else "Moegirlpedia character quiz"
+        else "Moegirlpedia entry quiz"
     )
     quiz_title_text = (
         quiz_title[0].select_one(".toy-entry__title")

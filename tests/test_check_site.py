@@ -174,7 +174,7 @@ def valid_site(root):
                 "quick": "轻松挑战",
                 "random": "随机生成",
                 "items": [
-                    ("moegirl-quiz", "萌娘百科角色猜猜"),
+                    ("moegirl-quiz", "萌娘百科条目猜猜"),
                     ("color-challenge", "色差挑战"),
                     ("ten-second", "盲估十秒"),
                     ("reaction-time", "反应时间"),
@@ -187,7 +187,7 @@ def valid_site(root):
                 "quick": "Quick challenges",
                 "random": "Random generators",
                 "items": [
-                    ("moegirl-quiz", "Moegirlpedia character quiz"),
+                    ("moegirl-quiz", "Moegirlpedia entry quiz"),
                     ("color-challenge", "Color difference challenge"),
                     ("ten-second", "Ten-second estimate"),
                     ("reaction-time", "Reaction time"),
