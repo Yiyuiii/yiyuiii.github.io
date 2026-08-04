@@ -8,6 +8,8 @@
   const START_LEVEL = 8;
   const BLOCK_SIZE = 3;
   const HARD_DELTA = 0.0014;
+  const MID_LIGHTNESS_MIN = 0.52;
+  const MID_LIGHTNESS_MAX = 0.68;
   const RGB_MAX_DISTANCE = Math.sqrt(3 * (255 ** 2));
 
   const TARGETS = Object.freeze(Array.from(
@@ -88,6 +90,15 @@
     rgb8ToOklab(right),
   );
 
+  const pairMidpointLightness = (left, right) => (
+    (rgb8ToOklab(left)[0] + rgb8ToOklab(right)[0]) / 2
+  );
+
+  const pairUsesMidLightness = (left, right) => {
+    const midpoint = pairMidpointLightness(left, right);
+    return midpoint >= MID_LIGHTNESS_MIN && midpoint <= MID_LIGHTNESS_MAX;
+  };
+
   const colorsDiffer = (left, right) => left.some((value, index) => value !== right[index]);
 
   const bandForLevel = (level) => {
@@ -106,6 +117,7 @@
     if (level === LEVEL_MIN) {
       return normalRgb.every((value, index) => Math.abs(value - oddRgb[index]) === 255);
     }
+    if (!pairUsesMidLightness(normalRgb, oddRgb)) return false;
     if (level === LEVEL_MAX) {
       const channelDifferences = normalRgb.map(
         (value, index) => Math.abs(value - oddRgb[index]),
@@ -133,8 +145,12 @@
     const { target } = bandForLevel(level);
     for (let attempt = 0; attempt < 32; attempt += 1) {
       const margin = 0.004;
-      const minimumMidpoint = (target / 2) + margin;
-      const maximumMidpoint = 1 - (target / 2) - margin;
+      const minimumMidpoint = Math.max(MID_LIGHTNESS_MIN, (target / 2) + margin);
+      const maximumMidpoint = Math.min(
+        MID_LIGHTNESS_MAX,
+        1 - (target / 2) - margin,
+      );
+      if (minimumMidpoint > maximumMidpoint) return null;
       const midpoint = minimumMidpoint
         + ((maximumMidpoint - minimumMidpoint) * randomFraction(randomApi));
       const hue = randomApi.intInclusive(0, 359) * (Math.PI / 180);
@@ -213,8 +229,8 @@
     }
     if (level === LEVEL_MAX) {
       const endpoint = Object.freeze({
-        normalRgb: Object.freeze([254, 254, 254]),
-        oddRgb: Object.freeze([255, 254, 254]),
+        normalRgb: Object.freeze([128, 128, 128]),
+        oddRgb: Object.freeze([129, 128, 128]),
       });
       fallbackCache.set(level, endpoint);
       return endpoint;
@@ -235,16 +251,22 @@
 
     if (!result) {
       fallbackSearch:
-      for (let value = 16; value <= 254; value += 1) {
-        for (const channel of [0, 1, 2]) {
-          for (let step = 1; step <= 32 && value + step <= 255; step += 1) {
-            const normalRgb = Object.freeze([value, value, value]);
-            const odd = [value, value, value];
-            odd[channel] += step;
-            const oddRgb = Object.freeze(odd);
-            if (pairMatchesLevel(level, normalRgb, oddRgb)) {
-              result = Object.freeze({ normalRgb, oddRgb });
-              break fallbackSearch;
+      for (let value = 80; value <= 192; value += 1) {
+        const normalRgb = Object.freeze([value, value, value]);
+        for (let red = -6; red <= 6; red += 1) {
+          for (let green = -6; green <= 6; green += 1) {
+            for (let blue = -6; blue <= 6; blue += 1) {
+              if (red === 0 && green === 0 && blue === 0) continue;
+              const oddRgb = Object.freeze([
+                value + red,
+                value + green,
+                value + blue,
+              ]);
+              if (oddRgb.some((channel) => channel < 0 || channel > 255)) continue;
+              if (pairMatchesLevel(level, normalRgb, oddRgb)) {
+                result = Object.freeze({ normalRgb, oddRgb });
+                break fallbackSearch;
+              }
             }
           }
         }
@@ -257,7 +279,7 @@
   };
 
   const createSingleCodePair = (randomApi) => {
-    const value = randomApi.intInclusive(192, 254);
+    const value = randomApi.intInclusive(112, 152);
     const channel = randomApi.pick([0, 2]);
     const direction = randomApi.pick([-1, 1]);
     if (![0, 2].includes(channel) || ![-1, 1].includes(direction)) {
@@ -403,6 +425,8 @@
     LEVEL_COUNT,
     LEVEL_MAX,
     LEVEL_MIN,
+    MID_LIGHTNESS_MAX,
+    MID_LIGHTNESS_MIN,
     RGB_MAX_DISTANCE,
     START_LEVEL,
     TARGETS,
@@ -413,6 +437,7 @@
     hasRandomApi,
     nextColorState,
     oklabToRgb8,
+    pairMidpointLightness,
     pairMatchesLevel,
     rgb8ToOklab,
     rgbDistance,
