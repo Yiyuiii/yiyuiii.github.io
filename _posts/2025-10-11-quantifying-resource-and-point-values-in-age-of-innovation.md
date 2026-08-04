@@ -9,7 +9,7 @@ translation_key: post-202510112233
 translation_url: /posts/大创造时代-资源-分值量化计算思路/
 translation_source: _posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md
 translation_status: current
-source_hash: 2ada4c6966734127f31ef137bf68bbcc38facc4eb185b05b9f938682b76d0df6
+source_hash: 310082dcd71c2d8e33c685f728b6349568bd98628e19ba797feec8ad185fb81d
 aliases: []
 categories:
 - Board Games
@@ -23,6 +23,7 @@ article_cover:
   alt: The end of a five-player game of Age of Innovation
   caption: 'Cover image: [Five player game.](https://boardgamegeek.com/image/7712310/age-of-innovation), image by BoardGameGeek user Hipopotam, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/); square crop by this site, with the derivative cover distributed under the same license.'
 excerpt: This article attempts to convert the different resources in Age of Innovation onto a common scale and uses a cross-round iterative model to compare their practical value during a game.
+description: A cross-round valuation of coins, tools, books, scholars, science, navigation, and buildings, placing immediate exchanges and future production on one scale for medium- and long-term planning.
 revisions:
 - date: '2025-10-11'
   note: Initial draft

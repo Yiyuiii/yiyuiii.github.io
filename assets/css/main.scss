@@ -2090,7 +2090,7 @@ html[data-theme="dark"] .highlight .gu {
 }
 
 .post-content
-  > :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote, hr, .footnotes) {
+  > :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote, details, hr, .footnotes) {
   width: min(100%, var(--article-prose-width));
   max-width: 100%;
   margin-inline: auto;

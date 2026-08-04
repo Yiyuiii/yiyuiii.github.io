@@ -269,7 +269,7 @@ node --test tests/toy_challenges.logic.test.mjs tests/toy_challenge_history.logi
 - `tags` 是文章自己的真实标签；随笔索引会按当前语言中的全局出现频率自动排序
 - 每篇已发布随笔都必须声明共享的 `thumbnail: /assets/posts/...`，以及只含本地化 `alt`、`caption` 的 `article_cover`；题图由统一组件渲染，不要在 Markdown 正文重复插入首图和图注
 
-文章正文和原有永久链接不要为了索引或欢迎页展示而改写。随笔摘要来自 `description` 或完整 `excerpt`，不会自动截断；欢迎页从同一字段读取，不另存重复摘要。
+文章正文和原有永久链接不要为了索引或欢迎页展示而改写。`excerpt` 保留文章原有开场或背景，`description` 专门承担索引、欢迎页、搜索和 SEO 简介；已发布随笔必须同时保留两者。简介应先回答读者要解决什么问题，再说明本文提供的具体方法、顺序或证据，以及它相较零散教程、单点点评、固定节奏视频等同类资料的优势。不要复述标题、罗列主题或只写“记录了一些经验”，也不要使用无法由正文支持的宣传判断。中文控制在 100 字以内，英文控制在 200 个字符以内；页面不会再自动截断。欢迎页从同一 `description` 读取，不另存重复摘要。
 
 ### 正文标题与统一排版
 
@@ -401,23 +401,25 @@ python scripts/generate_post_thumbnails.py --check
 ## GitHub 仓库
 
 - 人工公开仓库清单：`_data/project_repositories.yml`
-- README 来源、Git 对象版本与翻译：`_data/project_cache.yml`
+- GitHub 仓库简介、内容哈希与站内翻译：`_data/project_cache.yml`
 - 仓库创建日期及 GitHub API 证据：`_data/project_repositories.yml` 的 `created`
 - star、fork、主要语言、许可证、`updated_at`：每次构建从 GitHub API 获取，不手填
 
 仓库展示顺序不是人工配置：先按 star 降序，同 star 再按 `updated_at` 降序，完全相同时按仓库名稳定排序。`updated_at` 只用于排序，不显示在页面上；人工清单中不要添加 `order`。
 
-主要语言和许可证会自动显示为站内筛选标签，值分别来自 GitHub API 的 `language` 与许可证 SPDX 标识。不要另写项目分类或手工标签。点击标题或 README 摘要才会打开仓库；语言、许可证、star 和 fork 都不属于仓库外链。
+主要语言和许可证会自动显示为站内筛选标签，值分别来自 GitHub API 的 `language` 与许可证 SPDX 标识。不要另写项目分类或手工标签。点击标题或项目简介才会打开仓库；语言、许可证、star 和 fork 都不属于仓库外链。
+
+项目卡片以 GitHub 仓库自身的 `description` 为原文来源。简介应准确说明项目解决的问题、主要机制或相较常见替代方案的独特价值；不能只罗列技术名词，也不能在博客缓存中另写一份与 GitHub 脱节的原文。需要改简介时，先在对应 GitHub 仓库页或官方 REST API 更新 `description`，再刷新本站缓存。本站只人工维护另一种语言的翻译。
 
 `created` 的 `source_url` 必须是该仓库的 GitHub API URL，`source_field` 必须是 `created_at`。脚本会把这个 UTC 时间换算为香港自然日后与提交值比较；不要用 `updated_at`、第一次进入本站的日期或最近 push 日期替代，也不要把仓库创建时间表述为已证实的首次公开时间。
 
-README 更新后：
+GitHub 仓库简介更新后：
 
 ```powershell
 python scripts/sync_projects.py --update-cache
 ```
 
-检查新提取的原文，把对应翻译更新到 `project_cache.yml`，将 `source_object_id` 改成新的 README 对象 ID，并把 `status` 设为 `current`。然后运行：
+检查新同步的原文，把对应翻译更新到 `project_cache.yml`，将译文的 `source_hash` 改成原文的 `content_hash`，并把 `status` 设为 `current`。然后运行：
 
 ```powershell
 python scripts/sync_projects.py

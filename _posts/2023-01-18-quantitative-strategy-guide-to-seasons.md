@@ -9,7 +9,7 @@ translation_key: post-202301162233
 translation_url: /posts/四季物语量化分析攻略/
 translation_source: _posts/2023-01-18-四季物语量化分析攻略.md
 translation_status: current
-source_hash: d0bd3459afd83d7aee0980fe24c982494086abbac03b624bde7505663753ee83
+source_hash: 7b724882b44c7670a4d8044a07f0ca0cfec866aed39b7fd8532782206b18e293
 aliases: []
 categories:
 - Board Games
@@ -24,6 +24,7 @@ article_cover:
   alt: The season wheel and energy tokens in Seasons
   caption: 'Cover: [Board up close](https://boardgamegeek.com/image/2898488/seasons), image by BoardGameGeek user dodecalouise, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); cropped to a square for this site.'
 excerpt: Seasons is a popular board game for 2–4 players. It has a magic-and-nature theme, a light visual style, a brisk pace, and rules that are simple without sacrificing depth.
+description: A common point scale for energy, levels, crystallization, cards, and dice actions, tested against drafting and interaction to answer “which choice is worth more now?” beyond isolated card ratings.
 ---
 
 *Seasons* is a popular board game for 2–4 players. It has a magic-and-nature theme, a light visual style, a brisk pace, and rules that are simple without sacrificing depth.

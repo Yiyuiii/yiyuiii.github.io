@@ -9,7 +9,7 @@ translation_key: post-202608021600
 translation_url: /posts/SETI桌游规则-从摆桌到完成第一局/
 translation_source: _posts/2026-08-02-《SETI》桌游规则：从摆桌到完成第一局.md
 translation_status: current
-source_hash: 06f74384f1c3222fb619a4723fdc2d15cb5954ddf21c831bff7575f4f8b3ef31
+source_hash: 29457fb6622a0602c4fc134515d53c13955a1deab7abc66f8a29647a3210398a
 aliases: []
 categories:
 - Board Games
@@ -26,6 +26,7 @@ article_cover:
   alt: Official artwork showing the SETI game box and an array of radio telescopes
   caption: 'Cover image: [CGE’s official SETI media pack](https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence), © Czech Games Edition; usage terms recorded as “CGE press/content-creator media use.” This site only resizes the image and converts it to WebP.'
 excerpt: 'Learn the SETI base game in play order: set up the table, understand turns and actions, resolve each checkpoint, and score the game; then add Space Agencies, its three alien species, and all four official promo cards.'
+description: Official illustrations and play order connect setup, turns, actions, round ends, and scoring into one game, without fragmented rulebook lookup or fixed-pace video; Space Agencies and promos follow.
 revisions:
 - date: '2026-08-02'
   note: This article was written by GPT5.6 Sol

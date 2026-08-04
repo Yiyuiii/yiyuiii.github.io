@@ -9,7 +9,7 @@ translation_key: post-202208171838
 translation_url: /posts/制作一张匹配形状的字符画/
 translation_source: _posts/2022-08-17-制作一张匹配形状的字符画.md
 translation_status: current
-source_hash: 219a82e5e02a7c7c27241517a7a11ba36b2ce153d91fb26082004c0bcd9a3c73
+source_hash: 3552c3d2c56ba0b367285f9233a930d505b6205f6e58203cfeaf078d8a04723a
 aliases: []
 categories:
 - NoneBot
@@ -24,6 +24,7 @@ article_cover:
   alt: ASCII-art result generated from this site's avatar
   caption: 'Cover image: this site''s avatar regenerated as ASCII art with the shape-matching approach described here; both the avatar and the result are owned by this site.'
 excerpt: I recently started experimenting with ASCII art. Looking through the mainstream generation algorithms, I found that most of them map each image region to a single character using average grayscale as the metric.
+description: A shape-aware ASCII-art method using glyph templates, comparison, histogram equalization, and grayscale consistency to make outlines follow source images more closely than average-brightness mapping.
 ---
 
 I recently started experimenting with ASCII art. Looking through the mainstream generation algorithms, I found that most of them map each image region to a single character using **average grayscale** as the metric.

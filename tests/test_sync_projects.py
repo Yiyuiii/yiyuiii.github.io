@@ -1,4 +1,3 @@
-import base64
 import json
 from pathlib import Path
 
@@ -11,8 +10,9 @@ from scripts.sync_projects import (
     PublicRepositoryError,
     RateLimitError,
     StaleProjectCacheError,
-    extract_description,
+    extract_repository_description,
     merge_runtime,
+    repository_description_hash,
     request_json,
     sync_records,
     validate_created_marker,
@@ -33,6 +33,16 @@ def response(status, payload, headers=None):
     return GitHubResponse(status=status, body=body.encode(), headers=headers or {})
 
 
+def description_source(description="Source description.", locale="en"):
+    return {
+        "locale": locale,
+        "field": "description",
+        "source_url": "https://api.github.com/repos/Yiyuiii/example",
+        "content_hash": repository_description_hash(description),
+        "description": description,
+    }
+
+
 class SequenceTransport:
     def __init__(self, responses):
         self.responses = list(responses)
@@ -48,48 +58,16 @@ class SequenceTransport:
         return item
 
 
-def test_extracts_first_meaningful_paragraph_after_language_switch():
-    markdown = (FIXTURES / "readme-language-links.md").read_text(encoding="utf-8")
+def test_extracts_authored_github_description_and_normalizes_whitespace():
+    metadata = {"description": "  A focused project\n description.  "}
 
-    assert extract_description(markdown) == "一个忠于仓库原文的项目描述。"
-
-
-def test_extracts_plain_text_without_badges_or_markdown_markup():
-    markdown = (FIXTURES / "readme-description.md").read_text(encoding="utf-8")
-
-    assert (
-        extract_description(markdown)
-        == "A faithful repository description with small formatting details."
-    )
+    assert extract_repository_description(metadata) == "A focused project description."
 
 
-def test_skips_single_unlinked_language_switch_and_uses_description():
-    markdown = """# Voice chat
-
-[中文介绍](README.zh.md) | English
-
-A simple voice-to-voice LLM chat repo.
-"""
-
-    assert extract_description(markdown) == "A simple voice-to-voice LLM chat repo."
-
-
-def test_prefers_real_description_over_paper_citation_blockquote():
-    markdown = """# TACO
-
-Official code repository for the paper:
-
-> **TACO: A Paper Title**
-> Yiyu Chen, Coauthor
-> Nanjing University
-
-TACO extends an optimization framework with active cross-task transfer.
-"""
-
-    assert (
-        extract_description(markdown)
-        == "TACO extends an optimization framework with active cross-task transfer."
-    )
+@pytest.mark.parametrize("description", [None, "", "   "])
+def test_repository_description_is_required(description):
+    with pytest.raises(PublicRepositoryError, match="description is missing"):
+        extract_repository_description({"description": description})
 
 
 @pytest.mark.parametrize(
@@ -164,15 +142,10 @@ def test_project_created_marker_rejects_unverifiable_source_or_precision():
 def test_runtime_uses_api_stats_not_cache():
     cache_item = {
         "repository": "Yiyuiii/example",
-        "source": {
-            "locale": "en",
-            "path": "README.md",
-            "object_id": "abc123",
-            "description": "Source description.",
-        },
+        "source": description_source(),
         "translations": {
             "zh": {
-                "source_object_id": "abc123",
+                "source_hash": repository_description_hash("Source description."),
                 "status": "current",
                 "description": "中文描述。",
             }
@@ -196,12 +169,7 @@ def test_runtime_uses_api_stats_not_cache():
 def test_runtime_rejects_missing_or_invalid_updated_at():
     cache_item = {
         "repository": "Yiyuiii/example",
-        "source": {
-            "locale": "en",
-            "path": "README.md",
-            "object_id": "abc123",
-            "description": "Source description.",
-        },
+        "source": description_source(),
     }
     metadata = load_json("repo-public.json")
 
@@ -304,44 +272,32 @@ def test_404_is_not_retried():
     assert len(transport.calls) == 1
 
 
-def test_sync_rejects_object_id_mismatch_and_stale_translation():
+def test_sync_rejects_description_hash_mismatch_and_stale_translation():
     allowlist = [
         {
             "repository": "Yiyuiii/example",
-            "order": 10,
             "primary_locale": "en",
-            "readmes": {"en": "README.md"},
         }
     ]
+    old_hash = repository_description_hash("Old description.")
+    new_hash = repository_description_hash("New description.")
     cache = [
         {
             "repository": "Yiyuiii/example",
-            "source": {
-                "locale": "en",
-                "path": "README.md",
-                "object_id": "old-object",
-                "description": "Old description.",
-            },
+            "source": description_source("Old description."),
             "translations": {
                 "zh": {
-                    "source_object_id": "old-object",
+                    "source_hash": old_hash,
                     "status": "current",
                     "description": "旧描述。",
                 }
             },
         }
     ]
-    readme = {
-        "type": "file",
-        "sha": "new-object",
-        "content": base64.b64encode(b"# Example\n\nNew description.").decode(),
-        "encoding": "base64",
-    }
-    transport = SequenceTransport(
-        [response(200, load_json("repo-public.json")), response(200, readme)]
-    )
+    metadata = load_json("repo-public.json") | {"description": "New description."}
+    transport = SequenceTransport([response(200, metadata)])
 
-    with pytest.raises(StaleProjectCacheError, match="old-object.*new-object"):
+    with pytest.raises(StaleProjectCacheError, match=f"{old_hash}.*{new_hash}"):
         sync_records(allowlist, cache, transport=transport)
 
 
@@ -349,62 +305,45 @@ def test_update_cache_records_new_object_and_marks_translation_stale():
     allowlist = [
         {
             "repository": "Yiyuiii/example",
-            "order": 10,
             "primary_locale": "en",
-            "readmes": {"en": "README.md"},
         }
     ]
+    old_hash = repository_description_hash("Old description.")
+    new_hash = repository_description_hash("New description.")
     cache = [
         {
             "repository": "Yiyuiii/example",
-            "source": {
-                "locale": "en",
-                "path": "README.md",
-                "object_id": "old-object",
-                "description": "Old description.",
-            },
+            "source": description_source("Old description."),
             "translations": {
                 "zh": {
-                    "source_object_id": "old-object",
+                    "source_hash": old_hash,
                     "status": "current",
                     "description": "旧描述。",
                 }
             },
         }
     ]
-    readme = {
-        "type": "file",
-        "sha": "new-object",
-        "content": base64.b64encode(b"# Example\n\nNew description.").decode(),
-        "encoding": "base64",
-    }
-    transport = SequenceTransport(
-        [response(200, load_json("repo-public.json")), response(200, readme)]
-    )
+    metadata = load_json("repo-public.json") | {"description": "New description."}
+    transport = SequenceTransport([response(200, metadata)])
 
     runtime, updated = sync_records(
         allowlist, cache, transport=transport, update_cache=True
     )
 
     assert runtime[0]["descriptions"] == {"en": "New description."}
-    assert updated[0]["source"]["object_id"] == "new-object"
+    assert updated[0]["source"]["content_hash"] == new_hash
     assert updated[0]["translations"]["zh"]["status"] == "stale"
-    assert updated[0]["translations"]["zh"]["source_object_id"] == "old-object"
+    assert updated[0]["translations"]["zh"]["source_hash"] == old_hash
 
 
 def test_production_mode_fails_on_stale_cache(tmp_path):
     cache = [
         {
             "repository": "Yiyuiii/example",
-            "source": {
-                "locale": "en",
-                "path": "README.md",
-                "object_id": "abc123",
-                "description": "Source description.",
-            },
+            "source": description_source(),
             "translations": {
                 "zh": {
-                    "source_object_id": "abc123",
+                    "source_hash": repository_description_hash("Source description."),
                     "status": "stale",
                     "description": "旧描述。",
                 }
@@ -421,9 +360,9 @@ def test_allowlist_fixture_round_trips_as_yaml():
         """
         - repository: Yiyuiii/example
           primary_locale: en
-          readmes: {en: README.md}
         """
     )
 
-    assert fixture[0]["readmes"]["en"] == "README.md"
+    assert fixture[0]["primary_locale"] == "en"
+    assert "readmes" not in fixture[0]
     assert "order" not in fixture[0]

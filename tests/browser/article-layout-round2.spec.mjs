@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const articleRoute = "/en/posts/quantitative-strategy-guide-to-seasons/";
+const setiRoute = "/posts/SETI桌游规则-从摆桌到完成第一局/";
 
 test("1280px articles use the inline disclosure instead of the side rail", async ({
   page,
@@ -124,6 +125,37 @@ test("prose stays readable while standalone media and data use the wide canvas",
   expect(geometry.tableCount).toBeGreaterThan(0);
   expect(geometry.tableClientWidth).toBeGreaterThan(0);
   expect(geometry.tableClientWidth).toBeLessThanOrEqual(geometry.contentWidth + 1);
+  expect(geometry.pageOverflows).toBe(false);
+});
+
+test("top-level article disclosures align with the prose column", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(setiRoute, { waitUntil: "domcontentloaded" });
+
+  const geometry = await page.evaluate(() => {
+    const content = document.querySelector(".post-content");
+    const prose = content.querySelector(":scope > p:not(:has(img))");
+    const disclosure = content.querySelector(":scope > details");
+    const summaryText = disclosure.querySelector("summary strong");
+    const proseBox = prose.getBoundingClientRect();
+    const disclosureBox = disclosure.getBoundingClientRect();
+    const summaryTextBox = summaryText.getBoundingClientRect();
+
+    return {
+      proseLeft: proseBox.left,
+      proseWidth: proseBox.width,
+      disclosureLeft: disclosureBox.left,
+      disclosureWidth: disclosureBox.width,
+      summaryTextLeft: summaryTextBox.left,
+      pageOverflows: document.documentElement.scrollWidth > innerWidth,
+    };
+  });
+
+  expect(Math.abs(geometry.disclosureLeft - geometry.proseLeft)).toBeLessThanOrEqual(1);
+  expect(Math.abs(geometry.disclosureWidth - geometry.proseWidth)).toBeLessThanOrEqual(1);
+  expect(geometry.summaryTextLeft).toBeGreaterThan(geometry.disclosureLeft);
   expect(geometry.pageOverflows).toBe(false);
 });
 
