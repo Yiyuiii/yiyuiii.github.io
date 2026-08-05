@@ -49,6 +49,26 @@ test("the exhaustive puzzle pools match the independently established partition"
   assert.equal(logic.hasSolution([1, 3, 4, 6], { positiveIntegerOnly: true }, sharedMemo), false);
 });
 
+test("answer paths are deterministic, exact, and honor the active puzzle pool", () => {
+  assert.deepEqual(logic.findPreferredSolution([1, 1, 1, 8], "integer"), [
+    "1 + 1 = 2",
+    "1 + 2 = 3",
+    "8 × 3 = 24",
+  ]);
+  assert.equal(logic.findSolution([1, 3, 4, 6], { positiveIntegerOnly: true }), null);
+  assert.deepEqual(logic.findPreferredSolution([1, 3, 4, 6], "fraction"), [
+    "3 ÷ 4 = 3/4",
+    "1 − 3/4 = 1/4",
+    "6 ÷ 1/4 = 24",
+  ]);
+  assert.deepEqual(logic.findPreferredSolution([1, 3, 4, 6], "all"), [
+    "3 ÷ 4 = 3/4",
+    "1 − 3/4 = 1/4",
+    "6 ÷ 1/4 = 24",
+  ]);
+  assert.throws(() => logic.findPreferredSolution([1, 1, 1, 8], "unknown"));
+});
+
 test("new-puzzle selection excludes the current item without biasing the offset", () => {
   const pool = Object.freeze([[1, 1, 1, 8], [1, 1, 2, 6], [1, 1, 3, 8], [1, 1, 4, 6]]);
   const calls = [];
@@ -143,5 +163,20 @@ test("division by zero, partial undo, stuck undo, and reset are reversible", () 
   assert.deepEqual(reset.original, [1, 1, 1, 1]);
   assert.equal(reset.values.length, 4);
   assert.equal(reset.history.length, 0);
+  assert.equal(reset.steps.length, 0);
+});
+
+test("revealing a Make 24 answer ends the attempt until reset", () => {
+  let state = logic.createGameState([1, 1, 1, 8]);
+  state = operate(state, "value-0", "+", "value-1").state;
+  const revealed = logic.revealGameState(state);
+  assert.equal(revealed.phase, "revealed");
+  assert.deepEqual(revealed.selection, { leftId: "", operator: "" });
+  assert.strictEqual(logic.selectValue(revealed, "value-2").state, revealed);
+  assert.strictEqual(logic.revealGameState(revealed), revealed);
+
+  const reset = logic.resetGameState(revealed);
+  assert.equal(reset.phase, "playing");
+  assert.deepEqual(reset.original, [1, 1, 1, 8]);
   assert.equal(reset.steps.length, 0);
 });

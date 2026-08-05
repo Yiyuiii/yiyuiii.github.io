@@ -159,3 +159,18 @@ test("state transitions score once and stop exactly at win or attempt limit", ()
   assert.equal(lost.history.length, 6);
   assert.strictEqual(logic.submitGuess(lost, "012"), lost);
 });
+
+test("revealing the answer ends only an active round and preserves its evidence", () => {
+  const initial = logic.createGameState(makeRandom([0]), logic.PRESETS.standard);
+  const guessed = logic.submitGuess(initial, "4567");
+  const revealed = logic.revealAnswer(guessed);
+
+  assert.equal(revealed.phase, "revealed");
+  assert.equal(revealed.secret, "0123");
+  assert.strictEqual(revealed.history, guessed.history);
+  assert.strictEqual(logic.submitGuess(revealed, "0123"), revealed);
+  assert.strictEqual(logic.revealAnswer(revealed), revealed);
+
+  const won = logic.submitGuess(initial, "0123");
+  assert.strictEqual(logic.revealAnswer(won), won);
+});

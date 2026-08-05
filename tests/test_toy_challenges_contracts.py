@@ -49,6 +49,10 @@ def test_codebreaker_is_strict_local_and_keeps_leading_zeroes():
     assert "仅数字命中" in include
     assert "重置题目" in include
     assert "Reset puzzle" in include
+    assert "显示答案" in include
+    assert "Show answer" in include
+    assert "data-code-reveal" in include
+    assert "revealAnswer" in script
     assert "换一个答案" not in include
     assert "位置正确 {exact}" not in include
     assert "数字正确 {misplaced}" not in include
@@ -77,10 +81,14 @@ def test_make24_is_exact_local_and_exposes_reversible_controls():
     assert "data-make24-undo" in include
     assert "data-make24-reset" in include
     assert "data-make24-new" in include
+    assert "data-make24-reveal" in include
+    assert "data-make24-answer-list" in include
     assert 'data-make24-prompt aria-live="polite"' in include
     assert 'aria-describedby="make24-prompt"' in include
     assert "fractionRequired.length !== 10" in script
     assert "positiveIntegerOnly" in script
+    assert "findPreferredSolution" in script
+    assert "revealGameState" in script
     assert "Math" + ".random" not in script
     for token in (
         "fetch(",

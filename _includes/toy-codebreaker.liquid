@@ -22,6 +22,7 @@
   {% assign input_help = 'Enter {length} digits{unique}.' %}
   {% assign unique_suffix = ', without repeats' %}
   {% assign submit_label = 'Submit guess' %}
+  {% assign reveal_label = 'Show answer' %}
   {% assign new_label = 'Reset puzzle' %}
   {% assign attempts_used_label = 'Guesses used' %}
   {% assign remaining_label = 'Remaining' %}
@@ -37,6 +38,7 @@
   {% assign feedback = '{guess}: {exact} exact, {misplaced} digit only. {remaining} guesses left.' %}
   {% assign won = 'Correct—the code was {secret}. Solved in {attempts} guesses.' %}
   {% assign lost = 'No guesses left. The code was {secret}.' %}
+  {% assign revealed = 'The code is {secret}. This round has ended; reset the puzzle to try again.' %}
   {% assign new_game = 'A new code is ready.' %}
   {% assign applied = 'Rules applied. A new code is ready.' %}
   {% assign preset_ready = 'Preset loaded. Apply it to start a new game.' %}
@@ -70,6 +72,7 @@
   {% assign input_help = '请输入 {length} 位数字{unique}。' %}
   {% assign unique_suffix = '，不要重复' %}
   {% assign submit_label = '提交猜测' %}
+  {% assign reveal_label = '显示答案' %}
   {% assign new_label = '重置题目' %}
   {% assign attempts_used_label = '已用机会' %}
   {% assign remaining_label = '剩余机会' %}
@@ -85,6 +88,7 @@
   {% assign feedback = '{guess}：完全命中 {exact} 位，仅数字命中 {misplaced} 位；还剩 {remaining} 次。' %}
   {% assign won = '答对了，数字码是 {secret}；共使用 {attempts} 次。' %}
   {% assign lost = '机会已经用完，数字码是 {secret}。' %}
+  {% assign revealed = '答案是 {secret}；本局已结束。若要重新尝试，请重置题目。' %}
   {% assign new_game = '新的数字码已经准备好。' %}
   {% assign applied = '规则已应用，新的数字码已经准备好。' %}
   {% assign preset_ready = '预设已填入；应用后会开始新一局。' %}
@@ -205,6 +209,7 @@
     </div>
 
     <div class="toy-challenge__actions">
+      <button type="button" data-code-reveal>{{ reveal_label }}</button>
       <button type="button" data-code-new>{{ new_label }}</button>
     </div>
     <p class="toy-challenge__status" data-code-status aria-live="polite" aria-atomic="true"></p>
@@ -229,6 +234,7 @@
       "lost": {{ lost | jsonify }},
       "newGame": {{ new_game | jsonify }},
       "presetReady": {{ preset_ready | jsonify }},
+      "revealed": {{ revealed | jsonify }},
       "settingsSummary": {{ settings_summary | jsonify }},
       "uniqueSuffix": {{ unique_suffix | jsonify }},
       "unavailable": {{ unavailable | jsonify }},

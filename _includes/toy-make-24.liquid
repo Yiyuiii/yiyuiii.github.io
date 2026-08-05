@@ -21,16 +21,20 @@
   {% assign multiply_label = 'Multiply' %}
   {% assign divide_label = 'Divide' %}
   {% assign steps_label = 'Completed steps' %}
+  {% assign answer_label = 'One solution' %}
   {% assign prompt_idle = 'Choose the left number.' %}
   {% assign prompt_operator = '{value} selected. Choose an operator.' %}
   {% assign prompt_right = '{value} {operator} … Choose the right number.' %}
+  {% assign prompt_revealed = 'The answer is shown below. Reset the puzzle to try it yourself.' %}
   {% assign value_name = 'Value {value}, item {index}' %}
   {% assign undo_label = 'Undo' %}
+  {% assign reveal_label = 'Show answer' %}
   {% assign reset_label = 'Reset puzzle' %}
   {% assign new_label = 'Change puzzle' %}
   {% assign merged = '{equation}. Remaining: {values}.' %}
   {% assign divided_by_zero = 'Division by zero is not allowed. Choose another right number.' %}
   {% assign won = 'Made 24 in three steps.' %}
+  {% assign revealed = 'One solution is now shown. This attempt has ended.' %}
   {% assign stuck = 'The final value is {value}, not 24. Undo a step or reset the puzzle.' %}
   {% assign reset = 'The current puzzle has been reset.' %}
   {% assign undone = 'Undid one step. {count} values remain.' %}
@@ -63,16 +67,20 @@
   {% assign multiply_label = '乘' %}
   {% assign divide_label = '除' %}
   {% assign steps_label = '已完成步骤' %}
+  {% assign answer_label = '一种解法' %}
   {% assign prompt_idle = '先选择左边的数。' %}
   {% assign prompt_operator = '已选择 {value}，请选择运算符。' %}
   {% assign prompt_right = '{value} {operator} … 请选择右边的数。' %}
+  {% assign prompt_revealed = '答案已显示在下方；重置题目后可重新尝试。' %}
   {% assign value_name = '数值 {value}，第 {index} 项' %}
   {% assign undo_label = '撤销' %}
+  {% assign reveal_label = '显示答案' %}
   {% assign reset_label = '重置题目' %}
   {% assign new_label = '换一道题' %}
   {% assign merged = '{equation}；还剩 {values}。' %}
   {% assign divided_by_zero = '不能除以零，请另选右边的数。' %}
   {% assign won = '三步正好得到 24。' %}
+  {% assign revealed = '已显示一种解法，本次尝试结束。' %}
   {% assign stuck = '最后得到 {value}，不是 24；请撤销一步或重置题目。' %}
   {% assign reset = '当前题目已重置。' %}
   {% assign undone = '已撤销一步；还剩 {count} 个数。' %}
@@ -130,8 +138,14 @@
       <ol data-make24-step-list></ol>
     </div>
 
+    <div class="toy-make-24__steps toy-make-24__answer" data-make24-answer tabindex="-1" hidden>
+      <p>{{ answer_label }}</p>
+      <ol data-make24-answer-list></ol>
+    </div>
+
     <div class="toy-challenge__actions toy-make-24__actions">
       <button type="button" data-make24-undo>{{ undo_label }}</button>
+      <button type="button" data-make24-reveal>{{ reveal_label }}</button>
       <button type="button" data-make24-reset>{{ reset_label }}</button>
       <button type="button" data-make24-new>{{ new_label }}</button>
     </div>
@@ -155,7 +169,9 @@
       "poolInteger": {{ pool_integer | jsonify }},
       "promptIdle": {{ prompt_idle | jsonify }},
       "promptOperator": {{ prompt_operator | jsonify }},
+      "promptRevealed": {{ prompt_revealed | jsonify }},
       "promptRight": {{ prompt_right | jsonify }},
+      "revealed": {{ revealed | jsonify }},
       "reset": {{ reset | jsonify }},
       "selectionCleared": {{ selection_cleared | jsonify }},
       "settingsSummary": {{ summary | jsonify }},
