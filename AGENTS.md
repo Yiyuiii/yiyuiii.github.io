@@ -72,6 +72,7 @@ python scripts/run_browser_tests.py --site _site
 - 本地轻量挑战：docs/toy-challenges.md
 - 随机生成器：docs/toy-generators.md
 - 小玩意扩充路线：docs/toy-expansion-roadmap-2026-08-04.md
+- 外部开放数据小游戏调研：docs/toy-external-dataset-research-2026-08-05.md
 - 数字 Wordle：docs/toy-codebreaker.md
 - 凑成 24：docs/toy-make-24.md
 - 翻灯：docs/toy-lights-out.md
