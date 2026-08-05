@@ -1,0 +1,98 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign glimpse = site.data.toy_art_glimpse %}
+{% assign copy = glimpse.copy[lang_key] | default: glimpse.copy.zh %}
+{% assign heading_id = include.heading_id | default: 'art-glimpse-title' %}
+{% capture privacy_id %}{{ heading_id }}-privacy{% endcapture %}
+
+<section
+  class="toy-challenge art-glimpse"
+  data-art-glimpse
+  aria-labelledby="{{ heading_id | escape }}"
+>
+  <p class="toy-challenge__instructions">{{ copy.instructions }}</p>
+
+  <div data-art-glimpse-enhanced hidden>
+    <p id="{{ privacy_id | escape }}" class="toy-challenge__note art-glimpse__privacy">
+      {{ copy.privacy }}
+    </p>
+
+    <div class="toy-challenge__interactive art-glimpse__interactive" data-art-glimpse-interactive hidden>
+      <button class="art-glimpse__start" type="button" data-art-glimpse-start>
+        {{ copy.start }}
+      </button>
+
+      <div class="art-glimpse__round" data-art-glimpse-round hidden>
+        <figure class="art-glimpse__clue" data-art-glimpse-clue tabindex="-1">
+          <div class="art-glimpse__clue-window">
+            <canvas data-art-glimpse-clue-canvas width="960" height="420" aria-hidden="true"></canvas>
+          </div>
+          <figcaption>{{ copy.prompt }}</figcaption>
+        </figure>
+
+        <div
+          class="art-glimpse__choices"
+          data-art-glimpse-choices
+          role="group"
+          aria-label="{{ copy.options_label | escape }}"
+        ></div>
+      </div>
+
+      <p class="toy-challenge__status art-glimpse__status" data-art-glimpse-status aria-live="polite" aria-atomic="true"></p>
+
+      <section class="art-glimpse__reveal" data-art-glimpse-reveal hidden aria-labelledby="{{ heading_id | escape }}-reveal">
+        <h4 id="{{ heading_id | escape }}-reveal">{{ copy.reveal_label }}</h4>
+        <p class="art-glimpse__title" data-art-glimpse-title></p>
+        <p class="art-glimpse__maker" data-art-glimpse-maker></p>
+        <p class="art-glimpse__date" data-art-glimpse-date></p>
+        <p><a
+          data-art-glimpse-source
+          target="_blank"
+          rel="external nofollow noopener noreferrer"
+          referrerpolicy="no-referrer"
+        ></a></p>
+        <p class="art-glimpse__attribution">{{ copy.attribution }}</p>
+        <p class="art-glimpse__links">
+          <a
+            href="{{ glimpse.license_url | escape }}"
+            target="_blank"
+            rel="external nofollow noopener noreferrer"
+            referrerpolicy="no-referrer"
+          >{{ copy.license_label }}</a>
+          <a
+            href="{{ glimpse.open_access_url | escape }}"
+            target="_blank"
+            rel="external nofollow noopener noreferrer"
+            referrerpolicy="no-referrer"
+          >{{ copy.open_access_label }}</a>
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <noscript><p class="toy-challenge__noscript">{{ copy.no_js }}</p></noscript>
+
+  <script type="application/json" data-art-glimpse-config>
+    {
+      "endpoint": {{ glimpse.endpoint | jsonify }},
+      "api_host": {{ glimpse.api_host | jsonify }},
+      "image_host": {{ glimpse.image_host | jsonify }},
+      "artwork_hosts": {{ glimpse.artwork_hosts | jsonify }},
+      "license_url": {{ glimpse.license_url | jsonify }},
+      "open_access_url": {{ glimpse.open_access_url | jsonify }},
+      "query": {{ glimpse.query | jsonify }},
+      "artwork_type": {{ glimpse.artwork_type | jsonify }},
+      "batch_size": {{ glimpse.batch_size | jsonify }},
+      "candidate_count": {{ glimpse.candidate_count | jsonify }},
+      "safe_skip_max": {{ glimpse.safe_skip_max | jsonify }},
+      "timeout_ms": {{ glimpse.timeout_ms | jsonify }},
+      "image_timeout_ms": {{ glimpse.image_timeout_ms | jsonify }},
+      "max_response_chars": {{ glimpse.max_response_chars | jsonify }},
+      "max_image_bytes": {{ glimpse.max_image_bytes | jsonify }},
+      "max_round_image_bytes": {{ glimpse.max_round_image_bytes | jsonify }},
+      "page_lang": {{ lang_key | jsonify }},
+      "copy": {{ copy | jsonify }}
+    }
+  </script>
+  <script src="{{ '/assets/js/art-glimpse.js' | relative_url | bust_file_cache }}" defer></script>
+</section>

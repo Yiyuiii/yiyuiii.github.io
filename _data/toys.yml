@@ -19,6 +19,33 @@ groups:
           zh: [百科, 萌娘百科, 维基百科, Wikipedia, 条目, 问答]
           en: [encyclopedia, Wikipedia, Moegirlpedia, entry, quiz]
 
+  - id: open-data
+    title:
+      zh: 开放数据
+      en: Open data
+    items:
+      - id: art-glimpse
+        title:
+          zh: 名画一瞥
+          en: Art glimpse
+        description:
+          zh: 看一块放大的馆藏局部，从四幅完整画面中找出来源。
+          en: Study an enlarged museum detail and find its full image among four choices.
+        keywords:
+          zh: [名画, 艺术, 博物馆, 克利夫兰, 图像, 猜题]
+          en: [art, painting, museum, Cleveland, image, quiz]
+
+      - id: anilist-role-quiz
+        title:
+          zh: AniList 角色关系猜猜
+          en: AniList character role quiz
+        description:
+          zh: 四名候选中，谁被标为这部动画的主要角色？
+          en: Which candidate is marked as a main character in this anime?
+        keywords:
+          zh: [AniList, 动画, 角色, 主角, 关系, 猜题]
+          en: [AniList, anime, character, main role, relation, quiz]
+
   - id: quick-challenges
     title:
       zh: 轻松挑战

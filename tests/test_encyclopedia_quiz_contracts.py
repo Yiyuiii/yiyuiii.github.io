@@ -116,6 +116,8 @@ def test_configuration_contains_copy_but_no_questions_media_credentials_or_stora
         assert "{title}" in copy["correct"]
         assert "{title}" in copy["incorrect"]
         assert "JavaScript" in copy["no_js"]
+        assert isinstance(copy["network_error"], str)
+        assert copy["network_error"].strip()
 
     source_copy_keys = {
         "label",
@@ -136,6 +138,9 @@ def test_configuration_contains_copy_but_no_questions_media_credentials_or_stora
         for language in languages:
             copy = data["source_copy"][source_id][language]
             assert source_copy_keys <= set(copy)
+            if "network_error" in copy:
+                assert isinstance(copy["network_error"], str)
+                assert copy["network_error"].strip()
             assert "IP" in copy["privacy"]
             assert "{title}" in copy["source_label"]
             if source_id.startswith("wikipedia"):
@@ -146,6 +151,12 @@ def test_configuration_contains_copy_but_no_questions_media_credentials_or_stora
                 assert "CC BY-NC-SA 3.0" in " ".join(
                     str(value) for value in copy.values()
                 )
+
+    assert "中国大陆" in data["source_copy"]["wikipedia_zh"]["zh"]["privacy"]
+    assert "中国大陆" in data["source_copy"]["wikipedia_zh"]["zh"]["network_error"]
+    assert "mainland China" in data["source_copy"]["wikipedia_en"]["en"]["privacy"]
+    assert "mainland China" in data["source_copy"]["wikipedia_en"]["en"]["network_error"]
+    assert "Moegirlpedia" in data["source_copy"]["wikipedia_en"]["en"]["network_error"]
 
 
 def test_include_is_progressively_enhanced_and_renders_one_json_configuration():

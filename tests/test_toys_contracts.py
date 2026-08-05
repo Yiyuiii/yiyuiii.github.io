@@ -30,17 +30,21 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
     groups = data["groups"]
     assert [group["id"] for group in groups] == [
         "ungrouped",
+        "open-data",
         "quick-challenges",
         "logic-puzzles",
         "random-generators",
     ]
     assert groups[0]["title"] is None
-    assert groups[1]["title"] == {"zh": "轻松挑战", "en": "Quick challenges"}
-    assert groups[2]["title"] == {"zh": "逻辑谜题", "en": "Logic puzzles"}
-    assert groups[3]["title"] == {"zh": "随机生成", "en": "Random generators"}
+    assert groups[1]["title"] == {"zh": "开放数据", "en": "Open data"}
+    assert groups[2]["title"] == {"zh": "轻松挑战", "en": "Quick challenges"}
+    assert groups[3]["title"] == {"zh": "逻辑谜题", "en": "Logic puzzles"}
+    assert groups[4]["title"] == {"zh": "随机生成", "en": "Random generators"}
 
     expected_ids = [
         "moegirl-quiz",
+        "art-glimpse",
+        "anilist-role-quiz",
         "color-challenge",
         "ten-second",
         "reaction-time",
@@ -110,6 +114,8 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
 
     expected_includes = [
         "toy-encyclopedia-quiz.liquid",
+        "toy-art-glimpse.liquid",
+        "toy-acg-relation-quiz.liquid",
         "toy-color-challenge.liquid",
         "toy-ten-second.liquid",
         "toy-reaction-time.liquid",

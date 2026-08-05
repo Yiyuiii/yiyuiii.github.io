@@ -41,6 +41,10 @@
                   {% when 'moegirl-quiz' %}
                     {%- comment -%}保留 moegirl-quiz 作为公开片段兼容 ID；组件本身已改为多来源百科问答。{%- endcomment -%}
                     {% include toy-encyclopedia-quiz.liquid heading_id=toy_title_id %}
+                  {% when 'art-glimpse' %}
+                    {% include toy-art-glimpse.liquid heading_id=toy_title_id %}
+                  {% when 'anilist-role-quiz' %}
+                    {% include toy-acg-relation-quiz.liquid heading_id=toy_title_id %}
                   {% when 'color-challenge' %}
                     {% include toy-color-challenge.liquid %}
                   {% when 'ten-second' %}

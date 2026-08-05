@@ -351,7 +351,7 @@
         if (payload?.error) throw new Error("quiz API returned an error payload");
       } catch (_error) {
         globalThis.clearTimeout(timeout);
-        showFailure(copy.network_error, roundToken);
+        showFailure(sourceCopy.network_error || copy.network_error, roundToken);
         return;
       }
       globalThis.clearTimeout(timeout);

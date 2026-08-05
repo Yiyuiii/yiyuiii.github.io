@@ -72,6 +72,7 @@ const sourceCopy = {
       label: "维基百科（中文）",
       privacy: "点击开始后只向中文维基百科请求一次；服务方可看到请求和 IP。本游戏不保存题目，也不请求图片。",
       loading: "正在从中文维基百科随机发现本题候选……",
+      network_error: "未能连接中文维基百科；请切回萌娘百科。",
       source_label: "查看中文维基百科准确修订：{title}",
       attribution: "本站转为纯文字、遮蔽名称片段并截短内容；修改后的线索按 CC BY-SA 4.0 提供。",
       license_label: "查看 CC BY-SA 4.0 协议",
@@ -82,6 +83,7 @@ const sourceCopy = {
       label: "Wikipedia (English)",
       privacy: "One request to English Wikipedia; the provider can see the request and IP. No puzzle is saved and no image is requested.",
       loading: "Discovering candidates on English Wikipedia…",
+      network_error: "Could not connect to English Wikipedia; this site does not proxy the request.",
       source_label: "Open the exact Wikipedia revision: {title}",
       attribution: "The text is made plain, name fragments are masked, and it is shortened. The modified clue is under CC BY-SA 4.0.",
       license_label: "Read the CC BY-SA 4.0 license",
@@ -487,12 +489,29 @@ for (const failure of [
       : {});
 
     await page.getByRole("button", { name: "Start a round" }).click();
-    await expect(page.locator("[data-quiz-status]")).toHaveText(commonCopy.en.network_error);
+    await expect(page.locator("[data-quiz-status]")).toHaveText(
+      sourceCopy.wikipedia_en.en.network_error,
+    );
     await expect(page.getByRole("button", { name: "Try again" })).toBeFocused();
     await page.waitForTimeout(50);
     expect(requests).toHaveLength(1);
   });
 }
+
+test("a source without a custom network error uses the common fallback", async ({ page }) => {
+  const requests = observeExternalRequests(page);
+  await page.route("https://zh.moegirl.org.cn/api.php?**", (route) => route.fulfill({
+    status: 503,
+    body: "unavailable",
+  }));
+  await installQuiz(page, "zh");
+
+  await page.getByRole("button", { name: "开始一题" }).click();
+  await expect(page.locator("[data-quiz-status]")).toHaveText(commonCopy.zh.network_error);
+  await expect(page.getByRole("button", { name: "重试" })).toBeFocused();
+  await page.waitForTimeout(50);
+  expect(requests).toHaveLength(1);
+});
 
 test("an oversized chunked response is cancelled before JSON parsing", async ({ page }) => {
   await installQuiz(page, "en", { max_response_chars: 65536 }, async (currentPage) => {
@@ -512,7 +531,9 @@ test("an oversized chunked response is cancelled before JSON parsing", async ({ 
   });
 
   await page.getByRole("button", { name: "Start a round" }).click();
-  await expect(page.locator("[data-quiz-status]")).toHaveText(commonCopy.en.network_error);
+  await expect(page.locator("[data-quiz-status]")).toHaveText(
+    sourceCopy.wikipedia_en.en.network_error,
+  );
   await expect(page.getByRole("button", { name: "Try again" })).toBeFocused();
   await expect.poll(() => page.evaluate(() => globalThis.__quizStreamCancelled)).toBe(true);
   const chunks = await page.evaluate(() => globalThis.__quizStreamChunks);
@@ -530,7 +551,9 @@ test("timeout is explicit and does not continue with a second request", async ({
   await installQuiz(page, "en", { timeout_ms: 1000 });
 
   await page.getByRole("button", { name: "Start a round" }).click();
-  await expect(page.locator("[data-quiz-status]")).toHaveText(commonCopy.en.network_error);
+  await expect(page.locator("[data-quiz-status]")).toHaveText(
+    sourceCopy.wikipedia_en.en.network_error,
+  );
   await expect(page.getByRole("button", { name: "Try again" })).toBeFocused();
   expect(requests).toHaveLength(1);
 });

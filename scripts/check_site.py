@@ -128,6 +128,8 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
 
     expected_ids = [
         "moegirl-quiz",
+        "art-glimpse",
+        "anilist-role-quiz",
         "color-challenge",
         "ten-second",
         "reaction-time",
@@ -146,15 +148,16 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
     group_ids = [str(group.get("data-toy-group", "")) for group in groups]
     if group_ids != [
         "ungrouped",
+        "open-data",
         "quick-challenges",
         "logic-puzzles",
         "random-generators",
     ]:
         raise SiteCheckError(f"{route}: toy groups/order are {group_ids!r}")
     expected_group_titles = (
-        ["轻松挑战", "逻辑谜题", "随机生成"]
+        ["开放数据", "轻松挑战", "逻辑谜题", "随机生成"]
         if language == "zh"
-        else ["Quick challenges", "Logic puzzles", "Random generators"]
+        else ["Open data", "Quick challenges", "Logic puzzles", "Random generators"]
     )
     actual_group_titles = [
         node.get_text(" ", strip=True) for node in soup.select(".toy-group__title")
@@ -243,6 +246,10 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         raise SiteCheckError(
             f"{route}: encyclopedia quiz disclosure id must be unique"
         )
+    if len(soup.select(".art-glimpse[data-art-glimpse]")) != 1:
+        raise SiteCheckError(f"{route}: expected exactly one art-glimpse component")
+    if len(soup.select(".acg-relation-quiz[data-acg-relation-quiz]")) != 1:
+        raise SiteCheckError(f"{route}: expected exactly one AniList role component")
     source = str(soup).lower()
     if "mathjax" in source or "al_math" in source:
         raise SiteCheckError(f"{route}: toys page loads math assets")

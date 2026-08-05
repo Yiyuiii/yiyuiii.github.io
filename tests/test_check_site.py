@@ -171,11 +171,14 @@ def valid_site(root):
         localized = {
             "zh": {
                 "page": "小玩意",
+                "open": "开放数据",
                 "quick": "轻松挑战",
                 "logic": "逻辑谜题",
                 "random": "随机生成",
                 "items": [
                     ("moegirl-quiz", "百科条目猜猜"),
+                    ("art-glimpse", "名画一瞥"),
+                    ("anilist-role-quiz", "AniList 角色关系猜猜"),
                     ("color-challenge", "色差挑战"),
                     ("ten-second", "盲估十秒"),
                     ("reaction-time", "反应时间"),
@@ -188,11 +191,14 @@ def valid_site(root):
             },
             "en": {
                 "page": "Toys",
+                "open": "Open data",
                 "quick": "Quick challenges",
                 "logic": "Logic puzzles",
                 "random": "Random generators",
                 "items": [
                     ("moegirl-quiz", "Encyclopedia entry quiz"),
+                    ("art-glimpse", "Art glimpse"),
+                    ("anilist-role-quiz", "AniList character role quiz"),
                     ("color-challenge", "Color difference challenge"),
                     ("ten-second", "Ten-second estimate"),
                     ("reaction-time", "Reaction time"),
@@ -223,6 +229,13 @@ def valid_site(root):
                     '<script type="application/json" data-quiz-config>{}</script>'
                     '</div>'
                 )
+            elif item_id == "art-glimpse":
+                component = '<section class="art-glimpse" data-art-glimpse></section>'
+            elif item_id == "anilist-role-quiz":
+                component = (
+                    '<div class="acg-relation-quiz" '
+                    'data-acg-relation-quiz></div>'
+                )
             else:
                 component = "<div>Ready.</div>"
             entries.append(
@@ -241,15 +254,18 @@ def valid_site(root):
             '<div class="toy-list">'
             '<section class="toy-group" data-toy-group="ungrouped">'
             f'<div class="toy-group__items">{entries[0]}</div></section>'
+            '<section class="toy-group" data-toy-group="open-data">'
+            f'<h2 class="toy-group__title">{localized["open"]}</h2>'
+            f'<div class="toy-group__items">{"".join(entries[1:3])}</div></section>'
             '<section class="toy-group" data-toy-group="quick-challenges">'
             f'<h2 class="toy-group__title">{localized["quick"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[1:4])}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[3:6])}</div></section>'
             '<section class="toy-group" data-toy-group="logic-puzzles">'
             f'<h2 class="toy-group__title">{localized["logic"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[4:7])}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[6:9])}</div></section>'
             '<section class="toy-group" data-toy-group="random-generators">'
             f'<h2 class="toy-group__title">{localized["random"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[7:])}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[9:])}</div></section>'
             "</div></div>"
         )
 

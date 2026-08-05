@@ -1,0 +1,82 @@
+{
+  "audit_date": "2026-08-05",
+  "candidate": "名画一瞥 / Art at a glance",
+  "provider": {
+    "name_zh": "克利夫兰艺术博物馆",
+    "name_en": "Cleveland Museum of Art",
+    "api": "https://openaccess-api.clevelandart.org/api/artworks/",
+    "image_host": "openaccess-cdn.clevelandart.org",
+    "official_api_documentation": "https://openaccess-api.clevelandart.org/",
+    "official_open_access_statement": "https://www.clevelandart.org/open-access",
+    "official_terms": "https://www.clevelandart.org/terms-and-conditions",
+    "license": "CC0 1.0"
+  },
+  "decision": "go_for_local_review_only",
+  "publication_status": "not_integrated_not_published",
+  "gate": {
+    "required_samples": 10,
+    "required_network_success": 0.9,
+    "required_round_formation": 0.8,
+    "image_deadline_ms": 10000,
+    "observed_metadata_success": 1.0,
+    "observed_round_formation": 1.0,
+    "observed_four_image_success": 0.9,
+    "passed": true
+  },
+  "request_contract": {
+    "metadata_gets_per_explicit_round": 1,
+    "image_urls_per_formed_round": 4,
+    "continuation": false,
+    "refill_request": false,
+    "retry": false,
+    "prefetch": false,
+    "persistent_storage": false,
+    "query": "q=landscape, cc0, has_image=1, type=Painting",
+    "batch_size": 12,
+    "random_shallow_skip_inclusive": [0, 300],
+    "declared_single_image_cap_bytes": 1200000,
+    "declared_round_image_cap_bytes": 4000000,
+    "metadata_response_cap_characters": 262144
+  },
+  "samples": [
+    {"sample": 1, "skip": 178, "metadata_ok": true, "metadata_ms": 2949, "metadata_bytes": 24130, "returned": 12, "eligible": 7, "round_formed": true, "declared_round_image_bytes": 1621598, "images_ok": true, "image_ms": 3627, "actual_round_image_bytes": 1608893},
+    {"sample": 2, "skip": 241, "metadata_ok": true, "metadata_ms": 1776, "metadata_bytes": 23674, "returned": 12, "eligible": 8, "round_formed": true, "declared_round_image_bytes": 2315399, "images_ok": true, "image_ms": 4834, "actual_round_image_bytes": 2315549},
+    {"sample": 3, "skip": 55, "metadata_ok": true, "metadata_ms": 1460, "metadata_bytes": 21649, "returned": 12, "eligible": 7, "round_formed": true, "declared_round_image_bytes": 1035400, "images_ok": true, "image_ms": 2705, "actual_round_image_bytes": 1009714},
+    {"sample": 4, "skip": 296, "metadata_ok": true, "metadata_ms": 2932, "metadata_bytes": 18724, "returned": 12, "eligible": 8, "round_formed": true, "declared_round_image_bytes": 1768544, "images_ok": true, "image_ms": 5023, "actual_round_image_bytes": 1756224},
+    {"sample": 5, "skip": 33, "metadata_ok": true, "metadata_ms": 1123, "metadata_bytes": 21993, "returned": 12, "eligible": 9, "round_formed": true, "declared_round_image_bytes": 2307202, "images_ok": false, "image_ms": 10014, "actual_round_image_bytes": 0, "failure": "image_timeout"},
+    {"sample": 6, "skip": 49, "metadata_ok": true, "metadata_ms": 2525, "metadata_bytes": 24279, "returned": 12, "eligible": 6, "round_formed": true, "declared_round_image_bytes": 1352863, "images_ok": true, "image_ms": 3781, "actual_round_image_bytes": 1339617},
+    {"sample": 7, "skip": 30, "metadata_ok": true, "metadata_ms": 2206, "metadata_bytes": 22635, "returned": 12, "eligible": 9, "round_formed": true, "declared_round_image_bytes": 1918500, "images_ok": true, "image_ms": 4778, "actual_round_image_bytes": 1919289},
+    {"sample": 8, "skip": 215, "metadata_ok": true, "metadata_ms": 2857, "metadata_bytes": 18445, "returned": 12, "eligible": 5, "round_formed": true, "declared_round_image_bytes": 1552427, "images_ok": true, "image_ms": 5013, "actual_round_image_bytes": 1527222},
+    {"sample": 9, "skip": 206, "metadata_ok": true, "metadata_ms": 1122, "metadata_bytes": 20593, "returned": 12, "eligible": 11, "round_formed": true, "declared_round_image_bytes": 2071103, "images_ok": true, "image_ms": 5883, "actual_round_image_bytes": 2084766},
+    {"sample": 10, "skip": 141, "metadata_ok": true, "metadata_ms": 1991, "metadata_bytes": 27009, "returned": 12, "eligible": 8, "round_formed": true, "declared_round_image_bytes": 1392574, "images_ok": true, "image_ms": 4263, "actual_round_image_bytes": 757926}
+  ],
+  "chromium_smoke": {
+    "browser": "installed Google Chrome through Playwright",
+    "state": "active",
+    "elapsed_ms": 6519,
+    "metadata_requests": 1,
+    "metadata_statuses": [200],
+    "image_requests": 4,
+    "image_statuses": [200, 200, 200, 200],
+    "image_content_types_valid": true,
+    "declared_image_bytes": 1140237,
+    "image_referrers_empty": true,
+    "rendered_choices": 4,
+    "clue_canvas_size": [960, 420],
+    "clue_canvas_tainted": true,
+    "horizontal_overflow": false
+  },
+  "content_screening": {
+    "scope": "Only official records with share_license_status=CC0, type=Painting, a valid official web JPEG, usable dimensions and declared byte size enter the pool. Title plus description are rejected when they contain configured sexual, nudity, graphic violence or self-harm terms.",
+    "visual_sample": "Several separate four-image Chromium rounds were inspected. They contained landscapes, religious scenes, and manuscript-style garden scenes. No explicit sexual act, visible genitalia, or graphic injury was observed; one religious painting prominently showed a bare male torso with a waist cloth and small angelic child figures. This proves that metadata keyword filtering reduces risk but does not exclude nonsexual partial nudity in religious or mythological art.",
+    "limitations": "The API has no machine-readable age rating. A random external visual game cannot guarantee absence of every culturally sensitive motif. Any later report should stop that round rather than silently fetch a replacement."
+  },
+  "media_boundary": {
+    "api_cors": "Access-Control-Allow-Origin: * observed",
+    "image_cors": "No Access-Control-Allow-Origin header observed; ordinary img embedding works and the game never uses canvas.",
+    "browser_enforcement": "The component validates the exact HTTPS image host and _web.jpg path, trusts the official API's reported filesize for the 1.2 MB / 4.0 MB selection budget, removes image src at the 10 s timeout, and requires successful browser decode before enabling play. Actual transfer size is determined by the museum response.",
+    "clue_reuse": "After all four candidate Image elements decode, the answer Image is drawn into a 960x420 clue canvas. The canvas makes no second remote reference, so the protocol uses exactly four media URLs without relying on a cache hit. The cross-origin image taints the canvas by design; the game never reads or exports it.",
+    "live_audit_enforcement": "The maintenance probe additionally streams each image with AbortController, verifies image/jpeg, and cancels on actual byte-cap or time-cap breach.",
+    "hard_limit_caveat": "Because the image CDN does not permit CORS reads, production img elements cannot inspect response headers or count actual bytes. The 4.0 MB production cap is therefore a trusted official-metadata cap, not a byte-perfect transport cap. Enforcing a byte-perfect cap would require a CORS-enabled image endpoint or a proxy, both outside this project boundary."
+  }
+}

@@ -364,19 +364,22 @@ for (const viewport of viewports) {
 test("localized toy indexes expose only live lightweight interactions", async ({
   page,
 }) => {
-  const quizExternalRequests = [];
+  const toyExternalRequests = [];
   page.on("request", (request) => {
     if ([
       "zh.moegirl.org.cn",
       "zh.wikipedia.org",
       "en.wikipedia.org",
+      "openaccess-api.clevelandart.org",
+      "openaccess-cdn.clevelandart.org",
+      "graphql.anilist.co",
     ].includes(new URL(request.url()).hostname)) {
-      quizExternalRequests.push(request.url());
+      toyExternalRequests.push(request.url());
     }
   });
   for (const [route, heading, groupHeadings, defaultQuizSource] of [
-    ["/toys/", "小玩意", ["轻松挑战", "逻辑谜题", "随机生成"], "moegirl_zh"],
-    ["/en/toys/", "Toys", ["Quick challenges", "Logic puzzles", "Random generators"], "wikipedia_en"],
+    ["/toys/", "小玩意", ["开放数据", "轻松挑战", "逻辑谜题", "随机生成"], "moegirl_zh"],
+    ["/en/toys/", "Toys", ["Open data", "Quick challenges", "Logic puzzles", "Random generators"], "wikipedia_en"],
   ]) {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(route);
@@ -392,9 +395,11 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     ).toBe(true);
     await expect(page.locator(".toy-group__title")).toHaveText(groupHeadings);
     const disclosures = page.locator(".toy-group__items > details.toy-entry");
-    await expect(disclosures).toHaveCount(9);
+    await expect(disclosures).toHaveCount(11);
     expect(await disclosures.evaluateAll((items) => items.map((item) => item.id))).toEqual([
       "moegirl-quiz",
+      "art-glimpse",
+      "anilist-role-quiz",
       "color-challenge",
       "ten-second",
       "reaction-time",
@@ -413,19 +418,27 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     await expect(page.locator(".toy-grid, .toy-card")).toHaveCount(0);
     expect(await disclosures.evaluateAll((items) => items.every((item) => !item.open))).toBe(true);
     await expect(page.locator(".encyclopedia-quiz[data-encyclopedia-quiz]")).toHaveCount(1);
+    await expect(page.locator(".art-glimpse[data-art-glimpse]")).toHaveCount(1);
+    await expect(page.locator(".acg-relation-quiz[data-acg-relation-quiz]")).toHaveCount(1);
     await expect(page.locator(".encyclopedia-quiz img")).toHaveCount(0);
     await expect(page.locator("[data-quiz-source-select] option")).toHaveCount(2);
     await expect(page.locator("[data-quiz-source-select]")).toHaveValue(defaultQuizSource);
     await expect(page.locator("[data-quiz-clue]")).toBeHidden();
     await expect(page.locator("script[src*='mathjax'], script[src*='al_math']")).toHaveCount(0);
-    expect(quizExternalRequests).toEqual([]);
+    expect(toyExternalRequests).toEqual([]);
     const quizResourceHints = page.locator(
       'link[rel="preconnect"][href*="moegirl.org.cn"], '
       + 'link[rel="dns-prefetch"][href*="moegirl.org.cn"], '
       + 'link[rel="prefetch"][href*="moegirl.org.cn"], '
       + 'link[rel="preconnect"][href*="wikipedia.org"], '
       + 'link[rel="dns-prefetch"][href*="wikipedia.org"], '
-      + 'link[rel="prefetch"][href*="wikipedia.org"]',
+      + 'link[rel="prefetch"][href*="wikipedia.org"], '
+      + 'link[rel="preconnect"][href*="clevelandart.org"], '
+      + 'link[rel="dns-prefetch"][href*="clevelandart.org"], '
+      + 'link[rel="prefetch"][href*="clevelandart.org"], '
+      + 'link[rel="preconnect"][href*="anilist.co"], '
+      + 'link[rel="dns-prefetch"][href*="anilist.co"], '
+      + 'link[rel="prefetch"][href*="anilist.co"]',
     );
     await expect(quizResourceHints).toHaveCount(0);
     await expect(
@@ -1238,6 +1251,9 @@ for (const viewport of viewports) {
     test(`ordinary article images are never cover-capped on ${route} at ${viewport.width}px`, async ({
       page,
     }) => {
+      // This unusually long article can need more than the default timeout when
+      // Chromium reaches it late in the full single-worker regression.
+      test.slow();
       await page.setViewportSize(viewport);
       await page.goto(route, { waitUntil: "domcontentloaded" });
 

@@ -88,16 +88,18 @@ source_copy:
   wikipedia_zh:
     zh:
       label: 维基百科（中文）
-      privacy: 点击开始后，本页会向中文维基百科官方 Action API 发送一次 GET 请求，取得一批随机条目的纯文字导言、分类和最新修订编号，再在浏览器内筛选本题并遮蔽可识别的名称片段。维基媒体服务器可看到这次请求、你的 IP 地址及浏览器发送的本站 Origin（通常只包含站点地址，不含本页具体路径）。本游戏只在当前页面内存中处理响应，不保存题目、答案或作答，也不请求图片。
+      privacy: 点击开始后，本页会向中文维基百科官方 Action API 发送一次 GET 请求，取得一批随机条目的纯文字导言、分类和最新修订编号，再在浏览器内筛选本题并遮蔽可识别的名称片段。维基媒体服务器可看到这次请求、你的 IP 地址及浏览器发送的本站 Origin（通常只包含站点地址，不含本页具体路径）。Wikipedia 在部分网络中不可达，中国大陆网络通常无法直接连接；本站不提供代理。本游戏只在当前页面内存中处理响应，不保存题目、答案或作答，也不请求图片。
       loading: 正在从中文维基百科随机发现本题候选……
+      network_error: 未能连接中文维基百科。Wikipedia 在中国大陆网络通常不可达；你可以切回萌娘百科，本站不会代理或自动重试。
       source_label: 查看中文维基百科准确修订：{title}
       attribution: 线索取自上方链接的准确修订；本站将其转为纯文字、遮蔽名称片段并截短内容。修改后的线索按 CC BY-SA 4.0 提供。
       license_label: 查看 CC BY-SA 4.0 协议
   wikipedia_en:
     en:
       label: Wikipedia (English)
-      privacy: Starting a round sends one GET request to the official English Wikipedia Action API for a random batch of plain-text introductions, categories, and latest revision IDs. This page selects the round locally and masks recognizable name fragments in the English clue. Wikimedia servers can see the request, your IP address, and the site Origin sent by your browser (normally the site address without this page's specific path). This game keeps the response only in this page's memory; it does not save the puzzle, answer, or attempt, and it does not request images.
+      privacy: Starting a round sends one GET request to the official English Wikipedia Action API for a random batch of plain-text introductions, categories, and latest revision IDs. This page selects the round locally and masks recognizable name fragments in the English clue. Wikimedia servers can see the request, your IP address, and the site Origin sent by your browser (normally the site address without this page's specific path). Wikipedia is unavailable on some networks, including many connections in mainland China; this site does not provide a proxy. This game keeps the response only in this page's memory; it does not save the puzzle, answer, or attempt, and it does not request images.
       loading: Discovering this round's candidates on English Wikipedia…
+      network_error: Could not connect to English Wikipedia. Wikipedia is commonly unavailable on mainland China networks; you can switch to Moegirlpedia for Chinese clues. This site does not proxy or automatically retry the request.
       source_label: "Open the exact Wikipedia revision: {title}"
       attribution: The clue comes from the exact revision linked above. This site converts it to plain text, masks name fragments, and shortens it. The modified clue is provided under CC BY-SA 4.0.
       license_label: Read the CC BY-SA 4.0 license

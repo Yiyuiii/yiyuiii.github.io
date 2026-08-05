@@ -22,6 +22,14 @@
     "titles_persisted": false,
     "retained_page_or_revision_ids": []
   },
+  "reachability_context": {
+    "diagnosis": "The repeated product failures are consistent with network reachability blocking rather than an Action API parameter or browser CORS defect.",
+    "official_block_notice": "https://wikimediafoundation.org/news/2019/05/17/wikimedia-foundation-urges-chinese-authorities-to-lift-block-of-wikipedia-in-china/",
+    "official_cors_documentation": "https://www.mediawiki.org/wiki/API:Cross-site_requests",
+    "implementation_matches_cors_documentation": true,
+    "mainland_china_note": "The Wikimedia Foundation reported all Wikipedia language editions blocked in mainland China in 2019. The product now warns that Wikipedia is commonly unreachable there and does not add a proxy, mirror, probe, or automatic retry.",
+    "product_copy_updated": true
+  },
   "connectivity_probe": {
     "source": "wikipedia_en",
     "api_get_attempts": 1,

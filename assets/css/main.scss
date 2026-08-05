@@ -915,6 +915,215 @@ html:lang(en) .article-header h1 {
   opacity: 0.55;
 }
 
+.art-glimpse__privacy,
+.art-glimpse__attribution {
+  max-width: 68rem;
+}
+
+.art-glimpse__start {
+  margin-block: 0.35rem 0.8rem;
+}
+
+.art-glimpse__round {
+  display: grid;
+  max-width: 46rem;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.art-glimpse__clue {
+  margin: 0;
+}
+
+.art-glimpse__clue-window {
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+  border: 1px solid var(--divider);
+  border-radius: 0.7rem;
+  background: color-mix(in srgb, var(--surface) 88%, var(--divider));
+}
+
+.art-glimpse__clue-window canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.art-glimpse__clue figcaption {
+  margin-top: 0.45rem;
+  color: var(--meta);
+}
+
+.art-glimpse__choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.toy-entry__body .art-glimpse__choice {
+  position: relative;
+  min-width: 0;
+  padding: 0.3rem;
+  border: 2px solid var(--divider);
+  border-radius: 0.7rem;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.toy-entry__body .art-glimpse__choice:hover:not(:disabled),
+.toy-entry__body .art-glimpse__choice:focus-visible {
+  border-color: var(--amethyst);
+}
+
+.toy-entry__body .art-glimpse__choice:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.toy-entry__body .art-glimpse__choice[data-result="correct"] {
+  border-color: #27864a;
+  box-shadow: 0 0 0 2px color-mix(in srgb, #27864a 24%, transparent);
+}
+
+.toy-entry__body .art-glimpse__choice[data-result="incorrect"] {
+  border-color: #b4463f;
+}
+
+.art-glimpse__choice img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.42rem;
+  object-fit: contain;
+}
+
+.art-glimpse__badge {
+  position: absolute;
+  inset: 0.55rem auto auto 0.55rem;
+  padding: 0.18rem 0.48rem;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(20, 20, 20, 0.86);
+  font-size: 0.78rem;
+}
+
+.art-glimpse__reveal {
+  max-width: 46rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--divider);
+}
+
+.art-glimpse__reveal h4,
+.art-glimpse__reveal p {
+  margin-block: 0.35rem;
+}
+
+.art-glimpse__title {
+  font-weight: 650;
+}
+
+.art-glimpse__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+}
+
+@media (max-width: 359px) {
+  .art-glimpse__choices {
+    grid-template-columns: 1fr;
+  }
+}
+
+.acg-relation-quiz__source-label {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.acg-relation-quiz__privacy {
+  max-width: 68rem;
+  margin: 0.4rem 0 0;
+  color: var(--meta);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.acg-relation-quiz__start {
+  margin-top: 1rem;
+}
+
+.acg-relation-quiz__round {
+  max-width: 42rem;
+  margin-top: 1rem;
+}
+
+.acg-relation-quiz__prompt {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.02rem;
+  font-weight: 650;
+  line-height: 1.6;
+}
+
+.acg-relation-quiz__options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.toy-entry__body .acg-relation-quiz__options button {
+  min-width: 0;
+  min-height: 3.2rem;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.toy-entry__body .acg-relation-quiz__options button[data-result="correct"] {
+  border-color: #27864a;
+  box-shadow: 0 0 0 2px color-mix(in srgb, #27864a 24%, transparent);
+}
+
+.toy-entry__body .acg-relation-quiz__options button[data-result="incorrect"] {
+  border-color: #b4463f;
+}
+
+.acg-relation-quiz__status {
+  min-height: 1.5em;
+  margin: 0.8rem 0 0;
+  color: var(--meta);
+  line-height: 1.5;
+}
+
+.acg-relation-quiz__source {
+  max-width: 42rem;
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--divider);
+}
+
+.acg-relation-quiz__source p {
+  margin: 0.45rem 0;
+  color: var(--meta);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.acg-relation-quiz__noscript {
+  margin: 0;
+  color: var(--meta);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 359px) {
+  .acg-relation-quiz__options {
+    grid-template-columns: 1fr;
+  }
+}
+
 [data-password-generate],
 [data-number-generate],
 [data-color-next],
