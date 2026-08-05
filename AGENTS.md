@@ -70,6 +70,7 @@ python scripts/run_browser_tests.py --site _site
 - 萌娘百科条目问答组件：docs/moegirl-quiz-component.md
 - 萌娘百科题库质量实测：docs/moegirl-quiz-quality-audit-2026-08-03.json
 - 萌娘百科英文题源审计：docs/moegirl-quiz-english-source-audit-2026-08-04.md
+- “百科条目猜猜”多来源改造开工计划：docs/superpowers/plans/2026-08-05-encyclopedia-entry-quiz.md
 - 本地轻量挑战：docs/toy-challenges.md
 - 随机生成器：docs/toy-generators.md
 - 小玩意扩充路线：docs/toy-expansion-roadmap-2026-08-04.md
@@ -93,4 +94,5 @@ python scripts/run_browser_tests.py --site _site
 - 2026-08-04：用户要求后续优先完善并扩充小游戏，同时主动搜集有趣候选。首个扩充项目为本地双语的“数字 Wordle”，采用可配置位数、重复规则与次数，不联网或持久化；用户试玩后进一步要求历史表按内容收缩，并以互斥的“完全命中／仅数字命中”消除反馈歧义。后续候选和取舍继续维护在 `docs/toy-expansion-roadmap-2026-08-04.md`。
 - 2026-08-04：首批逻辑小游戏扩充已完成数字 Wordle、凑成 24 与翻灯三条不同循环，并以精确题池、独立算法 oracle、纯键盘路径和 320 px 浏览器回归验证；按原路线应先停止继续新增，观察列表密度、共享组件和真实游玩反馈，再从第二阶段候选中只选一项原型。该条是历史总结，精确事实仍以三份游戏文档和当前测试为准。
 - 2026-08-05：用户要求数字 Wordle 与凑成 24 提供“显示答案”，并指出色差挑战答后整体发白会妨碍复核、整块圈对错不够美观。本轮将两款答案揭晓统一为结束当前尝试的显式状态；色差反馈改为不改变原色的角标，并以计算后样式逐格相等的浏览器回归保护。该条是用户需求与实施摘要，精确状态以三份游戏文档和当前测试为准。
+- 2026-08-05：用户确认外部数据小游戏不得使用任何密钥或批量下载，并同意继续构建开工计划。首个实施候选只改造现有条目题：中文页默认萌娘百科、可选中文 Wikipedia；英文页默认 English Wikipedia、可选明确标为中文题目的 Moegirlpedia。每次明确开始至多一次官方 API 请求，无预取、续页、图片或题目持久化；AIC、Bangumi、AniList 和逐句揭示不混入首轮。具体实施和验收闸门以“百科条目猜猜”开工计划为准，当前尚未实现。
 - 2026-08-03 至 2026-08-04：用户要求在每个正式页面底部增加基于 GitHub 的评论；本轮启用仓库 Discussions，并以 Giscus、严格路径映射、默认显式点击加载、双语与主题同步、来源限制和 GitHub 直达回退实现。用户随后完成 Giscus App 仓库级授权，官方接口和 CI artifact 真实 iframe 均已验证；之后决定移除重复的全站 Issue／邮件反馈提示、将 Discussions 链接并入评论公开说明，并为避免上游兼容风险保留 Giscus 官方主题及原生署名位置。为减少连续阅读时的重复点击，另增明确、默认关闭且可撤销的自动加载偏好；普通显示仍不构成长期开启。精确边界以全站评论计划和当前测试为准。
