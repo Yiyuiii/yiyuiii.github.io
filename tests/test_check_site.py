@@ -175,7 +175,7 @@ def valid_site(root):
                 "logic": "逻辑谜题",
                 "random": "随机生成",
                 "items": [
-                    ("moegirl-quiz", "萌娘百科条目猜猜"),
+                    ("moegirl-quiz", "百科条目猜猜"),
                     ("color-challenge", "色差挑战"),
                     ("ten-second", "盲估十秒"),
                     ("reaction-time", "反应时间"),
@@ -192,7 +192,7 @@ def valid_site(root):
                 "logic": "Logic puzzles",
                 "random": "Random generators",
                 "items": [
-                    ("moegirl-quiz", "Moegirlpedia entry quiz"),
+                    ("moegirl-quiz", "Encyclopedia entry quiz"),
                     ("color-challenge", "Color difference challenge"),
                     ("ten-second", "Ten-second estimate"),
                     ("reaction-time", "Reaction time"),
@@ -208,12 +208,23 @@ def valid_site(root):
         entries = []
         for index, (item_id, title) in enumerate(localized["items"]):
             level = 2 if index == 0 else 3
-            component = (
-                '<div class="moegirl-quiz" data-moegirl-quiz>'
-                '<p data-quiz-clue-text></p></div>'
-                if item_id == "moegirl-quiz"
-                else "<div>Ready.</div>"
-            )
+            if item_id == "moegirl-quiz":
+                default_source = "moegirl_zh" if language == "zh" else "wikipedia_en"
+                alternate_source = (
+                    "wikipedia_zh" if language == "zh" else "moegirl_zh"
+                )
+                component = (
+                    '<div class="encyclopedia-quiz" data-encyclopedia-quiz>'
+                    '<div data-quiz-enhanced hidden>'
+                    '<select data-quiz-source-select>'
+                    f'<option value="{default_source}" selected>Default</option>'
+                    f'<option value="{alternate_source}">Alternate</option>'
+                    '</select><p data-quiz-clue-text></p></div>'
+                    '<script type="application/json" data-quiz-config>{}</script>'
+                    '</div>'
+                )
+            else:
+                component = "<div>Ready.</div>"
             entries.append(
                 f'<details id="{item_id}" class="toy-entry">'
                 f'<summary><h{level} id="{item_id}-title">'

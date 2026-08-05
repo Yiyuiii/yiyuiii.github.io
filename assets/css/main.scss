@@ -3110,40 +3110,83 @@ html[data-theme="dark"] .highlight .gu {
   font-size: 0.84rem;
 }
 
-.moegirl-quiz {
+.encyclopedia-quiz {
   width: 100%;
+  min-width: 0;
   padding: 0;
   border: 0;
   color: var(--body);
   background: transparent;
 }
 
-html[data-theme="dark"] .moegirl-quiz {
+html[data-theme="dark"] .encyclopedia-quiz {
   box-shadow: none;
 }
 
-.moegirl-quiz__privacy,
-.moegirl-quiz__noscript {
-  margin: 1rem 0 0;
+.encyclopedia-quiz__source-control {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.65rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.encyclopedia-quiz__source-control label {
+  color: var(--ink);
+  font-size: 0.84rem;
+  font-weight: 680;
+}
+
+.encyclopedia-quiz__source-select {
+  width: min(100%, 19rem);
+  min-width: 0;
+  min-height: 2.4rem;
+  padding: 0.42rem 2rem 0.42rem 0.65rem;
+  border: 1px solid var(--divider);
+  border-radius: 0.42rem;
+  color: var(--ink);
+  background: var(--surface);
+  font: inherit;
+  font-size: 0.84rem;
+}
+
+.encyclopedia-quiz__source-select:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--jade) 62%, var(--divider));
+}
+
+.encyclopedia-quiz__source-select:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--jade) 72%, transparent);
+  outline-offset: 2px;
+}
+
+.encyclopedia-quiz__source-select:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.encyclopedia-quiz__privacy,
+.encyclopedia-quiz__noscript {
+  margin: 0.65rem 0 0;
+  overflow-wrap: anywhere;
   color: var(--meta);
   font-size: 0.8rem;
   line-height: 1.65;
 }
 
-.moegirl-quiz__interactive {
+.encyclopedia-quiz__interactive {
   margin-top: 1.1rem;
 }
 
-.moegirl-quiz__interactive[hidden],
-.moegirl-quiz__round[hidden],
-.moegirl-quiz__clue[hidden],
-.moegirl-quiz__options[hidden],
-.moegirl-quiz__source[hidden] {
+.encyclopedia-quiz__interactive[hidden],
+.encyclopedia-quiz__round[hidden],
+.encyclopedia-quiz__clue[hidden],
+.encyclopedia-quiz__options[hidden],
+.encyclopedia-quiz__source[hidden] {
   display: none;
 }
 
-.moegirl-quiz__start,
-.moegirl-quiz__option {
+.encyclopedia-quiz__start,
+.encyclopedia-quiz__option {
   min-height: 2.75rem;
   border: 1px solid var(--divider);
   border-radius: 0.42rem;
@@ -3152,7 +3195,8 @@ html[data-theme="dark"] .moegirl-quiz {
   cursor: pointer;
 }
 
-.moegirl-quiz__start {
+.encyclopedia-quiz__start {
+  max-width: 100%;
   padding: 0.55rem 1rem;
   border-color: color-mix(in srgb, var(--amethyst) 55%, var(--divider));
   color: var(--surface);
@@ -3160,16 +3204,16 @@ html[data-theme="dark"] .moegirl-quiz {
   font-weight: 680;
 }
 
-.moegirl-quiz__start:hover:not(:disabled) {
+.encyclopedia-quiz__start:hover:not(:disabled) {
   background: color-mix(in srgb, var(--amethyst) 84%, var(--jade));
 }
 
-.moegirl-quiz__start:disabled {
+.encyclopedia-quiz__start:disabled {
   cursor: wait;
   opacity: 0.62;
 }
 
-.moegirl-quiz__round {
+.encyclopedia-quiz__round {
   display: grid;
   grid-template-columns: minmax(11rem, 1fr) minmax(13rem, 1fr);
   gap: clamp(0.9rem, 3vw, 1.35rem);
@@ -3177,7 +3221,7 @@ html[data-theme="dark"] .moegirl-quiz {
   margin-top: 1.1rem;
 }
 
-.moegirl-quiz__clue {
+.encyclopedia-quiz__clue {
   min-width: 0;
   padding: clamp(0.85rem, 2.5vw, 1.1rem);
   border: 1px solid color-mix(in srgb, var(--divider) 74%, transparent);
@@ -3185,12 +3229,12 @@ html[data-theme="dark"] .moegirl-quiz {
   background: color-mix(in srgb, var(--page) 82%, var(--amethyst-soft));
 }
 
-.moegirl-quiz__clue:focus-visible {
+.encyclopedia-quiz__clue:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--jade) 72%, transparent);
   outline-offset: 3px;
 }
 
-.moegirl-quiz__clue-label {
+.encyclopedia-quiz__clue-label {
   margin: 0 0 0.48rem;
   color: var(--amethyst);
   font-size: 0.75rem;
@@ -3198,73 +3242,94 @@ html[data-theme="dark"] .moegirl-quiz {
   letter-spacing: 0.06em;
 }
 
-.moegirl-quiz__clue-text {
+.encyclopedia-quiz__clue-text {
   margin: 0;
+  overflow-wrap: anywhere;
   color: var(--ink);
   font-size: 0.98rem;
   line-height: 1.8;
 }
 
-.moegirl-quiz__options {
+.encyclopedia-quiz__options {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 0.55rem;
+  min-width: 0;
 }
 
-.moegirl-quiz__option {
+.encyclopedia-quiz__option {
   width: 100%;
+  min-width: 0;
   padding: 0.48rem 0.72rem;
   overflow-wrap: anywhere;
   line-height: 1.35;
   text-align: left;
 }
 
-.moegirl-quiz__option:hover:not(:disabled) {
+.encyclopedia-quiz__option:hover:not(:disabled) {
   border-color: var(--jade);
   color: var(--jade);
 }
 
-.moegirl-quiz__option:disabled {
+.encyclopedia-quiz__option:disabled {
   cursor: default;
   opacity: 0.72;
 }
 
-.moegirl-quiz__option[data-result="correct"] {
+.encyclopedia-quiz__option[data-result="correct"] {
   border-color: var(--jade);
   color: var(--ink);
   background: var(--jade-soft);
   opacity: 1;
 }
 
-.moegirl-quiz__option[data-result="incorrect"] {
+.encyclopedia-quiz__option[data-result="incorrect"] {
   border-color: color-mix(in srgb, #b45b57 62%, var(--divider));
   text-decoration: line-through;
   opacity: 0.82;
 }
 
-.moegirl-quiz__status {
+.encyclopedia-quiz__status {
   min-height: 1.65em;
   margin: 0.85rem 0 0;
+  overflow-wrap: anywhere;
   color: var(--ink);
   font-weight: 600;
 }
 
-.moegirl-quiz__source {
+.encyclopedia-quiz__source {
   display: grid;
   gap: 0.18rem;
   margin: 0.55rem 0 0;
+  overflow-wrap: anywhere;
   color: var(--meta);
   font-size: 0.78rem;
   line-height: 1.55;
 }
 
-.moegirl-quiz__source a {
+.encyclopedia-quiz__source p {
+  margin: 0;
+}
+
+.encyclopedia-quiz__source a {
+  max-width: 100%;
   width: fit-content;
 }
 
 @media (max-width: 560px) {
-  .moegirl-quiz__round {
+  .encyclopedia-quiz__round {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 360px) {
+  .encyclopedia-quiz__source-control {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .encyclopedia-quiz__source-select {
+    width: 100%;
   }
 }
 

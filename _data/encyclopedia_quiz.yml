@@ -1,0 +1,103 @@
+timeout_ms: 10000
+max_response_chars: 262144
+recent_history_size: 24
+reviewed_on: "2026-08-05"
+
+# 这里只保存本站信任的来源配置与界面文案。题目、导言、图片、凭据和作答
+# 都不会写入仓库；读者明确开始后，每轮至多发出一次官方 Action API GET。
+defaults:
+  zh: moegirl_zh
+  en: wikipedia_en
+
+available_sources:
+  zh:
+    - moegirl_zh
+    - wikipedia_zh
+  en:
+    - wikipedia_en
+    - moegirl_zh
+
+sources:
+  moegirl_zh:
+    adapter: moegirl
+    language: zh
+    endpoint: https://zh.moegirl.org.cn/api.php
+    # 随机生成器返回最多 50 页，但 Extracts 模块每次只给最多 20 页附导言；
+    # 没有导言的页不会进入候选池。保留 50 是为了维持现有单请求协议。
+    batch_size: 50
+    license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/
+  wikipedia_zh:
+    adapter: wikipedia
+    language: zh
+    endpoint: https://zh.wikipedia.org/w/api.php
+    batch_size: 20
+    license_url: https://creativecommons.org/licenses/by-sa/4.0/
+  wikipedia_en:
+    adapter: wikipedia
+    language: en
+    endpoint: https://en.wikipedia.org/w/api.php
+    batch_size: 20
+    license_url: https://creativecommons.org/licenses/by-sa/4.0/
+
+copy:
+  zh:
+    source_select_label: 题目来源
+    start: 开始一题
+    again: 再来一题
+    retry: 重试
+    options_label: 候选条目
+    clue_label: 这是什么？
+    redaction: ⬛
+    correct: 答对了！这是 {title}。
+    incorrect: 没猜中；答案是 {title}。
+    network_error: 暂时没能取得文字线索，请稍后重试。
+    no_clue_error: 本次随机结果里没有足够的同类条目组成题目，请主动重试。
+    random_error: 浏览器无法提供可靠随机数，暂时不能出题。
+    no_js: 此小玩意需要 JavaScript；未启用时不会连接萌娘百科或 Wikipedia。
+  en:
+    source_select_label: Question source
+    start: Start a round
+    again: Another round
+    retry: Try again
+    options_label: Candidate entries
+    clue_label: What is this?
+    redaction: ⬛
+    correct: Correct! This is {title}.
+    incorrect: Not quite; the answer is {title}.
+    network_error: The text clue could not be retrieved just now. Please try again later.
+    no_clue_error: This random batch did not contain enough entries of one type to make a round. Please try again.
+    random_error: This browser cannot provide secure randomness, so a round cannot be created.
+    no_js: This toy needs JavaScript. With JavaScript disabled, it does not connect to Moegirlpedia or Wikipedia.
+
+source_copy:
+  moegirl_zh:
+    zh:
+      label: 萌娘百科（中文）
+      privacy: 点击开始后，本页会向萌娘百科官方 Action API 发送一次 GET 请求，取得一批随机条目的纯文字导言与分类，再在浏览器内筛选本题并遮蔽可识别的名称片段。萌娘百科可看到这次请求、你的 IP 地址及浏览器发送的本站 Origin（通常只包含站点地址，不含本页具体路径）。本游戏只在当前页面内存中处理响应，不保存题目、答案或作答，也不请求图片。
+      loading: 正在从萌娘百科随机发现本题候选……
+      source_label: 查看萌娘百科来源条目：{title}
+      attribution: 线索是来源条目的纯文字匿名化节选；本站遮蔽了名称片段并截短内容。条目文本按来源页标示的许可提供，复用时请保留来源与署名。
+      license_label: 查看 CC BY-NC-SA 3.0 协议
+    en:
+      label: Moegirlpedia (Chinese clue)
+      privacy: Starting a round sends one GET request to the official Chinese Moegirlpedia Action API for a random batch of plain-text introductions and categories. This page selects the round locally and masks recognizable name fragments in the Chinese clue. Moegirlpedia can see the request, your IP address, and the site Origin sent by your browser (normally the site address without this page's specific path). This game keeps the response only in this page's memory; it does not save the puzzle, answer, or attempt, and it does not request images.
+      loading: Discovering this round's Chinese candidates on Moegirlpedia…
+      source_label: "Open the source entry on Moegirlpedia: {title}"
+      attribution: The clue is a plain-text anonymized excerpt from the source entry. This site masks name fragments and shortens the text. The entry text follows the license shown on its source page; preserve the source and attribution when reusing it.
+      license_label: Read the CC BY-NC-SA 3.0 license
+  wikipedia_zh:
+    zh:
+      label: 维基百科（中文）
+      privacy: 点击开始后，本页会向中文维基百科官方 Action API 发送一次 GET 请求，取得一批随机条目的纯文字导言、分类和最新修订编号，再在浏览器内筛选本题并遮蔽可识别的名称片段。维基媒体服务器可看到这次请求、你的 IP 地址及浏览器发送的本站 Origin（通常只包含站点地址，不含本页具体路径）。本游戏只在当前页面内存中处理响应，不保存题目、答案或作答，也不请求图片。
+      loading: 正在从中文维基百科随机发现本题候选……
+      source_label: 查看中文维基百科准确修订：{title}
+      attribution: 线索取自上方链接的准确修订；本站将其转为纯文字、遮蔽名称片段并截短内容。修改后的线索按 CC BY-SA 4.0 提供。
+      license_label: 查看 CC BY-SA 4.0 协议
+  wikipedia_en:
+    en:
+      label: Wikipedia (English)
+      privacy: Starting a round sends one GET request to the official English Wikipedia Action API for a random batch of plain-text introductions, categories, and latest revision IDs. This page selects the round locally and masks recognizable name fragments in the English clue. Wikimedia servers can see the request, your IP address, and the site Origin sent by your browser (normally the site address without this page's specific path). This game keeps the response only in this page's memory; it does not save the puzzle, answer, or attempt, and it does not request images.
+      loading: Discovering this round's candidates on English Wikipedia…
+      source_label: "Open the exact Wikipedia revision: {title}"
+      attribution: The clue comes from the exact revision linked above. This site converts it to plain text, masks name fragments, and shortens it. The modified clue is provided under CC BY-SA 4.0.
+      license_label: Read the CC BY-SA 4.0 license

@@ -189,14 +189,16 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
                     f"{route}: toy external link is not HTTPS and safely isolated"
                 )
 
-    quiz = soup.select(".moegirl-quiz[data-moegirl-quiz]")
+    quiz = soup.select(".encyclopedia-quiz[data-encyclopedia-quiz]")
     if len(quiz) != 1:
-        raise SiteCheckError(f"{route}: expected exactly one Moegirl quiz component")
+        raise SiteCheckError(
+            f"{route}: expected exactly one encyclopedia quiz component"
+        )
     quiz_title = soup.select("#moegirl-quiz-title")
     expected_quiz_title = (
-        "萌娘百科条目猜猜"
+        "百科条目猜猜"
         if language == "zh"
-        else "Moegirlpedia entry quiz"
+        else "Encyclopedia entry quiz"
     )
     quiz_title_text = (
         quiz_title[0].select_one(".toy-entry__title")
@@ -208,13 +210,39 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         or not quiz_title_text
         or quiz_title_text.get_text(" ", strip=True) != expected_quiz_title
     ):
-        raise SiteCheckError(f"{route}: Moegirl quiz title is missing or not localized")
+        raise SiteCheckError(
+            f"{route}: encyclopedia quiz title is missing or not localized"
+        )
     if quiz[0].find("img") or not quiz[0].select_one("[data-quiz-clue-text]"):
         raise SiteCheckError(
-            f"{route}: Moegirl quiz must use a text clue without embedded images"
+            f"{route}: encyclopedia quiz must use a text clue without embedded images"
         )
+    source_select = quiz[0].select_one("select[data-quiz-source-select]")
+    source_options = source_select.select("option[value]") if source_select else []
+    expected_default_source = "moegirl_zh" if language == "zh" else "wikipedia_en"
+    selected_options = [
+        option for option in source_options if option.has_attr("selected")
+    ]
+    if (
+        not source_select
+        or len(source_options) != 2
+        or len(selected_options) != 1
+        or selected_options[0].get("value") != expected_default_source
+    ):
+        raise SiteCheckError(
+            f"{route}: encyclopedia quiz sources/default are incomplete or not localized"
+        )
+    enhanced = quiz[0].select_one("[data-quiz-enhanced]")
+    if not enhanced or not enhanced.has_attr("hidden"):
+        raise SiteCheckError(
+            f"{route}: encyclopedia quiz enhanced controls must be hidden before JS"
+        )
+    if not quiz[0].select_one('script[type="application/json"][data-quiz-config]'):
+        raise SiteCheckError(f"{route}: encyclopedia quiz config is missing")
     if len(soup.select('[id="moegirl-quiz"]')) != 1:
-        raise SiteCheckError(f"{route}: Moegirl quiz disclosure id must be unique")
+        raise SiteCheckError(
+            f"{route}: encyclopedia quiz disclosure id must be unique"
+        )
     source = str(soup).lower()
     if "mathjax" in source or "al_math" in source:
         raise SiteCheckError(f"{route}: toys page loads math assets")

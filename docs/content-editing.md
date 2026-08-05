@@ -249,12 +249,12 @@ python scripts/translation_guard.py --check --production
 - 色差挑战、盲估十秒和反应时间的组件边界见 `docs/toy-challenges.md`。三者不联网；色差不保存，两个计时挑战只在浏览器本机用各自精确键保留最近 100 次完成记录并允许清空。折叠条目或隐藏页面时会取消正在进行的计时，取消不写历史。
 - 猜图类功能不得自行维护一个固定小数据集。只有能接入庞大、许可和接口稳定性可核验的外部数据集时才立项，否则不做。
 
-萌娘百科条目问答是索引页中的渐进增强组件：稳定折叠锚点是 `#moegirl-quiz`，可见标题和说明由统一清单提供，组件自身不重复标题。随机批次、近期排除窗口与双语界面文案维护在 `_data/moegirl_quiz.yml`，外部大题库筛选、匿名化、请求时机、来源和许可说明见 `docs/moegirl-quiz-component.md`。打开页面不会访问萌娘百科；只有用户点击开始后才发起一次官方 API 随机纯文本请求，每轮不得静默追加请求。不要改成页面预载、后台预取、固定小白名单、远程题图、图片复制或静默追踪。
+百科条目猜猜是索引页中的渐进增强组件：稳定折叠锚点仍是 `#moegirl-quiz`，可见标题和说明由统一清单提供，组件自身不重复标题。来源、随机批次、近期排除窗口与双语文案维护在 `_data/encyclopedia_quiz.yml`，筛选、匿名化、请求时机、准确修订来源和许可说明见 `docs/encyclopedia-quiz-component.md`。中文页默认萌娘百科并可选中文 Wikipedia；英文页默认 English Wikipedia 并可选明确标作中文线索的萌娘百科。打开页面、展开或切换来源均不联网；只有用户点击开始后才向所选官方 API 发起一次随机纯文字 GET，每轮不得静默追加请求。不要改成页面预载、后台预取、固定小白名单、远程题图、图片复制或静默追踪。
 
 修改后运行：
 
 ```powershell
-python -m pytest -q tests/test_toys_contracts.py tests/test_moegirl_quiz_contracts.py tests/test_toy_generators_contracts.py tests/test_toy_challenges_contracts.py tests/test_source_contracts.py tests/test_check_site.py
+python -m pytest -q tests/test_toys_contracts.py tests/test_encyclopedia_quiz_contracts.py tests/test_toy_generators_contracts.py tests/test_toy_challenges_contracts.py tests/test_source_contracts.py tests/test_check_site.py
 python scripts/translation_guard.py --check --production
 node --test tests/toy_challenges.logic.test.mjs tests/toy_challenge_history.logic.test.mjs tests/toy_color_challenge.logic.test.mjs
 ```

@@ -109,7 +109,7 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
     assert "{% case toy.id %}" in include
 
     expected_includes = [
-        "toy-moegirl-quiz.liquid",
+        "toy-encyclopedia-quiz.liquid",
         "toy-color-challenge.liquid",
         "toy-ten-second.liquid",
         "toy-reaction-time.liquid",
@@ -138,15 +138,32 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
     assert include.count(" defer></script>") == 9
 
 
-def test_moegirl_component_uses_the_disclosure_heading_without_repeating_it():
-    component = text("_includes/toy-moegirl-quiz.liquid")
+def test_encyclopedia_component_uses_the_disclosure_heading_without_repeating_it():
+    component = text("_includes/toy-encyclopedia-quiz.liquid")
 
     assert "include.heading_id" in component
     assert "copy.eyebrow" not in component
     assert "copy.title" not in component
     assert "copy.description" not in component
-    assert "data-moegirl-quiz" in component
-    assert "copy.privacy" in component
+    assert "data-encyclopedia-quiz" in component
+    assert "data-quiz-source-select" in component
+    assert "data-quiz-privacy" in component
+
+
+def test_encyclopedia_quiz_has_neutral_visible_copy_but_preserves_the_old_hash():
+    data = yaml.safe_load(text("_data/toys.yml"))
+    items = [item for group in data["groups"] for item in group["items"]]
+    quiz = next(item for item in items if item["id"] == "moegirl-quiz")
+
+    assert quiz["title"] == {
+        "zh": "百科条目猜猜",
+        "en": "Encyclopedia entry quiz",
+    }
+    assert "角色" not in quiz["title"]["zh"]
+    assert "character" not in quiz["title"]["en"].lower()
+    assert "Wikipedia" in quiz["keywords"]["en"]
+    assert "维基百科" in quiz["keywords"]["zh"]
+    assert "moegirl-quiz" in text("_includes/toy-index.liquid")
 
 
 def test_search_indexes_each_real_grouped_toy_and_hashes_open_without_focus():

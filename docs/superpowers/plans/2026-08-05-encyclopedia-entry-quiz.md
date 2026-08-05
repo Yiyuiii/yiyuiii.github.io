@@ -366,6 +366,12 @@ npx playwright test tests/browser/encyclopedia-quiz.spec.mjs
 
 这些页面和外部服务行为会变化。正式实现和以后维护时应复核当前官方文档；本计划记录的是 2026-08-05 的可执行基线，不把外部接口状态写成永久事实。
 
+## 2026-08-05 实施状态
+
+数据、Liquid、共享纯逻辑、控制器、样式、维护文档和固定桩测试已在外部功能分支实现；旧 `#moegirl-quiz` 片段继续兼容。全量 Python、纯逻辑、生产构建、站点/legacy 检查及本次变更影响的浏览器回归均已通过，尚未推送或发布。
+
+真实闸门因当前环境无法连接中文、英文 Wikipedia Action API 而保持未评估。两种产品路径各只显式尝试一局并正确进入网络错误/重试状态；没有把网络失败计作内容批次失败，也没有为凑样本重复请求。结构化证据见 `docs/encyclopedia-quiz-live-feasibility-2026-08-05.json`。正式发布仍必须在可联网环境完成两个 Wikipedia 来源各 20 局，并达到本计划的 16/20、零泄漏、同类一致性、延迟和响应大小门槛。
+
 ## 本轮明确不做
 
 - 不接入 AIC、Bangumi、AniList、MusicBrainz 或其它来源。

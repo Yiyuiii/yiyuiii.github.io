@@ -364,15 +364,19 @@ for (const viewport of viewports) {
 test("localized toy indexes expose only live lightweight interactions", async ({
   page,
 }) => {
-  const moegirlRequests = [];
+  const quizExternalRequests = [];
   page.on("request", (request) => {
-    if (new URL(request.url()).hostname.endsWith("moegirl.org.cn")) {
-      moegirlRequests.push(request.url());
+    if ([
+      "zh.moegirl.org.cn",
+      "zh.wikipedia.org",
+      "en.wikipedia.org",
+    ].includes(new URL(request.url()).hostname)) {
+      quizExternalRequests.push(request.url());
     }
   });
-  for (const [route, heading, groupHeadings] of [
-    ["/toys/", "小玩意", ["轻松挑战", "逻辑谜题", "随机生成"]],
-    ["/en/toys/", "Toys", ["Quick challenges", "Logic puzzles", "Random generators"]],
+  for (const [route, heading, groupHeadings, defaultQuizSource] of [
+    ["/toys/", "小玩意", ["轻松挑战", "逻辑谜题", "随机生成"], "moegirl_zh"],
+    ["/en/toys/", "Toys", ["Quick challenges", "Logic puzzles", "Random generators"], "wikipedia_en"],
   ]) {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(route);
@@ -408,17 +412,22 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     ).toBe(true);
     await expect(page.locator(".toy-grid, .toy-card")).toHaveCount(0);
     expect(await disclosures.evaluateAll((items) => items.every((item) => !item.open))).toBe(true);
-    await expect(page.locator(".moegirl-quiz[data-moegirl-quiz]")).toHaveCount(1);
-    await expect(page.locator(".moegirl-quiz img")).toHaveCount(0);
+    await expect(page.locator(".encyclopedia-quiz[data-encyclopedia-quiz]")).toHaveCount(1);
+    await expect(page.locator(".encyclopedia-quiz img")).toHaveCount(0);
+    await expect(page.locator("[data-quiz-source-select] option")).toHaveCount(2);
+    await expect(page.locator("[data-quiz-source-select]")).toHaveValue(defaultQuizSource);
     await expect(page.locator("[data-quiz-clue]")).toBeHidden();
     await expect(page.locator("script[src*='mathjax'], script[src*='al_math']")).toHaveCount(0);
-    expect(moegirlRequests).toEqual([]);
-    const moegirlResourceHints = page.locator(
+    expect(quizExternalRequests).toEqual([]);
+    const quizResourceHints = page.locator(
       'link[rel="preconnect"][href*="moegirl.org.cn"], '
       + 'link[rel="dns-prefetch"][href*="moegirl.org.cn"], '
-      + 'link[rel="prefetch"][href*="moegirl.org.cn"]',
+      + 'link[rel="prefetch"][href*="moegirl.org.cn"], '
+      + 'link[rel="preconnect"][href*="wikipedia.org"], '
+      + 'link[rel="dns-prefetch"][href*="wikipedia.org"], '
+      + 'link[rel="prefetch"][href*="wikipedia.org"]',
     );
-    await expect(moegirlResourceHints).toHaveCount(0);
+    await expect(quizResourceHints).toHaveCount(0);
     await expect(
       page.locator('.site-nav a[aria-current="page"]'),
     ).toHaveAttribute("href", route);
@@ -433,6 +442,37 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     ).toBe(false);
   }
 });
+
+for (const viewport of [
+  { width: 1280, height: 900 },
+  { width: 390, height: 844 },
+  { width: 320, height: 800 },
+]) {
+  test(`encyclopedia quiz source controls and legacy hash fit at ${viewport.width}px`, async ({
+    page,
+  }) => {
+    const externalRequests = [];
+    page.on("request", (request) => {
+      if ([
+        "zh.moegirl.org.cn",
+        "zh.wikipedia.org",
+        "en.wikipedia.org",
+      ].includes(new URL(request.url()).hostname)) externalRequests.push(request.url());
+    });
+    await page.setViewportSize(viewport);
+    await page.goto("/toys/#moegirl-quiz");
+
+    await expect(page.locator("#moegirl-quiz")).toHaveAttribute("open", "");
+    await expect(page.getByText("百科条目猜猜", { exact: true })).toBeVisible();
+    await expect(page.getByLabel("题目来源")).toHaveValue("moegirl_zh");
+    await page.getByLabel("题目来源").selectOption("wikipedia_zh");
+    await expect(page.locator("[data-quiz-privacy]")).toContainText("中文维基百科");
+    expect(externalRequests).toEqual([]);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+    ).toBe(false);
+  });
+}
 
 test("writing index requests only responsive cover derivatives", async ({
   browser,
@@ -1407,6 +1447,14 @@ test("search, paired language switch, and article reading controls work", async 
     "href",
     "/toys/#moegirl-quiz",
   );
+  for (const query of ["百科", "Wikipedia", "维基百科"]) {
+    await input.fill(query);
+    await expect(page.locator("#search-results a")).toHaveCount(1);
+    await expect(page.locator("#search-results a")).toHaveAttribute(
+      "href",
+      "/toys/#moegirl-quiz",
+    );
+  }
   await input.fill("");
   await input.press("Escape");
   await expect(searchButton).toBeFocused();

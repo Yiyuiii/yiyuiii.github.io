@@ -1,0 +1,110 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign quiz = site.data.encyclopedia_quiz %}
+{% assign copy = quiz.copy[lang_key] | default: quiz.copy.zh %}
+{% assign allowed_source_ids = quiz.available_sources[lang_key] | default: quiz.available_sources.zh %}
+{% assign default_source_id = quiz.defaults[lang_key] | default: quiz.defaults.zh %}
+{% assign default_source = quiz.sources[default_source_id] %}
+{% assign default_source_copy_by_lang = quiz.source_copy[default_source_id] %}
+{% assign default_source_copy = default_source_copy_by_lang[lang_key] | default: default_source_copy_by_lang.zh %}
+{% assign heading_id = include.heading_id | default: 'moegirl-quiz-title' %}
+{% capture source_select_id %}{{ heading_id }}-source{% endcapture %}
+{% capture privacy_id %}{{ heading_id }}-privacy{% endcapture %}
+
+<div
+  class="encyclopedia-quiz"
+  data-encyclopedia-quiz
+  aria-labelledby="{{ heading_id | escape }}"
+>
+  <div data-quiz-enhanced hidden>
+    <div class="encyclopedia-quiz__source-control">
+      <label for="{{ source_select_id | escape }}">{{ copy.source_select_label }}</label>
+      <select
+        id="{{ source_select_id | escape }}"
+        class="encyclopedia-quiz__source-select"
+        data-quiz-source-select
+        aria-describedby="{{ privacy_id | escape }}"
+      >
+        {% for source_id in allowed_source_ids %}
+          {% assign option_copy_by_lang = quiz.source_copy[source_id] %}
+          {% assign option_copy = option_copy_by_lang[lang_key] | default: option_copy_by_lang.zh %}
+          <option value="{{ source_id | escape }}"{% if source_id == default_source_id %} selected{% endif %}>{{ option_copy.label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <p id="{{ privacy_id | escape }}" class="encyclopedia-quiz__privacy" data-quiz-privacy>
+      {{ default_source_copy.privacy }}
+    </p>
+
+    <div class="encyclopedia-quiz__interactive" data-quiz-interactive hidden>
+      <button class="encyclopedia-quiz__start" type="button" data-quiz-start>
+        {{ copy.start }}
+      </button>
+
+    <div class="encyclopedia-quiz__round" data-quiz-round hidden>
+      <div class="encyclopedia-quiz__clue" data-quiz-clue tabindex="-1" hidden>
+        <p class="encyclopedia-quiz__clue-label">{{ copy.clue_label }}</p>
+        <p class="encyclopedia-quiz__clue-text" data-quiz-clue-text></p>
+      </div>
+
+      <div
+        class="encyclopedia-quiz__options"
+        data-quiz-options
+        role="group"
+        aria-label="{{ copy.options_label | escape }}"
+        hidden
+      ></div>
+    </div>
+
+      <p class="encyclopedia-quiz__status" data-quiz-status aria-live="polite" aria-atomic="true"></p>
+
+      <div class="encyclopedia-quiz__source" data-quiz-source hidden>
+        <a
+          data-quiz-source-link
+          target="_blank"
+          rel="external nofollow noopener noreferrer"
+          referrerpolicy="no-referrer"
+        ></a>
+        <p data-quiz-attribution>{{ default_source_copy.attribution }}</p>
+        <a
+          data-quiz-license-link
+          href="{{ default_source.license_url | escape }}"
+          target="_blank"
+          rel="external nofollow noopener noreferrer"
+          referrerpolicy="no-referrer"
+        >{{ default_source_copy.license_label }}</a>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    <p class="encyclopedia-quiz__noscript">{{ copy.no_js }}</p>
+  </noscript>
+
+  <script type="application/json" data-quiz-config>
+    {
+      "page_lang": {{ lang_key | jsonify }},
+      "default_source_id": {{ default_source_id | jsonify }},
+      "allowed_source_ids": {{ allowed_source_ids | jsonify }},
+      "timeout_ms": {{ quiz.timeout_ms | jsonify }},
+      "max_response_chars": {{ quiz.max_response_chars | jsonify }},
+      "recent_history_size": {{ quiz.recent_history_size | jsonify }},
+      "sources": {
+        {% for source_id in allowed_source_ids %}
+          {{ source_id | jsonify }}: {{ quiz.sources[source_id] | jsonify }}{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      },
+      "copy": {{ copy | jsonify }},
+      "source_copy": {
+        {% for source_id in allowed_source_ids %}
+          {% assign localized_copy_by_lang = quiz.source_copy[source_id] %}
+          {% assign localized_copy = localized_copy_by_lang[lang_key] | default: localized_copy_by_lang.zh %}
+          {{ source_id | jsonify }}: {{ localized_copy | jsonify }}{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      }
+    }
+  </script>
+  <script src="{{ '/assets/js/encyclopedia-quiz-logic.js' | relative_url | bust_file_cache }}" defer></script>
+  <script src="{{ '/assets/js/encyclopedia-quiz.js' | relative_url | bust_file_cache }}" defer></script>
+</div>

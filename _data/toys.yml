@@ -10,14 +10,14 @@ groups:
     items:
       - id: moegirl-quiz
         title:
-          zh: 萌娘百科条目猜猜
-          en: Moegirlpedia entry quiz
+          zh: 百科条目猜猜
+          en: Encyclopedia entry quiz
         description:
-          zh: 看完线索，你能从四个条目中猜出答案吗？
-          en: Read the Chinese clue and pick the matching entry.
+          zh: 读读匿名化的导言，看看四个候选里谁是答案。
+          en: Read the anonymized introduction and choose the matching entry.
         keywords:
-          zh: [萌娘百科, 条目, 问答, 动漫, 游戏]
-          en: [Moegirlpedia, entry, quiz, anime, games]
+          zh: [百科, 萌娘百科, 维基百科, Wikipedia, 条目, 问答]
+          en: [encyclopedia, Wikipedia, Moegirlpedia, entry, quiz]
 
   - id: quick-challenges
     title:
