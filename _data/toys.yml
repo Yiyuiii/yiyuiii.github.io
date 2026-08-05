@@ -5,8 +5,10 @@ page:
     introduction: A few lightweight interactions to open, try, and leave at any time.
 
 groups:
-  - id: ungrouped
-    title: null
+  - id: database
+    title:
+      zh: 数据库
+      en: Databases
     items:
       - id: moegirl-quiz
         title:
@@ -14,34 +16,29 @@ groups:
           en: Encyclopedia entry quiz
         description:
           zh: 读读匿名化的导言，看看四个候选里谁是答案。
-          en: Read the anonymized introduction and choose the matching entry.
+          en: Read the Chinese anonymized introduction and choose the matching entry.
         keywords:
-          zh: [百科, 萌娘百科, 维基百科, Wikipedia, 条目, 问答]
-          en: [encyclopedia, Wikipedia, Moegirlpedia, entry, quiz]
+          zh: [百科, 萌娘百科, 条目, 问答]
+          en: [encyclopedia, Moegirlpedia, Chinese, entry, quiz]
 
-  - id: open-data
-    title:
-      zh: 开放数据
-      en: Open data
-    items:
       - id: art-glimpse
         title:
-          zh: 名画一瞥
-          en: Art glimpse
+          zh: 名画配对
+          en: Artwork match
         description:
-          zh: 看一块放大的馆藏局部，从四幅完整画面中找出来源。
-          en: Study an enlarged museum detail and find its full image among four choices.
+          zh: 根据题名、作者和年代，从四幅馆藏图中找出对应作品。
+          en: Match a museum title, artist, and date to one of four artworks.
         keywords:
-          zh: [名画, 艺术, 博物馆, 克利夫兰, 图像, 猜题]
-          en: [art, painting, museum, Cleveland, image, quiz]
+          zh: [名画, 配对, 艺术, 博物馆, 克利夫兰, 图像, 猜题]
+          en: [art, matching, painting, museum, Cleveland, image, quiz]
 
       - id: anilist-role-quiz
         title:
           zh: AniList 角色关系猜猜
           en: AniList character role quiz
         description:
-          zh: 四名候选中，谁被标为这部动画的主要角色？
-          en: Which candidate is marked as a main character in this anime?
+          zh: 四名候选中，谁是这部动画的主角之一？
+          en: Which candidate is one of this anime's main characters?
         keywords:
           zh: [AniList, 动画, 角色, 主角, 关系, 猜题]
           en: [AniList, anime, character, main role, relation, quiz]

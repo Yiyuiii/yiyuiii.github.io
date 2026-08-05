@@ -51,6 +51,11 @@ def test_copy_is_bilingual_and_discloses_the_real_request_and_language_limits():
     assert "six" in en and "360" in en
     assert "不会自动翻页或重试" in zh
     assert "never follows another page or retries automatically" in en
+    assert quiz["source_copy"]["zh"]["question"] == "《{title}》的主角之一是谁？"
+    assert quiz["source_copy"]["en"]["question"] == "Who is one of the main characters in {title}?"
+    assert "MAIN 通常对应主角或核心主角团，可能不止一人" in quiz["source_copy"]["zh"]["privacy"]
+    assert "does not judge screen time independently" in quiz["source_copy"]["en"]["privacy"]
+    assert "{answer}" in quiz["copy"]["zh"]["correct"]
 
 
 def test_configuration_has_no_questions_images_credentials_or_storage():

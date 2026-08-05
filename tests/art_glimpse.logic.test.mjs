@@ -96,7 +96,7 @@ test("normalization accepts only exact CC0 painting and official links", () => {
   assert.equal(Object.isFrozen(accepted[0]), true);
 });
 
-test("normalization rejects restricted, sensitive, hostile, oversized, and duplicate records", () => {
+test("normalization rejects incomplete clues, restricted, sensitive, hostile, oversized, and duplicate records", () => {
   const config = logic.validateConfig(rawConfig());
   const records = [
     artwork(1, { share_license_status: "Copyrighted" }),
@@ -104,6 +104,8 @@ test("normalization rejects restricted, sensitive, hostile, oversized, and dupli
     artwork(3, { url: "https://attacker.invalid/art/3" }),
     artwork(4, { images: { web: { url: "https://attacker.invalid/4_web.jpg", filesize: "1", width: "900", height: "700" } } }),
     artwork(5, { images: { web: { url: "https://openaccess-cdn.clevelandart.org/5/5_web.jpg", filesize: "1500000", width: "900", height: "700" } } }),
+    artwork(7, { creators: [] }),
+    artwork(8, { creation_date: "" }),
     artwork(6),
     artwork(6),
   ];
@@ -121,8 +123,11 @@ test("a round contains four unique options and stays within the media cap", () =
   assert.ok(round.options.includes(round.answer));
   assert.equal(round.totalImageBytes, 2000000);
   assert.ok(round.totalImageBytes <= config.maxRoundImageBytes);
-  assert.ok([20, 50, 80].includes(round.cropX));
-  assert.ok([1.9, 2.15, 2.4].includes(round.zoom));
+  assert.equal(round.answer.creator.startsWith("Artist "), true);
+  assert.equal(round.answer.date, "1900");
+  assert.equal("cropX" in round, false);
+  assert.equal("cropY" in round, false);
+  assert.equal("zoom" in round, false);
 });
 
 test("insufficient eligible items or byte budget produces no round", () => {

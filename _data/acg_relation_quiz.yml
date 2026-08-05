@@ -19,12 +19,12 @@ source:
 
 copy:
   zh:
-    source_label: 数据来源与题型：AniList 角色标注（原文／罗马字）
+    source_label: 玩法：找出这部动画的主角之一（依据 AniList MAIN 标注）
     start: 开始一题
     again: 再来一题
     retry: 重试
     options_label: 候选答案
-    correct: 答对了！
+    correct: 答对了！AniList 将 {answer} 列为 MAIN（主要角色）。
     incorrect: 没猜中；答案是 {answer}。
     network_error: 暂时没能取得本题数据，请稍后主动重试。
     no_round_error: 本次响应没有形成一组无歧义的四选一题目；你可以主动重试。
@@ -32,12 +32,12 @@ copy:
     source_prefix: 数据来源：
     no_js: 此小玩意需要 JavaScript；未启用时不会连接 AniList。
   en:
-    source_label: "Data source and question type: AniList character roles"
+    source_label: "Find one of the anime's main characters (based on AniList's MAIN label)"
     start: Start a round
     again: Another round
     retry: Try again
     options_label: Answer choices
-    correct: Correct!
+    correct: Correct! AniList lists {answer} as MAIN.
     incorrect: Not quite; the answer is {answer}.
     network_error: The data for this round could not be retrieved just now. Please try again later.
     no_round_error: This response did not form an unambiguous four-choice round. You can try again manually.
@@ -47,16 +47,16 @@ copy:
 
 source_copy:
   zh:
-    privacy: 点击开始后，浏览器通常会先向 AniList 做一次跨域权限检查，再发送一次官方 GraphQL POST 查询，从按流行度排列的前 360 部动画中随机选择一页，取得六部作品及每部最多十个角色关系；不会自动翻页或重试。AniList 可看到这些请求、你的 IP 地址和本站 Origin；请求不携带凭据。响应只留在当前页面内存，不保存题目或作答，也不请求封面。AniList 没有独立中文题名字段，本题会保留原文、罗马字或英语名称。
+    privacy: 点击开始后，浏览器通常会先向 AniList 做一次跨域权限检查，再发送一次官方 GraphQL POST 查询，从按流行度排列的前 360 部动画中随机选择一页，取得六部作品及每部最多十个角色关系；不会自动翻页或重试。AniList 可看到这些请求、你的 IP 地址和本站 Origin；请求不携带凭据。响应只留在当前页面内存，不保存题目或作答，也不请求封面。AniList 没有独立中文题名字段，本题会保留原文、罗马字或英语名称。AniList 的 MAIN 通常对应主角或核心主角团，可能不止一人；本题直接采用该站关系标注，不按戏份另行判断。
     loading: 正在从 AniList 取得一小批角色关系……
-    question: 在《{title}》的以下候选中，哪位被 AniList 标为主要角色？
+    question: 《{title}》的主角之一是谁？
     source_link_label: 在 AniList 查看《{title}》
     attribution: 作品名、角色名和 MAIN／SUPPORTING 关系来自 AniList；本站排除了其成人标记、Ecchi／Hentai 类型、若干敏感标签及命中本地敏感词的作品名或角色名，只显示文字。该过滤不能代表适合所有平台的完整内容分级。
     terms_label: 查看 AniList API 使用条款
   en:
-    privacy: Starting a round normally makes one browser CORS permission check and then one official GraphQL POST query to AniList. It selects one random page among the first 360 anime in popularity order and reads six titles with at most ten character relationships each; it never follows another page or retries automatically. AniList can see these requests, your IP address, and this site's Origin; no credentials are sent. The response stays only in this page's memory. The toy does not save the round or attempt, and it does not request cover art.
+    privacy: Starting a round normally makes one browser CORS permission check and then one official GraphQL POST query to AniList. It selects one random page among the first 360 anime in popularity order and reads six titles with at most ten character relationships each; it never follows another page or retries automatically. AniList can see these requests, your IP address, and this site's Origin; no credentials are sent. The response stays only in this page's memory. The toy does not save the round or attempt, and it does not request cover art. AniList's MAIN label usually covers protagonists or a core main cast and may apply to more than one character; this toy uses that relationship directly and does not judge screen time independently.
     loading: Reading a small batch of character relationships from AniList…
-    question: Among these choices for {title}, which character does AniList mark as MAIN?
+    question: Who is one of the main characters in {title}?
     source_link_label: "Open {title} on AniList"
     attribution: Titles, character names, and MAIN/SUPPORTING relationships come from AniList. This site excludes entries carrying AniList's adult flag, the Ecchi/Hentai genres, several sensitive tags, and titles or character names caught by a local sensitive-term filter, and shows text only. AniList notes that its filters are not a universal content rating.
     terms_label: Read the AniList API terms

@@ -83,7 +83,9 @@ def test_include_is_progressively_enhanced_accessible_and_self_contained():
         "data-art-glimpse-interactive hidden",
         "data-art-glimpse-start",
         "data-art-glimpse-clue",
-        "data-art-glimpse-clue-canvas",
+        "data-art-glimpse-clue-title",
+        "data-art-glimpse-clue-maker",
+        "data-art-glimpse-clue-date",
         "data-art-glimpse-choices",
         'role="group"',
         'aria-live="polite"',
@@ -101,6 +103,7 @@ def test_include_is_progressively_enhanced_accessible_and_self_contained():
     assert "@media (max-width: 359px)" in stylesheet
     assert "glimpse.entries | jsonify" not in include
     assert "innerHTML" not in include
+    assert "<canvas" not in include
 
 
 def test_controller_has_explicit_network_random_storage_and_dom_boundaries():
@@ -125,7 +128,8 @@ def test_controller_has_explicit_network_random_storage_and_dom_boundaries():
     assert "textContent" in script
     assert "replaceChildren" in script
     assert "image.removeAttribute(\"src\")" in script
-    assert "context.drawImage(" in script
+    assert "drawImage" not in script
+    assert "canvas" not in script.lower()
     assert "toDataURL" not in script
     assert "getImageData" not in script
     for forbidden in (

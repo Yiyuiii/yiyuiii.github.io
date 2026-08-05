@@ -171,13 +171,13 @@ def valid_site(root):
         localized = {
             "zh": {
                 "page": "小玩意",
-                "open": "开放数据",
+                "database": "数据库",
                 "quick": "轻松挑战",
                 "logic": "逻辑谜题",
                 "random": "随机生成",
                 "items": [
                     ("moegirl-quiz", "百科条目猜猜"),
-                    ("art-glimpse", "名画一瞥"),
+                    ("art-glimpse", "名画配对"),
                     ("anilist-role-quiz", "AniList 角色关系猜猜"),
                     ("color-challenge", "色差挑战"),
                     ("ten-second", "盲估十秒"),
@@ -191,13 +191,13 @@ def valid_site(root):
             },
             "en": {
                 "page": "Toys",
-                "open": "Open data",
+                "database": "Databases",
                 "quick": "Quick challenges",
                 "logic": "Logic puzzles",
                 "random": "Random generators",
                 "items": [
                     ("moegirl-quiz", "Encyclopedia entry quiz"),
-                    ("art-glimpse", "Art glimpse"),
+                    ("art-glimpse", "Artwork match"),
                     ("anilist-role-quiz", "AniList character role quiz"),
                     ("color-challenge", "Color difference challenge"),
                     ("ten-second", "Ten-second estimate"),
@@ -215,18 +215,11 @@ def valid_site(root):
         for index, (item_id, title) in enumerate(localized["items"]):
             level = 2 if index == 0 else 3
             if item_id == "moegirl-quiz":
-                default_source = "moegirl_zh" if language == "zh" else "wikipedia_en"
-                alternate_source = (
-                    "wikipedia_zh" if language == "zh" else "moegirl_zh"
-                )
                 component = (
-                    '<div class="encyclopedia-quiz" data-encyclopedia-quiz>'
-                    '<div data-quiz-enhanced hidden>'
-                    '<select data-quiz-source-select>'
-                    f'<option value="{default_source}" selected>Default</option>'
-                    f'<option value="{alternate_source}">Alternate</option>'
-                    '</select><p data-quiz-clue-text></p></div>'
-                    '<script type="application/json" data-quiz-config>{}</script>'
+                    '<div class="moegirl-quiz" data-moegirl-quiz '
+                    'data-api-endpoint="https://zh.moegirl.org.cn/api.php">'
+                    '<div data-quiz-interactive hidden><p data-quiz-clue-text></p></div>'
+                    '<script type="application/json" data-quiz-copy>{}</script>'
                     '</div>'
                 )
             elif item_id == "art-glimpse":
@@ -252,11 +245,9 @@ def valid_site(root):
             f'<h1 class="sr-only">{localized["page"]}</h1>'
             '<p class="toy-index__introduction">Introduction.</p></header>'
             '<div class="toy-list">'
-            '<section class="toy-group" data-toy-group="ungrouped">'
-            f'<div class="toy-group__items">{entries[0]}</div></section>'
-            '<section class="toy-group" data-toy-group="open-data">'
-            f'<h2 class="toy-group__title">{localized["open"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[1:3])}</div></section>'
+            '<section class="toy-group" data-toy-group="database">'
+            f'<h2 class="toy-group__title">{localized["database"]}</h2>'
+            f'<div class="toy-group__items">{"".join(entries[:3])}</div></section>'
             '<section class="toy-group" data-toy-group="quick-challenges">'
             f'<h2 class="toy-group__title">{localized["quick"]}</h2>'
             f'<div class="toy-group__items">{"".join(entries[3:6])}</div></section>'

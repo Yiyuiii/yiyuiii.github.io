@@ -23,12 +23,23 @@
       </button>
 
       <div class="art-glimpse__round" data-art-glimpse-round hidden>
-        <figure class="art-glimpse__clue" data-art-glimpse-clue tabindex="-1">
-          <div class="art-glimpse__clue-window">
-            <canvas data-art-glimpse-clue-canvas width="960" height="420" aria-hidden="true"></canvas>
-          </div>
-          <figcaption>{{ copy.prompt }}</figcaption>
-        </figure>
+        <section class="art-glimpse__clue" data-art-glimpse-clue tabindex="-1" aria-label="{{ copy.prompt | escape }}">
+          <p class="art-glimpse__prompt">{{ copy.prompt }}</p>
+          <dl class="art-glimpse__clue-card">
+            <div>
+              <dt>{{ copy.clue_title_label }}</dt>
+              <dd data-art-glimpse-clue-title></dd>
+            </div>
+            <div>
+              <dt>{{ copy.clue_artist_label }}</dt>
+              <dd data-art-glimpse-clue-maker></dd>
+            </div>
+            <div>
+              <dt>{{ copy.clue_date_label }}</dt>
+              <dd data-art-glimpse-clue-date></dd>
+            </div>
+          </dl>
+        </section>
 
         <div
           class="art-glimpse__choices"

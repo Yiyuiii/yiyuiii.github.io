@@ -29,17 +29,15 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
 
     groups = data["groups"]
     assert [group["id"] for group in groups] == [
-        "ungrouped",
-        "open-data",
+        "database",
         "quick-challenges",
         "logic-puzzles",
         "random-generators",
     ]
-    assert groups[0]["title"] is None
-    assert groups[1]["title"] == {"zh": "开放数据", "en": "Open data"}
-    assert groups[2]["title"] == {"zh": "轻松挑战", "en": "Quick challenges"}
-    assert groups[3]["title"] == {"zh": "逻辑谜题", "en": "Logic puzzles"}
-    assert groups[4]["title"] == {"zh": "随机生成", "en": "Random generators"}
+    assert groups[0]["title"] == {"zh": "数据库", "en": "Databases"}
+    assert groups[1]["title"] == {"zh": "轻松挑战", "en": "Quick challenges"}
+    assert groups[2]["title"] == {"zh": "逻辑谜题", "en": "Logic puzzles"}
+    assert groups[3]["title"] == {"zh": "随机生成", "en": "Random generators"}
 
     expected_ids = [
         "moegirl-quiz",
@@ -113,7 +111,7 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
     assert "{% case toy.id %}" in include
 
     expected_includes = [
-        "toy-encyclopedia-quiz.liquid",
+        "toy-moegirl-quiz.liquid",
         "toy-art-glimpse.liquid",
         "toy-acg-relation-quiz.liquid",
         "toy-color-challenge.liquid",
@@ -145,15 +143,16 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
 
 
 def test_encyclopedia_component_uses_the_disclosure_heading_without_repeating_it():
-    component = text("_includes/toy-encyclopedia-quiz.liquid")
+    component = text("_includes/toy-moegirl-quiz.liquid")
 
     assert "include.heading_id" in component
     assert "copy.eyebrow" not in component
     assert "copy.title" not in component
     assert "copy.description" not in component
-    assert "data-encyclopedia-quiz" in component
-    assert "data-quiz-source-select" in component
-    assert "data-quiz-privacy" in component
+    assert "data-moegirl-quiz" in component
+    assert "data-quiz-source-select" not in component
+    assert "data-api-endpoint" in component
+    assert "Wikipedia" not in component
 
 
 def test_encyclopedia_quiz_has_neutral_visible_copy_but_preserves_the_old_hash():
@@ -167,8 +166,10 @@ def test_encyclopedia_quiz_has_neutral_visible_copy_but_preserves_the_old_hash()
     }
     assert "角色" not in quiz["title"]["zh"]
     assert "character" not in quiz["title"]["en"].lower()
-    assert "Wikipedia" in quiz["keywords"]["en"]
-    assert "维基百科" in quiz["keywords"]["zh"]
+    assert "Wikipedia" not in quiz["keywords"]["en"]
+    assert "维基百科" not in quiz["keywords"]["zh"]
+    assert "Moegirlpedia" in quiz["keywords"]["en"]
+    assert "萌娘百科" in quiz["keywords"]["zh"]
     assert "moegirl-quiz" in text("_includes/toy-index.liquid")
 
 

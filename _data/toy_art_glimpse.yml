@@ -22,18 +22,21 @@ max_round_image_bytes: 4000000
 # 浏览器；玩家每次明确开始后才会触发一次元数据请求和本局四张 web JPEG。
 copy:
   zh:
-    instructions: 先看一块放大的画面局部，再从四幅完整馆藏图中找出它来自哪一幅。
-    privacy: 点击开始后，本页会向克利夫兰艺术博物馆开放接口发送一次小批量 GET，从带图的 CC0 风景绘画中以随机浅偏移取得本题候选，并向其官方图片 CDN 加载最终四幅约 900px 的 JPEG；不会续页、补请求或预取下一题。开放馆藏仍可能出现宗教、神话或非色情人体形象，文字筛选不能完全排除。博物馆及其服务商可看到请求和你的 IP，API 还可看到本站 Origin；图片不发送本页来源地址。响应只留在当前页面内存，本站不使用 Cookie 或持久化存储。
+    instructions: 阅读一张只含题名、作者和年代的馆藏名片，再从四幅完整馆藏图中找出对应作品。
+    privacy: 点击开始后，本页会向克利夫兰艺术博物馆开放接口发送一次小批量 GET，从带图且题名、作者、年代完整的 CC0 风景绘画中以随机浅偏移取得本题候选，并向其官方图片 CDN 加载最终四幅约 900px 的 JPEG；不会续页、补请求或预取下一题。开放馆藏仍可能出现宗教、神话或非色情人体形象，文字筛选不能完全排除。博物馆及其服务商可看到请求和你的 IP，API 还可看到本站 Origin；图片不发送本页来源地址。响应只留在当前页面内存，本站不使用 Cookie 或持久化存储。
     start: 开始一题
     again: 再来一题
     retry: 重试
     loading_metadata: 正在从博物馆开放馆藏中发现本题……
     loading_images: 正在加载本题的四幅馆藏图……
-    prompt: 这块局部来自哪一幅？
+    prompt: 这张馆藏名片对应哪幅画？
+    clue_title_label: 题名（馆方原文）
+    clue_artist_label: 作者
+    clue_date_label: 年代
     options_label: 四幅候选馆藏图
     choice_label: 选择候选作品 {number}
     choice_image_alt: 候选作品 {number}
-    correct: 找到了！
+    correct: 配对成功！
     incorrect: 没猜中；正确作品已标出。
     correct_badge: 答案
     selected_badge: 你的选择
@@ -45,23 +48,26 @@ copy:
     unknown_artist: 作者不详
     unknown_date: 年代不详
     source_label: 在克利夫兰艺术博物馆查看《{title}》
-    attribution: 作品元数据与图片由克利夫兰艺术博物馆开放获取计划提供；本页仅把已加载的答案图绘制为放大局部线索，不读取、导出或保存画布与图片。
+    attribution: 作品元数据与图片由克利夫兰艺术博物馆开放获取计划提供；题目前只显示馆方题名、作者和年代，图片与作答均不保存。
     license_label: 查看 CC0 1.0 公共领域贡献声明
     open_access_label: 查看博物馆开放获取说明
     no_js: 此小玩意需要 JavaScript；未启用时不会连接博物馆接口或图片服务。
   en:
-    instructions: Study one enlarged detail, then find the full museum image it came from among four choices.
-    privacy: Starting a round sends one small-batch GET to the Cleveland Museum of Art Open Access API, using a shallow random offset among CC0 landscape paintings with images, and loads the final four roughly 900px JPEGs from its official image CDN. It does not continue, refill the batch, or prefetch another round. The open collection may still include religious, mythological, or nonsexual human figures; text screening cannot exclude them completely. The museum and its service providers can see the requests and your IP address; the API can also see this site's Origin, while image requests do not send this page as a referrer. Responses stay only in this page's memory; this site uses no cookies or persistent storage for the game.
+    instructions: Read a museum card containing only a title, artist, and date, then match it to one of four complete collection images.
+    privacy: Starting a round sends one small-batch GET to the Cleveland Museum of Art Open Access API, using a shallow random offset among CC0 landscape paintings with complete title, artist, date, and image data, and loads the final four roughly 900px JPEGs from its official image CDN. It does not continue, refill the batch, or prefetch another round. The open collection may still include religious, mythological, or nonsexual human figures; text screening cannot exclude them completely. The museum and its service providers can see the requests and your IP address; the API can also see this site's Origin, while image requests do not send this page as a referrer. Responses stay only in this page's memory; this site uses no cookies or persistent storage for the game.
     start: Start a round
     again: Another round
     retry: Try again
     loading_metadata: Discovering this round in the museum's open collection…
     loading_images: Loading the four museum images for this round…
-    prompt: Which full image contains this detail?
+    prompt: Which artwork matches this museum card?
+    clue_title_label: Title (as catalogued)
+    clue_artist_label: Artist
+    clue_date_label: Date
     options_label: Four candidate museum images
     choice_label: Choose candidate artwork {number}
     choice_image_alt: Candidate artwork {number}
-    correct: You found it!
+    correct: Match found!
     incorrect: Not quite; the correct artwork is marked.
     correct_badge: Answer
     selected_badge: Your choice
@@ -73,7 +79,7 @@ copy:
     unknown_artist: Unknown artist
     unknown_date: Date unknown
     source_label: Open “{title}” at the Cleveland Museum of Art
-    attribution: Artwork metadata and images are provided through the Cleveland Museum of Art Open Access program. This page only draws the already loaded answer image as an enlarged detail; it does not read, export, or save the canvas or images.
+    attribution: Artwork metadata and images are provided through the Cleveland Museum of Art Open Access program. Before the answer, this page shows only the catalogued title, artist, and date; it does not save images or attempts.
     license_label: Read the CC0 1.0 public-domain dedication
     open_access_label: Read the museum's Open Access statement
     no_js: This toy needs JavaScript. With JavaScript disabled, it does not contact the museum API or image service.

@@ -9,14 +9,14 @@ const controllerPath = path.resolve(here, "../../assets/js/acg-relation-quiz.js"
 const commonCopy = {
   zh: {
     start: "开始一题", again: "再来一题", retry: "重试", options_label: "候选答案",
-    correct: "答对了！", incorrect: "没猜中；答案是 {answer}。",
+    correct: "答对了！AniList 将 {answer} 列为 MAIN（主要角色）。", incorrect: "没猜中；答案是 {answer}。",
     network_error: "暂时没能取得本题数据，请稍后主动重试。",
     no_round_error: "本次响应没有形成一组无歧义的四选一题目；你可以主动重试。",
     random_error: "浏览器无法提供可靠随机数，暂时不能出题。",
   },
   en: {
     start: "Start a round", again: "Another round", retry: "Try again", options_label: "Answer choices",
-    correct: "Correct!", incorrect: "Not quite; the answer is {answer}.",
+    correct: "Correct! AniList lists {answer} as MAIN.", incorrect: "Not quite; the answer is {answer}.",
     network_error: "The data for this round could not be retrieved just now. Please try again later.",
     no_round_error: "This response did not form an unambiguous four-choice round. You can try again manually.",
     random_error: "This browser cannot provide secure randomness, so a round cannot be created.",
@@ -26,14 +26,14 @@ const commonCopy = {
 const sourceCopy = {
   zh: {
     loading: "正在从 AniList 取得一小批角色关系……",
-    question: "在《{title}》的以下候选中，哪位被 AniList 标为主要角色？",
+    question: "《{title}》的主角之一是谁？",
     source_link_label: "在 AniList 查看《{title}》",
     attribution: "关系来自 AniList；只显示文字。",
     terms_label: "查看 AniList API 使用条款",
   },
   en: {
     loading: "Reading a small batch of character relationships from AniList…",
-    question: "Among these choices for {title}, which character does AniList mark as MAIN?",
+    question: "Who is one of the main characters in {title}?",
     source_link_label: "Open {title} on AniList",
     attribution: "Relationships come from AniList; this is text only.",
     terms_label: "Read the AniList API terms",
@@ -128,7 +128,7 @@ test("no request occurs before the explicit start and one POST forms four text o
   expect(requests).toEqual([]);
   await page.getByRole("button", { name: "Start a round" }).click();
   await expect(page.locator("[data-acg-options] button")).toHaveCount(4);
-  await expect(page.locator("[data-acg-prompt]")).toContainText("Example Anime");
+  await expect(page.locator("[data-acg-prompt]")).toHaveText("Who is one of the main characters in Example Anime?");
   await expect(page.locator("[data-acg-prompt]")).toBeFocused();
 
   const posts = requests.filter((request) => request.method === "POST");
@@ -151,7 +151,7 @@ test("answering disables choices and reveals only the exact AniList source", asy
   await install(page, "en");
   await page.getByRole("button", { name: "Start a round" }).click();
   await page.getByRole("button", { name: "Main Hero" }).click();
-  await expect(page.locator("[data-acg-status]")).toHaveText("Correct!");
+  await expect(page.locator("[data-acg-status]")).toHaveText("Correct! AniList lists Main Hero as MAIN.");
   await expect(page.locator("[data-acg-source]")).toBeVisible();
   await expect(page.locator("[data-acg-source-link]")).toHaveAttribute("href", "https://anilist.co/anime/100");
   expect(await page.locator("[data-acg-options] button").evaluateAll((buttons) => buttons.every((button) => button.disabled))).toBe(true);

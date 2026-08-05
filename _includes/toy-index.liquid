@@ -39,8 +39,8 @@
               <div class="toy-entry__body" aria-labelledby="{{ toy_title_id }}">
                 {% case toy.id %}
                   {% when 'moegirl-quiz' %}
-                    {%- comment -%}保留 moegirl-quiz 作为公开片段兼容 ID；组件本身已改为多来源百科问答。{%- endcomment -%}
-                    {% include toy-encyclopedia-quiz.liquid heading_id=toy_title_id %}
+                    {%- comment -%}保留 moegirl-quiz 作为公开片段兼容 ID；可见标题使用中性的“百科条目猜猜”。{%- endcomment -%}
+                    {% include toy-moegirl-quiz.liquid heading_id=toy_title_id %}
                   {% when 'art-glimpse' %}
                     {% include toy-art-glimpse.liquid heading_id=toy_title_id %}
                   {% when 'anilist-role-quiz' %}

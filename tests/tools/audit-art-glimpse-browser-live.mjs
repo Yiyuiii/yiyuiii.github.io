@@ -15,7 +15,7 @@ const copy = {
   start: "开始一题", again: "再来一题", retry: "重试",
   loading_metadata: "正在取得馆藏……", loading_images: "正在加载图片……",
   choice_label: "选择候选作品 {number}", choice_image_alt: "候选作品 {number}",
-  correct: "找到了！", incorrect: "没猜中。", correct_badge: "答案",
+  correct: "配对成功！", incorrect: "没猜中。", correct_badge: "答案",
   selected_badge: "你的选择", no_question: "本次不能成题。",
   network_error: "元数据失败。", image_error: "图片失败。", random_error: "随机源失败。",
   unknown_artist: "作者不详", unknown_date: "年代不详",
@@ -34,11 +34,11 @@ const config = {
   max_image_bytes: 1200000, max_round_image_bytes: 4000000, copy,
 };
 const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>
-  img,canvas{max-width:100%;width:100%}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:46rem}
+  img{max-width:100%;width:100%}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:46rem}
 </style></head><body><section data-art-glimpse>
   <div data-art-glimpse-enhanced hidden><div data-art-glimpse-interactive hidden>
     <button data-art-glimpse-start>开始一题</button>
-    <div data-art-glimpse-round hidden><figure data-art-glimpse-clue tabindex="-1"><canvas data-art-glimpse-clue-canvas width="960" height="420" aria-hidden="true"></canvas></figure><div class="choices" data-art-glimpse-choices></div></div>
+    <div data-art-glimpse-round hidden><section data-art-glimpse-clue tabindex="-1"><p data-art-glimpse-clue-title></p><p data-art-glimpse-clue-maker></p><p data-art-glimpse-clue-date></p></section><div class="choices" data-art-glimpse-choices></div></div>
     <p data-art-glimpse-status></p>
     <section data-art-glimpse-reveal hidden><p data-art-glimpse-title></p><p data-art-glimpse-maker></p><p data-art-glimpse-date></p><a data-art-glimpse-source></a></section>
   </div></div><script type="application/json" data-art-glimpse-config>${JSON.stringify(config)}</script>
@@ -89,10 +89,8 @@ try {
     declared_image_bytes: imageResponses.reduce((sum, item) => sum + item.contentLength, 0),
     image_referrers_empty: requests.filter((item) => item.host === config.image_host).every((item) => !item.referer),
     rendered_choices: await page.locator("[data-art-glimpse-choices] button").count(),
-    clue_canvas_size: await page.locator("[data-art-glimpse-clue-canvas]").evaluate((canvas) => [canvas.width, canvas.height]),
-    clue_canvas_tainted: await page.locator("[data-art-glimpse-clue-canvas]").evaluate((canvas) => {
-      try { canvas.toDataURL(); return false; } catch (error) { return error?.name === "SecurityError"; }
-    }),
+    clue_fields_filled: await page.locator("[data-art-glimpse-clue-title], [data-art-glimpse-clue-maker], [data-art-glimpse-clue-date]").evaluateAll((nodes) => nodes.length === 3 && nodes.every((node) => node.textContent.trim().length > 0)),
+    canvas_count: await page.locator("canvas").count(),
     horizontal_overflow: await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
   };
   if (process.argv.includes("--screenshot")) {

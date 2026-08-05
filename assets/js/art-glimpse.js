@@ -124,6 +124,7 @@
       const aspect = width / height;
       if (
         !Number.isSafeInteger(id) || seenIds.has(id) || !title || title.length > 180
+        || !creator || creator.length > 240 || !date || date.length > 120
         || raw?.share_license_status !== "CC0" || raw?.type !== config.type
         || !imageUrl || !sourceUrl || seenImages.has(imageUrl)
         || !Number.isSafeInteger(width) || !Number.isSafeInteger(height)
@@ -161,15 +162,10 @@
     if (selected.length !== config.candidateCount) return null;
     const options = shuffle(selected, randomness);
     const answer = options[randomness.uintBelow(options.length)];
-    const positions = [20, 50, 80];
-    const zooms = [1.9, 2.15, 2.4];
     return Object.freeze({
       answer,
-      cropX: positions[randomness.uintBelow(positions.length)],
-      cropY: positions[randomness.uintBelow(positions.length)],
       options: Object.freeze(options),
       totalImageBytes: selectedBytes,
-      zoom: zooms[randomness.uintBelow(zooms.length)],
     });
   };
 
@@ -227,7 +223,9 @@
     const startButton = find("[data-art-glimpse-start]");
     const roundElement = find("[data-art-glimpse-round]");
     const clue = find("[data-art-glimpse-clue]");
-    const clueCanvas = find("[data-art-glimpse-clue-canvas]");
+    const clueTitle = find("[data-art-glimpse-clue-title]");
+    const clueMaker = find("[data-art-glimpse-clue-maker]");
+    const clueDate = find("[data-art-glimpse-clue-date]");
     const choices = find("[data-art-glimpse-choices]");
     const status = find("[data-art-glimpse-status]");
     const reveal = find("[data-art-glimpse-reveal]");
@@ -235,7 +233,8 @@
     const maker = find("[data-art-glimpse-maker]");
     const date = find("[data-art-glimpse-date]");
     const source = find("[data-art-glimpse-source]");
-    if ([enhanced, interactive, startButton, roundElement, clue, clueCanvas, choices,
+    if ([enhanced, interactive, startButton, roundElement, clue, clueTitle, clueMaker,
+      clueDate, choices,
       status, reveal, title, maker, date, source].some((node) => !node)) return;
 
     const copy = rawConfig.copy && typeof rawConfig.copy === "object" ? rawConfig.copy : {};
@@ -252,8 +251,9 @@
     const clearRound = () => {
       for (const image of activeImages) image.removeAttribute("src");
       activeImages = [];
-      const clueContext = clueCanvas.getContext("2d");
-      clueContext?.clearRect(0, 0, clueCanvas.width, clueCanvas.height);
+      clueTitle.textContent = "";
+      clueMaker.textContent = "";
+      clueDate.textContent = "";
       choices.replaceChildren();
       choices.removeAttribute("data-answered");
       roundElement.hidden = true;
@@ -355,44 +355,9 @@
         fragment.append(button);
       });
       choices.replaceChildren(fragment);
-      const answerIndex = gameRound.options.findIndex((item) => item.id === gameRound.answer.id);
-      const answerImage = images[answerIndex];
-      const context = clueCanvas.getContext("2d");
-      if (!context || !answerImage?.naturalWidth || !answerImage?.naturalHeight) {
-        throw new Error("clue canvas is unavailable");
-      }
-      const destinationAspect = clueCanvas.width / clueCanvas.height;
-      let sourceWidth;
-      let sourceHeight;
-      if (answerImage.naturalWidth / answerImage.naturalHeight >= destinationAspect) {
-        sourceHeight = answerImage.naturalHeight / gameRound.zoom;
-        sourceWidth = sourceHeight * destinationAspect;
-      } else {
-        sourceWidth = answerImage.naturalWidth / gameRound.zoom;
-        sourceHeight = sourceWidth / destinationAspect;
-      }
-      const centerX = answerImage.naturalWidth * gameRound.cropX / 100;
-      const centerY = answerImage.naturalHeight * gameRound.cropY / 100;
-      const sourceX = Math.min(
-        Math.max(centerX - sourceWidth / 2, 0),
-        answerImage.naturalWidth - sourceWidth,
-      );
-      const sourceY = Math.min(
-        Math.max(centerY - sourceHeight / 2, 0),
-        answerImage.naturalHeight - sourceHeight,
-      );
-      context.clearRect(0, 0, clueCanvas.width, clueCanvas.height);
-      context.drawImage(
-        answerImage,
-        sourceX,
-        sourceY,
-        sourceWidth,
-        sourceHeight,
-        0,
-        0,
-        clueCanvas.width,
-        clueCanvas.height,
-      );
+      clueTitle.textContent = gameRound.answer.title;
+      clueMaker.textContent = gameRound.answer.creator;
+      clueDate.textContent = gameRound.answer.date;
       roundElement.hidden = false;
     };
 

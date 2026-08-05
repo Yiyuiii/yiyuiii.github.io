@@ -13,18 +13,21 @@ const JPEG = Buffer.from(
 
 const copy = {
   zh: {
-    instructions: "先看一块放大的画面局部，再从四幅完整馆藏图中找出它来自哪一幅。",
+    instructions: "阅读一张只含题名、作者和年代的馆藏名片，再从四幅完整馆藏图中找出对应作品。",
     privacy: "点击开始后向克利夫兰艺术博物馆请求一次元数据和四张图片。",
     start: "开始一题",
     again: "再来一题",
     retry: "重试",
     loading_metadata: "正在取得馆藏……",
     loading_images: "正在加载四幅馆藏图……",
-    prompt: "这块局部来自哪一幅？",
+    prompt: "这张馆藏名片对应哪幅画？",
+    clue_title_label: "题名",
+    clue_artist_label: "作者",
+    clue_date_label: "年代",
     options_label: "四幅候选馆藏图",
     choice_label: "选择候选作品 {number}",
     choice_image_alt: "候选作品 {number}",
-    correct: "找到了！",
+    correct: "配对成功！",
     incorrect: "没猜中；正确作品已标出。",
     correct_badge: "答案",
     selected_badge: "你的选择",
@@ -42,18 +45,21 @@ const copy = {
     no_js: "此小玩意需要 JavaScript；未启用时不会连接博物馆接口或图片服务。",
   },
   en: {
-    instructions: "Study one enlarged detail, then find its full image.",
+    instructions: "Read a museum card with a title, artist, and date, then match it to one of four complete artworks.",
     privacy: "Starting sends one metadata request and four image requests.",
     start: "Start a round",
     again: "Another round",
     retry: "Try again",
     loading_metadata: "Retrieving the collection…",
     loading_images: "Loading four images…",
-    prompt: "Which full image contains this detail?",
+    prompt: "Which artwork matches this museum card?",
+    clue_title_label: "Title",
+    clue_artist_label: "Artist",
+    clue_date_label: "Date",
     options_label: "Four candidate museum images",
     choice_label: "Choose candidate artwork {number}",
     choice_image_alt: "Candidate artwork {number}",
-    correct: "You found it!",
+    correct: "Match found!",
     incorrect: "Not quite; the correct artwork is marked.",
     correct_badge: "Answer",
     selected_badge: "Your choice",
@@ -98,7 +104,7 @@ const fixture = (language = "zh", overrides = {}) => {
   const config = runtimeConfig(language, overrides);
   return `<!doctype html><html lang="${language}"><head><style>
     .choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
-    .choices img, canvas { width:100%; max-width:100%; }
+    .choices img { width:100%; max-width:100%; }
     @media(max-width:359px){.choices{grid-template-columns:1fr}}
   </style></head><body>
     <section data-art-glimpse>
@@ -108,7 +114,14 @@ const fixture = (language = "zh", overrides = {}) => {
         <div data-art-glimpse-interactive hidden>
           <button data-art-glimpse-start>${config.copy.start}</button>
           <div data-art-glimpse-round hidden>
-            <figure data-art-glimpse-clue tabindex="-1"><canvas data-art-glimpse-clue-canvas width="960" height="420" aria-hidden="true"></canvas><figcaption>${config.copy.prompt}</figcaption></figure>
+            <section data-art-glimpse-clue tabindex="-1">
+              <p>${config.copy.prompt}</p>
+              <dl>
+                <div><dt>${config.copy.clue_title_label}</dt><dd data-art-glimpse-clue-title></dd></div>
+                <div><dt>${config.copy.clue_artist_label}</dt><dd data-art-glimpse-clue-maker></dd></div>
+                <div><dt>${config.copy.clue_date_label}</dt><dd data-art-glimpse-clue-date></dd></div>
+              </dl>
+            </section>
             <div class="choices" data-art-glimpse-choices role="group" aria-label="${config.copy.options_label}"></div>
           </div>
           <p data-art-glimpse-status aria-live="polite"></p>
@@ -181,8 +194,10 @@ test("one explicit start makes one filtered metadata GET and four unique image G
   await page.getByRole("button", { name: "开始一题" }).click();
   await expect(page.locator("[data-art-glimpse-choices] button")).toHaveCount(4);
   await expect(page.locator("[data-art-glimpse-clue]")).toBeFocused();
-  await expect(page.locator("[data-art-glimpse-clue-canvas]")).toHaveAttribute("width", "960");
-  await expect(page.locator("[data-art-glimpse-clue-canvas]")).toHaveAttribute("height", "420");
+  await expect(page.locator("[data-art-glimpse-clue-title]")).toContainText("Official Landscape");
+  await expect(page.locator("[data-art-glimpse-clue-maker]")).toContainText("Artist");
+  await expect(page.locator("[data-art-glimpse-clue-date]")).toHaveText(/^18\d+0$/);
+  await expect(page.locator("canvas")).toHaveCount(0);
 
   const metadata = requests.filter((request) => new URL(request.url()).hostname === API_HOST);
   const images = requests.filter((request) => new URL(request.url()).hostname === IMAGE_HOST);
@@ -200,15 +215,6 @@ test("one explicit start makes one filtered metadata GET and four unique image G
   expect(Number(url.searchParams.get("skip"))).toBeLessThanOrEqual(300);
   expect(metadata[0].headers().accept).toBe("application/json");
   for (const request of images) expect(request.headers().referer).toBeUndefined();
-  expect(await page.evaluate(() => {
-    const canvas = document.querySelector("[data-art-glimpse-clue-canvas]");
-    try {
-      canvas.toDataURL();
-      return false;
-    } catch (error) {
-      return error?.name === "SecurityError";
-    }
-  })).toBe(true);
 });
 
 test("answering reveals the official un-translated title safely and marks the answer", async ({ page }) => {
@@ -222,6 +228,8 @@ test("answering reveals the official un-translated title safely and marks the an
   await install(page);
 
   await page.getByRole("button", { name: "开始一题" }).click();
+  await expect(page.locator("[data-art-glimpse-clue-title]")).toContainText("Official Landscape");
+  await expect(page.locator("[data-art-glimpse-clue-title] img")).toHaveCount(0);
   await page.locator("[data-art-glimpse-choices] button").first().click();
   await expect(page.locator("[data-art-glimpse-reveal]")).toBeVisible();
   await expect(page.locator("[data-art-glimpse-title]")).toContainText("Official Landscape");

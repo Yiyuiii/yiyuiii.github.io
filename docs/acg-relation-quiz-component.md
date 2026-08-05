@@ -2,7 +2,9 @@
 
 ## 玩法与范围
 
-组件从 AniList 按流行度排列的前 360 部动画中随机选择一页，一次读取 6 部作品及每部最多 10 个角色关系。浏览器只从当前响应中选择一部至少包含 1 个 MAIN 与 3 个 SUPPORTING 的作品，再问“四名候选中哪位被 AniList 标为 MAIN”。
+组件从 AniList 按流行度排列的前 360 部动画中随机选择一页，一次读取 6 部作品及每部最多 10 个角色关系。浏览器只从当前响应中选择一部至少包含 1 个 MAIN 与 3 个 SUPPORTING 的作品，再问“这部动画的主角之一是谁？”
+
+这里的“主角之一”是 AniList `MAIN` 关系的自然中文表达：通常指主人公或核心主角团，可能同时标给多位角色；它不保证候选是唯一主角，也不是本站根据戏份、叙事视角或宣传位重新作出的判断。正确反馈会再次写出 AniList 的 `MAIN` 原始标注，兼顾自然题面和可核验性。
 
 首版只有这一种题型，不加入前传／续作判断、跨作品排除题、封面或简介。原因是 MAIN 关系可在单批响应内形成精确且容易验收的四选一，而其它关系需要更多请求或更复杂的歧义处理。
 
@@ -53,8 +55,8 @@ AniList 没有独立中文题名字段。中文页显示原文加罗马字，并
 - 稳定 ID：`anilist-role-quiz`
 - 中文标题：`AniList 角色关系猜猜`
 - 英文标题：`AniList character role quiz`
-- 中文短说明：`四名候选中，谁被标为这部动画的主要角色？`
-- 英文短说明：`Which candidate is marked as a main character in this anime?`
+- 中文短说明：`四名候选中，谁是这部动画的主角之一？`
+- 英文短说明：`Which candidate is one of this anime's main characters?`
 - include：`{% include toy-acg-relation-quiz.liquid heading_id='anilist-role-quiz-title' %}`
 
 样式 hook：
@@ -77,4 +79,4 @@ npx playwright test tests/browser/acg-relation-quiz.spec.mjs --reporter=line
 
 覆盖：精确端点／查询／范围、加密随机、内容拒绝、MAIN 与 SUPPORTING 关系、开始前零请求、一次 POST、可选预检、失败不补请求、响应越界、恶意文本、精确来源链接、无图片／音频／存储及不可信配置关闭。
 
-截至 2026-08-05：纯逻辑 9 项、组件固定桩 Playwright 7 项通过；全站 Python 356 项、生产构建、站点契约、旧 URL 检查与全量 169 项 Playwright 回归通过。最终本地真实浏览器验收以一次 AniList GraphQL POST 成功生成《ニセコイ（Nisekoi）》的四角色 MAIN 判断题；桌面为两列、320 px 为单列且无横向溢出。组件只留在研究分支和 loopback 预览，尚未推送或发布。
+截至 2026-08-05：纯逻辑 9 项、Python 契约 6 项、组件固定桩 Playwright 7 项通过；全站 Python 355 项、生产构建、站点契约、70 条旧 URL 政策与全量 157 项 Playwright 回归通过。最终本地真实浏览器验收以一次 AniList GraphQL POST 成功生成“《アオハライド（Ao Haru Ride）》的主角之一是谁？”四选一题；桌面为两列、320 px 为单列且无横向溢出。组件只留在研究分支和 loopback 预览，尚未推送或发布。
