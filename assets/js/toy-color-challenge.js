@@ -810,14 +810,15 @@
       const answer = grid.querySelector(`[data-color-index="${activeRound.oddIndex}"]`);
       if (answer) {
         answer.dataset.result = "correct";
-        answer.textContent = "✓";
         answer.setAttribute("aria-label", interpolate(copy.correctCellLabel, {
           number: activeRound.oddIndex + 1,
         }));
       }
       if (!correct) {
         button.dataset.result = "incorrect";
-        button.textContent = "×";
+        button.setAttribute("aria-label", interpolate(copy.incorrectCellLabel, {
+          number: selectedIndex + 1,
+        }));
       }
 
       let result = interpolate(correct ? copy.correct : copy.incorrect, {

@@ -64,6 +64,26 @@ test("Make 24 supports an exact three-step solution, undo, reset, and pool draft
     await expect(root.locator("[data-make24-value]")).toHaveText(["1", "1", "1", "8"]);
     await expect(root.locator("[data-make24-step-list] li")).toHaveCount(0);
 
+    await expect(root.locator("[data-make24-answer]")).toBeHidden();
+    await root.locator("[data-make24-reveal]").click();
+    await expect(root).toHaveAttribute("data-state", "revealed");
+    await expect(root.locator("[data-make24-answer-list] li")).toHaveText([
+      "1 + 1 = 2",
+      "1 + 2 = 3",
+      "8 × 3 = 24",
+    ]);
+    await expect(root.locator("[data-make24-answer]")).toBeFocused();
+    await expect(root.locator("[data-make24-value]").first()).toBeDisabled();
+    await expect(root.locator("[data-make24-undo]")).toBeDisabled();
+    await expect(root.locator("[data-make24-reveal]")).toBeDisabled();
+    await expect(root.locator("[data-make24-reset]")).toBeEnabled();
+    await expect(root.locator("[data-make24-status]")).toHaveText(
+      "已显示一种解法，本次尝试结束。",
+    );
+    await root.locator("[data-make24-reset]").click();
+    await expect(root).toHaveAttribute("data-state", "playing");
+    await expect(root.locator("[data-make24-answer]")).toBeHidden();
+
     const settings = root.locator("[data-make24-settings]");
     await settings.locator(":scope > summary").click();
     await settings.locator("[data-make24-pool]").selectOption("fraction");

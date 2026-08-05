@@ -69,14 +69,17 @@
     }
   };
 
-  const candidateResults = (left, right) => [
-    applyOperation(left, "+", right),
-    applyOperation(left, "*", right),
-    applyOperation(left, "-", right),
-    applyOperation(right, "-", left),
-    applyOperation(left, "/", right),
-    applyOperation(right, "/", left),
+  const candidateOperations = (left, right) => [
+    { left, operator: "+", result: applyOperation(left, "+", right), right },
+    { left, operator: "*", result: applyOperation(left, "*", right), right },
+    { left, operator: "-", result: applyOperation(left, "-", right), right },
+    { left: right, operator: "-", result: applyOperation(right, "-", left), right: left },
+    { left, operator: "/", result: applyOperation(left, "/", right), right },
+    { left: right, operator: "/", result: applyOperation(right, "/", left), right: left },
   ];
+
+  const candidateResults = (left, right) => candidateOperations(left, right)
+    .map((operation) => operation.result);
 
   const hasSolution = (rawValues, options = {}, memo = new Map()) => {
     const values = rawValues.map((value) => typeof value === "number" ? fraction(value) : value);
@@ -108,6 +111,58 @@
     }
     memo.set(key, false);
     return false;
+  };
+
+  const findSolution = (rawValues, options = {}) => {
+    if (!Array.isArray(rawValues) || rawValues.length === 0) return null;
+    const values = rawValues.map((value) => typeof value === "number" ? fraction(value) : value);
+    const positiveIntegerOnly = options.positiveIntegerOnly === true;
+    const failed = new Set();
+
+    const search = (currentValues) => {
+      if (currentValues.length === 1) {
+        return isTarget(currentValues[0]) ? Object.freeze([]) : null;
+      }
+      const key = stateKey(currentValues);
+      if (failed.has(key)) return null;
+
+      for (let leftIndex = 0; leftIndex < currentValues.length; leftIndex += 1) {
+        for (let rightIndex = leftIndex + 1; rightIndex < currentValues.length; rightIndex += 1) {
+          const rest = currentValues.filter(
+            (_, index) => index !== leftIndex && index !== rightIndex,
+          );
+          const seen = new Set();
+          for (const operation of candidateOperations(
+            currentValues[leftIndex],
+            currentValues[rightIndex],
+          )) {
+            if (!operation.result) continue;
+            const resultKey = fractionKey(operation.result);
+            if (seen.has(resultKey)) continue;
+            seen.add(resultKey);
+            if (positiveIntegerOnly
+              && (operation.result.denominator !== 1 || operation.result.numerator <= 0)) continue;
+            const remainingSteps = search([...rest, operation.result]);
+            if (!remainingSteps) continue;
+            const equation = `${formatFraction(operation.left)} ${SYMBOLS[operation.operator]} ${formatFraction(operation.right)} = ${formatFraction(operation.result)}`;
+            return Object.freeze([equation, ...remainingSteps]);
+          }
+        }
+      }
+      failed.add(key);
+      return null;
+    };
+
+    return search(values);
+  };
+
+  const findPreferredSolution = (numbers, poolKey) => {
+    if (!POOL_KEYS.includes(poolKey)) throw new RangeError("invalid puzzle pool");
+    if (poolKey === "integer") {
+      return findSolution(numbers, { positiveIntegerOnly: true });
+    }
+    if (poolKey === "fraction") return findSolution(numbers);
+    return findSolution(numbers, { positiveIntegerOnly: true }) || findSolution(numbers);
   };
 
   const numbersSignature = (numbers) => numbers.join(",");
@@ -278,6 +333,10 @@
 
   const resetGameState = (state) => createGameState(state.original);
 
+  const revealGameState = (state) => state.phase === "playing"
+    ? replaceState(state, { phase: "revealed", selection: emptySelection() })
+    : state;
+
   const logic = Object.freeze({
     OPERATORS,
     POOL_KEYS,
@@ -285,10 +344,13 @@
     buildPuzzlePools,
     choosePuzzle,
     createGameState,
+    findPreferredSolution,
+    findSolution,
     formatFraction,
     fraction,
     hasSolution,
     numbersSignature,
+    revealGameState,
     resetGameState,
     selectOperator,
     selectValue,
@@ -333,12 +395,15 @@
     const randomApi = globalScope.yiyuiiiToyRandom;
     const nodes = {
       apply: root.querySelector("[data-make24-settings-apply]"),
+      answer: root.querySelector("[data-make24-answer]"),
+      answerList: root.querySelector("[data-make24-answer-list]"),
       count: root.querySelector("[data-make24-pool-count]"),
       interactive: root.querySelector("[data-make24-interactive]"),
       newPuzzle: root.querySelector("[data-make24-new]"),
       operators: root.querySelector("[data-make24-operators]"),
       pool: root.querySelector("[data-make24-pool]"),
       prompt: root.querySelector("[data-make24-prompt]"),
+      reveal: root.querySelector("[data-make24-reveal]"),
       reset: root.querySelector("[data-make24-reset]"),
       settings: root.querySelector("[data-make24-settings]"),
       settingsReset: root.querySelector("[data-make24-settings-reset]"),
@@ -424,7 +489,8 @@
         button.disabled = complete || !selectedLeft;
         button.setAttribute("aria-pressed", String(operator === state.selection.operator));
       }
-      if (!selectedLeft) nodes.prompt.textContent = copy.promptIdle;
+      if (state.phase === "revealed") nodes.prompt.textContent = copy.promptRevealed;
+      else if (!selectedLeft) nodes.prompt.textContent = copy.promptIdle;
       else if (!state.selection.operator) {
         nodes.prompt.textContent = interpolate(copy.promptOperator, {
           value: formatFraction(selectedLeft.value),
@@ -444,7 +510,14 @@
       }
       nodes.stepList.replaceChildren(stepFragment);
       nodes.steps.hidden = state.steps.length === 0;
-      nodes.undo.disabled = state.history.length === 0 && !state.selection.leftId;
+      nodes.undo.disabled = state.phase === "revealed"
+        || (state.history.length === 0 && !state.selection.leftId);
+      nodes.reveal.disabled = complete;
+    };
+
+    const clearAnswer = () => {
+      nodes.answerList.replaceChildren();
+      nodes.answer.hidden = true;
     };
 
     const startPuzzle = (message, poolKey = activePool, closeSettings = false) => {
@@ -458,6 +531,7 @@
         return;
       }
       nodes.pool.value = activePool;
+      clearAnswer();
       renderSettings();
       render();
       nodes.status.textContent = message;
@@ -481,8 +555,29 @@
     });
     nodes.reset.addEventListener("click", () => {
       state = resetGameState(state);
+      clearAnswer();
       nodes.status.textContent = copy.reset;
       render();
+    });
+    nodes.reveal.addEventListener("click", () => {
+      if (state.phase !== "playing") return;
+      const solution = findPreferredSolution(state.original, activePool);
+      if (!solution || solution.length !== 3) {
+        disableGame(root, copy);
+        return;
+      }
+      const fragment = document.createDocumentFragment();
+      for (const equation of solution) {
+        const item = document.createElement("li");
+        item.textContent = equation;
+        fragment.append(item);
+      }
+      nodes.answerList.replaceChildren(fragment);
+      nodes.answer.hidden = false;
+      state = revealGameState(state);
+      nodes.status.textContent = copy.revealed;
+      render();
+      nodes.answer.focus();
     });
     nodes.newPuzzle.addEventListener("click", () => startPuzzle(copy.newGame));
     nodes.pool.addEventListener("change", () => {

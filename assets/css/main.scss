@@ -1297,21 +1297,46 @@ html:lang(en) .article-header h1 {
 }
 
 .toy-entry__body .toy-color-challenge__cell {
+  position: relative;
+  isolation: isolate;
   width: 100%;
   min-height: 0;
   padding: 0;
   aspect-ratio: 1;
   border-color: color-mix(in srgb, var(--divider) 76%, transparent);
+  overflow: visible;
 }
 
-.toy-color-challenge__cell[data-result="correct"] {
-  outline: 4px solid var(--jade);
-  outline-offset: 2px;
+.toy-entry__body .toy-color-challenge__cell:disabled {
+  opacity: 1;
 }
 
-.toy-color-challenge__cell[data-result="incorrect"] {
-  outline: 3px solid #b45b57;
-  outline-offset: 2px;
+.toy-color-challenge__cell[data-result]::after {
+  position: absolute;
+  z-index: 1;
+  top: 0.22rem;
+  right: 0.22rem;
+  display: grid;
+  width: clamp(1.15rem, 5vw, 1.35rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 2px solid rgb(255 255 255 / 92%);
+  border-radius: 50%;
+  color: #fff;
+  box-shadow: 0 2px 6px rgb(30 34 42 / 28%);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.toy-color-challenge__cell[data-result="correct"]::after {
+  content: "✓";
+  background: color-mix(in srgb, var(--jade) 78%, #183c32);
+}
+
+.toy-color-challenge__cell[data-result="incorrect"]::after {
+  content: "×";
+  background: #9b4544;
 }
 
 .toy-codebreaker-settings__fields {
@@ -1589,6 +1614,16 @@ html:lang(en) .article-header h1 {
   font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
   font-size: 0.84rem;
   font-variant-numeric: tabular-nums;
+}
+
+.toy-make-24__answer {
+  border-color: color-mix(in srgb, var(--amethyst) 38%, var(--divider));
+  background: color-mix(in srgb, var(--amethyst) 7%, var(--surface));
+}
+
+.toy-make-24__answer:focus {
+  outline: 3px solid color-mix(in srgb, var(--focus) 72%, white);
+  outline-offset: 2px;
 }
 
 .toy-lights-settings .toy-settings__panel {
@@ -3576,6 +3611,12 @@ html[data-not-found-language="en"] .not-found-page [data-language="zh"] {
 }
 
 @media (forced-colors: active) {
+  .toy-color-challenge__cell[data-result]::after {
+    border-color: Canvas;
+    color: HighlightText;
+    background: Highlight;
+  }
+
   .toy-entry__body .toy-make-24__value[aria-pressed="true"],
   .toy-entry__body .toy-make-24__operators button[aria-pressed="true"] {
     border-color: Highlight;

@@ -134,6 +134,10 @@
     });
   };
 
+  const revealAnswer = (state) => state.phase === "playing"
+    ? Object.freeze({ ...state, phase: "revealed" })
+    : state;
+
   const logic = Object.freeze({
     ATTEMPT_LIMITS,
     CODE_LENGTHS,
@@ -144,6 +148,7 @@
     createSecret,
     hasRandomApi,
     normalizeConfig,
+    revealAnswer,
     scoreGuess,
     submitGuess,
     validateGuess,
@@ -195,6 +200,7 @@
     const inputHelp = root.querySelector("[data-code-input-help]");
     const submitButton = root.querySelector("[data-code-submit]");
     const newButton = root.querySelector("[data-code-new]");
+    const revealButton = root.querySelector("[data-code-reveal]");
     const status = root.querySelector("[data-code-status]");
     const attemptsUsed = root.querySelector("[data-code-attempts-used]");
     const remaining = root.querySelector("[data-code-remaining]");
@@ -204,7 +210,7 @@
     if (!hasRandomApi(randomApi) || [
       interactive, settings, settingsSummary, settingsStatus, lengthField, attemptsField,
       duplicatesField, candidatesOutput, resetButton, applyButton, form, input, inputHelp,
-      submitButton, newButton, status, attemptsUsed, remaining, history, historyBody,
+      submitButton, newButton, revealButton, status, attemptsUsed, remaining, history, historyBody,
     ].some((node) => !node)) {
       disableGame(root, copy);
       return;
@@ -281,6 +287,7 @@
       const complete = state.phase !== "playing";
       input.disabled = complete;
       submitButton.disabled = complete;
+      revealButton.disabled = complete;
       input.setAttribute("aria-invalid", "false");
       renderHistory();
       if (moveFocus && !complete) input.focus();
@@ -375,6 +382,13 @@
     });
 
     newButton.addEventListener("click", () => startNewGame(copy.newGame));
+    revealButton.addEventListener("click", () => {
+      if (state.phase !== "playing") return;
+      state = revealAnswer(state);
+      renderState();
+      status.textContent = interpolate(copy.revealed, { secret: state.secret });
+      newButton.focus();
+    });
 
     interactive.hidden = false;
     root.dataset.codebreakerReady = "true";

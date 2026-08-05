@@ -38,6 +38,7 @@
   {% assign group_label = 'Sixteen color tiles' %}
   {% assign cell_label = 'Tile {number}' %}
   {% assign correct_cell_label = 'Tile {number}, the different color' %}
+  {% assign incorrect_cell_label = 'Tile {number}, your choice, not the different color' %}
   {% assign next_label = 'Next question' %}
   {% assign correct = 'Correct: score {score}. The different tile was {answer}.' %}
   {% assign incorrect = 'Not quite: score {score}. The different tile was {answer}.' %}
@@ -120,6 +121,7 @@
   {% assign group_label = '十六个色块' %}
   {% assign cell_label = '第 {number} 格' %}
   {% assign correct_cell_label = '第 {number} 格，不同的颜色' %}
+  {% assign incorrect_cell_label = '第 {number} 格，你选择了这里，但它不是不同色块' %}
   {% assign next_label = '下一题' %}
   {% assign correct = '答对，积分 {score}；不同色块是第 {answer} 格。' %}
   {% assign incorrect = '没有猜中，积分 {score}；不同色块是第 {answer} 格。' %}
@@ -290,6 +292,7 @@
       "cleared": {{ cleared | jsonify }},
       "correct": {{ correct | jsonify }},
       "correctCellLabel": {{ correct_cell_label | jsonify }},
+      "incorrectCellLabel": {{ incorrect_cell_label | jsonify }},
       "cellLabel": {{ cell_label | jsonify }},
       "defaultsReady": {{ defaults_ready | jsonify }},
       "extremeContinues": {{ extreme_continues | jsonify }},

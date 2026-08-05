@@ -121,10 +121,26 @@ test("color challenge scores negative answers and advances by a three-question m
   const finishAudit = await beginLocalOnlyAudit(page);
   const root = page.locator("[data-toy-color-challenge]");
   const next = root.locator("[data-color-next]");
+  const cells = root.locator("[data-color-index]");
 
   await expect(root).toHaveAttribute("data-state", "ready");
   await expect(root).toHaveAttribute("data-difficulty", "8");
+  const colorsBeforeAnswer = await cells.evaluateAll((buttons) => buttons.map((button) => ({
+    backgroundColor: getComputedStyle(button).backgroundColor,
+    opacity: getComputedStyle(button).opacity,
+  })));
   await clickMatchingColor(page);
+  const colorsAfterAnswer = await cells.evaluateAll((buttons) => buttons.map((button) => ({
+    backgroundColor: getComputedStyle(button).backgroundColor,
+    opacity: getComputedStyle(button).opacity,
+  })));
+  expect(colorsAfterAnswer).toEqual(colorsBeforeAnswer);
+  expect(colorsAfterAnswer.every(({ opacity }) => opacity === "1")).toBe(true);
+  await expect(cells).toHaveText(Array(16).fill(""));
+  const resultMarkers = await cells.evaluateAll((buttons) => buttons
+    .filter((button) => button.dataset.result)
+    .map((button) => getComputedStyle(button, "::after").content));
+  expect(resultMarkers.sort()).toEqual(['"×"', '"✓"'].sort());
   await expect(root.locator("[data-color-score]")).toHaveText("-1");
   const scoreAfterWrong = await root.locator("[data-color-score]").textContent();
   await root.locator('[data-color-index][data-result="incorrect"]').dispatchEvent("click");
@@ -251,6 +267,7 @@ test("codebreaker validates guesses, scores exact matches, and applies duplicate
     await expect(root).toHaveAttribute("data-state", "won");
     await expect(root.locator("[data-code-status]")).toContainText("数字码是 0123");
     await expect(input).toBeDisabled();
+    await expect(root.locator("[data-code-reveal]")).toBeDisabled();
 
     const settings = root.locator("[data-code-settings]");
     await settings.locator(":scope > summary").click();
@@ -266,6 +283,18 @@ test("codebreaker validates guesses, scores exact matches, and applies duplicate
     await input.press("Enter");
     await expect(root).toHaveAttribute("data-state", "won");
     await expect(root.locator("[data-code-status]")).toContainText("数字码是 0000");
+
+    await root.locator("[data-code-new]").click();
+    await expect(root.locator("[data-code-status]")).not.toContainText("0000");
+    await root.locator("[data-code-reveal]").click();
+    await expect(root).toHaveAttribute("data-state", "revealed");
+    await expect(root.locator("[data-code-status]")).toHaveText(
+      "答案是 0000；本局已结束。若要重新尝试，请重置题目。",
+    );
+    await expect(input).toBeDisabled();
+    await expect(root.locator("[data-code-submit]")).toBeDisabled();
+    await expect(root.locator("[data-code-reveal]")).toBeDisabled();
+    await expect(root.locator("[data-code-new]")).toBeFocused();
 
     await finishAudit();
   } finally {
