@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import yaml
@@ -28,9 +29,100 @@ def test_config_selects_the_light_content_first_shell():
     assert config["related_blog_posts"]["enabled"] is False
     assert config["al_folio"]["features"]["cv"]["enabled"] is False
     assert "google_fonts" not in config["third_party_libraries"]
+    assert set(config["third_party_libraries"]) == {
+        "download",
+        "d3",
+        "mermaid",
+        "mathjax",
+    }
     assert "jekyll/scholar" not in config["plugins"]
     assert "al_search" not in config["plugins"]
     assert "al_citations" not in config["plugins"]
+
+
+def test_disabled_capabilities_do_not_register_build_plugins():
+    config = yaml.safe_load(text("_config.yml"))
+    gemfile = text("Gemfile")
+    workflow = text(".github/workflows/deploy.yml")
+    unused_plugins = {
+        "jekyll-get-json",
+        "jekyll-imagemagick",
+        "jekyll-jupyter-notebook",
+        "jekyll-paginate-v2",
+        "jekyll-twitter-plugin",
+        "al_folio_cv",
+        "al_folio_distill",
+        "al_folio_upgrade",
+        "al_folio_bootstrap_compat",
+        "al_cookie",
+        "al_analytics",
+        "al_ext_posts",
+        "al_comments",
+        "al_newsletter",
+        "al_icons",
+        "al_img_tools",
+    }
+
+    assert unused_plugins.isdisjoint(config["plugins"])
+    for plugin in unused_plugins:
+        assert f"gem '{plugin}'" not in gemfile
+
+    assert "classifier-reborn" not in gemfile
+    assert "gem 'observer'" not in gemfile
+    assert "gem 'ostruct'" not in gemfile
+    assert "imagemagick" not in config
+    assert "Install ImageMagick" not in workflow
+
+
+def test_custom_shell_does_not_load_unused_theme_runtime_assets():
+    layout = text("_layouts/default.liquid")
+    head = text("_includes/head.liquid")
+
+    assert "{% include scripts.liquid %}" not in layout
+    assert "{% include plugins/al_charts_scripts.liquid %}" in layout
+    assert "{% include plugins/al_math_scripts.liquid %}" in layout
+    assert "al_icons_styles" not in head
+    for unused_asset in (
+        "nav-toggle.js",
+        "tooltips-setup.js",
+        "no_defer.js",
+        "common.js",
+        "copy_code.js",
+        "jupyter_new_tab.js",
+    ):
+        assert unused_asset not in layout
+
+
+def test_content_security_policy_names_only_active_runtime_origins():
+    head = text("_includes/head.liquid")
+    policy = head.split('http-equiv="Content-Security-Policy"', 1)[1].split(">", 1)[0]
+
+    assert "object-src 'none'" in policy
+    assert "base-uri 'self'" in policy
+    assert "form-action 'self'" in policy
+    assert "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app" in policy
+    assert "img-src 'self' data: https://openaccess-cdn.clevelandart.org" in policy
+    assert "frame-src https://giscus.app" in policy
+    for origin in (
+        "https://graphql.anilist.co",
+        "https://openaccess-api.clevelandart.org",
+        "https://zh.moegirl.org.cn",
+    ):
+        assert origin in policy
+    assert " https:;" not in policy
+
+
+def test_toy_styles_are_page_scoped_instead_of_part_of_the_global_bundle():
+    head = text("_includes/head.liquid")
+    main_css = text("assets/css/main.scss")
+    toy_css = text("assets/css/toys.scss")
+
+    assert "{% if page.nav_key == 'toys' %}" in head
+    assert "'/assets/css/toys.css'" in head
+    assert ".toy-index" not in main_css
+    assert ".moegirl-quiz" not in main_css
+    assert ".toy-index" in toy_css
+    assert ".moegirl-quiz" in toy_css
 
 
 def test_site_text_is_parallel_and_contains_approved_navigation():
@@ -103,7 +195,7 @@ def test_document_language_uses_page_value_and_google_fonts_are_absent():
     head = text("_includes/head.liquid")
 
     assert "page.lang | default: site.lang" in layout
-    assert "search-modal.liquid" in layout
+    assert "search-dialog.liquid" in layout
     assert "site-search.js" in layout
     assert "fonts.googleapis.com" not in head
     assert "google_fonts" not in head
@@ -168,7 +260,7 @@ def test_index_and_profile_pages_declare_their_schema_semantics():
     assert 'page.data["schema_type"] = "CollectionPage"' in archive_compat
 
 
-def test_head_allows_only_used_cdn_fonts_and_production_favicons():
+def test_head_allows_only_local_fonts_and_production_favicons():
     head = text("_includes/head.liquid")
     favicon_dir = ROOT / "assets" / "img" / "favicons"
     production_favicons = {
@@ -181,8 +273,8 @@ def test_head_allows_only_used_cdn_fonts_and_production_favicons():
         )
     }
 
-    assert "font-src 'self' data: https://cdn.jsdelivr.net;" in head
-    assert "font-src 'self' data: https:;" not in head
+    assert "font-src 'self' data:;" in head
+    assert "font-src 'self' data: https:" not in head
     assert """<link rel="icon" href="{{ '/assets/img/favicons/favicon.ico' | relative_url }}" sizes="any">""" in head
     assert production_favicons == {
         "android-chrome-256x256.png",
@@ -195,7 +287,7 @@ def test_site_theme_shell_provides_the_dynamic_api_required_by_mermaid():
     compatibility = text("assets/js/theme-compat.js")
 
     assert "theme-compat.js" in layout
-    assert layout.index("theme-compat.js") < layout.index("scripts.liquid")
+    assert layout.index("theme-compat.js") < layout.index("plugins/al_charts_scripts.liquid")
     assert "window.determineComputedTheme" in compatibility
     assert 'dataset.theme === "dark" ? "dark" : "light"' in compatibility
 
@@ -205,7 +297,7 @@ def test_nested_content_includes_bind_their_page_language_locally():
         "_includes/post-list.liquid",
         "_includes/project-list.liquid",
         "_includes/publication-list.liquid",
-        "_includes/search-modal.liquid",
+        "_includes/search-dialog.liquid",
     )
 
     for path in site_text_includes:
@@ -234,7 +326,7 @@ def test_not_found_page_preserves_the_requested_language_without_redirecting():
 
 
 def test_search_uses_the_current_publication_language():
-    include = text("_includes/search-modal.liquid")
+    include = text("_includes/search-dialog.liquid")
 
     assert "publication.title[lang_key]" in include
     assert "publication.authors[lang_key]" in include
@@ -298,14 +390,32 @@ def test_workflow_builds_pr_artifact_and_only_deploys_master():
     assert "permissions:\n      contents: read" in workflow
     assert "permissions:\n      contents: write" in workflow
     assert "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}" in workflow
-    assert "python -m pytest -q" in workflow
-    assert "python scripts/check_site.py --site _site" in workflow
-    assert "python scripts/check_legacy_urls.py --site _site" in workflow
     assert "actions/setup-node@v6" in workflow
     assert 'node-version: "24"' in workflow
-    assert "npx playwright install --with-deps chromium" in workflow
-    assert "python scripts/run_browser_tests.py --site _site" in workflow
+    assert "npx playwright install --with-deps --no-shell chromium" in workflow
+    assert "python scripts/validate.py --browser" in workflow
     assert "name: browser-failure-artifacts" in workflow
     assert "name: site-preview" in workflow
     assert "github.event_name != 'pull_request'" in workflow
     assert "github.ref == 'refs/heads/master'" in workflow
+
+    assert workflow.index("npm ci") < workflow.index("python scripts/validate.py --browser")
+
+
+def test_javascript_logic_tests_have_a_portable_package_entrypoint():
+    package = json.loads(text("package.json"))
+
+    assert package["scripts"]["test:unit"] == "node --test"
+
+
+def test_browser_suite_parallelism_matches_local_and_ci_capacity():
+    config = text("playwright.config.mjs")
+
+    assert "workers: process.env.CI ? 4 : 2" in config
+    assert 'channel: "chromium"' in config
+    assert "fullyParallel: false" in config
+
+
+def test_ruby_dependencies_are_locked_for_reproducible_builds():
+    assert (ROOT / "Gemfile.lock").is_file()
+    assert "Gemfile.lock" not in text(".gitignore").splitlines()

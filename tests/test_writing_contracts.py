@@ -44,12 +44,61 @@ def markdown_headings(path):
     return headings
 
 
+def markdown_image_alts(path):
+    body = path.read_text(encoding="utf-8").split("---", 2)[2]
+    return re.findall(r"!\[([^\]]*)\]\([^\n)]+\)", body)
+
+
 def test_every_post_has_an_explicit_source_language():
     posts = sorted((ROOT / "_posts").glob("*.md"))
     languages = [frontmatter(path)["lang"] for path in posts]
 
     assert posts
     assert set(languages) == {"en", "zh"}
+
+
+def test_post_images_use_descriptive_alternative_text():
+    generic = re.compile(r"^(?:图|图片|Figure|Image)\s*\d+$", re.IGNORECASE)
+
+    for path in sorted((ROOT / "_posts").glob("*.md")):
+        for alt in markdown_image_alts(path):
+            assert alt.strip(), f"{path.name} contains an empty image alt"
+            assert not generic.fullmatch(alt.strip()), (
+                f"{path.name} contains a generic image alt: {alt!r}"
+            )
+
+
+def test_post_image_hook_adds_loading_hints_and_intrinsic_dimensions():
+    plugin = text("_plugins/post-image-loading.rb")
+
+    assert "Jekyll::Hooks.register :posts, :post_convert" in plugin
+    assert "Jekyll::Hooks.register :posts, :post_render" in plugin
+    assert 'loading="lazy"' in plugin
+    assert 'decoding="async"' in plugin
+    assert "PostImageLoading.add_dimensions" in plugin
+    assert "def dimensions(path)" in plugin
+    assert "def add_responsive_candidates" in plugin
+
+
+def test_seasons_screenshots_use_managed_webp_derivatives():
+    policy = yaml.safe_load(text("_data/article_image_derivatives.yml"))
+    chinese = text("_posts/2023-01-18-四季物语量化分析攻略.md")
+    english = text("_posts/2023-01-18-quantitative-strategy-guide-to-seasons.md")
+
+    assert policy["version"] == 2
+    assert policy["policy"]["format"] == "WEBP"
+    assert policy["policy"]["quality"] == 82
+    assert policy["policy"]["hash"] == "SHA-256"
+    assert len(policy["images"]) == 6
+    assert "bigcards-content-v1-800.webp" in str(policy)
+    assert all(record.get("source_sha256") for record in policy["images"])
+    assert all(record.get("source_dimensions") for record in policy["images"])
+    for index in range(1, 6):
+        path = f"/assets/posts/202301162233/scene{index}-content-v1.webp"
+        assert path in chinese
+        assert path in english
+        assert f"/assets/posts/202301162233/scene{index}.png" not in chinese
+        assert f"/assets/posts/202301162233/scene{index}.png" not in english
 
 
 def test_every_post_body_starts_at_h2_and_never_skips_a_heading_level():

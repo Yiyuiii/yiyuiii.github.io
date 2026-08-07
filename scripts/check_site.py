@@ -764,6 +764,27 @@ def _check_external_links(site: Path) -> None:
         raise SiteCheckError("\n".join(errors))
 
 
+def _check_image_dimensions(site: Path) -> None:
+    errors = []
+    for path in sorted(site.rglob("*.html")):
+        soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
+        for image in soup.find_all("img"):
+            width = image.get("width")
+            height = image.get("height")
+            try:
+                valid = int(width) > 0 and int(height) > 0
+            except (TypeError, ValueError):
+                valid = False
+            if not valid:
+                errors.append(
+                    f"{path.relative_to(site).as_posix()}: image "
+                    f"{image.get('src', '(missing src)')!r} is missing positive "
+                    "width and height"
+                )
+    if errors:
+        raise SiteCheckError("\n".join(errors))
+
+
 def check_site(site: Path, *, external_links: bool = False) -> None:
     site = site.resolve()
     errors = []
@@ -831,6 +852,7 @@ def check_site(site: Path, *, external_links: bool = False) -> None:
     _check_tag_order(zh_writing)
     _check_writing_entries(zh_writing, route="/writing/", language="zh")
     _check_writing_entries(en_writing, route="/en/writing/", language="en")
+    _check_image_dimensions(site)
 
     css_files = list((site / "assets" / "css").glob("main*.css"))
     if css_files:

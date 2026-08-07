@@ -141,3 +141,15 @@ def test_no_rejected_provider_or_sound_component_remains():
     assert not (ROOT / "_includes/toy-sound-guess.liquid").exists()
     assert not (ROOT / "assets/js/sound-guess.js").exists()
     assert not (ROOT / "assets/js/sound-guess-logic.js").exists()
+
+
+def test_live_audit_is_explicit_single_request_and_never_persists_content():
+    audit = text("tests/tools/audit-acg-relation-quiz-live.mjs")
+
+    assert "--run-live" in audit
+    assert audit.count("fetch(") == 1
+    assert "requests: 1" in audit
+    assert 'redirect: "error"' in audit
+    assert "10_000" in audit and "262_144" in audit
+    assert "writeFile" not in audit and "appendFile" not in audit
+    assert "output.title" not in audit and "output.character" not in audit

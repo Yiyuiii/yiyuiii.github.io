@@ -1,0 +1,98 @@
+version: 2
+policy:
+  format: WEBP
+  quality: 82
+  method: 6
+  resampling: LANCZOS
+  pillow: 12.0.0
+  libwebp: 1.6.0
+  strip_metadata: true
+  hash: SHA-256
+  sizes: '(max-width: 1200px) calc(100vw - 2rem), 1152px'
+images:
+- source: assets/posts/202301162233/bigcards.jpg
+  published: assets/posts/202301162233/bigcards.jpg
+  variants:
+  - asset: assets/posts/202301162233/bigcards-content-v1-800.webp
+    width: 800
+    sha256: 15953a3c98f1f7b3c8980a5beb1faca489bda284084d2eef9c4388f583846b72
+    dimensions:
+    - 800
+    - 1116
+  - asset: assets/posts/202301162233/bigcards-content-v1-1400.webp
+    width: 1400
+    sha256: 3ceb7d574831b89b5bb287da879a456691dd035e92a465065ffad92712f33a46
+    dimensions:
+    - 1400
+    - 1953
+  source_sha256: 263675cba4db0c78eb3728c1cb64dc419784f4581fb7cbb5d4066636439346c4
+  source_dimensions:
+  - 2480
+  - 3460
+- source: assets/posts/202301162233/scene1.png
+  published: assets/posts/202301162233/scene1-content-v1.webp
+  variants:
+  - asset: assets/posts/202301162233/scene1-content-v1-800.webp
+    width: 800
+    sha256: 74b17a365c61ffa562ade6e27207d972cd13a77d2b44750576da2caa4fb8d5a7
+    dimensions:
+    - 800
+    - 296
+  - asset: assets/posts/202301162233/scene1-content-v1-1400.webp
+    width: 1400
+    sha256: 2ce2744f9740f94a643789bb106afbb490445beeb068be91f8fe91ad870abdeb
+    dimensions:
+    - 1400
+    - 519
+  source_sha256: c3da8c962d46aaeab11ea46d98987807bdda39a87389a7259f866ffcb0ef8fa6
+  source_dimensions:
+  - 1892
+  - 701
+  published_sha256: 22a906a1ddd29178f9032a46e06147cbe512c311dbbe441c6e9091c30e900ad1
+  published_dimensions:
+  - 1892
+  - 701
+- source: assets/posts/202301162233/scene2.png
+  published: assets/posts/202301162233/scene2-content-v1.webp
+  variants: []
+  source_sha256: 5c8caafbd9ade4f0884a91f7471da5788f3c6c32344cbd28bcda30652592f11a
+  source_dimensions:
+  - 606
+  - 705
+  published_sha256: b39547dc5d6ec2b9134c3874979335607fcd7358b57677b0dfa474ca917040ae
+  published_dimensions:
+  - 606
+  - 705
+- source: assets/posts/202301162233/scene3.png
+  published: assets/posts/202301162233/scene3-content-v1.webp
+  variants: []
+  source_sha256: f1765795102b555b6f577d7c31f27ab4a9a26f460ddf71523899cbce121e2deb
+  source_dimensions:
+  - 589
+  - 1021
+  published_sha256: ef1d646be41732085cfa06b412efb78438d505ad4aa3591c929cf3f799b51d54
+  published_dimensions:
+  - 589
+  - 1021
+- source: assets/posts/202301162233/scene4.png
+  published: assets/posts/202301162233/scene4-content-v1.webp
+  variants: []
+  source_sha256: 5a13bf0482d9fa370899d3a22e2426f211e05829da4987e6e6a1e42b802f35e9
+  source_dimensions:
+  - 794
+  - 815
+  published_sha256: 7bff49558d2c03bd8e2259f26f8435cef3a9077b2a69bc5541f52a9d9d84b362
+  published_dimensions:
+  - 794
+  - 815
+- source: assets/posts/202301162233/scene5.png
+  published: assets/posts/202301162233/scene5-content-v1.webp
+  variants: []
+  source_sha256: 4900abf55b97d1d5321ab68f91462c650eaaf12541963e4c013b299682442aa3
+  source_dimensions:
+  - 798
+  - 817
+  published_sha256: 7a8da1877aef46422725793af4b9c8b32d2c5493e06df8bf67604acc25f8e83c
+  published_dimensions:
+  - 798
+  - 817

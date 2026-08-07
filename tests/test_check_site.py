@@ -794,3 +794,17 @@ def test_internal_collaboration_and_test_sources_must_not_be_public(tmp_path):
 
     with pytest.raises(SiteCheckError, match="AGENTS.md.*scripts.*tests"):
         check_site(tmp_path)
+
+
+def test_built_images_must_reserve_their_intrinsic_aspect_ratio(tmp_path):
+    valid_site(tmp_path)
+    path = route_path(tmp_path, "/")
+    source = path.read_text(encoding="utf-8").replace(
+        "<main>",
+        '<main><img src="/assets/example.png" alt="Example">',
+        1,
+    )
+    path.write_text(source, encoding="utf-8")
+
+    with pytest.raises(SiteCheckError, match="missing positive width and height"):
+        check_site(tmp_path)

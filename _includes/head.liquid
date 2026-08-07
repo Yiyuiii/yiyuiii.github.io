@@ -2,7 +2,7 @@
 {% include bilingual-seo.liquid %}
 <meta
   http-equiv="Content-Security-Policy"
-  content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https://cdn.jsdelivr.net; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"
+  content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"
 >
 {% if page.layout != 'not-found' %}
   <script>
@@ -26,15 +26,15 @@
 <link rel="icon" href="{{ '/assets/img/favicons/favicon.ico' | relative_url }}" sizes="any">
 <style>:root { --max-content-width: {{ site.max_width | default: '960px' }}; }</style>
 <link rel="stylesheet" href="{{ '/assets/css/tailwind.css' | relative_url | bust_file_cache }}">
-{% if site.plugins contains 'al_icons' %}
-  {% include plugins/al_icons_styles.liquid %}
-{% endif %}
 <link
   rel="stylesheet"
   href="{{ '/assets/css/jekyll-pygments-themes-github.css' | relative_url | bust_file_cache }}"
   id="highlight_theme_light"
 >
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url | bust_css_cache }}">
+{% if page.nav_key == 'toys' %}
+  <link rel="stylesheet" href="{{ '/assets/css/toys.css' | relative_url | bust_css_cache }}">
+{% endif %}
 {% if site.plugins contains 'al_math' %}
   {% include plugins/al_math_styles.liquid %}
 {% endif %}

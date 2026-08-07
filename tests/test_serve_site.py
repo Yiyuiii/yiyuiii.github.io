@@ -1,6 +1,7 @@
 import threading
 import urllib.error
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
@@ -111,6 +112,27 @@ def test_quiet_server_records_its_disconnect_policy(tmp_path):
         assert server.quiet is True
     finally:
         server.server_close()
+
+
+def test_preview_server_has_a_parallel_browser_sized_accept_queue(tmp_path):
+    server = create_server(site=make_site(tmp_path), quiet=True)
+    try:
+        assert server.request_queue_size >= 64
+    finally:
+        server.server_close()
+
+
+def test_preview_server_handles_parallel_static_requests(tmp_path):
+    site = make_site(tmp_path)
+    with RunningServer(site) as base_url:
+        def fetch(_):
+            with urllib.request.urlopen(f"{base_url}/index.html", timeout=5) as response:
+                return response.status, response.read()
+
+        with ThreadPoolExecutor(max_workers=32) as executor:
+            results = list(executor.map(fetch, range(128)))
+
+    assert results == [(200, b"<h1>Home</h1>")] * 128
 
 
 def test_cli_rejects_non_loopback_bind():

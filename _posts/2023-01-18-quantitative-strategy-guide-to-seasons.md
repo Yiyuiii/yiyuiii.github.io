@@ -9,7 +9,7 @@ translation_key: post-202301162233
 translation_url: /posts/四季物语量化分析攻略/
 translation_source: _posts/2023-01-18-四季物语量化分析攻略.md
 translation_status: current
-source_hash: 7b724882b44c7670a4d8044a07f0ca0cfec866aed39b7fd8532782206b18e293
+source_hash: 0452d43aca00fa01256df85304bdaf435532c2ff562f42d6ffc9872a3105036b
 aliases: []
 categories:
 - Board Games
@@ -41,7 +41,7 @@ Update on 27 September 2023: thanks to [hdfbuaa](https://boardgamearena.com/play
 
 ### 1.1 Total Number of Rounds
 
-![Figure 1](/assets/posts/202301162233/board.png)
+![Seasons year wheel showing twelve months, three years, and energy positions](/assets/posts/202301162233/board.png)
 
 The minimum total length of a game is 36 months.
 
@@ -61,7 +61,7 @@ Because there are many card-drawing and group-dealing effects, and most players 
 
 ## II. Quantifying Resource Values
 
-![Figure 2](/assets/posts/202301162233/icons.png)
+![Seasons icons for energy, crystals, prestige points, and summoning capacity](/assets/posts/202301162233/icons.png)
 
 ### 2.1 Energy
 
@@ -85,7 +85,7 @@ Crystallization **does not generate a separate score by itself**; its value can 
 
 ## III. Card Values and Strategy Analysis
 
-![Figure 3](/assets/posts/202301162233/bigcards.jpg)
+![Overview of Seasons cards used in the card-value analysis](/assets/posts/202301162233/bigcards.jpg)
 
 ### 3.1 Card Value Table
 
@@ -216,7 +216,7 @@ Cards played immediately through Divine Chalice and Chalice of Eternity also dif
 
 ### 4.1 Die Actions
 
-![Figure 4](/assets/posts/202301162233/dices.png)
+![Overview of Seasons die faces arranged by the blue, green, yellow, and red seasons](/assets/posts/202301162233/dices.png)
 
 | Resource combination | Value |
 | :--: | :--: |
@@ -365,9 +365,9 @@ The following example explains the related strategy in detail.
 
 **Case: [Choosing Between Resources](https://boardgamearena.com/archive/replay/230119-1002/?table=340323492&player=84626341&comments=)**
 
-![Figure 5](/assets/posts/202301162233/scene1.png)
+![BGA position showing yiyuiii’s resources, hand, and the red season dice available to choose](/assets/posts/202301162233/scene1-content-v1.webp)
 
-![Figure 6](/assets/posts/202301162233/scene2.png)
+![pys88’s three-card hand in the same game: two Cursed Treatises of Arus and a Grimoire](/assets/posts/202301162233/scene2-content-v1.webp)
 
 In this position, yiyuiii chooses a die first, pys88 chooses second, and yiyuiii will also act first. Let us examine how yiyuiii should play the round.
 
@@ -468,7 +468,7 @@ Once we understand how card effects interact, we can begin analyzing the game fr
 
 **Case: [A Glimpse Through a Narrow Opening](https://boardgamearena.com/archive/replay/230119-1002/?table=339038924&player=89973675&comments=)**
 
-![Figure 7](/assets/posts/202301162233/scene3.png)
+![Opening hand and cards reserved for years two and three in the narrow-opening case](/assets/posts/202301162233/scene3-content-v1.webp)
 
 This case comes from [JeroenDemeyer](https://boardgamearena.com/player?id=89973675), a player ranked in BGA's top five. The game lasted sixteen rounds. Assuming that the opponent's effects do not change this player's score, estimate the ideal final score from this opening hand.
 
@@ -508,7 +508,7 @@ The following draft illustrates how a player can use a game tree to analyze the 
 
 This case comes from a game between two players ranked in BGA's top five, [Korekiyo Shinguji](https://boardgamearena.com/player?id=93342702) and [JeroenDemeyer](https://boardgamearena.com/player?id=89973675). We begin with the opening from Korekiyo Shinguji's perspective.
 
-![Figure 8](/assets/posts/202301162233/scene4.png)
+![Korekiyo Shinguji’s nine opening cards](/assets/posts/202301162233/scene4-content-v1.webp)
 
 This is a straightforward group of cards with no interactions that require immediate attention, so for now they can be ranked by value.
 
@@ -518,7 +518,7 @@ Overall, the choice for this hand is between Wondrous Chest and Thieving Fairies
 
 Now consider the opening from JeroenDemeyer's perspective.
 
-![Figure 9](/assets/posts/202301162233/scene5.png)
+![JeroenDemeyer’s nine opening cards](/assets/posts/202301162233/scene5-content-v1.webp)
 
 In this hand, Scepter of Winter and Potion of Power conflict slightly because they both create surplus levels. Entanglement of Argos and Amsug Longneck await cards with which they can interact; the rest need no special consideration. Scepter of Winter and Idol of Eolis have the highest value among the remaining cards. Since Scepter of Winter is also a powerful support card, it has very high first-pick priority. Entanglement of Argos and Amsug Longneck can potentially be taken with the second or third pick.
 
