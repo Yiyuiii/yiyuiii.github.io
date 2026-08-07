@@ -1,10 +1,10 @@
-version: 2
+version: 3
 policy:
   format: WEBP
   quality: 82
   method: 6
   resampling: LANCZOS
-  pillow: 12.0.0
+  pillow: 12.3.0
   libwebp: 1.6.0
   strip_metadata: true
   hash: SHA-256
@@ -13,15 +13,15 @@ images:
 - source: assets/posts/202301162233/bigcards.jpg
   published: assets/posts/202301162233/bigcards.jpg
   variants:
-  - asset: assets/posts/202301162233/bigcards-content-v1-800.webp
+  - asset: assets/posts/202301162233/bigcards-content-v2-800.webp
     width: 800
-    sha256: 15953a3c98f1f7b3c8980a5beb1faca489bda284084d2eef9c4388f583846b72
+    sha256: 25dc289d9a735c466466dacccf8aaf46f331d05b1759a1b1b42402dabee95a54
     dimensions:
     - 800
     - 1116
-  - asset: assets/posts/202301162233/bigcards-content-v1-1400.webp
+  - asset: assets/posts/202301162233/bigcards-content-v2-1400.webp
     width: 1400
-    sha256: 3ceb7d574831b89b5bb287da879a456691dd035e92a465065ffad92712f33a46
+    sha256: 80d7f58f3c764ade9ad8265feb3570a2ef38e05776e17a9e80d0a10943b089cd
     dimensions:
     - 1400
     - 1953
@@ -30,15 +30,15 @@ images:
   - 2480
   - 3460
 - source: assets/posts/202301162233/scene1.png
-  published: assets/posts/202301162233/scene1-content-v1.webp
+  published: assets/posts/202301162233/scene1-content-v2.webp
   variants:
-  - asset: assets/posts/202301162233/scene1-content-v1-800.webp
+  - asset: assets/posts/202301162233/scene1-content-v2-800.webp
     width: 800
     sha256: 74b17a365c61ffa562ade6e27207d972cd13a77d2b44750576da2caa4fb8d5a7
     dimensions:
     - 800
     - 296
-  - asset: assets/posts/202301162233/scene1-content-v1-1400.webp
+  - asset: assets/posts/202301162233/scene1-content-v2-1400.webp
     width: 1400
     sha256: 2ce2744f9740f94a643789bb106afbb490445beeb068be91f8fe91ad870abdeb
     dimensions:
@@ -53,7 +53,7 @@ images:
   - 1892
   - 701
 - source: assets/posts/202301162233/scene2.png
-  published: assets/posts/202301162233/scene2-content-v1.webp
+  published: assets/posts/202301162233/scene2-content-v2.webp
   variants: []
   source_sha256: 5c8caafbd9ade4f0884a91f7471da5788f3c6c32344cbd28bcda30652592f11a
   source_dimensions:
@@ -64,7 +64,7 @@ images:
   - 606
   - 705
 - source: assets/posts/202301162233/scene3.png
-  published: assets/posts/202301162233/scene3-content-v1.webp
+  published: assets/posts/202301162233/scene3-content-v2.webp
   variants: []
   source_sha256: f1765795102b555b6f577d7c31f27ab4a9a26f460ddf71523899cbce121e2deb
   source_dimensions:
@@ -75,7 +75,7 @@ images:
   - 589
   - 1021
 - source: assets/posts/202301162233/scene4.png
-  published: assets/posts/202301162233/scene4-content-v1.webp
+  published: assets/posts/202301162233/scene4-content-v2.webp
   variants: []
   source_sha256: 5a13bf0482d9fa370899d3a22e2426f211e05829da4987e6e6a1e42b802f35e9
   source_dimensions:
@@ -86,7 +86,7 @@ images:
   - 794
   - 815
 - source: assets/posts/202301162233/scene5.png
-  published: assets/posts/202301162233/scene5-content-v1.webp
+  published: assets/posts/202301162233/scene5-content-v2.webp
   variants: []
   source_sha256: 4900abf55b97d1d5321ab68f91462c650eaaf12541963e4c013b299682442aa3
   source_dimensions:

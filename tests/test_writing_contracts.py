@@ -85,16 +85,16 @@ def test_seasons_screenshots_use_managed_webp_derivatives():
     chinese = text("_posts/2023-01-18-四季物语量化分析攻略.md")
     english = text("_posts/2023-01-18-quantitative-strategy-guide-to-seasons.md")
 
-    assert policy["version"] == 2
+    assert policy["version"] == 3
     assert policy["policy"]["format"] == "WEBP"
     assert policy["policy"]["quality"] == 82
     assert policy["policy"]["hash"] == "SHA-256"
     assert len(policy["images"]) == 6
-    assert "bigcards-content-v1-800.webp" in str(policy)
+    assert "bigcards-content-v2-800.webp" in str(policy)
     assert all(record.get("source_sha256") for record in policy["images"])
     assert all(record.get("source_dimensions") for record in policy["images"])
     for index in range(1, 6):
-        path = f"/assets/posts/202301162233/scene{index}-content-v1.webp"
+        path = f"/assets/posts/202301162233/scene{index}-content-v2.webp"
         assert path in chinese
         assert path in english
         assert f"/assets/posts/202301162233/scene{index}.png" not in chinese

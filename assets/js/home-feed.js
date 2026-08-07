@@ -103,8 +103,8 @@
       thumbnail.tabIndex = -1;
       thumbnail.setAttribute("aria-hidden", "true");
       const image = document.createElement("img");
-      image.src = `${base}-index-v1-160.webp`;
-      image.srcset = `${base}-index-v1-160.webp 160w, ${base}-index-v1-320.webp 320w`;
+      image.src = `${base}-index-v2-160.webp`;
+      image.srcset = `${base}-index-v2-160.webp 160w, ${base}-index-v2-320.webp 320w`;
       image.sizes = "(max-width: 380px) 88px, (max-width: 640px) 109px, 134px";
       image.width = 160;
       image.height = 160;

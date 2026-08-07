@@ -20,7 +20,7 @@ EXPECTED_POLICY = {
     "quality": 82,
     "method": 6,
     "resampling": "LANCZOS",
-    "pillow": "12.0.0",
+    "pillow": "12.3.0",
     "libwebp": "1.6.0",
     "strip_metadata": True,
     "hash": "SHA-256",
@@ -45,8 +45,8 @@ def parse_args() -> argparse.Namespace:
 def load_policy(root: Path, *, require_encoder: bool) -> tuple[dict, dict, list[dict]]:
     path = root / POLICY_PATH
     document = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(document, dict) or document.get("version") != 2:
-        raise ValueError(f"{path}: expected article derivative version 2")
+    if not isinstance(document, dict) or document.get("version") != 3:
+        raise ValueError(f"{path}: expected article derivative version 3")
     policy = document.get("policy")
     if policy != EXPECTED_POLICY:
         raise ValueError(f"{path}: unsupported article derivative policy {policy!r}")
@@ -280,7 +280,7 @@ def generate(root: Path, *, write: bool) -> dict:
                     label=relative_destination,
                 )
 
-    actual_outputs = set((root / "assets" / "posts").rglob("*-content-v1*.webp"))
+    actual_outputs = set((root / "assets" / "posts").rglob("*-content-v2*.webp"))
     orphans = sorted(actual_outputs - expected_outputs)
     if orphans:
         raise ValueError(

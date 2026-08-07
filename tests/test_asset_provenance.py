@@ -59,13 +59,13 @@ def records():
     assert set(document) == {"version", "index_derivatives", "covers"}
     assert document["version"] == 2
     assert document["index_derivatives"] == {
-        "version": 1,
+        "version": 2,
         "sizes": [160, 320],
         "format": "WEBP",
         "quality": 75,
         "method": 6,
         "resampling": "LANCZOS",
-        "pillow": "12.0.0",
+        "pillow": "12.3.0",
         "libwebp": "1.6.0",
         "strip_metadata": True,
     }

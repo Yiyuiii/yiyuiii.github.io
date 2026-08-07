@@ -39,13 +39,13 @@ def load_policy(root: Path) -> tuple[dict, list[dict]]:
 
     policy = document.get("index_derivatives")
     expected_policy = {
-        "version": 1,
+        "version": 2,
         "sizes": [160, 320],
         "format": "WEBP",
         "quality": 75,
         "method": 6,
         "resampling": "LANCZOS",
-        "pillow": "12.0.0",
+        "pillow": "12.3.0",
         "libwebp": "1.6.0",
         "strip_metadata": True,
     }

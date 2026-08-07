@@ -287,7 +287,7 @@ const renderReport = (audit) => {
   <section class="decision"><h3>1. 信息密度</h3><label><input type="radio" name="density" value="保持"> 保持当前密度</label><label><input type="radio" name="density" value="更紧凑"> summary 与说明更紧凑</label><label><input type="radio" name="density" value="更舒展"> 增加留白与分隔</label></section>
   <section class="decision"><h3>2. 分组与顺序</h3><label><input type="radio" name="order" value="保持"> 保持当前四组和顺序</label><label><input type="radio" name="order" value="本地优先"> 把纯本地项目提前</label><label><input type="radio" name="order" value="短玩法优先"> 把最短即玩项目提前</label></section>
   <section class="decision"><h3>3. 同时展开</h3><label><input type="radio" name="open" value="保持多开"> 保持可同时展开多项</label><label><input type="radio" name="open" value="同组单开"> 同一分组只保留一项展开</label><label><input type="radio" name="open" value="全页单开"> 全页只保留一项展开</label></section>
-  <section class="summary"><h2>代码抽取判断</h2><p>本轮只比较相同生命周期：盲估十秒与反应时间已经共享随机数、历史和挑战控制器；两个生成器已经共享随机数与生成器控制器。其余项目的初始化、状态机和外部边界不同，没有证据支持再抽一层通用小游戏框架，因此 M2 不做宽泛重构。</p><p><strong>M3 未开始：</strong>本报告不新增小游戏，也不预设原型方向。</p></section>
+  <section class="summary"><h2>代码抽取判断</h2><p>本轮只比较相同生命周期：盲估十秒与反应时间已经共享随机数、历史和挑战控制器；两个生成器已经共享随机数与生成器控制器。其余项目的初始化、状态机和外部边界不同，没有证据支持再抽一层通用小游戏框架，因此 M2 不做宽泛重构。</p><p><strong>M2 已验收：</strong>本报告不新增小游戏；用户随后取消 M3/M4，其它传统候选不自动递补。</p></section>
   <h2>可复制回复</h2><button id="compose" type="button">整理我的选择</button><textarea id="reply" aria-label="选择摘要" placeholder="点上面的选项后，点击“整理我的选择”"></textarea>
   <script>document.getElementById('compose').addEventListener('click',()=>{const pick=n=>document.querySelector('input[name="'+n+'"]:checked')?.value||'未选择';document.getElementById('reply').value='M2 审阅：\n1. 信息密度：'+pick('density')+'\n2. 分组与顺序：'+pick('order')+'\n3. 同时展开：'+pick('open');});</script>
   </main></body></html>`;

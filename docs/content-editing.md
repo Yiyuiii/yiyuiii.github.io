@@ -366,7 +366,7 @@ git diff <基准提交>..<当前提交> -- "_posts/<文章文件>.md"
 文章封面使用 docs/asset-provenance.yml 作为单一生产来源清单。每篇已发布文章的 `thumbnail` 必须恰好由一条记录覆盖，`asset` 也不得重复；同一内容的中英文文章应列在同一记录的 `posts` 中并共享封面，不要复制图片。`article_cover.alt` 与 `article_cover.caption` 按语言人工撰写，但图注的 Markdown 结构、HTTPS 来源链接目标和顺序必须对应；页面统一通过 `_includes/article-cover.liquid` 显示 26rem 内等比、不裁切的正式题图，详细组件契约见 `docs/article-cover-component.md`。更换封面时按以下严格契约同步更新：
 
 - 文件顶层只能包含 `version`、`index_derivatives` 与 `covers`，其中 `version` 为 2，`covers` 为按唯一正式封面组织的记录列表。
-- `index_derivatives` 固化随笔索引派生规则：版本 1、160/320 px、WebP quality 75、method 6、Lanczos、Pillow 12.0.0、libwebp 1.6.0，并清除元数据。编码规则变化时必须升级派生版本和文件名，不能原地覆盖旧缓存 URL。
+- `index_derivatives` 固化随笔索引派生规则：版本 2、160/320 px、WebP quality 75、method 6、Lanczos、Pillow 12.3.0、libwebp 1.6.0，并清除元数据。编码规则变化时必须升级派生版本和文件名，不能原地覆盖旧缓存 URL。
 - 公共必填字段为 `asset`、`posts`、`origin_type`、`source_url`、`author`、`license`、`license_url`、`transform`、`sha256`、`dimensions` 与 `attribution`；`posts` 是非空、无重复的文章路径列表；`origin_type` 只能是 `external`、`self-produced` 或 `generated`，除按类型要求为 null 的 URL 外，公共字符串字段必须非空。
 - `asset` 与 `posts` 中的路径必须使用规范的仓库相对 POSIX 路径，不得含反斜线、绝对路径、空段、`.` 或 `..`；前者位于 `assets/posts`，后者位于 `_posts`，且都必须实际存在。每篇文章的 `thumbnail` 去掉开头 `/` 后必须等于所属记录的 `asset`。
 - 生产资产必须是 WebP；`dimensions` 是 `[宽, 高]` 两个正整数并与文件一致，`sha256` 必须与当前生产文件一致。
@@ -384,13 +384,13 @@ python scripts/generate_post_thumbnails.py --write
 python scripts/generate_post_thumbnails.py --check
 ```
 
-派生图与原图同目录，命名为 `<原文件名去扩展名>-index-v1-160.webp` 和 `-index-v1-320.webp`；原分辨率正式封面继续供文章正文使用，不得被派生图替换。派生图不在清单中逐项重复保存路径和 SHA-256：每张原图已有受检 SHA-256，`index_derivatives` 又完整固定了尺寸、编码参数、Pillow 与 libwebp 版本，`--check` 和测试会从原图重新编码并逐字节比较提交文件。这条“原图哈希 + 固定编码器与策略 + 逐字节重算”链路是派生文件哈希的单一等价证据，避免两份清单失步。编码器版本不一致时脚本会在处理前明确失败。
+派生图与原图同目录，命名为 `<原文件名去扩展名>-index-v2-160.webp` 和 `-index-v2-320.webp`；原分辨率正式封面继续供文章正文使用，不得被派生图替换。派生图不在清单中逐项重复保存路径和 SHA-256：每张原图已有受检 SHA-256，`index_derivatives` 又完整固定了尺寸、编码参数、Pillow 与 libwebp 版本，`--check` 和测试会从原图重新编码并逐字节比较提交文件。这条“原图哈希 + 固定编码器与策略 + 逐字节重算”链路是派生文件哈希的单一等价证据，避免两份清单失步。编码器版本不一致时脚本会在处理前明确失败。
 
 ### 正文图片与响应式派生图
 
 正文图片的 `alt` 必须描述图中能独立理解的信息，不得只写“图 1／Figure 1”、文件名或空字符串。中英文成对文章保持图片目标与顺序对应，但 `alt` 应分别用当前页面语言自然表达。构建插件会从真实本地 PNG、GIF、JPEG 或 WebP 文件读取固有宽高，并为正文图片加入延迟加载与异步解码；不要在 Markdown 中猜测尺寸，也不要手写与文件不符的 `width`、`height` 或 `srcset`。
 
-需要降低正文大图传输量时，在 `_data/article_image_derivatives.yml` 声明原图、派生文件、宽度、尺寸、SHA-256 和 `sizes`。派生文件与原图同目录，原图继续保留以兼容旧 URL；页面只会输出清单中通过规范路径、源图哈希、派生图哈希、真实格式和尺寸检查的候选。生成与验证命令为：
+需要降低正文大图传输量时，在 `_data/article_image_derivatives.yml` 声明原图、派生文件、宽度、尺寸、SHA-256 和 `sizes`。当前策略版本为 3，Pillow 固定为 12.3.0，新派生文件使用 `content-v2` 文件名。派生文件与原图同目录，原图继续保留以兼容旧 URL；页面只会输出清单中通过规范路径、源图哈希、派生图哈希、真实格式和尺寸检查的候选。生成与验证命令为：
 
 ```powershell
 python scripts/generate_article_images.py --write
