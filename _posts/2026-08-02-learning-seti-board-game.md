@@ -9,7 +9,7 @@ translation_key: post-202608021600
 translation_url: /posts/SETI桌游规则-从摆桌到完成第一局/
 translation_source: _posts/2026-08-02-《SETI》桌游规则：从摆桌到完成第一局.md
 translation_status: current
-source_hash: 487b8bd72da9dff0c0793b38f26e0369219dc4b16287350ae789857a38b9bcaa
+source_hash: 3b794e1482f943995acbfb2fc3841646958720a7c9ddf4fd98f40853a2a6b904
 aliases: []
 categories:
 - Board Games
@@ -35,7 +35,7 @@ revisions:
 - date: '2026-08-04'
   note: Tightened the prose and reordered the guide around actual play; completed probe edge cases, all eight alien species and their solo rulings, and added official reference images for actions, technologies, and species; corrected rival income, milestones, and organization exceptions against the rulebooks and FAQ; Further Context now centers on in-game action chains, with external context kept brief
 - date: '2026-08-07'
-  note: Added the official player-aid icon language, a guide to sector-marker states, and species-board icon explanations for all eight alien species; then audited every functional board area and completed the technology, rotation, any-sector, card-source, and expansion-source symbols
+  note: Added the official player-aid icon language, a guide to sector-marker states, and species-board icon explanations for all eight alien species; then audited every functional board area, completed the technology, rotation, any-sector, card-source, and expansion-source symbols, and clarified how the four top Centaurian rewards trigger
 ---
 
 ## 1. Scope and How to Use This Guide
@@ -565,13 +565,22 @@ Exofossils pay costs on particular species-board spaces. The top spaces are repe
 
 *Figure: A message takes 15 points to arrive, while the top board rewards are first come, first served. [Official base-species aid](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf), © Czech Games Edition; this site only makes the necessary local crop and format conversion.*
 
-**Board reading:** “+15” with a message marker means place it 15 spaces ahead of the current score; it does not award 15 points. A blue data symbol at a space entrance is a data cost paid only from the data pool. When a message arrives, cover one top-board reward with its tile and gain the covered reward.
+**Board reading:** The 4 large boxes across the top are shared, one-use rewards. The uppermost spaces in the three columns are still alien-trace spaces; they are a different set of rewards. “+15” means put a message 15 spaces ahead of the current score, not score 15 points immediately. A blue data symbol at a space entrance is a cost paid only from the data pool.
 
-At discovery, every player places their message tile 15 points ahead of their current score. On reaching it, resolve it during the end-of-turn milestone step: choose and gain one uncovered top-board reward, then cover it with the message tile.
+**How the 4 top rewards trigger:**
 
-Centaurian cards cost energy. When played for their effect, put one of your markers 15 points ahead, resolve the white effect now, and keep the card; resolve its green effect on reaching the marker. Stack multiple messages in sending order and resolve the oldest first. These cards are not missions. Some become special income and grant the depicted resource immediately when tucked.
+1. When Centaurians is discovered, every player takes the **message milestone tile** in their color and puts it 15 spaces ahead of their current score.
+2. Reaching or passing the tile does not pay immediately. Resolve it during the milestone step at the end of the current turn.
+3. Choose and immediately gain 1 still-uncovered top reward, then cover it with your message tile. No one can choose that reward again.
+4. If several players reach their tiles in the same turn, choose in play order starting with the player whose turn just ended. In multiplayer, each player normally claims a top reward only once with their own tile.
 
-Data costs on the species board can be paid only from the data pool, never the computer. The top spaces are repeatable and must be paid each time. Milestones resolve at turn end in player order, when no free actions may be taken.
+**Keep the three kinds of “message” separate:**
+
+- The **message milestone tile** is placed at discovery. Only reaching this tile claims one of the 4 top rewards.
+- Playing a Centaurian card places an ordinary **player marker** 15 spaces ahead: resolve the white effect immediately, then only that card’s green effect on reaching the marker. It does not claim a top reward. Stack several such messages in sending order and resolve the oldest first.
+- The top space in each of the three columns is a repeatable **alien-trace space**. Each use still costs 1 data from the data pool and grants that space’s printed reward; data in the computer cannot pay the cost.
+
+Centaurian cards cost energy and are not missions. Some become special income and grant the depicted resource immediately when tucked. Resolve every message milestone at turn end in player order, when no free actions may be taken.
 
 #### Exertians {#exertians}
 
