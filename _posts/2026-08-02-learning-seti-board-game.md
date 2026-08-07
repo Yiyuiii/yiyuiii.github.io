@@ -9,7 +9,7 @@ translation_key: post-202608021600
 translation_url: /posts/SETI桌游规则-从摆桌到完成第一局/
 translation_source: _posts/2026-08-02-《SETI》桌游规则：从摆桌到完成第一局.md
 translation_status: current
-source_hash: 86ab910d4b734c288cfd04851ed22d9cfbdd5226877013112aef5cf521842f9b
+source_hash: 487b8bd72da9dff0c0793b38f26e0369219dc4b16287350ae789857a38b9bcaa
 aliases: []
 categories:
 - Board Games
@@ -33,7 +33,9 @@ revisions:
 - date: '2026-08-03'
   note: Rechecked the rules and images against the current official rulebook and FAQ, added Space Agencies and all four official promo cards, and reorganized the article for step-by-step learning at the table
 - date: '2026-08-04'
-  note: Tightened the prose and reordered the guide around actual play; completed probe edge cases, all five base alien species, and solo play, and added official reference images for actions, technologies, and all eight species; Further Context now centers on in-game action chains, with external context kept brief
+  note: Tightened the prose and reordered the guide around actual play; completed probe edge cases, all eight alien species and their solo rulings, and added official reference images for actions, technologies, and species; corrected rival income, milestones, and organization exceptions against the rulebooks and FAQ; Further Context now centers on in-game action chains, with external context kept brief
+- date: '2026-08-07'
+  note: Added the official player-aid icon language, a guide to sector-marker states, and species-board icon explanations for all eight alien species; then audited every functional board area and completed the technology, rotation, any-sector, card-source, and expansion-source symbols
 ---
 
 ## 1. Scope and How to Use This Guide
@@ -46,7 +48,7 @@ Eight short “Further Context” boxes focus on how separate rules join into ac
 
 > **Rules references**
 >
-> - Base game: [official Simplified Chinese rulebook](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf), [official FAQ](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/additional-content/seti-faq-printer-friendly.pdf), and [base-species aid](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf).
+> - Base game: [official Simplified Chinese rulebook](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf), [icon and action player aid](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/player-aid/SE%20player%20aid%20ZH-S%2003.pdf), [official FAQ](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/additional-content/seti-faq-printer-friendly.pdf), and [base-species aid](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf).
 > - Expansion: [official Simplified Chinese Space Agencies rulebook](https://filemanager.czechgames.com/storage/files/seti-space-agencies/rules/SE2%20rulebook%20ZH-S%2002.pdf) and [alien-species aid](https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/alien-species/SE2%20aliens%20aid%20ZH-S%2002.pdf).
 > - Promo cards: [official promo-card rules](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/promo-rule-sheets/SETI%20promos.pdf).
 > - Individual card cases: [continuously updated official card-clarification thread](https://boardgamegeek.com/thread/3392878/official-faq-plus-cards-clarification).
@@ -68,12 +70,17 @@ The main sources of points are:
 
 *Figure: A complete game at a glance. [Official SETI media assets](https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence), © Czech Games Edition; this site only resizes and compresses the image and adds a neutral background.*
 
-The table has four main areas:
+### Read the Board Layout First
 
-1. **Central Solar System:** probes leave Earth and move among the planets.
-2. **Eight nearby-star sectors:** players mark signals, collect data, and compete for majorities.
-3. **Planet, technology, and alien-species boards:** these handle landings, upgrades, and alien traces.
-4. **Player areas:** these hold credits, energy, cards, probes, data, and technologies.
+- **Solar System board:** Orthogonally adjacent spaces on the three discs form probe routes; gaps between discs are also spaces. Earth’s alignment sets the basic scan sector, while rotation changes the relative positions of planets, Earth, and probes.
+- **Eight sectors and nearby stars:** The data track below a star records the current signal contest; excess signals may sit beside it; markers by the star reward record earlier winners only.
+- **Planet board:** Each planet has separate orbit and landing areas. First-orbit rewards, first-landing data, and moon spaces are printed at their corresponding locations.
+- **Technology board:** Orange, pink, and blue each have 4 technology stacks, with a first-research 2-point marker on top. End-of-round cards and the rotation reminder sit beside them.
+- **Score track and milestones:** The score track runs around the main board. Neutral milestones trigger at 20 and 30 points; players choose gold milestones at 25, 50, and 70. The four gold tiles sit outside the track.
+- **Player board:** From left to right: probe and launch reminders; probe, telescope, and computer technologies; the data pool and computer; then main-action reminders. Income cards, hand cards, credits, and energy stay beside the board.
+- **Alien area:** A face-down species board first uses the three colored discovery spaces and overflow areas below it. After discovery, flip the board and place life traces by colored borders; species-only spaces are explained under that species.
+
+The card’s five regions, solo difficulty board, organizations, and quick-start layout are decoded in their later sections.
 
 There are three types of alien trace:
 
@@ -82,6 +89,25 @@ There are three types of alien trace:
 - blue: gained mainly from analyzing data.
 
 A wild trace shows all three colors. Choose pink, yellow, or blue when you gain it.
+
+### Read the Icon Language First
+
+![The common icon index from SETI’s official player aid](/assets/posts/202608021600/icon-index.webp)
+
+*Figure: CGE’s common index for credits, energy, cards, technologies, signals, life traces, probes, and missions. [Official Simplified Chinese player aid, page 1](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/player-aid/SE%20player%20aid%20ZH-S%2003.pdf), © Czech Games Edition; this site only converts the image format.*
+
+The official material does explain these icons, but in three layers: the main rulebook introduces them inside each procedure; player-aid page 1 collects common iconography while pages 2–4 collect actions, technologies, and milestones; each alien species then has its own aid. This guide reconnects those layers in play order.
+
+Read the shared icons with these rules:
+
+- **The number is the quantity.** Gold credits, green energy, red publicity, blue data, and green-wreath points grant the printed amount.
+- **For a card, check its source.** A gray card back means draw the main deck’s top card at random. A white face-up card means take 1 face-up card from the row or draw the main deck’s top card; it never lets you inspect the deck and choose. The tuck icon means insert a hand card for income and take its lower-right reward immediately. A teal card is a card from the indicated species deck.
+- **Technology and rotation use color.** Orange, pink, and blue technology icons restrict the choice to probe, telescope, or computer technology; the three-color icon allows any type. Gain the tile’s reward with the technology, but never take a second tile from the same stack. A rotation icon advances the reminder and turns the indicated disc one sector counterclockwise.
+- **Signal icons stack conditions.** Gray waves mean mark any permitted signal. A yellow, red, blue, or black field restricts the sector color. An Earth overlay means Earth’s sector. A card overlay means discard from the card row, then choose one of that card’s upper-right colors. A checked colored sector means win that color; a checked gray sector means win any color.
+- **Pink, yellow, and blue traces** go into matching spaces; the three-color icon lets you choose one. The green orbiter, yellow lander, and half-green/half-yellow icons mean orbit, land, or either one.
+- **Mission frames matter.** A triggerable mission works only after it has been played. A conditional mission pays as soon as its condition is met. Gold-framed text scores only at game end.
+
+Species-only symbols absent from this sheet are explained under their species below.
 
 > **Further Context — Biosignatures and technosignatures**
 >
@@ -116,7 +142,7 @@ Tucking a credit- or energy-income card leaves 4 cards in hand. Tucking a card-i
 
 ![The SETI player board, with three technology areas above and the data pool and six-space computer below](/assets/posts/202608021600/player-board.webp)
 
-*Figure: A player area contains three technology rows, the data pool, the computer, income, and resource tracks. [Official SETI media assets](https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence), © Czech Games Edition; this site only resizes and compresses the image and adds a neutral background.*
+*Figure: The player board contains three technology areas, the data pool, the computer, and action reminders; income cards, credits, and energy actually sit beside it. [Official SETI media assets](https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence), © Czech Games Edition; this site only resizes and compresses the image and adds a neutral background.*
 
 ### Other Player Counts
 
@@ -233,6 +259,19 @@ A lander cannot move. It is no longer a probe and does not count against your li
 > A complete chain is usually launch → free movement → orbit or land on a later turn. A launch may come from a main action or card; movement may come from energy or cards; technologies and existing orbiters can change routes and costs. When reading a card effect, identify which step it replaces, then supply the remaining position and cost requirements.
 
 ## 6. Scanning and Sector Resolution
+
+### Read a Sector Before Using It
+
+![Official sector diagrams showing a current data slot, a retained runner-up marker, and a historical winner record](/assets/posts/202608021600/sector-state.webp)
+
+*Figure: The upper panel shows the current signal row; the lower panel shows its state after reset. [Official Simplified Chinese rulebook, page 13](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf), © Czech Games Edition; this site only makes the necessary local crops.*
+
+When markers are already present, read their positions first:
+
+1. **Data and player markers inside the data slot** belong to the current sector contest and replace data from left to right. The green “2” below the second space scores 2 points immediately. Removing the final data makes the sector pending resolution.
+2. **One marker in the first space after a reset** is usually the previous runner-up. It counts in the next majority. A neutral quick start in Space Agencies can also pre-place a neutral marker there.
+3. **Overflow markers beside a full slot** still belong to the current contest. They grant no data but count for majority and participation.
+4. **A marker beside the nearby star reward** is a historical winner record. It remains on the board but never counts in later majorities. The printed star reward is gained only when that sector is won.
 
 ### Scan
 
@@ -475,6 +514,8 @@ Spaces on a revealed species board do not fill from bottom to top. Gain the rewa
 
 Except for the Exertians, species cards use the same acquisition rule. At discovery, players gain 1 species card per marker they have in the discovery spaces. Keep the rest beside the board and reveal the top card. A draw icon lets you take the deck’s top card or the face-up card, replacing the latter from the deck. Species cards count toward the hand limit and may be tucked for income or discarded for their free action.
 
+Species boards retain the shared icon language: pink, yellow, and blue borders determine which trace can enter a space, and placing a marker immediately grants the reward printed inside it. A space may hold repeated markers only when its species aid says so. The overflow area below a species board is the shared fallback: you may choose it, score 3 points, and gain none of the printed species-board rewards.
+
 <details markdown="1">
 <summary><strong>Reveal complete rules summaries for all five base species (mechanical spoilers)</strong></summary>
 
@@ -483,6 +524,8 @@ Except for the Exertians, species cards use the same acquisition rule. At discov
 ![Mascamites alien board with its samples and species-card components](/assets/posts/202608021600/alien-mascamites-board.webp)
 
 *Figure: Mascamites centers on returning samples from the moons of Jupiter and Saturn. [Official base-species aid](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf), © Czech Games Edition; this site only makes the necessary local crop and format conversion.*
+
+**Board reading:** Icons on a sample’s face are its delivery reward. Once that sample enters its dedicated blue space, the same icons become an extra reward whenever that blue space is later marked. Face-down samples cannot be selected in advance.
 
 At discovery, shuffle the 7 samples. Put 3 face down at Jupiter, 3 face down at Saturn, and the last one face up on the species board.
 
@@ -496,6 +539,8 @@ When a capsule reaches the destination on one of your Mascamite mission cards, d
 
 *Figure: The three anomalies compare the highest marker in the pink, yellow, or blue column. [Official base-species aid](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf), © Czech Games Edition; this site only makes the necessary local crop and format conversion.*
 
+**Board reading:** The pink, yellow, and blue anomaly tokens each point to the matching column. When one triggers, compare the highest player marker on that board column, not each player’s total markers of that color. The top space stacks; a later marker sits above earlier ones. Read all resource and point icons on anomaly tokens through the common icon index.
+
 At discovery, place the 3 anomalies random-side up in the Solar System’s outer ring: one in Earth’s sector and the others 3 sectors clockwise and counterclockwise from Earth.
 
 After every Solar System rotation, check whether Earth shares a sector with an anomaly. If so, resolve it immediately. Each anomaly corresponds to the pink, yellow, or blue column; the player on the highest marked space in that column gains its reward. If no board space is marked, no one gains it. Discovery spaces and overflow below the board do not count. The top space is always available; a later marker goes above earlier markers. Visiting an anomaly with a probe grants no bonus.
@@ -505,6 +550,8 @@ After every Solar System rotation, check whether Earth shares a sector with an a
 ![‘Oumuamua alien board with exofossils and its dedicated Solar System tile](/assets/posts/202608021600/alien-oumuamua-board.webp)
 
 *Figure: ‘Oumuamua is both a planet that can be orbited or landed on and a repeatable signal slot. [Official base-species aid](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf), © Czech Games Edition; this site only makes the necessary local crop and format conversion.*
+
+**Board reading:** The purple fossil symbol means an exofossil. If a board-space entrance shows that symbol and a number, pay that many before placing the marker. The 1- and 2-point icons beside the first and third spaces of ‘Oumuamua’s data slot are immediate rewards; the fossil gained when the slot completes goes to every participant.
 
 At discovery, put the ‘Oumuamua tile in its indicated disc-3 space and add 3 data to its slot. If a probe is already there, put it on the tile and give its owner 1 publicity. ‘Oumuamua counts as a planet: moving a probe onto it gains publicity, and it can be orbited or landed on normally.
 
@@ -518,6 +565,8 @@ Exofossils pay costs on particular species-board spaces. The top spaces are repe
 
 *Figure: A message takes 15 points to arrive, while the top board rewards are first come, first served. [Official base-species aid](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf), © Czech Games Edition; this site only makes the necessary local crop and format conversion.*
 
+**Board reading:** “+15” with a message marker means place it 15 spaces ahead of the current score; it does not award 15 points. A blue data symbol at a space entrance is a data cost paid only from the data pool. When a message arrives, cover one top-board reward with its tile and gain the covered reward.
+
 At discovery, every player places their message tile 15 points ahead of their current score. On reaching it, resolve it during the end-of-turn milestone step: choose and gain one uncovered top-board reward, then cover it with the message tile.
 
 Centaurian cards cost energy. When played for their effect, put one of your markers 15 points ahead, resolve the white effect now, and keep the card; resolve its green effect on reaching the marker. Stack multiple messages in sending order and resolve the oldest first. These cards are not missions. Some become special income and grant the depicted resource immediately when tucked.
@@ -529,6 +578,8 @@ Data costs on the species board can be paid only from the data pool, never the c
 ![Exertians alien board with danger cards and two score milestones](/assets/posts/202608021600/alien-exertians-board.webp)
 
 *Figure: Exertians joins hidden endgame points to a penalty for the highest total danger. [Official base-species aid](https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf), © Czech Games Edition; this site only makes the necessary local crop and format conversion.*
+
+**Board reading:** The dark danger number on an Exertian card is hidden danger revealed at game end, not victory points. Markers in the lower, middle, and upper species-board regions add 3, 2, and 1 danger respectively. The “+20” and “+40” milestone tiles go that far ahead of the current leader; they do not score those points immediately.
 
 At discovery, deal 3 Exertian cards to every player, plus 1 per marker they have in the discovery spaces; return the rest to the box. Each player may immediately play face down as many cards as their discovery-marker count. Remaining Exertian cards are not hand cards and cannot be discarded.
 
@@ -615,7 +666,7 @@ Solo play still lasts 5 rounds. You use the multiplayer rules; the automated riv
 
 ### Rival Resources and Turns
 
-The rival does not store credits, energy, or cards. Each one gained advances progress by 1; a technology icon advances it by 4. Crossing an enhancement icon adds a random advanced action card to the top of the action deck and keeps it there for the rest of the game. Data fills the rival computer from left to right, then overflows into an unlimited data pool. Publicity, points, alien traces, and milestones resolve normally. When several choices remain, use the decision arrow at the top of the current action card.
+The rival uses no starting-income card and does not store credits, energy, or cards. Each one gained advances progress by 1. Whenever the rival would increase income, advance it 4 spaces instead. Crossing an enhancement icon adds a random advanced action card to the top of the action deck and keeps it there for the rest of the game. Data fills the rival computer from left to right, then overflows into an unlimited data pool. Publicity, points, technology, and alien traces follow their own rules. When several choices remain, use the decision arrow at the top of the current action card.
 
 A rival turn does one thing: reveal the top action card, find the first executable action from top to bottom, resolve it, and end the turn.
 
@@ -634,13 +685,40 @@ A rival turn does one thing: reveal the top action card, find the first executab
 
 When the rival gains an alien trace, choose the lowest row among all available spaces of that color, then use the decision arrow within a row. It uses overflow only if no ordinary space remains.
 
+The rival triggers gold and neutral milestones. At a gold milestone, consider only each tile’s still-empty first, highest-value space; use the decision arrow to choose leftmost or rightmost if several remain. If every first space is occupied, place no marker. The rival never scores gold tiles at game end; its markers only block spaces.
+
 ### Passing, Objectives, and Final Scoring
 
 If the action deck is empty at the start of a rival turn, it passes: shuffle used actions for next round, remove the top current end-of-round card, and advance progress once for gaining that card. If the rival passes first, rotate normally.
 
-You may complete at most 1 objective task per action. At turn end, set completed objective tiles aside and refill to 3. Before income in rounds 1–4, discard 1, 2, 3, or 4 completed objectives; for each missing tile, the rival advances 3. At the end of round 5, every incomplete tile in the objective stack or on the table gives the rival 5 points. A 1-star game ignores all objective rules.
+You may complete at most 1 objective task per action. Objectives and ordinary triggerable missions are separate, so the same action may mark 1 of each. At turn end, set completed objective tiles aside and refill to 3. Before income in rounds 1–4, discard 1, 2, 3, or 4 completed objectives; for each missing tile, the rival advances 3. At the end of round 5, every incomplete tile in the objective stack or on the table gives the rival 5 points. A 1-star game ignores all objective rules.
 
-Species-specific rival cards override these general rules. Three common exceptions are: the rival always places an ‘Oumuamua signal on its tile and pays exofossil spaces only when able; the Centaurian rival places a message milestone and uses the decision arrow for its reward; the Exertian rival draws and plays cards only through its species action, treats all played cards as fulfilled at the end, then compares danger normally.
+Species-specific rival cards override these general rules. The disclosure below lists only solo overrides; use the multiplayer species rules for everything else.
+
+<details markdown="1">
+<summary><strong>Reveal solo rulings for all five base species (mechanical spoilers)</strong></summary>
+
+#### Mascamites (Solo) {#mascamites-solo}
+
+The species card’s second action is always executable: Saturn is at most 4 moves from Earth and Jupiter at most 5. After the rival lands on Jupiter, Saturn, or one of their moons, take 1 random sample from that planet and ignore its reward. Turn it face up in the next dedicated Mascamite-board space; that space becomes an ordinary blue trace space. If that planet has no samples left, skip the sample.
+
+#### Anomalies (Solo) {#anomalies-solo}
+
+The “next anomaly” is the closest one counterclockwise from Earth. Check its color, then the highest marked trace of that color on the Anomaly board. If the rival is not leading, resolve the species card’s first action: mark the lowest available space of that color, gain its printed reward, and score 3 extra points. Stop even if this does not take the lead. If the rival is leading, resolve the lower action instead.
+
+#### ‘Oumuamua (Solo) {#oumuamua-solo}
+
+The first species action tries to reach ‘Oumuamua in at most 4 moves and orbit or land. With no rival probe in space, or if ‘Oumuamua is unreachable within 4 moves, use the second action. Only the third, specially illustrated signal in the lower action of the ‘Oumuamua rival card must go on the ‘Oumuamua tile. Every other rival signal ignores that tile; if its sector is chosen, mark the ordinary star system. A space with an exofossil cost is eligible only when the rival can pay it.
+
+#### Centaurians (Solo) {#centaurians-solo}
+
+At discovery, the rival also places a message tile on the score track and treats the two unused-color message tiles as its own. The first species action applies only if no rival message is currently on the track and another remains in reserve: place the next one 15 points ahead. Skip it after all three are used. On reaching a message, choose its reward with the decision arrow. A board space with a data cost is eligible only when the rival computer is full and its data pool can pay.
+
+#### Exertians (Solo) {#exertians-solo}
+
+At discovery, the rival draws no Exertian cards; it advances progress once for each of its markers in the discovery spaces. Only the species action card lets it play one. If its face-down Exertian cards plus its markers on danger-granting board spaces total fewer than 5, play 1 random card face down. Discovery and overflow markers do not count toward this total. The rival ignores Exertian milestones. At game end, every card it played counts as fulfilled and scores fully; then compare danger normally.
+
+</details>
 
 ## 15. Space Agencies {#14-space-agencies}
 
@@ -648,6 +726,8 @@ The expansion has two layers:
 
 - **Add directly to the base game:** shuffle the 42 project cards into the base deck without replacing any cards; mix the 3 alien species with the base species; add the 10 signal tokens.
 - **Use together as a module:** 11 organizations and the quick start cards.
+
+Project cards from the expansion carry a small Space Agencies mark. It identifies their source and triggers no extra effect; card numbers and promo marks work the same way.
 
 With only the first layer, play the normal 5 rounds. Organizations require quick starts and change the game to rounds 2–5, for 4 rounds total.
 
@@ -679,9 +759,16 @@ An organization may show:
 - a once-per-round free action;
 - income increases that tuck cards.
 
+From top to bottom, an organization shows its starting resources and effects, passive ability, once-per-round ability, and income. After using a circular once-per-round space, cover it with a player marker; remove that marker when collecting the next round’s income to show that the ability has reset.
+
 Gain starting resources and quick-start rewards before tucking income. Resolve two income increases separately; a card drawn by the first may be tucked for the second.
 
 Do not collect organization income at the start of round 2. Collect it only at the start of rounds 3, 4, and 5. This also resets once-per-round abilities. Organizations are balanced for four rounds; a five-round organization game is not recommended.
+
+Three organizations need specific rulings:
+
+- **Helion Assembly and Cosmos Strategy Group:** each top ability resembles a triggerable mission but is not a mission. One action may mark both an ordinary mission and the organization requirement.
+- **Futurespan Institute:** only 1 card may be prepared at a time. A prepared card is no longer in hand and cannot be used for any other effect or action; play it free only after its condition is met. The once-per-round ability is available only while the Vision token is on the score track.
 
 > **Further Context — Specialization and comparative advantage**
 >
@@ -691,6 +778,8 @@ For a first expansion game, use the official simplified setup. Use only organiza
 
 In one- and two-player games, quick starts may be used without organizations. After players make their choices, reveal 4 random remaining quick starts. Resolve only their upper halves with an unused player color. Neutral signals act as one virtual player. With at most two signals, that player cannot win a sector, but it may take second place and leave a marker.
 
+With quick starts but no organizations, the normal 5-round game is still recommended. If you deliberately shorten it to 4 rounds, quick starts do not replace a full round and balance will change; use the base-game starting-income card in place of an organization.
+
 Solo setup still begins from the two-player rules. The rival receives no organization or quick starts, but:
 
 - shuffle the 4 new rival action cards into its deck;
@@ -699,6 +788,7 @@ Solo setup still begins from the two-player rules. The rival receives no organiz
 - add 2 random long-term objectives to the 3 difficulty II objectives, for 5 objectives total;
 - remove completed long-term objectives without replacement;
 - at the end of rounds 2, 3, and 4, each empty long-term-objective space advances the rival once; it adds no final-scoring penalty.
+- if every advanced action card has already been added, another advanced-card gain advances progress once instead.
 
 ### Signal Tokens
 
@@ -739,6 +829,8 @@ Spoiler-free summary:
 
 *Figure: Alert levels divide the board, while each player’s alert cards control research depth. [Official Space Agencies alien-species aid](https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/alien-species/SE2%20aliens%20aid%20ZH-S%2002.pdf), © Czech Games Edition; this site only makes the necessary local crop and format conversion.*
 
+**Board reading:** The bands numbered 0–3 are alert levels. The white alert-card silhouettes on the left show how many cards you must have unlocked to enter that level. Green numbers are points. The red exploration icon means reveal a card and take its minor reward; the blue exploration icon means take its major reward. Other resource, card, and trace icons use the common index.
+
 At discovery:
 
 1. Shuffle 9 exploration cards, set 4 aside at random, and build a deck from the remaining 5.
@@ -753,11 +845,17 @@ The Ark has alert levels 0–3. Everyone begins with access only to level 0. The
 
 Alert cards count toward the hand limit. Discard one for its free action to gain a minor exploration reward. Play one as a main action for 2 credits to gain a major reward. When the exploration deck runs out, shuffle all 9 cards, set aside 4, and rebuild the 5-card deck.
 
+Unlocks are permanent. Discarding or playing an alert card after unlocking it never reduces the alert levels you may enter.
+
+**Solo:** At discovery, each rival marker in a discovery space also gains one minor exploration reward; a card reward advances progress once instead. The rival unlocks alert cards only through its species action card and ignores regions it has not unlocked when choosing a space. If spaces in the same row on several species boards remain tied, prefer Origin Ark.
+
 #### Glyphids
 
 ![Glyphids decoding board with runes and two reward strips](/assets/posts/202608021600/alien-glyphids-board.webp)
 
 *Figure: The upper area is the shared decoding track; the three lower columns still use alien-trace colors. [Official Space Agencies alien-species aid](https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/alien-species/SE2%20aliens%20aid%20ZH-S%2002.pdf), © Czech Games Edition; this site only makes the necessary local crop and format conversion.*
+
+**Board reading:** The seven rune shapes are seven categories, not seven common resources. A rune token beside a planet, star, technology, or Glyphid space is taken only when that corresponding condition is completed. Icons on the decoding board are rewards gained when a rune is placed there; an upper slot is locked until both matching slots below it are filled.
 
 At discovery:
 
@@ -770,6 +868,8 @@ As a free action, place a rune you hold into an empty decoding space and gain it
 
 At the end of the game, divide held runes into sets with no repeated symbol. Sets of 1–7 different runes score 1/3/5/8/11/15/20 points.
 
+**Solo:** The rival gains runes normally. If a gained symbol is not decoded, place it on the decoding board immediately and gain the reward; prefer an upper space, then use the decision arrow to break a tie. A card reward advances progress once instead. If no rune remains on the Glyphid board’s top three spaces, the rival ignores those spaces. It does not score sets; each rune it holds is worth 3 points.
+
 Some first-print reward strips show the same side twice. Use CGE’s [official correction stickers](https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/additional-content/seti-space-agencies-glyphid-correction-sticker-A4-2025-11-10.pdf); do not treat the misprint as a rules change.
 
 #### Amoeba
@@ -777,6 +877,8 @@ Some first-print reward strips show the same side twice. Use CGE’s [official c
 ![Amoeba alien board with five organelles and species-card components](/assets/posts/202608021600/alien-amoeba-board.webp)
 
 *Figure: Organelles move in opposite directions on the inner and outer rings, changing the next marker’s rewards. [Official Space Agencies alien-species aid](https://filemanager.czechgames.com/storage/files/seti-space-agencies/other-downloads/alien-species/SE2%20aliens%20aid%20ZH-S%2002.pdf), © Czech Games Edition; this site only makes the necessary local crop and format conversion.*
+
+**Board reading:** The common icon on each organelle is the reward it provides. A small colored Amoeba symbol on a species card means choose 1 organelle in that colored region and gain its reward. White arrows run clockwise on the outer ring and counterclockwise on the inner ring. Every organelle that provided a reward in this resolution moves.
 
 At discovery:
 
@@ -795,6 +897,8 @@ Each organelle that provided a reward then moves 1 space:
 - over occupied spaces to the next empty space.
 
 If several organelles provided rewards, move all of them.
+
+**Solo:** When choosing an alien-trace space, the rival ignores any color region with only 0 or 1 organelle reward. All other placement and organelle-movement rules remain unchanged.
 
 </details>
 

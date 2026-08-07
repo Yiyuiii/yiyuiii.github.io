@@ -14,6 +14,7 @@ rights_basis:
 source_urls:
   base_media: "https://www.czechgames.com/for-press-games/seti-search-for-extraterrestrial-intelligence"
   base_rulebook: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+  base_player_aid: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/player-aid/SE%20player%20aid%20ZH-S%2003.pdf"
   base_alien_aid: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/alien-species/seti-alien-species-en.pdf"
   expansion_media: "https://www.czechgames.com/for-press-games/seti-space-agencies"
   expansion_rulebook: "https://filemanager.czechgames.com/storage/files/seti-space-agencies/rules/SE2%20rulebook%20ZH-S%2002.pdf"
@@ -34,6 +35,13 @@ assets:
     transform: "Trimmed transparent margins, resized within 1500 × 1500, added a 32 px neutral border and background; WebP quality 82."
     dimensions: [1564, 1426]
     sha256: "a6f0de5bea41505b6ba50fd558608b113c41f96eb090d3a5c03406bc6e1d182b"
+
+  - asset: "assets/posts/202608021600/icon-index.webp"
+    source: "Official Simplified Chinese player aid, page 1"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/other-downloads/player-aid/SE%20player%20aid%20ZH-S%2003.pdf"
+    transform: "Rendered at 240 dpi, resized from 1552 × 1552 to 1500 × 1500 with Lanczos; WebP quality 84."
+    dimensions: [1500, 1500]
+    sha256: "c86506beb5eda4992b6d596d24111e573433ed70e1b57c302b94911ba0d951b6"
 
   - asset: "assets/posts/202608021600/player-board.webp"
     source: "Official base-game media pack: product render 07"
@@ -76,6 +84,13 @@ assets:
     transform: "Cropped [55, 1050, 1275, 1830] from a 1359 × 1890 page render; WebP quality 84."
     dimensions: [1220, 780]
     sha256: "e71a17bae2f55ef5cee1cbaec4e899634a30da5e0010816b637a53e8d6ac2667"
+
+  - asset: "assets/posts/202608021600/sector-state.webp"
+    source: "Official Simplified Chinese base-game rulebook, page 13"
+    source_url: "https://filemanager.czechgames.com/storage/files/seti-search-for-extraterrestrial-intelligence/rules/SE%20rulebook%20ZH-S%2006.pdf"
+    transform: "Cropped [54, 135, 1090, 565] and [54, 1127, 1090, 1564] from a 1177 × 1637 page render, stacked with a 24 px neutral gap; WebP quality 84."
+    dimensions: [1037, 891]
+    sha256: "77fa56e62aa8b645d8e7ad02acd89eeda3822302def059f0f1ddc1afc933a7bc"
 
   - asset: "assets/posts/202608021600/scan-flow.webp"
     source: "Official Simplified Chinese base-game rulebook, page 12"
