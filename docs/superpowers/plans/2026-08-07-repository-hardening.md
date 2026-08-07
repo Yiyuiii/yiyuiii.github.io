@@ -111,7 +111,7 @@ python scripts/run_browser_tests.py --site _site
 ### 图片与页面资源
 
 - 42 个“图 N／Figure N”替代文本已改为内容描述；构建插件从真实 PNG/GIF/JPEG/WebP 读取固有宽高，构建产物检查会拒绝缺少正宽高的图片。
-- `_data/article_image_derivatives.yml` 与 `scripts/generate_article_images.py` 固定 WebP 生成策略并逐字节复算。六张相关原图共 8,637,787 字节，九张派生图共 1,649,260 字节；五张 Seasons 场景图正文主资源约 0.45 MB，旧 PNG/JPG URL 保留。
+- `_data/article_image_derivatives.yml` 与 `scripts/generate_article_images.py` 固定 WebP 生成策略，并以源图／派生图 SHA-256、真实格式和尺寸验证提交资产。最初的逐字节重新编码方案在 Linux CI 暴露出 JPEG 原生解码库的跨平台字节差异，已升级为清单版本 2；`--check` 不再调用平台编码器。六张相关原图共 8,637,787 字节，九张派生图共 1,649,260 字节；五张 Seasons 场景图正文主资源约 0.45 MB，旧 PNG/JPG URL 保留。
 - 主题总脚本和未使用图标/缩放资源已移除，仅按页面条件加载 MathJax 与 Mermaid。小游戏样式从全站 `main.scss` 机械提取到 `toys.scss`；生产构建中 `main.css` 约 53.9 KB，只有双语小玩意页追加约 29.8 KB。
 - 没有为追求文件行数而拆分稳定的业务脚本和浏览器规格；本轮只拆分有明确页面加载收益的 CSS，并把新增契约优先写成 YAML/HTML/行为检查。
 

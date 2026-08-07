@@ -13,6 +13,6 @@
 
 上述“正文历史图片尚无真实尺寸元数据”已不再是当前限制。`_plugins/post-image-loading.rb` 现在直接解析本地 PNG、GIF、JPEG 与 WebP 的固有宽高，`scripts/check_site.py` 会拒绝任何构建后仍缺少正宽高的图片。42 个泛化图号替代文本已改为中英文内容描述。
 
-《四季物语量化分析攻略》的五张场景 PNG 保留旧 URL，但正文改用受版本控制的 WebP；六张相关原图共约 8.64 MB，九张响应式派生文件共约 1.65 MB，其中原约 7 MB 的五张场景图对应正文主资源约 0.45 MB。派生策略与逐字节验证位于 `_data/article_image_derivatives.yml` 和 `scripts/generate_article_images.py`。
+《四季物语量化分析攻略》的五张场景 PNG 保留旧 URL，但正文改用受版本控制的 WebP；六张相关原图共约 8.64 MB，九张响应式派生文件共约 1.65 MB，其中原约 7 MB 的五张场景图对应正文主资源约 0.45 MB。派生策略与源图／派生图的 SHA-256、真实格式和尺寸验证位于 `_data/article_image_derivatives.yml` 和 `scripts/generate_article_images.py`；检查模式不要求不同平台的原生图像库重新编码出相同字节。
 
 全站样式也已按页面职责拆分：生产构建中的 `main.css` 约 53.9 KB，小玩意页额外加载约 29.8 KB 的 `toys.css`，普通页不再承担小游戏样式。这里仍是本机生产构建体积证据，不等同于真实用户 RUM。

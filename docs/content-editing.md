@@ -390,14 +390,14 @@ python scripts/generate_post_thumbnails.py --check
 
 正文图片的 `alt` 必须描述图中能独立理解的信息，不得只写“图 1／Figure 1”、文件名或空字符串。中英文成对文章保持图片目标与顺序对应，但 `alt` 应分别用当前页面语言自然表达。构建插件会从真实本地 PNG、GIF、JPEG 或 WebP 文件读取固有宽高，并为正文图片加入延迟加载与异步解码；不要在 Markdown 中猜测尺寸，也不要手写与文件不符的 `width`、`height` 或 `srcset`。
 
-需要降低正文大图传输量时，在 `_data/article_image_derivatives.yml` 声明原图、派生文件、宽度和 `sizes`。派生文件与原图同目录，原图继续保留以兼容旧 URL；页面只会输出清单中通过路径、尺寸、编码版本和逐字节重算检查的候选。生成与验证命令为：
+需要降低正文大图传输量时，在 `_data/article_image_derivatives.yml` 声明原图、派生文件、宽度、尺寸、SHA-256 和 `sizes`。派生文件与原图同目录，原图继续保留以兼容旧 URL；页面只会输出清单中通过规范路径、源图哈希、派生图哈希、真实格式和尺寸检查的候选。生成与验证命令为：
 
 ```powershell
 python scripts/generate_article_images.py --write
 python scripts/generate_article_images.py --check
 ```
 
-调整质量、缩放算法、Pillow/libwebp 版本或候选尺寸时，必须升级策略版本和文件名，不能原地覆盖已经公开的缓存 URL。发布前统一入口会自动执行 `--check`。
+`--write` 只用于维护者显式重生成文件，并同步刷新清单中的源图／派生图哈希与尺寸；`--check` 不调用本机编码器，而是验证已经提交的清单和文件。这样不会要求 Windows 与 Linux 的原生 JPEG/WebP 编解码库产生完全相同的字节，同时任何源图或派生图变化仍会由 SHA-256 拒绝。调整质量、缩放算法、Pillow/libwebp 版本或候选尺寸时，必须升级策略版本和文件名，不能原地覆盖已经公开的缓存 URL。发布前统一入口会自动执行 `--check`。
 
 ### 正文外部图片的来源记录
 
