@@ -49,7 +49,13 @@ for (const [route, heading, loadLabel, autoLoadLabel, disclosure, directLabel, g
 
     const client = comments.locator('script[src="https://giscus.app/client.js"]');
     await expect(client).toHaveCount(1);
-    await expect(comments.locator("iframe.giscus-frame")).toHaveCount(1);
+    const frame = comments.locator("iframe.giscus-frame");
+    await expect(frame).toHaveCount(1);
+    await expect(frame).toHaveCSS("display", "block");
+    await expect(frame).toHaveCSS("border-top-width", "0px");
+    await expect(frame).toHaveCSS("border-right-width", "0px");
+    await expect(frame).toHaveCSS("border-bottom-width", "0px");
+    await expect(frame).toHaveCSS("border-left-width", "0px");
     await expect(client).toHaveAttribute("data-repo", "Yiyuiii/yiyuiii.github.io");
     await expect(client).toHaveAttribute("data-repo-id", "MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=");
     await expect(client).toHaveAttribute("data-category", "Announcements");

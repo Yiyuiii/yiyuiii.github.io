@@ -748,6 +748,11 @@ html:lang(en) .article-header h1 {
   width: 100%;
 }
 
+.page-comments__thread .giscus-frame {
+  display: block;
+  border: 0;
+}
+
 .writing-list,
 .project-list,
 .publication-list {
