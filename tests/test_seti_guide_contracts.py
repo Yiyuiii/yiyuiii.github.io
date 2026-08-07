@@ -124,6 +124,29 @@ def test_every_official_icon_family_and_board_layout_has_an_explicit_reader_key(
         assert all(phrase in source for phrase in required[path])
 
 
+def test_centaurian_top_rewards_are_distinguished_from_cards_and_trace_spaces():
+    required = {
+        ZH: (
+            "**顶部 4 个奖励的触发方式：**",
+            "只有它到达时才领取顶部四选一奖励",
+            "只执行该牌的绿色效果，不领取顶部奖励",
+            "三列最上方是可重复标记的**生命迹象位置**",
+            "从刚结束回合的玩家开始，按顺时针顺序选择",
+        ),
+        EN: (
+            "**How the 4 top rewards trigger:**",
+            "Only reaching this tile claims one of the 4 top rewards",
+            "only that card’s green effect on reaching the marker. It does not claim a top reward",
+            "top space in each of the three columns is a repeatable **alien-trace space**",
+            "starting with the player whose turn just ended",
+        ),
+    }
+
+    for path in (ZH, EN):
+        source = body(path)
+        assert all(phrase in source for phrase in required[path])
+
+
 def test_guide_keeps_base_species_solo_and_expansion_species_coverage():
     required = {
         ZH: (
