@@ -39,7 +39,12 @@
               <div class="toy-entry__body" aria-labelledby="{{ toy_title_id }}">
                 {% case toy.id %}
                   {% when 'moegirl-quiz' %}
+                    {%- comment -%}保留 moegirl-quiz 作为公开片段兼容 ID；可见标题按唯一题源称“萌娘百科猜猜”。{%- endcomment -%}
                     {% include toy-moegirl-quiz.liquid heading_id=toy_title_id %}
+                  {% when 'art-glimpse' %}
+                    {% include toy-art-glimpse.liquid heading_id=toy_title_id %}
+                  {% when 'anilist-role-quiz' %}
+                    {% include toy-acg-relation-quiz.liquid heading_id=toy_title_id %}
                   {% when 'color-challenge' %}
                     {% include toy-color-challenge.liquid %}
                   {% when 'ten-second' %}

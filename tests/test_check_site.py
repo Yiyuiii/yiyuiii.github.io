@@ -171,11 +171,14 @@ def valid_site(root):
         localized = {
             "zh": {
                 "page": "小玩意",
+                "database": "知识问答",
                 "quick": "轻松挑战",
                 "logic": "逻辑谜题",
                 "random": "随机生成",
                 "items": [
-                    ("moegirl-quiz", "萌娘百科条目猜猜"),
+                    ("moegirl-quiz", "萌娘百科猜猜"),
+                    ("art-glimpse", "名画猜猜（克利夫兰艺术博物馆）"),
+                    ("anilist-role-quiz", "动画主角猜猜（AniList）"),
                     ("color-challenge", "色差挑战"),
                     ("ten-second", "盲估十秒"),
                     ("reaction-time", "反应时间"),
@@ -188,11 +191,14 @@ def valid_site(root):
             },
             "en": {
                 "page": "Toys",
+                "database": "Knowledge quizzes",
                 "quick": "Quick challenges",
                 "logic": "Logic puzzles",
                 "random": "Random generators",
                 "items": [
-                    ("moegirl-quiz", "Moegirlpedia entry quiz"),
+                    ("moegirl-quiz", "Moegirlpedia quiz"),
+                    ("art-glimpse", "Artwork quiz (Cleveland Museum of Art)"),
+                    ("anilist-role-quiz", "Anime protagonist quiz (AniList)"),
                     ("color-challenge", "Color difference challenge"),
                     ("ten-second", "Ten-second estimate"),
                     ("reaction-time", "Reaction time"),
@@ -208,12 +214,23 @@ def valid_site(root):
         entries = []
         for index, (item_id, title) in enumerate(localized["items"]):
             level = 2 if index == 0 else 3
-            component = (
-                '<div class="moegirl-quiz" data-moegirl-quiz>'
-                '<p data-quiz-clue-text></p></div>'
-                if item_id == "moegirl-quiz"
-                else "<div>Ready.</div>"
-            )
+            if item_id == "moegirl-quiz":
+                component = (
+                    '<div class="moegirl-quiz" data-moegirl-quiz '
+                    'data-api-endpoint="https://zh.moegirl.org.cn/api.php">'
+                    '<div data-quiz-interactive hidden><p data-quiz-clue-text></p></div>'
+                    '<script type="application/json" data-quiz-copy>{}</script>'
+                    '</div>'
+                )
+            elif item_id == "art-glimpse":
+                component = '<section class="art-glimpse" data-art-glimpse></section>'
+            elif item_id == "anilist-role-quiz":
+                component = (
+                    '<div class="acg-relation-quiz" '
+                    'data-acg-relation-quiz></div>'
+                )
+            else:
+                component = "<div>Ready.</div>"
             entries.append(
                 f'<details id="{item_id}" class="toy-entry">'
                 f'<summary><h{level} id="{item_id}-title">'
@@ -228,17 +245,18 @@ def valid_site(root):
             f'<h1 class="sr-only">{localized["page"]}</h1>'
             '<p class="toy-index__introduction">Introduction.</p></header>'
             '<div class="toy-list">'
-            '<section class="toy-group" data-toy-group="ungrouped">'
-            f'<div class="toy-group__items">{entries[0]}</div></section>'
+            '<section class="toy-group" data-toy-group="database">'
+            f'<h2 class="toy-group__title">{localized["database"]}</h2>'
+            f'<div class="toy-group__items">{"".join(entries[:3])}</div></section>'
             '<section class="toy-group" data-toy-group="quick-challenges">'
             f'<h2 class="toy-group__title">{localized["quick"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[1:4])}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[3:6])}</div></section>'
             '<section class="toy-group" data-toy-group="logic-puzzles">'
             f'<h2 class="toy-group__title">{localized["logic"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[4:7])}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[6:9])}</div></section>'
             '<section class="toy-group" data-toy-group="random-generators">'
             f'<h2 class="toy-group__title">{localized["random"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[7:])}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[9:])}</div></section>'
             "</div></div>"
         )
 

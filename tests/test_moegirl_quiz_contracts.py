@@ -17,7 +17,7 @@ def test_random_discovery_configuration_uses_the_official_action_api():
     assert data["timeout_ms"] == 10000
     assert data["batch_size"] == 50
     assert data["recent_history_size"] >= 16
-    assert data["reviewed_on"] == "2026-08-03"
+    assert data["reviewed_on"] == "2026-08-06"
     assert "entries" not in data
 
 
@@ -31,6 +31,7 @@ def test_chinese_and_english_copy_have_the_same_complete_interface():
         assert "{title}" in zh[key]
         assert "{title}" in en[key]
     assert "IP" in zh["privacy"] and "IP" in en["privacy"]
+    assert "Origin" in zh["privacy"] and "Origin" in en["privacy"]
     assert "可识别的条目标题片段" in zh["privacy"] and "⬛" in zh["privacy"]
     assert "entry-title fragments" in en["privacy"] and "⬛" in en["privacy"]
     assert "不请求图片" in zh["privacy"]

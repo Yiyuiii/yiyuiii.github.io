@@ -86,7 +86,6 @@ const characterPage = (title, longClue = true) => ({
       + "这一段导言足够长，在隐藏姓名后仍能构成完整的文字线索。"
     : `${title}是《测试作品》的登场角色。`,
 });
-
 const roundPages = (round = 0) => {
   const prefix = round === 0 ? "甲" : "乙";
   return [0, 1, 2, 3].map((index) => characterPage(

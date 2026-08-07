@@ -364,15 +364,20 @@ for (const viewport of viewports) {
 test("localized toy indexes expose only live lightweight interactions", async ({
   page,
 }) => {
-  const moegirlRequests = [];
+  const toyExternalRequests = [];
   page.on("request", (request) => {
-    if (new URL(request.url()).hostname.endsWith("moegirl.org.cn")) {
-      moegirlRequests.push(request.url());
+    if ([
+      "zh.moegirl.org.cn",
+      "openaccess-api.clevelandart.org",
+      "openaccess-cdn.clevelandart.org",
+      "graphql.anilist.co",
+    ].includes(new URL(request.url()).hostname)) {
+      toyExternalRequests.push(request.url());
     }
   });
   for (const [route, heading, groupHeadings] of [
-    ["/toys/", "小玩意", ["轻松挑战", "逻辑谜题", "随机生成"]],
-    ["/en/toys/", "Toys", ["Quick challenges", "Logic puzzles", "Random generators"]],
+    ["/toys/", "小玩意", ["知识问答", "轻松挑战", "逻辑谜题", "随机生成"]],
+    ["/en/toys/", "Toys", ["Knowledge quizzes", "Quick challenges", "Logic puzzles", "Random generators"]],
   ]) {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(route);
@@ -388,9 +393,11 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     ).toBe(true);
     await expect(page.locator(".toy-group__title")).toHaveText(groupHeadings);
     const disclosures = page.locator(".toy-group__items > details.toy-entry");
-    await expect(disclosures).toHaveCount(9);
+    await expect(disclosures).toHaveCount(11);
     expect(await disclosures.evaluateAll((items) => items.map((item) => item.id))).toEqual([
       "moegirl-quiz",
+      "art-glimpse",
+      "anilist-role-quiz",
       "color-challenge",
       "ten-second",
       "reaction-time",
@@ -409,16 +416,25 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     await expect(page.locator(".toy-grid, .toy-card")).toHaveCount(0);
     expect(await disclosures.evaluateAll((items) => items.every((item) => !item.open))).toBe(true);
     await expect(page.locator(".moegirl-quiz[data-moegirl-quiz]")).toHaveCount(1);
+    await expect(page.locator(".art-glimpse[data-art-glimpse]")).toHaveCount(1);
+    await expect(page.locator(".acg-relation-quiz[data-acg-relation-quiz]")).toHaveCount(1);
     await expect(page.locator(".moegirl-quiz img")).toHaveCount(0);
+    await expect(page.locator("[data-quiz-source-select]")).toHaveCount(0);
     await expect(page.locator("[data-quiz-clue]")).toBeHidden();
     await expect(page.locator("script[src*='mathjax'], script[src*='al_math']")).toHaveCount(0);
-    expect(moegirlRequests).toEqual([]);
-    const moegirlResourceHints = page.locator(
+    expect(toyExternalRequests).toEqual([]);
+    const quizResourceHints = page.locator(
       'link[rel="preconnect"][href*="moegirl.org.cn"], '
       + 'link[rel="dns-prefetch"][href*="moegirl.org.cn"], '
-      + 'link[rel="prefetch"][href*="moegirl.org.cn"]',
+      + 'link[rel="prefetch"][href*="moegirl.org.cn"], '
+      + 'link[rel="preconnect"][href*="clevelandart.org"], '
+      + 'link[rel="dns-prefetch"][href*="clevelandart.org"], '
+      + 'link[rel="prefetch"][href*="clevelandart.org"], '
+      + 'link[rel="preconnect"][href*="anilist.co"], '
+      + 'link[rel="dns-prefetch"][href*="anilist.co"], '
+      + 'link[rel="prefetch"][href*="anilist.co"]',
     );
-    await expect(moegirlResourceHints).toHaveCount(0);
+    await expect(quizResourceHints).toHaveCount(0);
     await expect(
       page.locator('.site-nav a[aria-current="page"]'),
     ).toHaveAttribute("href", route);
@@ -433,6 +449,32 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     ).toBe(false);
   }
 });
+
+for (const viewport of [
+  { width: 1280, height: 900 },
+  { width: 390, height: 844 },
+  { width: 320, height: 800 },
+]) {
+  test(`single-source encyclopedia quiz and legacy hash fit at ${viewport.width}px`, async ({
+    page,
+  }) => {
+    const externalRequests = [];
+    page.on("request", (request) => {
+      if (new URL(request.url()).hostname === "zh.moegirl.org.cn") externalRequests.push(request.url());
+    });
+    await page.setViewportSize(viewport);
+    await page.goto("/toys/#moegirl-quiz");
+
+    await expect(page.locator("#moegirl-quiz")).toHaveAttribute("open", "");
+    await expect(page.getByText("萌娘百科猜猜", { exact: true })).toBeVisible();
+    await expect(page.locator("[data-quiz-source-select]")).toHaveCount(0);
+    await expect(page.locator(".moegirl-quiz__privacy")).toContainText("萌娘百科 API");
+    expect(externalRequests).toEqual([]);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+    ).toBe(false);
+  });
+}
 
 test("writing index requests only responsive cover derivatives", async ({
   browser,
@@ -1198,6 +1240,9 @@ for (const viewport of viewports) {
     test(`ordinary article images are never cover-capped on ${route} at ${viewport.width}px`, async ({
       page,
     }) => {
+      // This unusually long article can need more than the default timeout when
+      // Chromium reaches it late in the full single-worker regression.
+      test.slow();
       await page.setViewportSize(viewport);
       await page.goto(route, { waitUntil: "domcontentloaded" });
 
@@ -1407,6 +1452,14 @@ test("search, paired language switch, and article reading controls work", async 
     "href",
     "/toys/#moegirl-quiz",
   );
+  for (const query of ["百科", "萌娘百科"]) {
+    await input.fill(query);
+    await expect(page.locator("#search-results a")).toHaveCount(1);
+    await expect(page.locator("#search-results a")).toHaveAttribute(
+      "href",
+      "/toys/#moegirl-quiz",
+    );
+  }
   await input.fill("");
   await input.press("Escape");
   await expect(searchButton).toBeFocused();

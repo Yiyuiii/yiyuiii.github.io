@@ -5,19 +5,43 @@ page:
     introduction: A few lightweight interactions to open, try, and leave at any time.
 
 groups:
-  - id: ungrouped
-    title: null
+  - id: database
+    title:
+      zh: 知识问答
+      en: Knowledge quizzes
     items:
       - id: moegirl-quiz
         title:
-          zh: 萌娘百科条目猜猜
-          en: Moegirlpedia entry quiz
+          zh: 萌娘百科猜猜
+          en: Moegirlpedia quiz
         description:
-          zh: 看完线索，你能从四个条目中猜出答案吗？
-          en: Read the Chinese clue and pick the matching entry.
+          zh: 读读匿名化的导言，看看四个候选里谁是答案。
+          en: Read the Chinese anonymized introduction and choose the matching entry.
         keywords:
-          zh: [萌娘百科, 条目, 问答, 动漫, 游戏]
-          en: [Moegirlpedia, entry, quiz, anime, games]
+          zh: [百科, 萌娘百科, 条目, 问答]
+          en: [encyclopedia, Moegirlpedia, Chinese, entry, quiz]
+
+      - id: art-glimpse
+        title:
+          zh: 名画猜猜（克利夫兰艺术博物馆）
+          en: Artwork quiz (Cleveland Museum of Art)
+        description:
+          zh: 可选择猜题方向，以及题名、作者、年代等线索。
+          en: Choose the quiz direction and whether to show title, artist, or date.
+        keywords:
+          zh: [名画, 配对, 艺术, 博物馆, 克利夫兰, 图像, 猜题]
+          en: [art, matching, painting, museum, Cleveland, image, quiz]
+
+      - id: anilist-role-quiz
+        title:
+          zh: 动画主角猜猜（AniList）
+          en: Anime protagonist quiz (AniList)
+        description:
+          zh: 可选择动画找主角、主角找动画或同作主角配对。
+          en: Choose among three four-choice links between anime and their main characters.
+        keywords:
+          zh: [AniList, 动画, 角色, 主角, 关系, 猜题]
+          en: [AniList, anime, character, main role, relation, quiz]
 
   - id: quick-challenges
     title:

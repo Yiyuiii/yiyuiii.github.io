@@ -128,6 +128,8 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
 
     expected_ids = [
         "moegirl-quiz",
+        "art-glimpse",
+        "anilist-role-quiz",
         "color-challenge",
         "ten-second",
         "reaction-time",
@@ -145,16 +147,16 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
     groups = soup.select(".toy-list > section.toy-group[data-toy-group]")
     group_ids = [str(group.get("data-toy-group", "")) for group in groups]
     if group_ids != [
-        "ungrouped",
+        "database",
         "quick-challenges",
         "logic-puzzles",
         "random-generators",
     ]:
         raise SiteCheckError(f"{route}: toy groups/order are {group_ids!r}")
     expected_group_titles = (
-        ["轻松挑战", "逻辑谜题", "随机生成"]
+        ["知识问答", "轻松挑战", "逻辑谜题", "随机生成"]
         if language == "zh"
-        else ["Quick challenges", "Logic puzzles", "Random generators"]
+        else ["Knowledge quizzes", "Quick challenges", "Logic puzzles", "Random generators"]
     )
     actual_group_titles = [
         node.get_text(" ", strip=True) for node in soup.select(".toy-group__title")
@@ -191,12 +193,14 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
 
     quiz = soup.select(".moegirl-quiz[data-moegirl-quiz]")
     if len(quiz) != 1:
-        raise SiteCheckError(f"{route}: expected exactly one Moegirl quiz component")
+        raise SiteCheckError(
+            f"{route}: expected exactly one encyclopedia quiz component"
+        )
     quiz_title = soup.select("#moegirl-quiz-title")
     expected_quiz_title = (
-        "萌娘百科条目猜猜"
+        "萌娘百科猜猜"
         if language == "zh"
-        else "Moegirlpedia entry quiz"
+        else "Moegirlpedia quiz"
     )
     quiz_title_text = (
         quiz_title[0].select_one(".toy-entry__title")
@@ -208,13 +212,29 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         or not quiz_title_text
         or quiz_title_text.get_text(" ", strip=True) != expected_quiz_title
     ):
-        raise SiteCheckError(f"{route}: Moegirl quiz title is missing or not localized")
+        raise SiteCheckError(
+            f"{route}: encyclopedia quiz title is missing or not localized"
+        )
     if quiz[0].find("img") or not quiz[0].select_one("[data-quiz-clue-text]"):
         raise SiteCheckError(
-            f"{route}: Moegirl quiz must use a text clue without embedded images"
+            f"{route}: encyclopedia quiz must use a text clue without embedded images"
         )
+    if quiz[0].select_one("select") or "wikipedia" in str(quiz[0]).lower():
+        raise SiteCheckError(
+            f"{route}: encyclopedia quiz must remain a single-source Moegirlpedia component"
+        )
+    if quiz[0].get("data-api-endpoint") != "https://zh.moegirl.org.cn/api.php":
+        raise SiteCheckError(f"{route}: encyclopedia quiz endpoint is not Moegirlpedia")
+    if not quiz[0].select_one('script[type="application/json"][data-quiz-copy]'):
+        raise SiteCheckError(f"{route}: encyclopedia quiz copy is missing")
     if len(soup.select('[id="moegirl-quiz"]')) != 1:
-        raise SiteCheckError(f"{route}: Moegirl quiz disclosure id must be unique")
+        raise SiteCheckError(
+            f"{route}: encyclopedia quiz disclosure id must be unique"
+        )
+    if len(soup.select(".art-glimpse[data-art-glimpse]")) != 1:
+        raise SiteCheckError(f"{route}: expected exactly one art-glimpse component")
+    if len(soup.select(".acg-relation-quiz[data-acg-relation-quiz]")) != 1:
+        raise SiteCheckError(f"{route}: expected exactly one AniList role component")
     source = str(soup).lower()
     if "mathjax" in source or "al_math" in source:
         raise SiteCheckError(f"{route}: toys page loads math assets")

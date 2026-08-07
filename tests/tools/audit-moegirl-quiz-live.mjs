@@ -175,7 +175,6 @@ for (let index = 0; index < REQUESTS; index += 1) {
 
   if (index + 1 < REQUESTS) await sleep(REQUEST_DELAY_MS);
 }
-
 console.log(JSON.stringify({
   auditedAt: new Date().toISOString(),
   requestProfile: {

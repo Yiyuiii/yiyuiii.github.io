@@ -29,18 +29,20 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
 
     groups = data["groups"]
     assert [group["id"] for group in groups] == [
-        "ungrouped",
+        "database",
         "quick-challenges",
         "logic-puzzles",
         "random-generators",
     ]
-    assert groups[0]["title"] is None
+    assert groups[0]["title"] == {"zh": "知识问答", "en": "Knowledge quizzes"}
     assert groups[1]["title"] == {"zh": "轻松挑战", "en": "Quick challenges"}
     assert groups[2]["title"] == {"zh": "逻辑谜题", "en": "Logic puzzles"}
     assert groups[3]["title"] == {"zh": "随机生成", "en": "Random generators"}
 
     expected_ids = [
         "moegirl-quiz",
+        "art-glimpse",
+        "anilist-role-quiz",
         "color-challenge",
         "ten-second",
         "reaction-time",
@@ -110,6 +112,8 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
 
     expected_includes = [
         "toy-moegirl-quiz.liquid",
+        "toy-art-glimpse.liquid",
+        "toy-acg-relation-quiz.liquid",
         "toy-color-challenge.liquid",
         "toy-ten-second.liquid",
         "toy-reaction-time.liquid",
@@ -138,7 +142,7 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
     assert include.count(" defer></script>") == 9
 
 
-def test_moegirl_component_uses_the_disclosure_heading_without_repeating_it():
+def test_encyclopedia_component_uses_the_disclosure_heading_without_repeating_it():
     component = text("_includes/toy-moegirl-quiz.liquid")
 
     assert "include.heading_id" in component
@@ -146,7 +150,46 @@ def test_moegirl_component_uses_the_disclosure_heading_without_repeating_it():
     assert "copy.title" not in component
     assert "copy.description" not in component
     assert "data-moegirl-quiz" in component
-    assert "copy.privacy" in component
+    assert "data-quiz-source-select" not in component
+    assert "data-api-endpoint" in component
+    assert "Wikipedia" not in component
+
+
+def test_moegirlpedia_quiz_has_source_specific_visible_copy_but_preserves_the_old_hash():
+    data = yaml.safe_load(text("_data/toys.yml"))
+    items = [item for group in data["groups"] for item in group["items"]]
+    quiz = next(item for item in items if item["id"] == "moegirl-quiz")
+
+    assert quiz["title"] == {
+        "zh": "萌娘百科猜猜",
+        "en": "Moegirlpedia quiz",
+    }
+    assert "角色" not in quiz["title"]["zh"]
+    assert "character" not in quiz["title"]["en"].lower()
+    assert "Wikipedia" not in quiz["keywords"]["en"]
+    assert "维基百科" not in quiz["keywords"]["zh"]
+    assert "Moegirlpedia" in quiz["keywords"]["en"]
+    assert "萌娘百科" in quiz["keywords"]["zh"]
+    assert "moegirl-quiz" in text("_includes/toy-index.liquid")
+
+
+def test_external_quiz_titles_name_their_actual_providers_and_anilist_formats():
+    data = yaml.safe_load(text("_data/toys.yml"))
+    items = {
+        item["id"]: item
+        for group in data["groups"]
+        for item in group["items"]
+    }
+    assert items["art-glimpse"]["title"] == {
+        "zh": "名画猜猜（克利夫兰艺术博物馆）",
+        "en": "Artwork quiz (Cleveland Museum of Art)",
+    }
+    assert items["anilist-role-quiz"]["title"] == {
+        "zh": "动画主角猜猜（AniList）",
+        "en": "Anime protagonist quiz (AniList)",
+    }
+    assert "可选择" in items["anilist-role-quiz"]["description"]["zh"]
+    assert "choose" in items["anilist-role-quiz"]["description"]["en"].lower()
 
 
 def test_search_indexes_each_real_grouped_toy_and_hashes_open_without_focus():
