@@ -42,11 +42,11 @@ def test_seti_article_uses_localized_metadata_clear_source_name_and_attribution(
 
 def test_seti_article_asset_manifest_covers_both_localized_posts_in_order():
     assets = [item["asset"] for item in manifest()["assets"]]
-    assert len(assets) == 34
+    assert len(assets) == 36
     assert len(set(assets)) == len(assets)
     chinese_assets = post_assets(POSTS[0])
     english_assets = post_assets(POSTS[1])
-    assert len(chinese_assets) == len(set(chinese_assets)) == 34
+    assert len(chinese_assets) == len(set(chinese_assets)) == 36
     assert set(chinese_assets) == set(assets)
     assert english_assets == chinese_assets
 
