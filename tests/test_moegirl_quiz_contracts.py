@@ -51,7 +51,8 @@ def test_include_is_progressively_enhanced_and_discloses_remote_boundaries():
     assert "data-quiz-copy" in include and "copy | jsonify" in include
     assert 'data-batch-size="{{ quiz.batch_size }}"' in include
     assert 'data-history-size="{{ quiz.recent_history_size }}"' in include
-    assert "assets/js/moegirl-quiz.js" in include
+    assert "assets/js/moegirl-quiz.js" not in include
+    assert "assets/js/moegirl-quiz.js" in text("_includes/toy-index.liquid")
     assert "data-quiz-clue" in include
     assert "data-quiz-clue-text" in include
     assert "copy.clue_origin" not in include

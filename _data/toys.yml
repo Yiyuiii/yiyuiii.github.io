@@ -1,8 +1,14 @@
 page:
   zh:
     introduction: 点开玩~
+    loading: 正在载入这个项目的本站脚本……
+    load_error: 暂时无法载入这个项目的本站脚本。
+    retry: 重试载入
   en:
     introduction: A few lightweight interactions to open, try, and leave at any time.
+    loading: Loading this toy's local scripts…
+    load_error: This toy's local scripts could not be loaded.
+    retry: Retry loading
 
 groups:
   - id: database

@@ -46,7 +46,10 @@ const beginLocalOnlyAudit = async (page, allowedStorageKeys = []) => {
   });
   const before = await page.evaluate(storageSnapshot);
   const requests = [];
-  const recordRequest = (request) => requests.push(request.url());
+  const origin = new URL(page.url()).origin;
+  const recordRequest = (request) => {
+    if (new URL(request.url()).origin !== origin) requests.push(request.url());
+  };
   page.on("request", recordRequest);
 
   return async () => {

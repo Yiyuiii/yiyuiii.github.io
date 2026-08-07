@@ -159,6 +159,7 @@ test("malformed saved history is replaced by the next valid completion", async (
 
 test("browser color rendering preserves quantized typed endpoints", async ({ page }) => {
   await page.goto("/toys/");
+  await openToy(page, "color-challenge");
   const endpoints = await page.evaluate(() => {
     const logic = globalThis.yiyuiiiToyColorChallengeLogic;
     const sample = (variation, level) => {

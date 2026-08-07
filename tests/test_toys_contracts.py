@@ -20,7 +20,10 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
     assert set(data) == {"page", "groups"}
     assert set(data["page"]) == {"zh", "en"}
     assert set(data["page"]["zh"]) == set(data["page"]["en"]) == {
-        "introduction"
+        "introduction",
+        "loading",
+        "load_error",
+        "retry",
     }
     assert all(
         data["page"][language]["introduction"].strip()
@@ -105,7 +108,7 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
     assert "copy.eyebrow" not in include
     assert "copy.title" not in include
     assert "toy-grid" not in include
-    assert '<details id="{{ toy.id | escape }}"' in include
+    assert 'id="{{ toy.id | escape }}"' in include
     assert "data-toy-disclosure" in include
     assert '<summary class="toy-entry__summary">' in include
     assert "{% case toy.id %}" in include
@@ -126,20 +129,28 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
     for component in expected_includes:
         assert f"include {component}" in include
 
-    expected_scripts = [
-        "toy-random.js",
-        "toy-generators.js",
-        "toy-challenge-history.js",
-        "toy-challenges.js",
-        "toy-color-challenge.js",
-        "toy-codebreaker.js",
-        "toy-make-24.js",
-        "toy-lights-out.js",
-        "toy-disclosure.js",
-    ]
-    positions = [include.index(script) for script in expected_scripts]
-    assert positions == sorted(positions)
-    assert include.count(" defer></script>") == 9
+    expected_assets = {
+        "moegirl": "moegirl-quiz.js",
+        "art": "art-glimpse.js",
+        "acg-logic": "acg-relation-quiz-logic.js",
+        "acg-ui": "acg-relation-quiz.js",
+        "random": "toy-random.js",
+        "generators": "toy-generators.js",
+        "history": "toy-challenge-history.js",
+        "challenges": "toy-challenges.js",
+        "color": "toy-color-challenge.js",
+        "codebreaker": "toy-codebreaker.js",
+        "make24": "toy-make-24.js",
+        "lights": "toy-lights-out.js",
+    }
+    for token, script in expected_assets.items():
+        assert f'"{token}":' in include
+        assert script in include
+    assert "data-toy-assets" in include
+    assert "data-toy-asset-manifest" in include
+    assert "data-toy-loader-status" in include
+    assert include.count(" defer></script>") == 1
+    assert "toy-loader.js" in include
 
 
 def test_encyclopedia_component_uses_the_disclosure_heading_without_repeating_it():
@@ -194,7 +205,7 @@ def test_external_quiz_titles_name_their_actual_providers_and_anilist_formats():
 
 def test_search_indexes_each_real_grouped_toy_and_hashes_open_without_focus():
     search = text("_includes/search-dialog.liquid")
-    disclosure = text("assets/js/toy-disclosure.js")
+    disclosure = text("assets/js/toy-loader.js")
 
     assert "site.data.toys.groups" in search
     assert "toy_group.items" in search
@@ -203,3 +214,20 @@ def test_search_indexes_each_real_grouped_toy_and_hashes_open_without_focus():
     assert 'window.addEventListener("hashchange", openHashTarget)' in disclosure
     assert "disclosure.open = true" in disclosure
     assert ".focus(" not in disclosure
+
+
+def test_toy_loader_restricts_dynamic_scripts_and_recovers_from_failures():
+    loader = text("assets/js/toy-loader.js")
+
+    assert "allowedPaths = Object.freeze" in loader
+    assert "allowedDependencies = Object.freeze" in loader
+    assert 'tokens.join(" ") !== disclosure.dataset.toyAssets' in loader
+    assert "url.origin !== window.location.origin" in loader
+    assert "url.pathname !== expectedPath" in loader
+    assert "document.createElement(\"script\")" in loader
+    assert "script.async = false" in loader
+    assert "assetPromises.delete(token)" in loader
+    assert "data-toy-loader-retry" in loader
+    assert 'window.addEventListener("yiyuiii:open-hash-target"' in loader
+    for forbidden in ("fetch(", "XMLHttpRequest", "innerHTML", "eval("):
+        assert forbidden not in loader

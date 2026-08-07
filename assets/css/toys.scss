@@ -122,6 +122,23 @@
   border-top: 1px solid color-mix(in srgb, var(--divider) 72%, transparent);
 }
 
+.toy-loader-status {
+  display: flex;
+  margin: 0 0 1rem;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.toy-loader-status[data-state="error"] {
+  color: var(--body);
+}
+
+.toy-loader-status button {
+  flex: 0 0 auto;
+}
+
 .toy-tool,
 .toy-challenge {
   width: 100%;

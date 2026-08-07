@@ -257,7 +257,7 @@ def valid_site(root):
             '<section class="toy-group" data-toy-group="random-generators">'
             f'<h2 class="toy-group__title">{localized["random"]}</h2>'
             f'<div class="toy-group__items">{"".join(entries[9:])}</div></section>'
-            "</div></div>"
+            '</div><script src="/assets/js/toy-loader.js"></script></div>'
         )
 
     write(root / "index.html", page("zh", zh_nav, home_feed("zh"), "/"))
@@ -356,6 +356,7 @@ def valid_site(root):
         root / "en" / "toys" / "index.html",
         page("en", en_nav, en_toys, "/en/toys/"),
     )
+    write(root / "assets" / "js" / "toy-loader.js", "(()=>{})();")
     write(root / "archives" / "index.html", page("zh", zh_nav, "<h1>随笔归档</h1>"))
     write(root / "feed.xml", "<feed></feed>")
     write(root / "sitemap.xml", "<urlset></urlset>")
@@ -366,6 +367,41 @@ def test_valid_built_site_contract_passes(tmp_path):
     valid_site(tmp_path)
 
     check_site(tmp_path)
+
+
+def test_toy_runtime_must_not_be_part_of_initial_scripts(tmp_path):
+    valid_site(tmp_path)
+    path = route_path(tmp_path, "/toys/")
+    source = path.read_text(encoding="utf-8").replace(
+        "</main>",
+        '<script src="/assets/js/toy-random.js"></script></main>',
+        1,
+    )
+    path.write_text(source, encoding="utf-8")
+    write(tmp_path / "assets" / "js" / "toy-random.js", "(()=>{})();")
+
+    with pytest.raises(SiteCheckError, match="first disclosure"):
+        check_site(tmp_path)
+
+
+def test_toy_loader_and_initial_javascript_have_hard_budgets(tmp_path):
+    valid_site(tmp_path)
+    write(tmp_path / "assets" / "js" / "toy-loader.js", "x" * 4097)
+    with pytest.raises(SiteCheckError, match="toy loader is 4097 bytes"):
+        check_site(tmp_path)
+
+    write(tmp_path / "assets" / "js" / "toy-loader.js", "x")
+    write(tmp_path / "assets" / "js" / "site-shell.js", "x" * (15 * 1024))
+    for route in ("/toys/", "/en/toys/"):
+        path = route_path(tmp_path, route)
+        source = path.read_text(encoding="utf-8").replace(
+            "</main>",
+            '<script src="/assets/js/site-shell.js"></script></main>',
+            1,
+        )
+        path.write_text(source, encoding="utf-8")
+    with pytest.raises(SiteCheckError, match="initial same-origin JavaScript"):
+        check_site(tmp_path)
 
 
 def test_about_intro_must_be_between_link_heading_and_link_list(tmp_path):
@@ -793,6 +829,15 @@ def test_internal_collaboration_and_test_sources_must_not_be_public(tmp_path):
     write(tmp_path / "tests" / "test_site.py", "def test_internal(): pass")
 
     with pytest.raises(SiteCheckError, match="AGENTS.md.*scripts.*tests"):
+        check_site(tmp_path)
+
+
+def test_generated_test_reports_must_not_be_public(tmp_path):
+    valid_site(tmp_path)
+    write(tmp_path / "test-results" / "audit.html", "private audit")
+    write(tmp_path / "playwright-report" / "index.html", "private report")
+
+    with pytest.raises(SiteCheckError, match="test-results.*playwright-report"):
         check_site(tmp_path)
 
 

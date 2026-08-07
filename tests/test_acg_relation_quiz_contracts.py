@@ -104,9 +104,10 @@ def test_include_is_progressively_enhanced_and_text_only():
     assert 'referrerpolicy="no-referrer"' in include
     assert "<noscript>" in include
     assert 'type="application/json"' in include and "data-acg-config" in include
-    assert "assets/js/acg-relation-quiz-logic.js" in include
-    assert "assets/js/acg-relation-quiz.js" in include
-    assert include.index("acg-relation-quiz-logic.js") < include.index("acg-relation-quiz.js")
+    assert "assets/js/acg-relation-quiz-logic.js" not in include
+    assert "assets/js/acg-relation-quiz.js" not in include
+    index = text("_includes/toy-index.liquid")
+    assert index.index("acg-relation-quiz-logic.js") < index.index("acg-relation-quiz.js")
     assert "<img" not in include and "<audio" not in include and "cover" not in include.lower()
 
 
