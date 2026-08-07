@@ -846,7 +846,7 @@ def check_site(site: Path, *, external_links: bool = False) -> None:
     errors = []
     internal_outputs = [
         name
-        for name in ("AGENTS.md", "scripts", "tests")
+        for name in ("AGENTS.md", "scripts", "tests", "test-results", "playwright-report")
         if (site / name).exists()
     ]
     if internal_outputs:

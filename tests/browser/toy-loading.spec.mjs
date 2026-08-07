@@ -133,6 +133,16 @@ test("direct hashes open and initialize only their declared runtime chain", asyn
   ]);
 });
 
+test("first initialization does not steal keyboard focus from a disclosure summary", async ({ page }) => {
+  await page.goto("/toys/");
+  const disclosure = page.locator("#codebreaker");
+  const summary = disclosure.locator(":scope > summary");
+  await summary.focus();
+  await page.keyboard.press("Enter");
+  await expect(disclosure).toHaveAttribute("data-toy-load-state", "ready");
+  await expect(summary).toBeFocused();
+});
+
 test("tampered disclosure dependencies cannot select an undeclared URL", async ({ page }) => {
   const externalScripts = [];
   page.on("request", (request) => {

@@ -832,6 +832,15 @@ def test_internal_collaboration_and_test_sources_must_not_be_public(tmp_path):
         check_site(tmp_path)
 
 
+def test_generated_test_reports_must_not_be_public(tmp_path):
+    valid_site(tmp_path)
+    write(tmp_path / "test-results" / "audit.html", "private audit")
+    write(tmp_path / "playwright-report" / "index.html", "private report")
+
+    with pytest.raises(SiteCheckError, match="test-results.*playwright-report"):
+        check_site(tmp_path)
+
+
 def test_built_images_must_reserve_their_intrinsic_aspect_ratio(tmp_path):
     valid_site(tmp_path)
     path = route_path(tmp_path, "/")

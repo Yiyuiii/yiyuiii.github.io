@@ -133,6 +133,8 @@ exclude:
 - readme_preview/
 - scripts/
 - tests/
+- test-results/
+- playwright-report/
 - gems/
 - migrations/
 - vendor

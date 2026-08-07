@@ -294,7 +294,7 @@
       else if (moveFocus) newButton.focus();
     };
 
-    const startNewGame = (message, closeSettings = false) => {
+    const startNewGame = (message, closeSettings = false, moveFocus = true) => {
       try {
         state = createGameState(randomApi, config);
       } catch (_error) {
@@ -303,7 +303,7 @@
       }
       input.value = "";
       renderInputRules();
-      renderState(true);
+      renderState(moveFocus);
       status.textContent = message;
       settingsSummary.textContent = summaryText(config);
       if (closeSettings) settings.open = false;
@@ -393,7 +393,7 @@
     interactive.hidden = false;
     root.dataset.codebreakerReady = "true";
     setDraftConfig(config);
-    startNewGame("");
+    startNewGame("", false, false);
   };
 
   const initializeAll = () => {

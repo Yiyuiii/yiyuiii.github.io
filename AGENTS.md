@@ -77,6 +77,7 @@ python scripts/validate.py --browser
 - 随机生成器：docs/toy-generators.md
 - 小玩意扩充路线：docs/toy-expansion-roadmap-2026-08-04.md
 - 小玩意按首次展开加载：docs/toy-loading.md
+- 小玩意 M2 体验审计：docs/toy-experience-audit-2026-08-07.md
 - 外部开放数据小游戏调研：docs/toy-external-dataset-research-2026-08-05.md
 - 数字 Wordle：docs/toy-codebreaker.md
 - 凑成 24：docs/toy-make-24.md
