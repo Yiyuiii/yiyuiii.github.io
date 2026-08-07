@@ -121,10 +121,11 @@ def test_include_is_progressively_enhanced_accessible_and_self_contained():
         "data-art-glimpse-config",
         'type="application/json"',
         "<noscript>",
-        "assets/js/art-glimpse.js",
         'referrerpolicy="no-referrer"',
     ):
         assert required in include
+    assert "assets/js/art-glimpse.js" not in include
+    assert "assets/js/art-glimpse.js" in text("_includes/toy-index.liquid")
     stylesheet = text("assets/css/toys.scss")
     assert ".art-glimpse__choices" in stylesheet
     assert "@media (max-width: 359px)" in stylesheet

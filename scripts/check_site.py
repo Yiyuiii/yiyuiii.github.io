@@ -64,6 +64,23 @@ EXPECTED_NAV_HREFS = {
 GITHUB_UPDATED_AT_RE = re.compile(
     r"\b20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z\b"
 )
+TOY_INITIAL_JS_BUDGET = 15 * 1024
+TOY_LOADER_BUDGET = 4 * 1024
+TOY_RUNTIME_PATHS = {
+    "/assets/js/acg-relation-quiz-logic.js",
+    "/assets/js/acg-relation-quiz.js",
+    "/assets/js/art-glimpse.js",
+    "/assets/js/moegirl-quiz.js",
+    "/assets/js/toy-challenge-history.js",
+    "/assets/js/toy-challenges.js",
+    "/assets/js/toy-codebreaker.js",
+    "/assets/js/toy-color-challenge.js",
+    "/assets/js/toy-generators.js",
+    "/assets/js/toy-lights-out.js",
+    "/assets/js/toy-make-24.js",
+    "/assets/js/toy-random.js",
+}
+TOY_LOADER_PATH = "/assets/js/toy-loader.js"
 
 
 def route_path(site: Path, route: str) -> Path:
@@ -239,6 +256,45 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
     if "mathjax" in source or "al_math" in source:
         raise SiteCheckError(f"{route}: toys page loads math assets")
     return ids
+
+
+def _check_toy_initial_scripts(site: Path, soup: BeautifulSoup, route: str) -> None:
+    local_paths = []
+    for script in soup.select("script[src]"):
+        parsed = urlparse(str(script.get("src", "")))
+        if parsed.scheme or parsed.netloc:
+            continue
+        if not parsed.path.startswith("/"):
+            raise SiteCheckError(
+                f"{route}: initial local script must use an absolute path: {parsed.path!r}"
+            )
+        local_paths.append(parsed.path)
+
+    if local_paths.count(TOY_LOADER_PATH) != 1:
+        raise SiteCheckError(f"{route}: expected exactly one toy loader script")
+    eager_runtimes = sorted(set(local_paths).intersection(TOY_RUNTIME_PATHS))
+    if eager_runtimes:
+        raise SiteCheckError(
+            f"{route}: toy runtimes must load on first disclosure, not initially: "
+            + ", ".join(eager_runtimes)
+        )
+
+    total = 0
+    for asset_path in local_paths:
+        built_path = site / asset_path.lstrip("/")
+        if not built_path.is_file():
+            raise SiteCheckError(f"{route}: initial script is missing: {asset_path}")
+        size = built_path.stat().st_size
+        total += size
+        if asset_path == TOY_LOADER_PATH and size > TOY_LOADER_BUDGET:
+            raise SiteCheckError(
+                f"{route}: toy loader is {size} bytes; budget is {TOY_LOADER_BUDGET}"
+            )
+    if total > TOY_INITIAL_JS_BUDGET:
+        raise SiteCheckError(
+            f"{route}: initial same-origin JavaScript is {total} bytes; "
+            f"budget is {TOY_INITIAL_JS_BUDGET}"
+        )
 
 
 def _check_home(soup: BeautifulSoup, route: str, language: str) -> None:
@@ -840,8 +896,12 @@ def check_site(site: Path, *, external_links: bool = False) -> None:
     )
     _check_about(_soup(site, "/about/"), "/about/", "zh")
     _check_about(_soup(site, "/en/about/"), "/en/about/", "en")
-    zh_toys = _check_toys(_soup(site, "/toys/"), "/toys/", "zh")
-    en_toys = _check_toys(_soup(site, "/en/toys/"), "/en/toys/", "en")
+    zh_toy_soup = _soup(site, "/toys/")
+    en_toy_soup = _soup(site, "/en/toys/")
+    zh_toys = _check_toys(zh_toy_soup, "/toys/", "zh")
+    en_toys = _check_toys(en_toy_soup, "/en/toys/", "en")
+    _check_toy_initial_scripts(site, zh_toy_soup, "/toys/")
+    _check_toy_initial_scripts(site, en_toy_soup, "/en/toys/")
     if zh_toys != en_toys:
         raise SiteCheckError("toy identities or ordering differ between languages")
     _check_not_found(_soup(site, "/404.html"))

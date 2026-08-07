@@ -3,7 +3,12 @@
 {% assign toys = site.data.toys %}
 {% assign copy = toys.page[lang_key] %}
 
-<div class="toy-index" data-toy-index>
+<div
+  class="toy-index"
+  data-toy-index
+  data-toy-loading="{{ copy.loading | escape }}"
+  data-toy-load-error="{{ copy.load_error | escape }}"
+>
   <header class="toy-index__header">
     <h1 class="sr-only">{{ page.title }}</h1>
     <p class="toy-index__introduction">{{ copy.introduction }}</p>
@@ -25,7 +30,24 @@
         <div class="toy-group__items">
           {% for toy in group.items %}
             {% capture toy_title_id %}{{ toy.id }}-title{% endcapture %}
-            <details id="{{ toy.id | escape }}" class="toy-entry" data-toy-disclosure>
+            {% assign toy_assets = '' %}
+            {% case toy.id %}
+              {% when 'moegirl-quiz' %}{% assign toy_assets = 'moegirl' %}
+              {% when 'art-glimpse' %}{% assign toy_assets = 'art' %}
+              {% when 'anilist-role-quiz' %}{% assign toy_assets = 'acg-logic acg-ui' %}
+              {% when 'color-challenge' %}{% assign toy_assets = 'random color' %}
+              {% when 'ten-second' or 'reaction-time' %}{% assign toy_assets = 'random history challenges' %}
+              {% when 'codebreaker' %}{% assign toy_assets = 'random codebreaker' %}
+              {% when 'make-24' %}{% assign toy_assets = 'random make24' %}
+              {% when 'lights-out' %}{% assign toy_assets = 'random lights' %}
+              {% when 'random-password' or 'random-number' %}{% assign toy_assets = 'random generators' %}
+            {% endcase %}
+            <details
+              id="{{ toy.id | escape }}"
+              class="toy-entry"
+              data-toy-disclosure
+              data-toy-assets="{{ toy_assets }}"
+            >
               <summary class="toy-entry__summary">
                 {% if group_title %}
                   <h3 id="{{ toy_title_id }}">
@@ -37,6 +59,10 @@
                 {% if group_title %}</h3>{% else %}</h2>{% endif %}
               </summary>
               <div class="toy-entry__body" aria-labelledby="{{ toy_title_id }}">
+                <div class="toy-loader-status" data-toy-loader-status role="status" aria-live="polite" hidden>
+                  <span data-toy-loader-message>{{ copy.loading }}</span>
+                  <button type="button" data-toy-loader-retry hidden>{{ copy.retry }}</button>
+                </div>
                 {% case toy.id %}
                   {% when 'moegirl-quiz' %}
                     {%- comment -%}保留 moegirl-quiz 作为公开片段兼容 ID；可见标题按唯一题源称“萌娘百科猜猜”。{%- endcomment -%}
@@ -70,13 +96,21 @@
     {% endfor %}
   </div>
 
-  <script src="{{ '/assets/js/toy-random.js' | relative_url | bust_file_cache }}" defer></script>
-  <script src="{{ '/assets/js/toy-generators.js' | relative_url | bust_file_cache }}" defer></script>
-  <script src="{{ '/assets/js/toy-challenge-history.js' | relative_url | bust_file_cache }}" defer></script>
-  <script src="{{ '/assets/js/toy-challenges.js' | relative_url | bust_file_cache }}" defer></script>
-  <script src="{{ '/assets/js/toy-color-challenge.js' | relative_url | bust_file_cache }}" defer></script>
-  <script src="{{ '/assets/js/toy-codebreaker.js' | relative_url | bust_file_cache }}" defer></script>
-  <script src="{{ '/assets/js/toy-make-24.js' | relative_url | bust_file_cache }}" defer></script>
-  <script src="{{ '/assets/js/toy-lights-out.js' | relative_url | bust_file_cache }}" defer></script>
-  <script src="{{ '/assets/js/toy-disclosure.js' | relative_url | bust_file_cache }}" defer></script>
+  <script type="application/json" data-toy-asset-manifest>
+    {
+      "random": {{ '/assets/js/toy-random.js' | relative_url | bust_file_cache | jsonify }},
+      "generators": {{ '/assets/js/toy-generators.js' | relative_url | bust_file_cache | jsonify }},
+      "history": {{ '/assets/js/toy-challenge-history.js' | relative_url | bust_file_cache | jsonify }},
+      "challenges": {{ '/assets/js/toy-challenges.js' | relative_url | bust_file_cache | jsonify }},
+      "color": {{ '/assets/js/toy-color-challenge.js' | relative_url | bust_file_cache | jsonify }},
+      "codebreaker": {{ '/assets/js/toy-codebreaker.js' | relative_url | bust_file_cache | jsonify }},
+      "make24": {{ '/assets/js/toy-make-24.js' | relative_url | bust_file_cache | jsonify }},
+      "lights": {{ '/assets/js/toy-lights-out.js' | relative_url | bust_file_cache | jsonify }},
+      "moegirl": {{ '/assets/js/moegirl-quiz.js' | relative_url | bust_file_cache | jsonify }},
+      "art": {{ '/assets/js/art-glimpse.js' | relative_url | bust_file_cache | jsonify }},
+      "acg-logic": {{ '/assets/js/acg-relation-quiz-logic.js' | relative_url | bust_file_cache | jsonify }},
+      "acg-ui": {{ '/assets/js/acg-relation-quiz.js' | relative_url | bust_file_cache | jsonify }}
+    }
+  </script>
+  <script src="{{ '/assets/js/toy-loader.js' | relative_url | bust_file_cache }}" defer></script>
 </div>
