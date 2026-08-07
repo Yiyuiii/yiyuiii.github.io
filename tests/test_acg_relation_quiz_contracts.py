@@ -43,19 +43,36 @@ def test_copy_is_bilingual_and_discloses_the_real_request_and_language_limits():
     assert set(quiz["copy"]["zh"]) == set(quiz["copy"]["en"])
     assert set(quiz["source_copy"]) == {"zh", "en"}
     assert set(quiz["source_copy"]["zh"]) == set(quiz["source_copy"]["en"])
-    zh = " ".join(quiz["source_copy"]["zh"].values())
-    en = " ".join(quiz["source_copy"]["en"].values())
+    zh = quiz["source_copy"]["zh"]["privacy"]
+    en = quiz["source_copy"]["en"]["privacy"]
     assert "跨域权限检查" in zh and "GraphQL POST" in zh and "IP" in zh
     assert "原文" in zh and "罗马字" in zh and "没有独立中文题名" in zh
     assert "CORS permission check" in en and "GraphQL POST" in en and "IP" in en
     assert "six" in en and "360" in en
     assert "不会自动翻页或重试" in zh
     assert "never follows another page or retries automatically" in en
-    assert quiz["source_copy"]["zh"]["question"] == "《{title}》的主角之一是谁？"
-    assert quiz["source_copy"]["en"]["question"] == "Who is one of the main characters in {title}?"
+    expected_kinds = {
+        "anime_to_character",
+        "character_to_anime",
+        "character_to_character",
+    }
+    assert set(quiz["source_copy"]["zh"]["prompts"]) == expected_kinds
+    assert set(quiz["source_copy"]["en"]["prompts"]) == expected_kinds
+    assert set(quiz["source_copy"]["zh"]["feedback"]) == expected_kinds
+    assert set(quiz["source_copy"]["en"]["feedback"]) == expected_kinds
+    for language in ("zh", "en"):
+        for kind in expected_kinds:
+            assert set(quiz["source_copy"][language]["feedback"][kind]) == {
+                "correct",
+                "incorrect",
+            }
+    assert quiz["source_copy"]["zh"]["prompts"]["anime_to_character"] == "《{title}》的主角之一是谁？"
+    assert quiz["source_copy"]["en"]["prompts"]["anime_to_character"] == "Who is one of the main characters in {title}?"
     assert "MAIN 通常对应主角或核心主角团，可能不止一人" in quiz["source_copy"]["zh"]["privacy"]
-    assert "does not judge screen time independently" in quiz["source_copy"]["en"]["privacy"]
-    assert "{answer}" in quiz["copy"]["zh"]["correct"]
+    assert "do not judge screen time independently" in quiz["source_copy"]["en"]["privacy"]
+    assert "网站界面主要使用英文" in quiz["source_copy"]["zh"]["privacy"]
+    assert "原文名（拉丁字母名）" in quiz["source_copy"]["zh"]["privacy"]
+    assert "{answer}" in quiz["source_copy"]["zh"]["feedback"]["character_to_character"]["correct"]
 
 
 def test_configuration_has_no_questions_images_credentials_or_storage():
@@ -101,6 +118,10 @@ def test_scripts_enforce_network_randomness_size_and_dom_boundaries():
     assert "isAdult: false" in logic
     assert "genre_not_in" in logic and "tag_not_in" in logic
     assert "SENSITIVE_TEXT" in logic
+    assert '"anime_to_character"' in logic
+    assert '"character_to_anime"' in logic
+    assert '"character_to_character"' in logic
+    assert "name { full native }" in logic
     assert "coverImage" not in logic and "description" not in logic
     assert combined.count("fetch(") == 1
     assert 'credentials: "omit"' in controller

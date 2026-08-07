@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
 // Explicit maintenance-only probe. Each invocation performs at most one CMA
-// metadata GET and, only if a round forms, its four final image GETs. It never
-// follows pages, retries, saves response bodies, or prints artwork identifiers.
+// metadata GET and, only if a forward round forms, its four final image GETs.
+// The forward format is explicit here because it is the worst-case media budget
+// gate. This probe never follows pages, retries, saves response bodies, or prints
+// artwork identifiers.
 
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
@@ -105,7 +107,7 @@ try {
   output.returned = Array.isArray(payload.data) ? payload.data.length : 0;
   const eligible = logic.normalizeArtworks(payload, config);
   output.eligible = eligible.length;
-  gameRound = logic.createRound(eligible, config, randomApi);
+  gameRound = logic.createRound(eligible, config, randomApi, ["metadata_to_image"]);
   output.round_formed = Boolean(gameRound);
   output.metadata_ok = true;
 } catch (error) {

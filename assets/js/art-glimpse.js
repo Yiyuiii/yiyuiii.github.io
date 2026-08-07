@@ -20,6 +20,9 @@
     "url", "share_license_status", "type", "department", "description",
   ]);
   const SENSITIVE_TEXT = /\b(?:nude|nudity|naked|erotic|sexual|brothel|prostitut|rape|suicide|corpse|behead|decapitat|execution|massacre|murder|blood|crucifix|martyrdom|battle|war scene)\b/i;
+  const ROUND_KINDS = Object.freeze(["metadata_to_image", "image_to_metadata"]);
+  const CLUE_FIELDS = Object.freeze(["title", "creator", "date"]);
+  const DEFAULT_CLUE_FIELDS = Object.freeze(["title", "creator"]);
 
   const boundedInteger = (value, fallback, minimum, maximum) => {
     const parsed = Number.parseInt(String(value ?? ""), 10);
@@ -150,28 +153,79 @@
     return result;
   };
 
-  const createRound = (artworks, config, randomness = randomApi) => {
-    const selected = [];
-    let selectedBytes = 0;
-    for (const artwork of shuffle(artworks, randomness)) {
-      if (selectedBytes + artwork.filesize > config.maxRoundImageBytes) continue;
-      selected.push(artwork);
-      selectedBytes += artwork.filesize;
-      if (selected.length === config.candidateCount) break;
+  const normalizeRoundKinds = (value = ROUND_KINDS) => {
+    const normalized = [...new Set(Array.isArray(value) ? value.map(String) : [])]
+      .filter((kind) => ROUND_KINDS.includes(kind));
+    if (!normalized.length) throw new RangeError("at least one artwork round kind is required");
+    return Object.freeze(normalized);
+  };
+
+  const normalizeClueFields = (value = DEFAULT_CLUE_FIELDS) => {
+    const normalized = [...new Set(Array.isArray(value) ? value.map(String) : [])]
+      .filter((field) => CLUE_FIELDS.includes(field));
+    if (!normalized.length) throw new RangeError("at least one artwork clue field is required");
+    return Object.freeze(normalized);
+  };
+
+  const metadataSignature = (artwork, clueFields) => clueFields
+    .map((field) => String(artwork?.[field] || "").replace(/\s+/g, " ").trim().toLocaleLowerCase())
+    .join("\u001f");
+
+  const candidateSets = (artworks, config, clueFields) => {
+    const sets = [];
+    for (let first = 0; first < artworks.length - 3; first += 1) {
+      for (let second = first + 1; second < artworks.length - 2; second += 1) {
+        for (let third = second + 1; third < artworks.length - 1; third += 1) {
+          for (let fourth = third + 1; fourth < artworks.length; fourth += 1) {
+            const selected = [artworks[first], artworks[second], artworks[third], artworks[fourth]];
+            const signatures = new Set(selected.map((artwork) => metadataSignature(artwork, clueFields)));
+            if (signatures.size === config.candidateCount) sets.push(Object.freeze(selected));
+          }
+        }
+      }
     }
-    if (selected.length !== config.candidateCount) return null;
+    return sets;
+  };
+
+  const createRound = (
+    artworks,
+    config,
+    randomness = randomApi,
+    allowedKinds = ROUND_KINDS,
+    clueFields = DEFAULT_CLUE_FIELDS,
+  ) => {
+    if (!Array.isArray(artworks) || artworks.length < config.candidateCount) return null;
+    const enabled = normalizeRoundKinds(allowedKinds);
+    const visibleFields = normalizeClueFields(clueFields);
+    const distinctSets = candidateSets(artworks, config, visibleFields);
+    const budgetedSets = distinctSets.filter((selected) => (
+      selected.reduce((sum, artwork) => sum + artwork.filesize, 0) <= config.maxRoundImageBytes
+    ));
+    const viableKinds = enabled.filter((kind) => (
+      kind === "image_to_metadata" ? distinctSets.length : budgetedSets.length
+    ));
+    if (!viableKinds.length) return null;
+    const kind = viableKinds[randomness.uintBelow(viableKinds.length)];
+    const selected = kind === "metadata_to_image"
+      ? budgetedSets[randomness.uintBelow(budgetedSets.length)]
+      : distinctSets[randomness.uintBelow(distinctSets.length)];
     const options = shuffle(selected, randomness);
     const answer = options[randomness.uintBelow(options.length)];
     return Object.freeze({
       answer,
+      clueFields: visibleFields,
+      kind,
       options: Object.freeze(options),
-      totalImageBytes: selectedBytes,
+      totalImageBytes: kind === "metadata_to_image"
+        ? selected.reduce((sum, artwork) => sum + artwork.filesize, 0)
+        : answer.filesize,
     });
   };
 
   const logic = Object.freeze({
-    ARTWORK_HOSTS, EXPECTED, RESPONSE_FIELDS, buildApiUrl, createRound,
-    normalizeArtworks, safeHttpsUrl, shuffle, validateConfig,
+    ARTWORK_HOSTS, CLUE_FIELDS, DEFAULT_CLUE_FIELDS, EXPECTED, RESPONSE_FIELDS,
+    ROUND_KINDS, buildApiUrl, createRound, normalizeArtworks, normalizeClueFields,
+    normalizeRoundKinds, safeHttpsUrl, shuffle, validateConfig,
   });
   globalThis.yiyuiiiArtGlimpseLogic = logic;
   if (!globalThis.document) return;
@@ -220,12 +274,21 @@
     const find = (selector) => root.querySelector(selector);
     const enhanced = find("[data-art-glimpse-enhanced]");
     const interactive = find("[data-art-glimpse-interactive]");
+    const settings = find("[data-art-glimpse-settings]");
+    const settingsSummary = find("[data-art-glimpse-settings-summary]");
+    const settingsApply = find("[data-art-glimpse-settings-apply]");
+    const settingsReset = find("[data-art-glimpse-settings-reset]");
+    const settingsStatus = find("[data-art-glimpse-settings-status]");
     const startButton = find("[data-art-glimpse-start]");
     const roundElement = find("[data-art-glimpse-round]");
     const clue = find("[data-art-glimpse-clue]");
+    const prompt = find("[data-art-glimpse-prompt]");
+    const clueCard = find("[data-art-glimpse-clue-card]");
+    const clueImage = find("[data-art-glimpse-clue-image]");
     const clueTitle = find("[data-art-glimpse-clue-title]");
     const clueMaker = find("[data-art-glimpse-clue-maker]");
     const clueDate = find("[data-art-glimpse-clue-date]");
+    const clueFieldRows = [...root.querySelectorAll("[data-art-glimpse-clue-field]")];
     const choices = find("[data-art-glimpse-choices]");
     const status = find("[data-art-glimpse-status]");
     const reveal = find("[data-art-glimpse-reveal]");
@@ -233,14 +296,40 @@
     const maker = find("[data-art-glimpse-maker]");
     const date = find("[data-art-glimpse-date]");
     const source = find("[data-art-glimpse-source]");
-    if ([enhanced, interactive, startButton, roundElement, clue, clueTitle, clueMaker,
-      clueDate, choices,
-      status, reveal, title, maker, date, source].some((node) => !node)) return;
+    if ([enhanced, interactive, settings, settingsSummary, settingsApply, settingsReset,
+      settingsStatus, startButton, roundElement, clue, prompt, clueCard, clueImage,
+      clueTitle, clueMaker, clueDate, choices,
+      status, reveal, title, maker, date, source].some((node) => !node)
+      || clueFieldRows.length !== CLUE_FIELDS.length) return;
 
     const copy = rawConfig.copy && typeof rawConfig.copy === "object" ? rawConfig.copy : {};
     let activeController = null;
     let activeImages = [];
     let activeToken = 0;
+    let allowedKinds = normalizeRoundKinds();
+    let allowedClueFields = normalizeClueFields();
+
+    const kindFields = () => [...root.querySelectorAll("[data-art-glimpse-kind]")];
+    const clueFieldInputs = () => [...root.querySelectorAll("[data-art-glimpse-clue-field-option]")];
+    const setDraftKinds = (kinds) => {
+      const selected = new Set(kinds);
+      for (const field of kindFields()) field.checked = selected.has(field.value);
+    };
+    const setDraftClueFields = (fields) => {
+      const selected = new Set(fields);
+      for (const field of clueFieldInputs()) field.checked = selected.has(field.value);
+    };
+    const typeSummaryFor = (kinds) => kinds.length === ROUND_KINDS.length
+      ? String(copy.settings_all || "")
+      : String(copy.type_labels?.[kinds[0]] || "");
+    const clueSummaryFor = (fields) => fields
+      .map((field) => String(copy.clue_setting_labels?.[field] || ""))
+      .filter(Boolean)
+      .join(String(copy.clue_settings_separator || ", "));
+    const summaryFor = (kinds, fields) => interpolate(copy.settings_summary, {
+      clues: clueSummaryFor(fields),
+      types: typeSummaryFor(kinds),
+    });
 
     const setState = (state) => {
       root.dataset.artGlimpseState = state;
@@ -251,12 +340,18 @@
     const clearRound = () => {
       for (const image of activeImages) image.removeAttribute("src");
       activeImages = [];
+      prompt.textContent = "";
       clueTitle.textContent = "";
       clueMaker.textContent = "";
       clueDate.textContent = "";
+      clueCard.hidden = false;
+      clueImage.replaceChildren();
+      clueImage.hidden = true;
       choices.replaceChildren();
       choices.removeAttribute("data-answered");
+      choices.removeAttribute("data-kind");
       roundElement.hidden = true;
+      roundElement.removeAttribute("data-kind");
       reveal.hidden = true;
       title.textContent = "";
       maker.textContent = "";
@@ -308,56 +403,102 @@
       image.src = artwork.imageUrl;
     });
 
+    const appendBadge = (button, label) => {
+      const badge = document.createElement("span");
+      badge.className = "art-glimpse__badge";
+      badge.textContent = String(label || "");
+      button.append(badge);
+    };
+
+    const finishRound = (gameRound, artwork, button, token) => {
+      if (token !== activeToken || choices.dataset.answered === "true") return;
+      choices.dataset.answered = "true";
+      const correct = artwork.id === gameRound.answer.id;
+      for (const choice of choices.querySelectorAll("button")) {
+        choice.disabled = true;
+        if (choice.dataset.artworkId === String(gameRound.answer.id)) {
+          choice.dataset.result = "correct";
+          appendBadge(choice, copy.correct_badge);
+        }
+      }
+      if (!correct) {
+        button.dataset.result = "incorrect";
+        appendBadge(button, copy.selected_badge);
+      }
+      const feedback = copy.feedback?.[gameRound.kind];
+      status.textContent = interpolate(feedback?.[correct ? "correct" : "incorrect"], {
+        title: gameRound.answer.title,
+      });
+      title.textContent = gameRound.answer.title;
+      maker.textContent = gameRound.answer.creator || String(copy.unknown_artist || "");
+      date.textContent = gameRound.answer.date || String(copy.unknown_date || "");
+      source.href = gameRound.answer.sourceUrl;
+      source.textContent = interpolate(copy.source_label, { title: gameRound.answer.title });
+      reveal.hidden = false;
+      startButton.textContent = String(copy.again || copy.start || "");
+      setState("answered");
+      startButton.focus();
+    };
+
     const renderRound = (gameRound, images, token) => {
+      const imageChoices = gameRound.kind === "metadata_to_image";
+      prompt.textContent = String(copy.prompts?.[gameRound.kind] || "");
+      clue.setAttribute("aria-label", prompt.textContent);
+      choices.setAttribute("aria-label", String(copy.options_labels?.[gameRound.kind] || ""));
+      choices.dataset.kind = gameRound.kind;
+      clueCard.hidden = !imageChoices;
+      clueImage.hidden = imageChoices;
+      const visibleFields = new Set(gameRound.clueFields);
+      for (const row of clueFieldRows) row.hidden = !visibleFields.has(row.dataset.artGlimpseClueField);
+      if (imageChoices) {
+        clueTitle.textContent = gameRound.answer.title;
+        clueMaker.textContent = gameRound.answer.creator;
+        clueDate.textContent = gameRound.answer.date;
+      } else {
+        const clueArtwork = images[0];
+        clueArtwork.alt = String(copy.clue_image_alt || "");
+        clueImage.replaceChildren(clueArtwork);
+      }
+
       const fragment = document.createDocumentFragment();
       gameRound.options.forEach((artwork, index) => {
         const button = document.createElement("button");
-        const image = images[index];
         const number = index + 1;
         button.className = "art-glimpse__choice";
         button.type = "button";
         button.dataset.artworkId = String(artwork.id);
-        button.setAttribute("aria-label", interpolate(copy.choice_label, { number }));
-        image.alt = interpolate(copy.choice_image_alt, { number });
-        button.append(image);
-        button.addEventListener("click", () => {
-          if (token !== activeToken || choices.dataset.answered === "true") return;
-          choices.dataset.answered = "true";
-          const correct = artwork.id === gameRound.answer.id;
-          for (const choice of choices.querySelectorAll("button")) {
-            choice.disabled = true;
-            if (choice.dataset.artworkId === String(gameRound.answer.id)) {
-              choice.dataset.result = "correct";
-              const badge = document.createElement("span");
-              badge.className = "art-glimpse__badge";
-              badge.textContent = String(copy.correct_badge || "");
-              choice.append(badge);
-            }
-          }
-          if (!correct) {
-            button.dataset.result = "incorrect";
-            const badge = document.createElement("span");
-            badge.className = "art-glimpse__badge";
-            badge.textContent = String(copy.selected_badge || "");
-            button.append(badge);
-          }
-          status.textContent = String(correct ? copy.correct : copy.incorrect);
-          title.textContent = gameRound.answer.title;
-          maker.textContent = gameRound.answer.creator || String(copy.unknown_artist || "");
-          date.textContent = gameRound.answer.date || String(copy.unknown_date || "");
-          source.href = gameRound.answer.sourceUrl;
-          source.textContent = interpolate(copy.source_label, { title: gameRound.answer.title });
-          reveal.hidden = false;
-          startButton.textContent = String(copy.again || copy.start || "");
-          setState("answered");
-          startButton.focus();
-        });
+        if (imageChoices) {
+          const image = images[index];
+          button.setAttribute("aria-label", interpolate(copy.choice_label, { number }));
+          image.alt = interpolate(copy.choice_image_alt, { number });
+          button.append(image);
+        } else {
+          button.classList.add("art-glimpse__choice--metadata");
+          const values = {
+            creator: artwork.creator,
+            date: artwork.date,
+            title: artwork.title,
+          };
+          const details = gameRound.clueFields.map((field) => interpolate(copy.metadata_detail_label, {
+            label: copy.clue_setting_labels?.[field] || field,
+            value: values[field],
+          })).join("; ");
+          button.setAttribute("aria-label", interpolate(copy.metadata_choice_label, {
+            details,
+            number,
+          }));
+          gameRound.clueFields.forEach((field, fieldIndex) => {
+            const optionField = document.createElement(fieldIndex === 0 ? "strong" : "span");
+            optionField.dataset.clueField = field;
+            optionField.textContent = values[field];
+            button.append(optionField);
+          });
+        }
+        button.addEventListener("click", () => finishRound(gameRound, artwork, button, token));
         fragment.append(button);
       });
       choices.replaceChildren(fragment);
-      clueTitle.textContent = gameRound.answer.title;
-      clueMaker.textContent = gameRound.answer.creator;
-      clueDate.textContent = gameRound.answer.date;
+      roundElement.dataset.kind = gameRound.kind;
       roundElement.hidden = false;
     };
 
@@ -395,27 +536,72 @@
       if (token !== activeToken) return;
       activeController = null;
       let gameRound;
-      try { gameRound = createRound(normalizeArtworks(payload, config), config, randomApi); }
+      try {
+        gameRound = createRound(
+          normalizeArtworks(payload, config),
+          config,
+          randomApi,
+          allowedKinds,
+          allowedClueFields,
+        );
+      }
       catch (_error) { fail(copy.random_error, token); return; }
       if (!gameRound) { fail(copy.no_question, token); return; }
 
-      status.textContent = String(copy.loading_images || "");
+      status.textContent = String(copy.loading_images?.[gameRound.kind] || "");
       try {
-        const images = await Promise.all(gameRound.options.map(loadImage));
+        const imageTargets = gameRound.kind === "metadata_to_image"
+          ? gameRound.options
+          : [gameRound.answer];
+        const images = await Promise.all(imageTargets.map(loadImage));
         if (token !== activeToken) return;
         renderRound(gameRound, images, token);
-      } catch (_error) { fail(copy.image_error, token); return; }
+      } catch (_error) { fail(copy.image_errors?.[gameRound.kind], token); return; }
       status.textContent = "";
       startButton.textContent = String(copy.again || copy.start || "");
       setState("active");
       clue.focus();
     };
 
+    settings.addEventListener("change", () => { settingsStatus.textContent = ""; });
+    settingsReset.addEventListener("click", () => {
+      setDraftKinds(ROUND_KINDS);
+      setDraftClueFields(DEFAULT_CLUE_FIELDS);
+      settingsStatus.textContent = String(copy.settings_defaults_ready || "");
+    });
+    settingsApply.addEventListener("click", () => {
+      const selected = kindFields().filter((field) => field.checked).map((field) => field.value);
+      if (!selected.length) {
+        settingsStatus.textContent = String(copy.settings_required || "");
+        return;
+      }
+      const selectedClueFields = clueFieldInputs()
+        .filter((field) => field.checked)
+        .map((field) => field.value);
+      if (!selectedClueFields.length) {
+        settingsStatus.textContent = String(copy.clue_settings_required || "");
+        return;
+      }
+      allowedKinds = normalizeRoundKinds(selected);
+      allowedClueFields = normalizeClueFields(selectedClueFields);
+      invalidate();
+      settingsSummary.textContent = summaryFor(allowedKinds, allowedClueFields);
+      settings.open = false;
+      settingsStatus.textContent = String(copy.settings_applied || "");
+      status.textContent = String(copy.settings_applied || "");
+      startButton.textContent = String(copy.start || "");
+      setState("idle");
+      startButton.focus();
+    });
+
     root.dataset.artGlimpseReady = "true";
     enhanced.hidden = false;
     interactive.hidden = false;
     clearRound();
     setState("idle");
+    setDraftKinds(allowedKinds);
+    setDraftClueFields(allowedClueFields);
+    settingsSummary.textContent = summaryFor(allowedKinds, allowedClueFields);
     startButton.addEventListener("click", start);
   };
   for (const root of document.querySelectorAll("[data-art-glimpse]")) init(root);

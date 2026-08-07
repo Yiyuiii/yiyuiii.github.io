@@ -22,6 +22,11 @@
       pageMin: 1,
     }),
   });
+  const ROUND_KINDS = Object.freeze([
+    "anime_to_character",
+    "character_to_anime",
+    "character_to_character",
+  ]);
 
   const ANILIST_QUERY = `query RelationRound($page: Int!) {
   Page(page: $page, perPage: 6) {
@@ -141,7 +146,36 @@
     return native || romaji || english;
   };
 
-  const characterName = (name) => normalizeText(name?.full || name?.native);
+  const labelIdentity = (value) => normalizeText(value).toLocaleLowerCase();
+
+  const characterName = (name, language) => {
+    const full = normalizeText(name?.full);
+    const native = normalizeText(name?.native);
+    if (language === "zh" && native && full && labelIdentity(native) !== labelIdentity(full)) {
+      const combined = `${native}（${full}）`;
+      if ([...combined].length <= 140) return combined;
+    }
+    return language === "en" ? (full || native) : (native || full);
+  };
+
+  const uniqueByLabel = (entries, labelFor = (entry) => entry.name) => {
+    const unique = [];
+    const seen = new Set();
+    for (const entry of entries) {
+      const identity = labelIdentity(labelFor(entry));
+      if (!identity || seen.has(identity)) continue;
+      seen.add(identity);
+      unique.push(entry);
+    }
+    return unique;
+  };
+
+  const normalizeRoundKinds = (value = ROUND_KINDS) => {
+    const normalized = [...new Set(Array.isArray(value) ? value.map(String) : [])]
+      .filter((kind) => ROUND_KINDS.includes(kind));
+    if (!normalized.length) throw new RangeError("at least one AniList round kind is required");
+    return Object.freeze(normalized);
+  };
 
   const normalizeAniList = (payload, language = "en") => {
     const rawMedia = Array.isArray(payload?.data?.Page?.media) ? payload.data.Page.media : [];
@@ -171,16 +205,19 @@
 
       const main = [];
       const supporting = [];
+      const characters = [];
       const seenCharacters = new Set();
       for (const edge of Array.isArray(media?.characters?.edges) ? media.characters.edges : []) {
         const characterId = Number(edge?.node?.id);
-        const name = characterName(edge?.node?.name);
+        const fullName = normalizeText(edge?.node?.name?.full);
+        const nativeName = normalizeText(edge?.node?.name?.native);
+        const name = characterName(edge?.node?.name, language);
         if (
           !Number.isSafeInteger(characterId)
           || characterId <= 0
           || !name
-          || SENSITIVE_TEXT.test(name)
-          || [...name].length > 100
+          || [fullName, nativeName].filter(Boolean).some((value) => SENSITIVE_TEXT.test(value))
+          || [...name].length > 140
           || seenCharacters.has(characterId)
         ) continue;
         seenCharacters.add(characterId);
@@ -190,12 +227,15 @@
           name,
           role: edge?.role,
         });
+        characters.push(entry);
         if (edge?.role === "MAIN") main.push(entry);
         else if (edge?.role === "SUPPORTING") supporting.push(entry);
       }
-      if (!main.length || supporting.length < 3) continue;
+      if (!main.length) continue;
       seenMedia.add(id);
       normalized.push(Object.freeze({
+        characterIds: Object.freeze([...seenCharacters]),
+        characters: Object.freeze(characters),
         id,
         key: `anilist:${id}`,
         main: Object.freeze(main),
@@ -207,47 +247,199 @@
     return Object.freeze(normalized);
   };
 
+  const frozenOption = (entry, label = entry.name) => Object.freeze({
+    key: entry.key,
+    label,
+  });
+
+  const roundKey = (...parts) => `anilist:round:${parts.join(":")}`;
+
+  const animeToCharacterSeeds = (mediaEntries, recentKeys) => {
+    const seeds = [];
+    for (const media of mediaEntries) {
+      const supporting = uniqueByLabel(media.supporting);
+      for (const answer of uniqueByLabel(media.main)) {
+        const answerIdentity = labelIdentity(answer.name);
+        const distractors = supporting.filter((entry) => labelIdentity(entry.name) !== answerIdentity);
+        const usedKey = roundKey("anime-to-character", media.id, answer.id);
+        if (distractors.length >= 3 && !recentKeys.has(usedKey)) {
+          seeds.push(Object.freeze({ answer, distractors, media, usedKey }));
+        }
+      }
+    }
+    return seeds;
+  };
+
+  const createAnimeToCharacterRound = (seeds, randomApi) => {
+    const seed = sampleWithoutReplacement(seeds, 1, randomApi)[0];
+    const distractors = sampleWithoutReplacement(seed.distractors, 3, randomApi);
+    const options = sampleWithoutReplacement([seed.answer, ...distractors], 4, randomApi);
+    return Object.freeze({
+      answerKey: seed.answer.key,
+      answerLabel: seed.answer.name,
+      feedbackValues: Object.freeze({ answer: seed.answer.name, title: seed.media.title }),
+      kind: "anime_to_character",
+      options: Object.freeze(options.map((entry) => frozenOption(entry))),
+      promptValues: Object.freeze({ title: seed.media.title }),
+      provider: "anilist_role",
+      sourceLabel: seed.media.title,
+      sourceUrl: seed.media.sourceUrl,
+      usedKey: seed.usedKey,
+    });
+  };
+
+  const characterToAnimeSeeds = (mediaEntries, recentKeys) => {
+    const seeds = [];
+    for (const media of mediaEntries) {
+      for (const character of uniqueByLabel(media.main)) {
+        const characterIdentity = labelIdentity(character.name);
+        const distractors = uniqueByLabel(
+          mediaEntries.filter((candidate) => (
+            candidate.id !== media.id
+            && !candidate.characterIds.includes(character.id)
+            && !candidate.characters.some((entry) => labelIdentity(entry.name) === characterIdentity)
+            && labelIdentity(candidate.title) !== labelIdentity(media.title)
+          )),
+          (candidate) => candidate.title,
+        );
+        const usedKey = roundKey("character-to-anime", character.id, media.id);
+        if (distractors.length >= 3 && !recentKeys.has(usedKey)) {
+          seeds.push(Object.freeze({ character, distractors, media, usedKey }));
+        }
+      }
+    }
+    return seeds;
+  };
+
+  const createCharacterToAnimeRound = (seeds, randomApi) => {
+    const seed = sampleWithoutReplacement(seeds, 1, randomApi)[0];
+    const distractors = sampleWithoutReplacement(seed.distractors, 3, randomApi);
+    const options = sampleWithoutReplacement([seed.media, ...distractors], 4, randomApi);
+    return Object.freeze({
+      answerKey: seed.media.key,
+      answerLabel: seed.media.title,
+      feedbackValues: Object.freeze({ answer: seed.media.title, character: seed.character.name }),
+      kind: "character_to_anime",
+      options: Object.freeze(options.map((entry) => frozenOption(entry, entry.title))),
+      promptValues: Object.freeze({ character: seed.character.name }),
+      provider: "anilist_role",
+      sourceLabel: seed.media.title,
+      sourceUrl: seed.media.sourceUrl,
+      usedKey: seed.usedKey,
+    });
+  };
+
+  const sameAnimeDistractorSets = (mediaEntries, targetMedia, clue, answer, limit = Infinity) => {
+    const targetIds = new Set(targetMedia.characterIds);
+    const forbiddenLabels = new Set(targetMedia.characters.map((character) => labelIdentity(character.name)));
+    const groups = mediaEntries
+      .filter((media) => media.id !== targetMedia.id)
+      .map((media) => Object.freeze({
+        characters: uniqueByLabel(media.main).filter((character) => (
+          !targetIds.has(character.id) && !forbiddenLabels.has(labelIdentity(character.name))
+        )),
+        mediaId: media.id,
+      }))
+      .filter((group) => group.characters.length);
+    const selections = [];
+    const visit = (start, selected, usedIds, usedLabels) => {
+      if (selected.length === 3) {
+        selections.push(Object.freeze(selected.slice()));
+        return selections.length >= limit;
+      }
+      for (let groupIndex = start; groupIndex < groups.length; groupIndex += 1) {
+        if (selected.length + (groups.length - groupIndex) < 3) break;
+        for (const character of groups[groupIndex].characters) {
+          const identity = labelIdentity(character.name);
+          if (usedIds.has(character.id) || usedLabels.has(identity)) continue;
+          usedIds.add(character.id);
+          usedLabels.add(identity);
+          selected.push(character);
+          if (visit(groupIndex + 1, selected, usedIds, usedLabels)) return true;
+          selected.pop();
+          usedLabels.delete(identity);
+          usedIds.delete(character.id);
+        }
+      }
+      return false;
+    };
+    visit(0, [], new Set([clue.id, answer.id]), new Set(forbiddenLabels));
+    return selections;
+  };
+
+  const characterToCharacterSeeds = (mediaEntries, recentKeys) => {
+    const seeds = [];
+    for (const media of mediaEntries) {
+      const main = uniqueByLabel(media.main);
+      if (main.length < 2) continue;
+      for (const clue of main) {
+        for (const answer of main) {
+          if (answer.id === clue.id || labelIdentity(answer.name) === labelIdentity(clue.name)) continue;
+          const usedKey = roundKey("character-to-character", media.id, clue.id, answer.id);
+          if (
+            !recentKeys.has(usedKey)
+            && sameAnimeDistractorSets(mediaEntries, media, clue, answer, 1).length
+          ) seeds.push(Object.freeze({ answer, clue, media, usedKey }));
+        }
+      }
+    }
+    return seeds;
+  };
+
+  const createCharacterToCharacterRound = (seeds, mediaEntries, randomApi) => {
+    const seed = sampleWithoutReplacement(seeds, 1, randomApi)[0];
+    const sets = sameAnimeDistractorSets(mediaEntries, seed.media, seed.clue, seed.answer);
+    const distractors = sampleWithoutReplacement(sets, 1, randomApi)[0];
+    const options = sampleWithoutReplacement([seed.answer, ...distractors], 4, randomApi);
+    return Object.freeze({
+      answerKey: seed.answer.key,
+      answerLabel: seed.answer.name,
+      feedbackValues: Object.freeze({
+        answer: seed.answer.name,
+        character: seed.clue.name,
+        title: seed.media.title,
+      }),
+      kind: "character_to_character",
+      options: Object.freeze(options.map((entry) => frozenOption(entry))),
+      promptValues: Object.freeze({ character: seed.clue.name }),
+      provider: "anilist_role",
+      sourceLabel: seed.media.title,
+      sourceUrl: seed.media.sourceUrl,
+      usedKey: seed.usedKey,
+    });
+  };
+
   const createAniListRound = (mediaEntries, options = {}) => {
     const randomApi = options.randomApi;
     if (!hasRandomApi(randomApi)) throw logicError("random", "secure randomness is unavailable");
     const recentKeys = new Set(options.recentKeys || []);
-    const viable = (Array.isArray(mediaEntries) ? mediaEntries : []).filter(
-      (media) => media.main.some((character) => !recentKeys.has(character.key)) && media.supporting.length >= 3,
-    );
-    if (!viable.length) throw logicError("no_round", "no viable AniList role relation");
-    const media = sampleWithoutReplacement(viable, 1, randomApi)[0];
-    const answer = sampleWithoutReplacement(
-      media.main.filter((character) => !recentKeys.has(character.key)),
-      1,
-      randomApi,
-    )[0];
-    const distractors = sampleWithoutReplacement(media.supporting, 3, randomApi);
-    const selected = sampleWithoutReplacement([answer, ...distractors], 4, randomApi);
-    return Object.freeze({
-      answerKey: answer.key,
-      answerLabel: answer.name,
-      promptValues: Object.freeze({ title: media.title }),
-      options: Object.freeze(selected.map((character) => Object.freeze({
-        key: character.key,
-        label: character.name,
-      }))),
-      provider: "anilist_role",
-      sourceLabel: media.title,
-      sourceUrl: media.sourceUrl,
-      usedKey: answer.key,
+    const allowedKinds = normalizeRoundKinds(options.allowedKinds);
+    const entries = Array.isArray(mediaEntries) ? mediaEntries : [];
+    const seedSets = Object.freeze({
+      anime_to_character: animeToCharacterSeeds(entries, recentKeys),
+      character_to_anime: characterToAnimeSeeds(entries, recentKeys),
+      character_to_character: characterToCharacterSeeds(entries, recentKeys),
     });
+    const viableKinds = allowedKinds.filter((kind) => seedSets[kind].length);
+    if (!viableKinds.length) throw logicError("no_round", "no viable AniList main-character relation");
+    const kind = sampleWithoutReplacement(viableKinds, 1, randomApi)[0];
+    if (kind === "anime_to_character") return createAnimeToCharacterRound(seedSets[kind], randomApi);
+    if (kind === "character_to_anime") return createCharacterToAnimeRound(seedSets[kind], randomApi);
+    return createCharacterToCharacterRound(seedSets[kind], entries, randomApi);
   };
 
   globalScope.yiyuiiiAcgRelationQuizLogic = Object.freeze({
     ANILIST_QUERY,
     BLOCKED_GENRES,
     BLOCKED_TAGS,
+    ROUND_KINDS,
     SENSITIVE_TEXT,
     SOURCE_DEFINITIONS,
     buildAniListRequest,
     createAniListRound,
     hasRandomApi,
     normalizeAniList,
+    normalizeRoundKinds,
     normalizeText,
     sampleWithoutReplacement,
     validateSource,

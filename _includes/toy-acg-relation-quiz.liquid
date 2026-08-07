@@ -15,6 +15,33 @@
     </p>
 
     <div data-acg-interactive hidden>
+      <details class="toy-settings knowledge-quiz-settings" data-acg-settings>
+        <summary>
+          <span class="toy-settings__title">{{ copy.settings_title }}</span>
+          <span class="toy-settings__summary" data-acg-settings-summary></span>
+          <span class="toy-settings__adjust">{{ copy.settings_adjust }}</span>
+        </summary>
+        <div class="toy-settings__panel">
+          <fieldset class="toy-fieldset">
+            <legend>{{ copy.settings_legend }}</legend>
+            <div class="toy-checks">
+              {% for type in copy.type_labels %}
+                <label class="toy-check">
+                  <input type="checkbox" value="{{ type[0] | escape }}" data-acg-kind>
+                  {{ type[1] }}
+                </label>
+              {% endfor %}
+            </div>
+            <p class="toy-field-help">{{ copy.settings_help }}</p>
+          </fieldset>
+          <div class="toy-settings__actions">
+            <button type="button" data-acg-settings-reset>{{ copy.settings_reset }}</button>
+            <button type="button" class="toy-settings__apply" data-acg-settings-apply>{{ copy.settings_apply }}</button>
+          </div>
+          <p class="toy-settings__status" data-acg-settings-status aria-live="polite" aria-atomic="true"></p>
+        </div>
+      </details>
+
       <button class="acg-relation-quiz__start" type="button" data-acg-start>{{ copy.start }}</button>
 
       <div class="acg-relation-quiz__round" data-acg-round hidden>

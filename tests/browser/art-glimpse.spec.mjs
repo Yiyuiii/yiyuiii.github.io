@@ -19,21 +19,56 @@ const copy = {
     again: "再来一题",
     retry: "重试",
     loading_metadata: "正在取得馆藏……",
-    loading_images: "正在加载四幅馆藏图……",
-    prompt: "这张馆藏名片对应哪幅画？",
+    loading_images: {
+      metadata_to_image: "正在加载四幅馆藏图……",
+      image_to_metadata: "正在加载本题馆藏图……",
+    },
+    prompts: {
+      metadata_to_image: "这张馆藏名片对应哪幅画？",
+      image_to_metadata: "这幅画对应哪张馆藏名片？",
+    },
+    settings_title: "玩法设置", settings_adjust: "调整", settings_all: "两种题型",
+    settings_summary: "{types} · {clues}",
+    settings_legend: "启用哪些题型", settings_help: "每题随机选择。",
+    clue_settings_legend: "显示哪些馆藏信息", clue_settings_help: "至少保留一项。",
+    clue_setting_labels: { title: "题名", creator: "作者", date: "年代" },
+    clue_settings_separator: "、",
+    settings_apply: "应用设置", settings_reset: "恢复默认",
+    settings_applied: "玩法设置已应用；下一题按新设置生成。",
+    settings_defaults_ready: "已恢复默认：两种题型，显示题名和作者；应用后生效。",
+    settings_required: "请至少启用一种题型。",
+    clue_settings_required: "请至少显示题名、作者或年代中的一项。",
+    type_labels: { metadata_to_image: "看名片找画", image_to_metadata: "看画找名片" },
     clue_title_label: "题名",
     clue_artist_label: "作者",
     clue_date_label: "年代",
-    options_label: "四幅候选馆藏图",
+    options_labels: {
+      metadata_to_image: "四幅候选馆藏图",
+      image_to_metadata: "四张候选馆藏名片",
+    },
     choice_label: "选择候选作品 {number}",
     choice_image_alt: "候选作品 {number}",
-    correct: "配对成功！",
-    incorrect: "没猜中；正确作品已标出。",
+    clue_image_alt: "本题馆藏图",
+    metadata_choice_label: "选择候选名片 {number}：{details}",
+    metadata_detail_label: "{label}：{value}",
+    feedback: {
+      metadata_to_image: {
+        correct: "答对了！你找到了《{title}》。",
+        incorrect: "没猜中；《{title}》的正确画面已标出。",
+      },
+      image_to_metadata: {
+        correct: "答对了！这幅画是《{title}》。",
+        incorrect: "没猜中；这幅画是《{title}》。",
+      },
+    },
     correct_badge: "答案",
     selected_badge: "你的选择",
     no_question: "本次小批结果不足以组成四幅合格作品；可由你主动重试。",
     network_error: "暂时没能取得馆藏资料，请稍后重试。",
-    image_error: "本题的馆藏图片没有全部载入；可由你主动重试。",
+    image_errors: {
+      metadata_to_image: "本题的四幅馆藏图没有全部载入；可由你主动重试。",
+      image_to_metadata: "本题的馆藏图没有载入；可由你主动重试。",
+    },
     random_error: "当前浏览器无法提供可靠随机数，暂时不能出题。",
     reveal_label: "本题作品",
     unknown_artist: "作者不详",
@@ -51,21 +86,59 @@ const copy = {
     again: "Another round",
     retry: "Try again",
     loading_metadata: "Retrieving the collection…",
-    loading_images: "Loading four images…",
-    prompt: "Which artwork matches this museum card?",
+    loading_images: {
+      metadata_to_image: "Loading four images…",
+      image_to_metadata: "Loading the artwork clue…",
+    },
+    prompts: {
+      metadata_to_image: "Which artwork matches this museum card?",
+      image_to_metadata: "Which museum card matches this artwork?",
+    },
+    settings_title: "Game settings", settings_adjust: "Adjust", settings_all: "Both formats",
+    settings_summary: "{types} · {clues}",
+    settings_legend: "Enabled formats", settings_help: "Randomly use an enabled format.",
+    clue_settings_legend: "Museum information shown", clue_settings_help: "Keep at least one.",
+    clue_setting_labels: { title: "Title", creator: "Artist", date: "Date" },
+    clue_settings_separator: ", ",
+    settings_apply: "Apply settings", settings_reset: "Restore defaults",
+    settings_applied: "Game settings applied; the next round will use them.",
+    settings_defaults_ready: "Defaults restored: both formats with title and artist; apply to confirm.",
+    settings_required: "Select at least one format.",
+    clue_settings_required: "Show at least one of title, artist, or date.",
+    type_labels: {
+      metadata_to_image: "Find art from a card",
+      image_to_metadata: "Find a card from art",
+    },
     clue_title_label: "Title",
     clue_artist_label: "Artist",
     clue_date_label: "Date",
-    options_label: "Four candidate museum images",
+    options_labels: {
+      metadata_to_image: "Four candidate museum images",
+      image_to_metadata: "Four candidate museum cards",
+    },
     choice_label: "Choose candidate artwork {number}",
     choice_image_alt: "Candidate artwork {number}",
-    correct: "Match found!",
-    incorrect: "Not quite; the correct artwork is marked.",
+    clue_image_alt: "Artwork clue for this round",
+    metadata_choice_label: "Choose museum card {number}: {details}",
+    metadata_detail_label: "{label}: {value}",
+    feedback: {
+      metadata_to_image: {
+        correct: "Correct! You found “{title}”.",
+        incorrect: "Not quite; the correct image for “{title}” is marked.",
+      },
+      image_to_metadata: {
+        correct: "Correct! This artwork is “{title}”.",
+        incorrect: "Not quite; this artwork is “{title}”.",
+      },
+    },
     correct_badge: "Answer",
     selected_badge: "Your choice",
     no_question: "This batch did not contain four eligible artworks.",
     network_error: "The collection data could not be retrieved.",
-    image_error: "Not all four museum images loaded.",
+    image_errors: {
+      metadata_to_image: "Not all four museum images loaded.",
+      image_to_metadata: "The museum image did not load.",
+    },
     random_error: "Secure randomness is unavailable.",
     reveal_label: "Artwork in this round",
     unknown_artist: "Unknown artist",
@@ -112,17 +185,28 @@ const fixture = (language = "zh", overrides = {}) => {
       <div data-art-glimpse-enhanced hidden>
         <p>${config.copy.privacy}</p>
         <div data-art-glimpse-interactive hidden>
+          <details data-art-glimpse-settings><summary><span data-art-glimpse-settings-summary></span></summary>
+            <label><input type="checkbox" value="metadata_to_image" data-art-glimpse-kind>${config.copy.type_labels.metadata_to_image}</label>
+            <label><input type="checkbox" value="image_to_metadata" data-art-glimpse-kind>${config.copy.type_labels.image_to_metadata}</label>
+            <label><input type="checkbox" value="title" data-art-glimpse-clue-field-option>${config.copy.clue_setting_labels.title}</label>
+            <label><input type="checkbox" value="creator" data-art-glimpse-clue-field-option>${config.copy.clue_setting_labels.creator}</label>
+            <label><input type="checkbox" value="date" data-art-glimpse-clue-field-option>${config.copy.clue_setting_labels.date}</label>
+            <button type="button" data-art-glimpse-settings-reset>${config.copy.settings_reset}</button>
+            <button type="button" data-art-glimpse-settings-apply>${config.copy.settings_apply}</button>
+            <p data-art-glimpse-settings-status></p>
+          </details>
           <button data-art-glimpse-start>${config.copy.start}</button>
           <div data-art-glimpse-round hidden>
             <section data-art-glimpse-clue tabindex="-1">
-              <p>${config.copy.prompt}</p>
-              <dl>
-                <div><dt>${config.copy.clue_title_label}</dt><dd data-art-glimpse-clue-title></dd></div>
-                <div><dt>${config.copy.clue_artist_label}</dt><dd data-art-glimpse-clue-maker></dd></div>
-                <div><dt>${config.copy.clue_date_label}</dt><dd data-art-glimpse-clue-date></dd></div>
+              <p data-art-glimpse-prompt></p>
+              <dl data-art-glimpse-clue-card>
+                <div data-art-glimpse-clue-field="title"><dt>${config.copy.clue_title_label}</dt><dd data-art-glimpse-clue-title></dd></div>
+                <div data-art-glimpse-clue-field="creator"><dt>${config.copy.clue_artist_label}</dt><dd data-art-glimpse-clue-maker></dd></div>
+                <div data-art-glimpse-clue-field="date"><dt>${config.copy.clue_date_label}</dt><dd data-art-glimpse-clue-date></dd></div>
               </dl>
+              <div data-art-glimpse-clue-image hidden></div>
             </section>
-            <div class="choices" data-art-glimpse-choices role="group" aria-label="${config.copy.options_label}"></div>
+            <div class="choices" data-art-glimpse-choices role="group"></div>
           </div>
           <p data-art-glimpse-status aria-live="polite"></p>
           <section data-art-glimpse-reveal hidden><h4>${config.copy.reveal_label}</h4>
@@ -161,9 +245,24 @@ const payload = (records = Array.from({ length: 12 }, (_, index) => artwork(inde
   info: { total: 461 }, data: records,
 });
 
-const install = async (page, language = "zh", overrides = {}) => {
+const install = async (
+  page,
+  language = "zh",
+  overrides = {},
+  allowedKinds = ["metadata_to_image"],
+  clueFields = ["title", "creator"],
+) => {
   await page.setContent(fixture(language, overrides));
   await page.addScriptTag({ path: scriptPath });
+  if (await page.locator("[data-art-glimpse]").getAttribute("data-art-glimpse-ready") !== "true") return;
+  await page.locator("[data-art-glimpse-settings] summary").click();
+  await page.locator("[data-art-glimpse-kind]").evaluateAll((fields, enabled) => {
+    for (const field of fields) field.checked = enabled.includes(field.value);
+  }, allowedKinds);
+  await page.locator("[data-art-glimpse-clue-field-option]").evaluateAll((fields, enabled) => {
+    for (const field of fields) field.checked = enabled.includes(field.value);
+  }, clueFields);
+  await page.locator("[data-art-glimpse-settings-apply]").click();
 };
 
 const observeExternal = (page) => {
@@ -196,7 +295,7 @@ test("one explicit start makes one filtered metadata GET and four unique image G
   await expect(page.locator("[data-art-glimpse-clue]")).toBeFocused();
   await expect(page.locator("[data-art-glimpse-clue-title]")).toContainText("Official Landscape");
   await expect(page.locator("[data-art-glimpse-clue-maker]")).toContainText("Artist");
-  await expect(page.locator("[data-art-glimpse-clue-date]")).toHaveText(/^18\d+0$/);
+  await expect(page.locator('[data-art-glimpse-clue-field="date"]')).toBeHidden();
   await expect(page.locator("canvas")).toHaveCount(0);
 
   const metadata = requests.filter((request) => new URL(request.url()).hostname === API_HOST);
@@ -215,6 +314,71 @@ test("one explicit start makes one filtered metadata GET and four unique image G
   expect(Number(url.searchParams.get("skip"))).toBeLessThanOrEqual(300);
   expect(metadata[0].headers().accept).toBe("application/json");
   for (const request of images) expect(request.headers().referer).toBeUndefined();
+});
+
+test("the reverse format loads one image and offers four museum cards", async ({ page }) => {
+  const requests = observeExternal(page);
+  await routeSuccess(page);
+  await install(page, "zh", {}, ["image_to_metadata"], ["date"]);
+  expect(requests).toEqual([]);
+
+  await page.getByRole("button", { name: "开始一题" }).click();
+  await expect(page.locator("[data-art-glimpse-prompt]")).toHaveText("这幅画对应哪张馆藏名片？");
+  await expect(page.locator("[data-art-glimpse-clue-card]")).toBeHidden();
+  await expect(page.locator("[data-art-glimpse-clue-image] img")).toHaveCount(1);
+  await expect(page.locator('[data-art-glimpse-choices][data-kind="image_to_metadata"] button')).toHaveCount(4);
+  await expect(page.locator("[data-art-glimpse-choices] button strong")).toHaveCount(4);
+  await expect(page.locator('[data-art-glimpse-choices] [data-clue-field="date"]')).toHaveCount(4);
+  await expect(page.locator('[data-art-glimpse-choices] [data-clue-field="title"]')).toHaveCount(0);
+  await expect(page.locator('[data-art-glimpse-choices] [data-clue-field="creator"]')).toHaveCount(0);
+  expect(requests.filter((request) => new URL(request.url()).hostname === API_HOST)).toHaveLength(1);
+  expect(requests.filter((request) => new URL(request.url()).hostname === IMAGE_HOST)).toHaveLength(1);
+
+  const answerButton = page.locator("[data-art-glimpse-choices] button").first();
+  const answerTitle = await answerButton.locator("strong").textContent();
+  await answerButton.click();
+  await expect(page.locator("[data-art-glimpse-status]")).toContainText("这幅画是《");
+  await expect(page.locator("[data-art-glimpse-reveal]")).toBeVisible();
+  expect(answerTitle).toBeTruthy();
+});
+
+test("format settings require one choice and applying them never requests data", async ({ page }) => {
+  const requests = observeExternal(page);
+  await routeSuccess(page);
+  await install(page);
+  expect(requests).toEqual([]);
+
+  await page.locator("[data-art-glimpse-settings] summary").click();
+  await page.locator("[data-art-glimpse-kind]").evaluateAll((fields) => {
+    for (const field of fields) field.checked = false;
+  });
+  await page.getByRole("button", { name: "应用设置" }).click();
+  await expect(page.locator("[data-art-glimpse-settings-status]")).toHaveText("请至少启用一种题型。");
+  expect(requests).toEqual([]);
+
+  await page.locator('[data-art-glimpse-kind][value="image_to_metadata"]').check();
+  await page.getByRole("button", { name: "应用设置" }).click();
+  await expect(page.locator("[data-art-glimpse-settings-summary]")).toHaveText(
+    "看画找名片 · 题名、作者",
+  );
+  expect(requests).toEqual([]);
+
+  await page.locator("[data-art-glimpse-settings] summary").click();
+  await page.locator("[data-art-glimpse-clue-field-option]").evaluateAll((fields) => {
+    for (const field of fields) field.checked = false;
+  });
+  await page.getByRole("button", { name: "应用设置" }).click();
+  await expect(page.locator("[data-art-glimpse-settings-status]")).toHaveText(
+    "请至少显示题名、作者或年代中的一项。",
+  );
+  expect(requests).toEqual([]);
+
+  await page.locator('[data-art-glimpse-clue-field-option][value="date"]').check();
+  await page.getByRole("button", { name: "应用设置" }).click();
+  await expect(page.locator("[data-art-glimpse-settings-summary]")).toHaveText(
+    "看画找名片 · 年代",
+  );
+  expect(requests).toEqual([]);
 });
 
 test("answering reveals the official un-translated title safely and marks the answer", async ({ page }) => {
@@ -285,7 +449,9 @@ test("one failed image ends the round without another metadata batch or substitu
   await install(page);
 
   await page.getByRole("button", { name: "开始一题" }).click();
-  await expect(page.locator("[data-art-glimpse-status]")).toHaveText(copy.zh.image_error);
+  await expect(page.locator("[data-art-glimpse-status]")).toHaveText(
+    copy.zh.image_errors.metadata_to_image,
+  );
   await page.waitForTimeout(50);
   expect(requests.filter((request) => new URL(request.url()).hostname === API_HOST)).toHaveLength(1);
   expect(requests.filter((request) => new URL(request.url()).hostname === IMAGE_HOST).length).toBeLessThanOrEqual(4);
@@ -314,8 +480,9 @@ test("no-JavaScript fallback makes no request", async ({ browser }) => {
 test("320px layout has no horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 720 });
   await routeSuccess(page);
-  await install(page, "en");
+  await install(page, "en", {}, ["image_to_metadata"]);
   await page.getByRole("button", { name: "Start a round" }).click();
   await expect(page.locator("[data-art-glimpse-choices] button")).toHaveCount(4);
+  await expect(page.locator("[data-art-glimpse-clue-image] img")).toHaveCount(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

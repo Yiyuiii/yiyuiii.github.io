@@ -376,8 +376,8 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     }
   });
   for (const [route, heading, groupHeadings] of [
-    ["/toys/", "小玩意", ["数据库", "轻松挑战", "逻辑谜题", "随机生成"]],
-    ["/en/toys/", "Toys", ["Databases", "Quick challenges", "Logic puzzles", "Random generators"]],
+    ["/toys/", "小玩意", ["知识问答", "轻松挑战", "逻辑谜题", "随机生成"]],
+    ["/en/toys/", "Toys", ["Knowledge quizzes", "Quick challenges", "Logic puzzles", "Random generators"]],
   ]) {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(route);
@@ -466,7 +466,7 @@ for (const viewport of [
     await page.goto("/toys/#moegirl-quiz");
 
     await expect(page.locator("#moegirl-quiz")).toHaveAttribute("open", "");
-    await expect(page.getByText("百科条目猜猜", { exact: true })).toBeVisible();
+    await expect(page.getByText("萌娘百科猜猜", { exact: true })).toBeVisible();
     await expect(page.locator("[data-quiz-source-select]")).toHaveCount(0);
     await expect(page.locator(".moegirl-quiz__privacy")).toContainText("萌娘百科 API");
     expect(externalRequests).toEqual([]);

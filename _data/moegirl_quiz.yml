@@ -2,13 +2,13 @@ api_endpoint: https://zh.moegirl.org.cn/api.php
 timeout_ms: 10000
 batch_size: 50
 recent_history_size: 24
-reviewed_on: "2026-08-05"
+reviewed_on: "2026-08-06"
 
 # 每轮只向官方 Action API 请求一次随机主名字空间条目。浏览器随后在本地筛选
 # 角色型、非敏感且未在当前会话近期出现的条目，不抓取页面，也不请求图片。
 copy:
   zh:
-    eyebrow: 萌娘百科条目猜猜
+    eyebrow: 萌娘百科猜猜
     title: 根据线索，猜猜这是什么？
     description: 看完线索，你能从四个条目中猜出答案吗？
     privacy: 点击开始后，本页只会向萌娘百科 API 请求一次，取得一批随机条目的纯文字导言与分类，再在浏览器本地筛选本题，并将线索中可识别的条目标题片段替换为 ⬛。萌娘百科可看到这次请求、你的 IP 地址和本站 Origin；本站不使用 Cookie、持久化存储或跟踪，也不请求图片。
@@ -29,7 +29,7 @@ copy:
     license_label: 查看 CC BY-NC-SA 3.0 协议
     no_js: 此小玩意需要 JavaScript；未启用时不会连接萌娘百科。
   en:
-    eyebrow: Moegirlpedia entry quiz
+    eyebrow: Moegirlpedia quiz
     title: What is this?
     description: Read the Chinese clue and pick the matching entry.
     privacy: Starting a round makes one request to the Chinese Moegirlpedia API for a random batch of text introductions and categories. This page filters the round locally and replaces recognizable entry-title fragments in the Chinese clue with ⬛. Moegirlpedia can see the request, your IP address, and this site's Origin; this site uses no cookies, persistent storage, tracking, or images.

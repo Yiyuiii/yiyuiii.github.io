@@ -91,6 +91,11 @@
     const enhanced = root.querySelector("[data-acg-enhanced]");
     const interactive = root.querySelector("[data-acg-interactive]");
     const startButton = root.querySelector("[data-acg-start]");
+    const settings = root.querySelector("[data-acg-settings]");
+    const settingsSummary = root.querySelector("[data-acg-settings-summary]");
+    const settingsApply = root.querySelector("[data-acg-settings-apply]");
+    const settingsReset = root.querySelector("[data-acg-settings-reset]");
+    const settingsStatus = root.querySelector("[data-acg-settings-status]");
     const round = root.querySelector("[data-acg-round]");
     const prompt = root.querySelector("[data-acg-prompt]");
     const options = root.querySelector("[data-acg-options]");
@@ -100,7 +105,8 @@
     const attribution = root.querySelector("[data-acg-attribution]");
     const termsLink = root.querySelector("[data-acg-terms-link]");
     if (
-      !enhanced || !interactive || !startButton || !round || !prompt || !options
+      !enhanced || !interactive || !startButton || !settings || !settingsSummary
+      || !settingsApply || !settingsReset || !settingsStatus || !round || !prompt || !options
       || !status || !source || !sourceLink || !attribution || !termsLink
     ) return;
 
@@ -125,9 +131,21 @@
     const responseLimit = boundedInteger(config.max_response_chars, 262_144, 65_536, 262_144);
     const historySize = boundedInteger(config.recent_history_size, 16, 4, 64);
     const recentKeys = [];
+    let allowedKinds = logic.normalizeRoundKinds();
     let activeController = null;
     let activeRound = 0;
     let currentRound = null;
+
+    const kindFields = () => [...root.querySelectorAll("[data-acg-kind]")];
+    const setDraftKinds = (kinds) => {
+      const selected = new Set(kinds);
+      for (const field of kindFields()) field.checked = selected.has(field.value);
+    };
+    const summaryFor = (kinds) => {
+      if (kinds.length === logic.ROUND_KINDS.length) return String(copy.settings_all || "");
+      if (kinds.length === 1) return String(copy.type_labels?.[kinds[0]] || "");
+      return interpolate(copy.settings_selected, { count: kinds.length });
+    };
 
     const setState = (state) => {
       root.dataset.acgState = state;
@@ -187,9 +205,11 @@
             if (choice.dataset.acgAnswerKey === quizRound.answerKey) choice.dataset.result = "correct";
           }
           if (!correct) button.dataset.result = "incorrect";
-          status.textContent = interpolate(correct ? copy.correct : copy.incorrect, {
-            answer: quizRound.answerLabel,
-          });
+          const feedback = sourceCopy.feedback?.[quizRound.kind];
+          status.textContent = interpolate(
+            feedback?.[correct ? "correct" : "incorrect"],
+            quizRound.feedbackValues,
+          );
           revealSource(quizRound);
           startButton.textContent = String(copy.again || copy.start || "");
           setState("answered");
@@ -199,7 +219,7 @@
       }
       options.removeAttribute("data-answered");
       options.replaceChildren(fragment);
-      prompt.textContent = interpolate(sourceCopy.question, quizRound.promptValues);
+      prompt.textContent = interpolate(sourceCopy.prompts?.[quizRound.kind], quizRound.promptValues);
       round.hidden = false;
       source.hidden = true;
       status.textContent = "";
@@ -260,7 +280,11 @@
       let quizRound;
       try {
         const entries = logic.normalizeAniList(payload, config.page_lang === "en" ? "en" : "zh");
-        quizRound = logic.createAniListRound(entries, { randomApi: secureRandomApi, recentKeys });
+        quizRound = logic.createAniListRound(entries, {
+          allowedKinds,
+          randomApi: secureRandomApi,
+          recentKeys,
+        });
       } catch (error) {
         showFailure(error?.code === "no_round" ? copy.no_round_error : copy.random_error, roundToken);
         return;
@@ -270,7 +294,29 @@
       renderRound(quizRound, roundToken);
     };
 
+    settings.addEventListener("change", () => { settingsStatus.textContent = ""; });
+    settingsReset.addEventListener("click", () => {
+      setDraftKinds(logic.ROUND_KINDS);
+      settingsStatus.textContent = String(copy.settings_defaults_ready || "");
+    });
+    settingsApply.addEventListener("click", () => {
+      const selected = kindFields().filter((field) => field.checked).map((field) => field.value);
+      if (!selected.length) {
+        settingsStatus.textContent = String(copy.settings_required || "");
+        return;
+      }
+      allowedKinds = logic.normalizeRoundKinds(selected);
+      clearRound();
+      settingsSummary.textContent = summaryFor(allowedKinds);
+      settings.open = false;
+      settingsStatus.textContent = String(copy.settings_applied || "");
+      status.textContent = String(copy.settings_applied || "");
+      startButton.focus();
+    });
+
     startButton.addEventListener("click", startRound);
+    setDraftKinds(allowedKinds);
+    settingsSummary.textContent = summaryFor(allowedKinds);
     enhanced.hidden = false;
     interactive.hidden = false;
     root.dataset.acgReady = "true";

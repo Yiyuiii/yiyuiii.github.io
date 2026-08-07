@@ -171,14 +171,14 @@ def valid_site(root):
         localized = {
             "zh": {
                 "page": "小玩意",
-                "database": "数据库",
+                "database": "知识问答",
                 "quick": "轻松挑战",
                 "logic": "逻辑谜题",
                 "random": "随机生成",
                 "items": [
-                    ("moegirl-quiz", "百科条目猜猜"),
-                    ("art-glimpse", "名画配对"),
-                    ("anilist-role-quiz", "AniList 角色关系猜猜"),
+                    ("moegirl-quiz", "萌娘百科猜猜"),
+                    ("art-glimpse", "名画猜猜（克利夫兰艺术博物馆）"),
+                    ("anilist-role-quiz", "动画主角猜猜（AniList）"),
                     ("color-challenge", "色差挑战"),
                     ("ten-second", "盲估十秒"),
                     ("reaction-time", "反应时间"),
@@ -191,14 +191,14 @@ def valid_site(root):
             },
             "en": {
                 "page": "Toys",
-                "database": "Databases",
+                "database": "Knowledge quizzes",
                 "quick": "Quick challenges",
                 "logic": "Logic puzzles",
                 "random": "Random generators",
                 "items": [
-                    ("moegirl-quiz", "Encyclopedia entry quiz"),
-                    ("art-glimpse", "Artwork match"),
-                    ("anilist-role-quiz", "AniList character role quiz"),
+                    ("moegirl-quiz", "Moegirlpedia quiz"),
+                    ("art-glimpse", "Artwork quiz (Cleveland Museum of Art)"),
+                    ("anilist-role-quiz", "Anime protagonist quiz (AniList)"),
                     ("color-challenge", "Color difference challenge"),
                     ("ten-second", "Ten-second estimate"),
                     ("reaction-time", "Reaction time"),

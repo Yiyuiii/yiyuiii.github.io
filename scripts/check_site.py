@@ -154,9 +154,9 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
     ]:
         raise SiteCheckError(f"{route}: toy groups/order are {group_ids!r}")
     expected_group_titles = (
-        ["数据库", "轻松挑战", "逻辑谜题", "随机生成"]
+        ["知识问答", "轻松挑战", "逻辑谜题", "随机生成"]
         if language == "zh"
-        else ["Databases", "Quick challenges", "Logic puzzles", "Random generators"]
+        else ["Knowledge quizzes", "Quick challenges", "Logic puzzles", "Random generators"]
     )
     actual_group_titles = [
         node.get_text(" ", strip=True) for node in soup.select(".toy-group__title")
@@ -198,9 +198,9 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         )
     quiz_title = soup.select("#moegirl-quiz-title")
     expected_quiz_title = (
-        "百科条目猜猜"
+        "萌娘百科猜猜"
         if language == "zh"
-        else "Encyclopedia entry quiz"
+        else "Moegirlpedia quiz"
     )
     quiz_title_text = (
         quiz_title[0].select_one(".toy-entry__title")

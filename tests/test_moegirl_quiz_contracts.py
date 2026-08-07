@@ -17,7 +17,7 @@ def test_random_discovery_configuration_uses_the_official_action_api():
     assert data["timeout_ms"] == 10000
     assert data["batch_size"] == 50
     assert data["recent_history_size"] >= 16
-    assert data["reviewed_on"] == "2026-08-05"
+    assert data["reviewed_on"] == "2026-08-06"
     assert "entries" not in data
 
 

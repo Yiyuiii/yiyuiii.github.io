@@ -62,6 +62,25 @@ test("exact official configuration is accepted and bounded", () => {
   assert.equal(config.imageTimeoutMs, 10000);
 });
 
+test("round formats are validated, deduplicated, and cannot be empty", () => {
+  assert.deepEqual(logic.ROUND_KINDS, ["metadata_to_image", "image_to_metadata"]);
+  assert.deepEqual(
+    logic.normalizeRoundKinds(["image_to_metadata", "image_to_metadata", "unknown"]),
+    ["image_to_metadata"],
+  );
+  assert.throws(() => logic.normalizeRoundKinds([]), /at least one artwork round kind/);
+});
+
+test("museum clue fields default to title and artist and require at least one choice", () => {
+  assert.deepEqual(logic.CLUE_FIELDS, ["title", "creator", "date"]);
+  assert.deepEqual(logic.DEFAULT_CLUE_FIELDS, ["title", "creator"]);
+  assert.deepEqual(
+    logic.normalizeClueFields(["date", "date", "unknown"]),
+    ["date"],
+  );
+  assert.throws(() => logic.normalizeClueFields([]), /at least one artwork clue field/);
+});
+
 test("endpoint, media host, source hosts, query, and license fail closed", () => {
   for (const changed of [
     { endpoint: "https://attacker.invalid/api" },
@@ -118,6 +137,8 @@ test("a round contains four unique options and stays within the media cap", () =
   const entries = logic.normalizeArtworks({ data: [1, 2, 3, 4, 5, 6].map(artwork) }, config);
   const round = logic.createRound(entries, config, deterministic(new Array(30).fill(0)));
   assert.ok(round);
+  assert.equal(round.kind, "metadata_to_image");
+  assert.deepEqual(round.clueFields, ["title", "creator"]);
   assert.equal(round.options.length, 4);
   assert.equal(new Set(round.options.map((item) => item.id)).size, 4);
   assert.ok(round.options.includes(round.answer));
@@ -130,13 +151,56 @@ test("a round contains four unique options and stays within the media cap", () =
   assert.equal("zoom" in round, false);
 });
 
-test("insufficient eligible items or byte budget produces no round", () => {
+test("insufficient eligible items or a four-image budget produces no forward round", () => {
   const config = logic.validateConfig(rawConfig());
   const entries = logic.normalizeArtworks({ data: [1, 2, 3].map(artwork) }, config);
   assert.equal(logic.createRound(entries, config, deterministic([])), null);
   const tight = { ...config, maxRoundImageBytes: 800000 };
   const more = logic.normalizeArtworks({ data: [1, 2, 3, 4, 5].map(artwork) }, config);
-  assert.equal(logic.createRound(more, tight, deterministic([])), null);
+  assert.equal(
+    logic.createRound(more, tight, deterministic([]), ["metadata_to_image"]),
+    null,
+  );
+});
+
+test("the reverse format needs one image and preserves four unique museum cards", () => {
+  const config = logic.validateConfig(rawConfig());
+  const entries = logic.normalizeArtworks({ data: [1, 2, 3, 4, 5].map(artwork) }, config);
+  const tight = { ...config, maxRoundImageBytes: 800000 };
+  const round = logic.createRound(
+    entries,
+    tight,
+    deterministic(new Array(30).fill(0)),
+    ["image_to_metadata"],
+  );
+  assert.ok(round);
+  assert.equal(round.kind, "image_to_metadata");
+  assert.equal(round.totalImageBytes, 500000);
+  assert.equal(round.options.length, 4);
+  assert.equal(new Set(round.options.map((item) => item.id)).size, 4);
+  assert.ok(round.options.includes(round.answer));
+});
+
+test("visible museum fields must distinguish all four candidates", () => {
+  const config = logic.validateConfig(rawConfig());
+  const entries = logic.normalizeArtworks({
+    data: [1, 2, 3, 4, 5].map((id) => artwork(id, { creation_date: "1900" })),
+  }, config);
+  for (const kind of ["metadata_to_image", "image_to_metadata"]) {
+    assert.equal(
+      logic.createRound(entries, config, deterministic([]), [kind], ["date"]),
+      null,
+    );
+  }
+  const round = logic.createRound(
+    entries,
+    config,
+    deterministic(new Array(30).fill(0)),
+    ["image_to_metadata"],
+    ["title"],
+  );
+  assert.ok(round);
+  assert.deepEqual(round.clueFields, ["title"]);
 });
 
 test("URL validator rejects HTTP, credentials, ports, and lookalike hosts", () => {

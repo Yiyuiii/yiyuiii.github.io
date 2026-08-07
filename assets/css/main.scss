@@ -972,6 +972,24 @@ html:lang(en) .article-header h1 {
   font-weight: 640;
 }
 
+.art-glimpse__clue-image {
+  display: grid;
+  place-items: center;
+}
+
+.art-glimpse__clue-image[hidden] {
+  display: none;
+}
+
+.art-glimpse__clue-image img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: min(32rem, 68vh);
+  border-radius: 0.5rem;
+  object-fit: contain;
+}
+
 .art-glimpse__choices {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1005,6 +1023,33 @@ html:lang(en) .article-header h1 {
 
 .toy-entry__body .art-glimpse__choice[data-result="incorrect"] {
   border-color: #b4463f;
+}
+
+.toy-entry__body .art-glimpse__choice--metadata {
+  display: grid;
+  min-height: 7.6rem;
+  align-content: start;
+  gap: 0.3rem;
+  padding: 0.8rem;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.art-glimpse__choice--metadata strong {
+  padding-right: 0.25rem;
+  color: var(--ink);
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.art-glimpse__choice--metadata span:not(.art-glimpse__badge) {
+  color: var(--meta);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.art-glimpse__choice--metadata .art-glimpse__badge {
+  inset: auto 0.55rem 0.55rem auto;
 }
 
 .art-glimpse__choice img {
@@ -1076,6 +1121,10 @@ html:lang(en) .article-header h1 {
 
 .acg-relation-quiz__start {
   margin-top: 1rem;
+}
+
+.knowledge-quiz-settings {
+  max-width: 46rem;
 }
 
 .acg-relation-quiz__round {

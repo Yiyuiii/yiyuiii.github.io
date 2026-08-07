@@ -1,7 +1,7 @@
 timeout_ms: 10000
 max_response_chars: 262144
 recent_history_size: 16
-reviewed_on: "2026-08-05"
+reviewed_on: "2026-08-06"
 
 # No question, cover image, credential, or remote index is stored here. A provider
 # is contacted only after the reader starts a round; the response stays in memory.
@@ -19,26 +19,52 @@ source:
 
 copy:
   zh:
-    source_label: 玩法：找出这部动画的主角之一（依据 AniList MAIN 标注）
+    source_label: 可选择动画找主角、主角找动画或同作主角配对（均依据 AniList MAIN 标注）
     start: 开始一题
     again: 再来一题
     retry: 重试
     options_label: 候选答案
-    correct: 答对了！AniList 将 {answer} 列为 MAIN（主要角色）。
-    incorrect: 没猜中；答案是 {answer}。
+    settings_title: 题型
+    settings_adjust: 调整
+    settings_all: 全部三种
+    settings_selected: 已启用 {count} 种
+    settings_legend: 启用哪些题型
+    settings_help: 每题只会从已启用且本批数据能够组成无歧义四选一的题型中随机选择。
+    settings_apply: 应用设置
+    settings_reset: 恢复全部
+    settings_applied: 题型设置已应用；下一题按新设置生成。
+    settings_defaults_ready: 已勾选全部三种题型；应用后生效。
+    settings_required: 请至少启用一种题型。
+    type_labels:
+      anime_to_character: 动画 → 主角
+      character_to_anime: 主角 → 动画
+      character_to_character: 主角 → 同作主角
     network_error: 暂时没能取得本题数据，请稍后主动重试。
     no_round_error: 本次响应没有形成一组无歧义的四选一题目；你可以主动重试。
     random_error: 浏览器无法提供可靠随机数，暂时不能出题。
     source_prefix: 数据来源：
     no_js: 此小玩意需要 JavaScript；未启用时不会连接 AniList。
   en:
-    source_label: "Find one of the anime's main characters (based on AniList's MAIN label)"
+    source_label: "Choose anime to main character, main character to anime, or co-main-character matching (all based on AniList's MAIN label)"
     start: Start a round
     again: Another round
     retry: Try again
     options_label: Answer choices
-    correct: Correct! AniList lists {answer} as MAIN.
-    incorrect: Not quite; the answer is {answer}.
+    settings_title: Formats
+    settings_adjust: Adjust
+    settings_all: All three
+    settings_selected: "{count} enabled"
+    settings_legend: Enabled formats
+    settings_help: Each round randomly uses an enabled format that the current response can turn into an unambiguous four-choice question.
+    settings_apply: Apply settings
+    settings_reset: Restore all
+    settings_applied: Format settings applied; the next round will use them.
+    settings_defaults_ready: All three formats are selected; apply to confirm.
+    settings_required: Select at least one format.
+    type_labels:
+      anime_to_character: Anime → main character
+      character_to_anime: Main character → anime
+      character_to_character: Main character → co-main character
     network_error: The data for this round could not be retrieved just now. Please try again later.
     no_round_error: This response did not form an unambiguous four-choice round. You can try again manually.
     random_error: This browser cannot provide secure randomness, so a round cannot be created.
@@ -47,16 +73,42 @@ copy:
 
 source_copy:
   zh:
-    privacy: 点击开始后，浏览器通常会先向 AniList 做一次跨域权限检查，再发送一次官方 GraphQL POST 查询，从按流行度排列的前 360 部动画中随机选择一页，取得六部作品及每部最多十个角色关系；不会自动翻页或重试。AniList 可看到这些请求、你的 IP 地址和本站 Origin；请求不携带凭据。响应只留在当前页面内存，不保存题目或作答，也不请求封面。AniList 没有独立中文题名字段，本题会保留原文、罗马字或英语名称。AniList 的 MAIN 通常对应主角或核心主角团，可能不止一人；本题直接采用该站关系标注，不按戏份另行判断。
+    privacy: 点击开始后，浏览器通常会先向 AniList 做一次跨域权限检查，再发送一次官方 GraphQL POST 查询，从按流行度排列的前 360 部动画中随机选择一页，取得六部作品及每部最多十个角色关系；不会自动翻页或重试。AniList 可看到这些请求、你的 IP 地址和本站 Origin；请求不携带凭据。响应只留在当前页面内存，不保存题目或作答，也不请求封面。AniList 网站界面主要使用英文，API 没有独立中文题名或中文角色名字段；中文页会保留作品原文与罗马字，并在角色存在原文名时显示“原文名（拉丁字母名）”。AniList 的 MAIN 通常对应主角或核心主角团，可能不止一人；三种题型都直接采用该站关系标注，不按戏份另行判断。
     loading: 正在从 AniList 取得一小批角色关系……
-    question: 《{title}》的主角之一是谁？
+    prompts:
+      anime_to_character: 《{title}》的主角之一是谁？
+      character_to_anime: “{character}”是哪部动画的主角之一？
+      character_to_character: 以下哪位与“{character}”是同一部动画的主角？
+    feedback:
+      anime_to_character:
+        correct: 答对了！“{answer}”是《{title}》的主要角色。
+        incorrect: 没猜中；“{answer}”是《{title}》的主要角色。
+      character_to_anime:
+        correct: 答对了！“{character}”是《{answer}》的主要角色。
+        incorrect: 没猜中；“{character}”是《{answer}》的主要角色。
+      character_to_character:
+        correct: 答对了！“{character}”和“{answer}”都是《{title}》的主要角色。
+        incorrect: 没猜中；“{character}”和“{answer}”都是《{title}》的主要角色。
     source_link_label: 在 AniList 查看《{title}》
     attribution: 作品名、角色名和 MAIN／SUPPORTING 关系来自 AniList；本站排除了其成人标记、Ecchi／Hentai 类型、若干敏感标签及命中本地敏感词的作品名或角色名，只显示文字。该过滤不能代表适合所有平台的完整内容分级。
     terms_label: 查看 AniList API 使用条款
   en:
-    privacy: Starting a round normally makes one browser CORS permission check and then one official GraphQL POST query to AniList. It selects one random page among the first 360 anime in popularity order and reads six titles with at most ten character relationships each; it never follows another page or retries automatically. AniList can see these requests, your IP address, and this site's Origin; no credentials are sent. The response stays only in this page's memory. The toy does not save the round or attempt, and it does not request cover art. AniList's MAIN label usually covers protagonists or a core main cast and may apply to more than one character; this toy uses that relationship directly and does not judge screen time independently.
+    privacy: Starting a round normally makes one browser CORS permission check and then one official GraphQL POST query to AniList. It selects one random page among the first 360 anime in popularity order and reads six titles with at most ten character relationships each; it never follows another page or retries automatically. AniList can see these requests, your IP address, and this site's Origin; no credentials are sent. The response stays only in this page's memory. The toy does not save the round or attempt, and it does not request cover art. The English page uses AniList's English or romanized display names; AniList's MAIN label usually covers protagonists or a core main cast and may apply to more than one character. All three formats use that relationship directly and do not judge screen time independently.
     loading: Reading a small batch of character relationships from AniList…
-    question: Who is one of the main characters in {title}?
+    prompts:
+      anime_to_character: Who is one of the main characters in {title}?
+      character_to_anime: Which anime lists “{character}” as a main character?
+      character_to_character: Who is a main character in the same anime as “{character}”?
+    feedback:
+      anime_to_character:
+        correct: Correct! “{answer}” is a main character in {title}.
+        incorrect: Not quite; “{answer}” is a main character in {title}.
+      character_to_anime:
+        correct: Correct! “{character}” is a main character in {answer}.
+        incorrect: Not quite; “{character}” is a main character in {answer}.
+      character_to_character:
+        correct: Correct! “{character}” and “{answer}” are both main characters in {title}.
+        incorrect: Not quite; “{character}” and “{answer}” are both main characters in {title}.
     source_link_label: "Open {title} on AniList"
     attribution: Titles, character names, and MAIN/SUPPORTING relationships come from AniList. This site excludes entries carrying AniList's adult flag, the Ecchi/Hentai genres, several sensitive tags, and titles or character names caught by a local sensitive-term filter, and shows text only. AniList notes that its filters are not a universal content rating.
     terms_label: Read the AniList API terms

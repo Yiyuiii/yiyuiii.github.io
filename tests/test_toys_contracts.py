@@ -34,7 +34,7 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
         "logic-puzzles",
         "random-generators",
     ]
-    assert groups[0]["title"] == {"zh": "数据库", "en": "Databases"}
+    assert groups[0]["title"] == {"zh": "知识问答", "en": "Knowledge quizzes"}
     assert groups[1]["title"] == {"zh": "轻松挑战", "en": "Quick challenges"}
     assert groups[2]["title"] == {"zh": "逻辑谜题", "en": "Logic puzzles"}
     assert groups[3]["title"] == {"zh": "随机生成", "en": "Random generators"}
@@ -155,14 +155,14 @@ def test_encyclopedia_component_uses_the_disclosure_heading_without_repeating_it
     assert "Wikipedia" not in component
 
 
-def test_encyclopedia_quiz_has_neutral_visible_copy_but_preserves_the_old_hash():
+def test_moegirlpedia_quiz_has_source_specific_visible_copy_but_preserves_the_old_hash():
     data = yaml.safe_load(text("_data/toys.yml"))
     items = [item for group in data["groups"] for item in group["items"]]
     quiz = next(item for item in items if item["id"] == "moegirl-quiz")
 
     assert quiz["title"] == {
-        "zh": "百科条目猜猜",
-        "en": "Encyclopedia entry quiz",
+        "zh": "萌娘百科猜猜",
+        "en": "Moegirlpedia quiz",
     }
     assert "角色" not in quiz["title"]["zh"]
     assert "character" not in quiz["title"]["en"].lower()
@@ -171,6 +171,25 @@ def test_encyclopedia_quiz_has_neutral_visible_copy_but_preserves_the_old_hash()
     assert "Moegirlpedia" in quiz["keywords"]["en"]
     assert "萌娘百科" in quiz["keywords"]["zh"]
     assert "moegirl-quiz" in text("_includes/toy-index.liquid")
+
+
+def test_external_quiz_titles_name_their_actual_providers_and_anilist_formats():
+    data = yaml.safe_load(text("_data/toys.yml"))
+    items = {
+        item["id"]: item
+        for group in data["groups"]
+        for item in group["items"]
+    }
+    assert items["art-glimpse"]["title"] == {
+        "zh": "名画猜猜（克利夫兰艺术博物馆）",
+        "en": "Artwork quiz (Cleveland Museum of Art)",
+    }
+    assert items["anilist-role-quiz"]["title"] == {
+        "zh": "动画主角猜猜（AniList）",
+        "en": "Anime protagonist quiz (AniList)",
+    }
+    assert "可选择" in items["anilist-role-quiz"]["description"]["zh"]
+    assert "choose" in items["anilist-role-quiz"]["description"]["en"].lower()
 
 
 def test_search_indexes_each_real_grouped_toy_and_hashes_open_without_focus():

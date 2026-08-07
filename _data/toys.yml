@@ -7,13 +7,13 @@ page:
 groups:
   - id: database
     title:
-      zh: 数据库
-      en: Databases
+      zh: 知识问答
+      en: Knowledge quizzes
     items:
       - id: moegirl-quiz
         title:
-          zh: 百科条目猜猜
-          en: Encyclopedia entry quiz
+          zh: 萌娘百科猜猜
+          en: Moegirlpedia quiz
         description:
           zh: 读读匿名化的导言，看看四个候选里谁是答案。
           en: Read the Chinese anonymized introduction and choose the matching entry.
@@ -23,22 +23,22 @@ groups:
 
       - id: art-glimpse
         title:
-          zh: 名画配对
-          en: Artwork match
+          zh: 名画猜猜（克利夫兰艺术博物馆）
+          en: Artwork quiz (Cleveland Museum of Art)
         description:
-          zh: 根据题名、作者和年代，从四幅馆藏图中找出对应作品。
-          en: Match a museum title, artist, and date to one of four artworks.
+          zh: 可选择猜题方向，以及题名、作者、年代等线索。
+          en: Choose the quiz direction and whether to show title, artist, or date.
         keywords:
           zh: [名画, 配对, 艺术, 博物馆, 克利夫兰, 图像, 猜题]
           en: [art, matching, painting, museum, Cleveland, image, quiz]
 
       - id: anilist-role-quiz
         title:
-          zh: AniList 角色关系猜猜
-          en: AniList character role quiz
+          zh: 动画主角猜猜（AniList）
+          en: Anime protagonist quiz (AniList)
         description:
-          zh: 四名候选中，谁是这部动画的主角之一？
-          en: Which candidate is one of this anime's main characters?
+          zh: 可选择动画找主角、主角找动画或同作主角配对。
+          en: Choose among three four-choice links between anime and their main characters.
         keywords:
           zh: [AniList, 动画, 角色, 主角, 关系, 猜题]
           en: [AniList, anime, character, main role, relation, quiz]

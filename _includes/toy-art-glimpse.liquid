@@ -18,34 +18,74 @@
     </p>
 
     <div class="toy-challenge__interactive art-glimpse__interactive" data-art-glimpse-interactive hidden>
+      <details class="toy-settings knowledge-quiz-settings" data-art-glimpse-settings>
+        <summary>
+          <span class="toy-settings__title">{{ copy.settings_title }}</span>
+          <span class="toy-settings__summary" data-art-glimpse-settings-summary></span>
+          <span class="toy-settings__adjust">{{ copy.settings_adjust }}</span>
+        </summary>
+        <div class="toy-settings__panel">
+          <fieldset class="toy-fieldset">
+            <legend>{{ copy.settings_legend }}</legend>
+            <div class="toy-checks">
+              {% for type in copy.type_labels %}
+                <label class="toy-check">
+                  <input type="checkbox" value="{{ type[0] | escape }}" data-art-glimpse-kind>
+                  {{ type[1] }}
+                </label>
+              {% endfor %}
+            </div>
+            <p class="toy-field-help">{{ copy.settings_help }}</p>
+          </fieldset>
+          <fieldset class="toy-fieldset">
+            <legend>{{ copy.clue_settings_legend }}</legend>
+            <div class="toy-checks">
+              {% for field in copy.clue_setting_labels %}
+                <label class="toy-check">
+                  <input type="checkbox" value="{{ field[0] | escape }}" data-art-glimpse-clue-field-option>
+                  {{ field[1] }}
+                </label>
+              {% endfor %}
+            </div>
+            <p class="toy-field-help">{{ copy.clue_settings_help }}</p>
+          </fieldset>
+          <div class="toy-settings__actions">
+            <button type="button" data-art-glimpse-settings-reset>{{ copy.settings_reset }}</button>
+            <button type="button" class="toy-settings__apply" data-art-glimpse-settings-apply>{{ copy.settings_apply }}</button>
+          </div>
+          <p class="toy-settings__status" data-art-glimpse-settings-status aria-live="polite" aria-atomic="true"></p>
+        </div>
+      </details>
+
       <button class="art-glimpse__start" type="button" data-art-glimpse-start>
         {{ copy.start }}
       </button>
 
       <div class="art-glimpse__round" data-art-glimpse-round hidden>
-        <section class="art-glimpse__clue" data-art-glimpse-clue tabindex="-1" aria-label="{{ copy.prompt | escape }}">
-          <p class="art-glimpse__prompt">{{ copy.prompt }}</p>
-          <dl class="art-glimpse__clue-card">
-            <div>
+        <section class="art-glimpse__clue" data-art-glimpse-clue tabindex="-1" aria-label="{{ copy.instructions | escape }}">
+          <p class="art-glimpse__prompt" data-art-glimpse-prompt></p>
+          <dl class="art-glimpse__clue-card" data-art-glimpse-clue-card>
+            <div data-art-glimpse-clue-field="title">
               <dt>{{ copy.clue_title_label }}</dt>
               <dd data-art-glimpse-clue-title></dd>
             </div>
-            <div>
+            <div data-art-glimpse-clue-field="creator">
               <dt>{{ copy.clue_artist_label }}</dt>
               <dd data-art-glimpse-clue-maker></dd>
             </div>
-            <div>
+            <div data-art-glimpse-clue-field="date">
               <dt>{{ copy.clue_date_label }}</dt>
               <dd data-art-glimpse-clue-date></dd>
             </div>
           </dl>
+          <div class="art-glimpse__clue-image" data-art-glimpse-clue-image hidden></div>
         </section>
 
         <div
           class="art-glimpse__choices"
           data-art-glimpse-choices
           role="group"
-          aria-label="{{ copy.options_label | escape }}"
+          aria-label="{{ copy.instructions | escape }}"
         ></div>
       </div>
 

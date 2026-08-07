@@ -35,7 +35,7 @@ def test_configuration_is_one_small_official_cc0_landscape_batch():
     assert config["open_access_url"] == "https://www.clevelandart.org/open-access"
 
 
-def test_configuration_bounds_metadata_and_four_web_images_without_a_pool():
+def test_configuration_bounds_metadata_and_one_or_four_web_images_without_a_pool():
     config = data()
     serialized = yaml.safe_dump(config, allow_unicode=True).lower()
 
@@ -72,6 +72,22 @@ def test_copy_is_complete_bilingual_and_truthful_about_language_privacy_and_cc0(
     assert "《{title}》" in config["copy"]["zh"]["source_label"]
     assert "克利夫兰艺术博物馆" in config["copy"]["zh"]["privacy"]
     assert "Cleveland Museum of Art" in config["copy"]["en"]["privacy"]
+    assert "四幅" in config["copy"]["zh"]["privacy"]
+    assert "一幅" in config["copy"]["zh"]["privacy"]
+    assert "four" in config["copy"]["en"]["privacy"]
+    assert "one image" in config["copy"]["en"]["privacy"]
+    expected_kinds = {"metadata_to_image", "image_to_metadata"}
+    expected_fields = {"title", "creator", "date"}
+    for language in ("zh", "en"):
+        copy = config["copy"][language]
+        assert set(copy["type_labels"]) == expected_kinds
+        assert set(copy["prompts"]) == expected_kinds
+        assert set(copy["options_labels"]) == expected_kinds
+        assert set(copy["feedback"]) == expected_kinds
+        assert set(copy["image_errors"]) == expected_kinds
+        assert set(copy["clue_setting_labels"]) == expected_fields
+        assert "{types}" in copy["settings_summary"]
+        assert "{clues}" in copy["settings_summary"]
 
 
 def test_include_is_progressively_enhanced_accessible_and_self_contained():
@@ -81,8 +97,19 @@ def test_include_is_progressively_enhanced_accessible_and_self_contained():
         "data-art-glimpse",
         "data-art-glimpse-enhanced hidden",
         "data-art-glimpse-interactive hidden",
+        "data-art-glimpse-settings",
+        "data-art-glimpse-settings-summary",
+        "data-art-glimpse-settings-apply",
+        "data-art-glimpse-settings-reset",
+        "data-art-glimpse-settings-status",
+        "data-art-glimpse-kind",
+        "data-art-glimpse-clue-field-option",
         "data-art-glimpse-start",
         "data-art-glimpse-clue",
+        "data-art-glimpse-prompt",
+        "data-art-glimpse-clue-card",
+        "data-art-glimpse-clue-field",
+        "data-art-glimpse-clue-image",
         "data-art-glimpse-clue-title",
         "data-art-glimpse-clue-maker",
         "data-art-glimpse-clue-date",
@@ -125,6 +152,13 @@ def test_controller_has_explicit_network_random_storage_and_dom_boundaries():
     assert "openaccess-cdn.clevelandart.org" in script
     assert "share_license_status" in script and '"CC0"' in script
     assert "SENSITIVE_TEXT" in script
+    assert '"metadata_to_image"' in script
+    assert '"image_to_metadata"' in script
+    assert "normalizeRoundKinds" in script
+    assert "normalizeClueFields" in script
+    assert "DEFAULT_CLUE_FIELDS" in script
+    assert "metadataSignature" in script
+    assert "imageTargets" in script
     assert "textContent" in script
     assert "replaceChildren" in script
     assert "image.removeAttribute(\"src\")" in script
@@ -155,6 +189,7 @@ def test_live_audit_is_explicit_single_batch_and_never_persists_content():
     assert "logic.buildApiUrl" in audit
     assert audit.count("await fetch(") == 2
     assert "Promise.all(gameRound.options.map" in audit
+    assert '["metadata_to_image"]' in audit
     assert "AbortController" in audit
     assert "content-type" in lowered
     assert "image/jpeg" in lowered

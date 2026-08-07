@@ -13,11 +13,26 @@ if (!process.argv.includes("--run-live")) {
 const scriptPath = fileURLToPath(new URL("../../assets/js/art-glimpse.js", import.meta.url));
 const copy = {
   start: "开始一题", again: "再来一题", retry: "重试",
-  loading_metadata: "正在取得馆藏……", loading_images: "正在加载图片……",
+  loading_metadata: "正在取得馆藏……",
+  loading_images: { metadata_to_image: "正在加载四幅馆藏图……", image_to_metadata: "正在加载馆藏图……" },
+  prompts: { metadata_to_image: "这张馆藏名片对应哪幅画？", image_to_metadata: "这幅画对应哪张馆藏名片？" },
+  settings_all: "两种题型", settings_summary: "{types} · {clues}",
+  settings_applied: "设置已应用。", settings_defaults_ready: "已恢复。",
+  settings_required: "请至少启用一种题型。", clue_settings_required: "请至少显示一项。",
+  settings_apply: "应用设置", settings_reset: "恢复默认",
+  type_labels: { metadata_to_image: "看名片找画", image_to_metadata: "看画找名片" },
+  clue_setting_labels: { title: "题名", creator: "作者", date: "年代" }, clue_settings_separator: "、",
+  options_labels: { metadata_to_image: "四幅候选图", image_to_metadata: "四张候选名片" },
   choice_label: "选择候选作品 {number}", choice_image_alt: "候选作品 {number}",
-  correct: "配对成功！", incorrect: "没猜中。", correct_badge: "答案",
+  clue_image_alt: "本题馆藏图", metadata_choice_label: "选择候选名片 {number}：{details}",
+  metadata_detail_label: "{label}：{value}",
+  feedback: {
+    metadata_to_image: { correct: "答对了！你找到了《{title}》。", incorrect: "没猜中；《{title}》的正确画面已标出。" },
+    image_to_metadata: { correct: "答对了！这幅画是《{title}》。", incorrect: "没猜中；这幅画是《{title}》。" },
+  },
+  correct_badge: "答案",
   selected_badge: "你的选择", no_question: "本次不能成题。",
-  network_error: "元数据失败。", image_error: "图片失败。", random_error: "随机源失败。",
+  network_error: "元数据失败。", image_errors: { metadata_to_image: "四图失败。", image_to_metadata: "单图失败。" }, random_error: "随机源失败。",
   unknown_artist: "作者不详", unknown_date: "年代不详",
   source_label: "在克利夫兰艺术博物馆查看《{title}》",
 };
@@ -37,8 +52,22 @@ const html = `<!doctype html><html><head><meta name="viewport" content="width=de
   img{max-width:100%;width:100%}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:46rem}
 </style></head><body><section data-art-glimpse>
   <div data-art-glimpse-enhanced hidden><div data-art-glimpse-interactive hidden>
+    <details data-art-glimpse-settings><summary><span data-art-glimpse-settings-summary></span></summary>
+      <input type="checkbox" value="metadata_to_image" data-art-glimpse-kind>
+      <input type="checkbox" value="image_to_metadata" data-art-glimpse-kind>
+      <input type="checkbox" value="title" data-art-glimpse-clue-field-option>
+      <input type="checkbox" value="creator" data-art-glimpse-clue-field-option>
+      <input type="checkbox" value="date" data-art-glimpse-clue-field-option>
+      <button data-art-glimpse-settings-reset>恢复全部</button>
+      <button data-art-glimpse-settings-apply>应用设置</button>
+      <p data-art-glimpse-settings-status></p>
+    </details>
     <button data-art-glimpse-start>开始一题</button>
-    <div data-art-glimpse-round hidden><section data-art-glimpse-clue tabindex="-1"><p data-art-glimpse-clue-title></p><p data-art-glimpse-clue-maker></p><p data-art-glimpse-clue-date></p></section><div class="choices" data-art-glimpse-choices></div></div>
+    <div data-art-glimpse-round hidden><section data-art-glimpse-clue tabindex="-1">
+      <p data-art-glimpse-prompt></p>
+      <div data-art-glimpse-clue-card><p data-art-glimpse-clue-field="title"><span data-art-glimpse-clue-title></span></p><p data-art-glimpse-clue-field="creator"><span data-art-glimpse-clue-maker></span></p><p data-art-glimpse-clue-field="date"><span data-art-glimpse-clue-date></span></p></div>
+      <div data-art-glimpse-clue-image hidden></div>
+    </section><div class="choices" data-art-glimpse-choices></div></div>
     <p data-art-glimpse-status></p>
     <section data-art-glimpse-reveal hidden><p data-art-glimpse-title></p><p data-art-glimpse-maker></p><p data-art-glimpse-date></p><a data-art-glimpse-source></a></section>
   </div></div><script type="application/json" data-art-glimpse-config>${JSON.stringify(config)}</script>
@@ -71,6 +100,8 @@ let result;
 try {
   await page.setContent(html);
   await page.addScriptTag({ path: scriptPath });
+  await page.locator('[data-art-glimpse-kind][value="image_to_metadata"]').uncheck();
+  await page.locator("[data-art-glimpse-settings-apply]").click();
   await page.locator("[data-art-glimpse-start]").click();
   await page.waitForFunction(() => {
     const state = document.querySelector("[data-art-glimpse]")?.dataset.artGlimpseState;

@@ -1,4 +1,4 @@
-reviewed_on: "2026-08-05"
+reviewed_on: "2026-08-06"
 endpoint: https://openaccess-api.clevelandart.org/api/artworks/
 api_host: openaccess-api.clevelandart.org
 image_host: openaccess-cdn.clevelandart.org
@@ -19,67 +19,143 @@ max_image_bytes: 1200000
 max_round_image_bytes: 4000000
 
 # 仅保存固定配置与双语界面文案。作品元数据和图片不进入仓库，也不持久化到
-# 浏览器；玩家每次明确开始后才会触发一次元数据请求和本局四张 web JPEG。
+# 浏览器；玩家每次明确开始后才会触发一次元数据请求，并按题型加载本局一张或四张 web JPEG。
 copy:
   zh:
-    instructions: 阅读一张只含题名、作者和年代的馆藏名片，再从四幅完整馆藏图中找出对应作品。
-    privacy: 点击开始后，本页会向克利夫兰艺术博物馆开放接口发送一次小批量 GET，从带图且题名、作者、年代完整的 CC0 风景绘画中以随机浅偏移取得本题候选，并向其官方图片 CDN 加载最终四幅约 900px 的 JPEG；不会续页、补请求或预取下一题。开放馆藏仍可能出现宗教、神话或非色情人体形象，文字筛选不能完全排除。博物馆及其服务商可看到请求和你的 IP，API 还可看到本站 Origin；图片不发送本页来源地址。响应只留在当前页面内存，本站不使用 Cookie 或持久化存储。
+    instructions: 在馆藏名片与完整画面之间双向猜题；题型和名片显示的题名、作者、年代都可自行选择。
+    privacy: 点击开始后，本页会向克利夫兰艺术博物馆开放接口发送一次小批量 GET，从带图且题名、作者、年代完整的 CC0 风景绘画中以随机浅偏移取得本题候选；“馆藏名片 → 画面”会从官方图片 CDN 加载四幅约 900px 的 JPEG，“画面 → 馆藏名片”只加载题目所需的一幅。不会续页、补请求或预取下一题。开放馆藏仍可能出现宗教、神话或非色情人体形象，文字筛选不能完全排除。博物馆及其服务商可看到请求和你的 IP，API 还可看到本站 Origin；图片不发送本页来源地址。响应只留在当前页面内存，本站不使用 Cookie 或持久化存储。
     start: 开始一题
     again: 再来一题
     retry: 重试
     loading_metadata: 正在从博物馆开放馆藏中发现本题……
-    loading_images: 正在加载本题的四幅馆藏图……
-    prompt: 这张馆藏名片对应哪幅画？
+    loading_images:
+      metadata_to_image: 正在加载本题的四幅馆藏图……
+      image_to_metadata: 正在加载本题馆藏图……
+    prompts:
+      metadata_to_image: 这张馆藏名片对应哪幅画？
+      image_to_metadata: 这幅画对应哪张馆藏名片？
+    settings_title: 玩法设置
+    settings_adjust: 调整
+    settings_all: 两种题型
+    settings_summary: "{types} · {clues}"
+    settings_legend: 启用哪些题型
+    settings_help: 每题会从已启用的题型中随机选择；设置只在当前页面有效。
+    clue_settings_legend: 显示哪些馆藏信息
+    clue_settings_help: 同一组信息会用于“看名片找画”的题面和“看画找名片”的候选；至少保留一项。
+    clue_setting_labels:
+      title: 题名
+      creator: 作者
+      date: 年代
+    clue_settings_separator: 、
+    settings_apply: 应用设置
+    settings_reset: 恢复默认
+    settings_applied: 玩法设置已应用；下一题按新设置生成。
+    settings_defaults_ready: 已恢复默认：两种题型，显示题名和作者；应用后生效。
+    settings_required: 请至少启用一种题型。
+    clue_settings_required: 请至少显示题名、作者或年代中的一项。
+    type_labels:
+      metadata_to_image: 看名片找画
+      image_to_metadata: 看画找名片
     clue_title_label: 题名（馆方原文）
     clue_artist_label: 作者
     clue_date_label: 年代
-    options_label: 四幅候选馆藏图
+    options_labels:
+      metadata_to_image: 四幅候选馆藏图
+      image_to_metadata: 四张候选馆藏名片
     choice_label: 选择候选作品 {number}
     choice_image_alt: 候选作品 {number}
-    correct: 配对成功！
-    incorrect: 没猜中；正确作品已标出。
+    clue_image_alt: 本题馆藏图
+    metadata_choice_label: 选择候选名片 {number}：{details}
+    metadata_detail_label: "{label}：{value}"
+    feedback:
+      metadata_to_image:
+        correct: 答对了！你找到了《{title}》。
+        incorrect: 没猜中；《{title}》的正确画面已标出。
+      image_to_metadata:
+        correct: 答对了！这幅画是《{title}》。
+        incorrect: 没猜中；这幅画是《{title}》。
     correct_badge: 答案
     selected_badge: 你的选择
-    no_question: 本次小批结果不足以组成四幅合格作品；可由你主动重试。
+    no_question: 本次小批结果不足以按当前题型和馆藏信息组成四个不重复的合格候选；可由你主动重试。
     network_error: 暂时没能取得馆藏资料，请稍后重试。
-    image_error: 本题的馆藏图片没有全部载入；可由你主动重试。
+    image_errors:
+      metadata_to_image: 本题的四幅馆藏图没有全部载入；可由你主动重试。
+      image_to_metadata: 本题的馆藏图没有载入；可由你主动重试。
     random_error: 当前浏览器无法提供可靠随机数，暂时不能出题。
     reveal_label: 本题作品
     unknown_artist: 作者不详
     unknown_date: 年代不详
     source_label: 在克利夫兰艺术博物馆查看《{title}》
-    attribution: 作品元数据与图片由克利夫兰艺术博物馆开放获取计划提供；题目前只显示馆方题名、作者和年代，图片与作答均不保存。
+    attribution: 作品元数据与图片由克利夫兰艺术博物馆开放获取计划提供；题面只显示你在玩法设置中启用的馆藏信息或完整画面，揭晓恢复完整资料，图片与作答均不保存。
     license_label: 查看 CC0 1.0 公共领域贡献声明
     open_access_label: 查看博物馆开放获取说明
     no_js: 此小玩意需要 JavaScript；未启用时不会连接博物馆接口或图片服务。
   en:
-    instructions: Read a museum card containing only a title, artist, and date, then match it to one of four complete collection images.
-    privacy: Starting a round sends one small-batch GET to the Cleveland Museum of Art Open Access API, using a shallow random offset among CC0 landscape paintings with complete title, artist, date, and image data, and loads the final four roughly 900px JPEGs from its official image CDN. It does not continue, refill the batch, or prefetch another round. The open collection may still include religious, mythological, or nonsexual human figures; text screening cannot exclude them completely. The museum and its service providers can see the requests and your IP address; the API can also see this site's Origin, while image requests do not send this page as a referrer. Responses stay only in this page's memory; this site uses no cookies or persistent storage for the game.
+    instructions: Guess in either direction between a museum card and a complete artwork; choose the formats and whether cards show the title, artist, or date.
+    privacy: Starting a round sends one small-batch GET to the Cleveland Museum of Art Open Access API, using a shallow random offset among CC0 landscape paintings with complete title, artist, date, and image data. “Museum card → image” loads four roughly 900px JPEGs from the official image CDN; “image → museum card” loads only the one image needed as the clue. It does not continue, refill the batch, or prefetch another round. The open collection may still include religious, mythological, or nonsexual human figures; text screening cannot exclude them completely. The museum and its service providers can see the requests and your IP address; the API can also see this site's Origin, while image requests do not send this page as a referrer. Responses stay only in this page's memory; this site uses no cookies or persistent storage for the game.
     start: Start a round
     again: Another round
     retry: Try again
     loading_metadata: Discovering this round in the museum's open collection…
-    loading_images: Loading the four museum images for this round…
-    prompt: Which artwork matches this museum card?
+    loading_images:
+      metadata_to_image: Loading the four museum images for this round…
+      image_to_metadata: Loading the museum image for this round…
+    prompts:
+      metadata_to_image: Which artwork matches this museum card?
+      image_to_metadata: Which museum card matches this artwork?
+    settings_title: Game settings
+    settings_adjust: Adjust
+    settings_all: Both formats
+    settings_summary: "{types} · {clues}"
+    settings_legend: Enabled formats
+    settings_help: Each round randomly uses an enabled format. Settings last only for this page.
+    clue_settings_legend: Museum information shown
+    clue_settings_help: The same fields are used for the card-to-art clue and the art-to-card choices. Keep at least one.
+    clue_setting_labels:
+      title: Title
+      creator: Artist
+      date: Date
+    clue_settings_separator: ", "
+    settings_apply: Apply settings
+    settings_reset: Restore defaults
+    settings_applied: Game settings applied; the next round will use them.
+    settings_defaults_ready: "Defaults restored: both formats with title and artist; apply to confirm."
+    settings_required: Select at least one format.
+    clue_settings_required: Show at least one of title, artist, or date.
+    type_labels:
+      metadata_to_image: Find art from a card
+      image_to_metadata: Find a card from art
     clue_title_label: Title (as catalogued)
     clue_artist_label: Artist
     clue_date_label: Date
-    options_label: Four candidate museum images
+    options_labels:
+      metadata_to_image: Four candidate museum images
+      image_to_metadata: Four candidate museum cards
     choice_label: Choose candidate artwork {number}
     choice_image_alt: Candidate artwork {number}
-    correct: Match found!
-    incorrect: Not quite; the correct artwork is marked.
+    clue_image_alt: Artwork clue for this round
+    metadata_choice_label: "Choose museum card {number}: {details}"
+    metadata_detail_label: "{label}: {value}"
+    feedback:
+      metadata_to_image:
+        correct: Correct! You found “{title}”.
+        incorrect: Not quite; the correct image for “{title}” is marked.
+      image_to_metadata:
+        correct: Correct! This artwork is “{title}”.
+        incorrect: Not quite; this artwork is “{title}”.
     correct_badge: Answer
     selected_badge: Your choice
-    no_question: This small batch did not contain four eligible artworks. You can choose to try again.
+    no_question: This small batch did not contain four distinct eligible choices for the current formats and museum fields. You can choose to try again.
     network_error: The collection data could not be retrieved just now. Please try again later.
-    image_error: Not all four museum images loaded for this round. You can choose to try again.
+    image_errors:
+      metadata_to_image: Not all four museum images loaded for this round. You can choose to try again.
+      image_to_metadata: The museum image for this round did not load. You can choose to try again.
     random_error: This browser cannot provide secure randomness, so a round cannot be created.
     reveal_label: Artwork in this round
     unknown_artist: Unknown artist
     unknown_date: Date unknown
     source_label: Open “{title}” at the Cleveland Museum of Art
-    attribution: Artwork metadata and images are provided through the Cleveland Museum of Art Open Access program. Before the answer, this page shows only the catalogued title, artist, and date; it does not save images or attempts.
+    attribution: Artwork metadata and images are provided through the Cleveland Museum of Art Open Access program. The prompt shows only the museum fields enabled in Game settings or the complete image, while the reveal restores the full record. This page does not save images or attempts.
     license_label: Read the CC0 1.0 public-domain dedication
     open_access_label: Read the museum's Open Access statement
     no_js: This toy needs JavaScript. With JavaScript disabled, it does not contact the museum API or image service.
