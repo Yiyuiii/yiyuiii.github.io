@@ -1,0 +1,37 @@
+version: 1
+policy:
+  format: WEBP
+  quality: 82
+  method: 6
+  resampling: LANCZOS
+  pillow: 12.0.0
+  libwebp: 1.6.0
+  strip_metadata: true
+  sizes: '(max-width: 1200px) calc(100vw - 2rem), 1152px'
+images:
+- source: assets/posts/202301162233/bigcards.jpg
+  published: assets/posts/202301162233/bigcards.jpg
+  variants:
+  - asset: assets/posts/202301162233/bigcards-content-v1-800.webp
+    width: 800
+  - asset: assets/posts/202301162233/bigcards-content-v1-1400.webp
+    width: 1400
+- source: assets/posts/202301162233/scene1.png
+  published: assets/posts/202301162233/scene1-content-v1.webp
+  variants:
+  - asset: assets/posts/202301162233/scene1-content-v1-800.webp
+    width: 800
+  - asset: assets/posts/202301162233/scene1-content-v1-1400.webp
+    width: 1400
+- source: assets/posts/202301162233/scene2.png
+  published: assets/posts/202301162233/scene2-content-v1.webp
+  variants: []
+- source: assets/posts/202301162233/scene3.png
+  published: assets/posts/202301162233/scene3-content-v1.webp
+  variants: []
+- source: assets/posts/202301162233/scene4.png
+  published: assets/posts/202301162233/scene4-content-v1.webp
+  variants: []
+- source: assets/posts/202301162233/scene5.png
+  published: assets/posts/202301162233/scene5-content-v1.webp
+  variants: []

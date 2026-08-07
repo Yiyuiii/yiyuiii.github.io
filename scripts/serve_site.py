@@ -20,6 +20,11 @@ EXPECTED_CLIENT_DISCONNECTS = (
 class SiteThreadingHTTPServer(ThreadingHTTPServer):
     """Preview server that can silence expected browser disconnects."""
 
+    # Chromium opens many short-lived connections when Playwright files run in
+    # parallel. The stdlib default backlog of five can refuse bursts even
+    # though request handling itself is threaded.
+    request_queue_size = 128
+
     def __init__(self, *args, quiet=False, **kwargs):
         self.quiet = quiet
         super().__init__(*args, **kwargs)

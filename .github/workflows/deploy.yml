@@ -32,19 +32,14 @@ jobs:
       - name: Install Python checks
         run: pip install -r scripts/requirements.txt
 
-      - name: Run source and data tests
-        run: python -m pytest -q
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
 
-      - name: Verify public repositories
-        run: python scripts/sync_projects.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Verify translations
-        run: python scripts/translation_guard.py --check --production
-
-      - name: Install ImageMagick
-        run: sudo apt-get update && sudo apt-get install -y imagemagick
+      - name: Install JavaScript checks
+        run: npm ci
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -52,30 +47,13 @@ jobs:
           ruby-version: "3.3.5"
           bundler-cache: true
 
-      - name: Build
-        env:
-          JEKYLL_ENV: production
-        run: bundle exec jekyll build --trace
-
-      - name: Check built site
-        run: |
-          python scripts/check_site.py --site _site
-          python scripts/check_legacy_urls.py --site _site
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: npm
-
-      - name: Install browser checks
-        run: npm ci
-
       - name: Install browser runtime
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps --no-shell chromium
 
-      - name: Run browser regression
-        run: python scripts/run_browser_tests.py --site _site
+      - name: Run complete repository validation
+        run: python scripts/validate.py --browser
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload browser failure artifacts
         if: failure()

@@ -193,7 +193,7 @@ def test_external_quiz_titles_name_their_actual_providers_and_anilist_formats():
 
 
 def test_search_indexes_each_real_grouped_toy_and_hashes_open_without_focus():
-    search = text("_includes/search-modal.liquid")
+    search = text("_includes/search-dialog.liquid")
     disclosure = text("assets/js/toy-disclosure.js")
 
     assert "site.data.toys.groups" in search

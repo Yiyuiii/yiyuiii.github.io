@@ -2,6 +2,7 @@
   "name": "yiyuiii-github-io-browser-checks",
   "private": true,
   "scripts": {
+    "test:unit": "node --test",
     "test:browser": "playwright test"
   },
   "devDependencies": {

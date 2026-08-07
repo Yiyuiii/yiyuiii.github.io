@@ -9,7 +9,7 @@ translation_key: post-202208171838
 translation_url: /posts/制作一张匹配形状的字符画/
 translation_source: _posts/2022-08-17-制作一张匹配形状的字符画.md
 translation_status: current
-source_hash: 3552c3d2c56ba0b367285f9233a930d505b6205f6e58203cfeaf078d8a04723a
+source_hash: b02c1644f8c67b199f08355f9381d1cb1210d9e69c6c7c1cca3ae0f5e3d91bb7
 aliases: []
 categories:
 - NoneBot
@@ -35,9 +35,9 @@ For a concrete implementation of this approach, see [Zhihu: ASCII Art—from Get
 
 The implementation is intuitive and concise, but **average grayscale** is not a perfect metric. Consider the following images:
 
-![Figure 1](/assets/posts/202208171838/QQ图片20220817193513.jpg)
+![Original image of a green-haired anime character beside the words “Looks strange—take another look”](/assets/posts/202208171838/QQ图片20220817193513.jpg)
 
-![Figure 2](/assets/posts/202208171838/QQ图片20220817193517.jpg)
+![Average-grayscale ASCII rendering with broken text strokes and character outlines](/assets/posts/202208171838/QQ图片20220817193517.jpg)
 
 The upper edge of the Chinese character “好” contains a separate row of apostrophes, while the upper edge of “一” has turned into a left parenthesis that extends vertically as the horizontal stroke breaks apart. Errors like these make the ASCII art less pleasing to look at.
 
@@ -87,11 +87,11 @@ For each character-sized region of the original image, calculate the loss functi
 
 The result is shown below:
 
-![Figure 3](/assets/posts/202208171838/512620327-223109835-AFDBE437BEAB07B26AF22C68897F1524.jpg)
+![Glyph-shape loss example with Chinese text and a figure assembled from characters](/assets/posts/202208171838/512620327-223109835-AFDBE437BEAB07B26AF22C68897F1524.jpg)
 
-![Figure 4](/assets/posts/202208171838/QQ图片20220817225913.gif)
+![Original black cat wearing a blue bow beside a hand](/assets/posts/202208171838/QQ图片20220817225913.gif)
 
-![Figure 5](/assets/posts/202208171838/QQ图片20220817225742.gif)
+![ASCII rendering of the black cat and hand optimized for glyph outlines](/assets/posts/202208171838/QQ图片20220817225742.gif)
 
 The outlines of the generated ASCII art are already very good: the contour of the hand and the tufts of the cat's fur are reproduced faithfully. The black cat's face is too blurry, though...
 
@@ -103,7 +103,7 @@ I think characters have less expressive capacity than a black-and-white image, s
 
 The improved result is shown below:
 
-![Figure 6](/assets/posts/202208171838/QQ图片20220817234811.gif)
+![Black-cat ASCII rendering after increasing the brightness weight, with clearer eyes and bow](/assets/posts/202208171838/QQ图片20220817234811.gif)
 
 The black cat's eyes and bow are now brighter, while the contour of the hand is less distinct than before.
 
@@ -126,23 +126,23 @@ The total loss function is then a weighted sum of the pixel mean squared error l
 
 The improvement is shown below. Original:
 
-![Figure 7](/assets/posts/202208171838/QQ图片20220820122630.jpg)
+![Original image of a gray-haired anime character with closed eyes](/assets/posts/202208171838/QQ图片20220820122630.jpg)
 
-![Figure 8](/assets/posts/202208171838/QQ图片20220817225913.gif)
+![Original black cat wearing a blue bow beside a hand, reused for the second comparison](/assets/posts/202208171838/QQ图片20220817225913.gif)
 
 After the improvement:
 
-![Figure 8](/assets/posts/202208171838/QQ图片20220820130125.jpg)
+![Gray-haired character rendered with both shape and grayscale losses](/assets/posts/202208171838/QQ图片20220820130125.jpg)
 
-![Figure 8](/assets/posts/202208171838/QQ图片20220820130948.gif)
+![Black cat and hand rendered with both shape and grayscale losses](/assets/posts/202208171838/QQ图片20220820130948.gif)
 
 The image now contains both more shape detail and some grayscale regions, achieving an initial balance between the two. Adjusting the weights of the two losses provides a simple way to tune the ASCII art toward either shape or grayscale.
 
 One important point is that the two loss functions **must be brought to the same scale**. If the squaring operation $square$ is replaced with absolute value $abs$, the effects of the two loss functions on different pixels become difficult to align, and adjusting the weights is less effective. The result with the initial weights is shown below:
 
-![Figure 8](/assets/posts/202208171838/QQ图片20220820122607.jpg)
+![Gray-haired character biased toward grayscale because the loss scales are misaligned](/assets/posts/202208171838/QQ图片20220820122607.jpg)
 
-![Figure 8](/assets/posts/202208171838/QQ图片20220820124447.gif)
+![Black cat and hand biased toward grayscale because the loss scales are misaligned](/assets/posts/202208171838/QQ图片20220820124447.gif)
 
 The generated ASCII art is visibly biased toward grayscale; in practice, this formulation makes it difficult to find a balance by adjusting the weights.
 

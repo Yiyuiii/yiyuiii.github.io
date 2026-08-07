@@ -125,7 +125,7 @@ def test_include_is_progressively_enhanced_accessible_and_self_contained():
         'referrerpolicy="no-referrer"',
     ):
         assert required in include
-    stylesheet = text("assets/css/main.scss")
+    stylesheet = text("assets/css/toys.scss")
     assert ".art-glimpse__choices" in stylesheet
     assert "@media (max-width: 359px)" in stylesheet
     assert "glimpse.entries | jsonify" not in include

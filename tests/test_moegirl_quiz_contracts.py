@@ -107,8 +107,8 @@ def test_script_uses_one_random_api_fetch_without_tracking_or_unsafe_dom_html():
 
 
 def test_quiz_styles_are_scoped_responsive_and_theme_aware():
-    css = text("assets/css/main.scss")
-    component = css[css.index(".moegirl-quiz {") : css.index(".site-footer {")]
+    css = text("assets/css/toys.scss")
+    component = css[css.index(".moegirl-quiz {") :]
 
     assert 'html[data-theme="dark"] .moegirl-quiz' in component
     assert ".moegirl-quiz__clue" in component
