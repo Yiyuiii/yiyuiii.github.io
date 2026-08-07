@@ -386,6 +386,19 @@ python scripts/generate_post_thumbnails.py --check
 
 派生图与原图同目录，命名为 `<原文件名去扩展名>-index-v1-160.webp` 和 `-index-v1-320.webp`；原分辨率正式封面继续供文章正文使用，不得被派生图替换。派生图不在清单中逐项重复保存路径和 SHA-256：每张原图已有受检 SHA-256，`index_derivatives` 又完整固定了尺寸、编码参数、Pillow 与 libwebp 版本，`--check` 和测试会从原图重新编码并逐字节比较提交文件。这条“原图哈希 + 固定编码器与策略 + 逐字节重算”链路是派生文件哈希的单一等价证据，避免两份清单失步。编码器版本不一致时脚本会在处理前明确失败。
 
+### 正文图片与响应式派生图
+
+正文图片的 `alt` 必须描述图中能独立理解的信息，不得只写“图 1／Figure 1”、文件名或空字符串。中英文成对文章保持图片目标与顺序对应，但 `alt` 应分别用当前页面语言自然表达。构建插件会从真实本地 PNG、GIF、JPEG 或 WebP 文件读取固有宽高，并为正文图片加入延迟加载与异步解码；不要在 Markdown 中猜测尺寸，也不要手写与文件不符的 `width`、`height` 或 `srcset`。
+
+需要降低正文大图传输量时，在 `_data/article_image_derivatives.yml` 声明原图、派生文件、宽度和 `sizes`。派生文件与原图同目录，原图继续保留以兼容旧 URL；页面只会输出清单中通过路径、尺寸、编码版本和逐字节重算检查的候选。生成与验证命令为：
+
+```powershell
+python scripts/generate_article_images.py --write
+python scripts/generate_article_images.py --check
+```
+
+调整质量、缩放算法、Pillow/libwebp 版本或候选尺寸时，必须升级策略版本和文件名，不能原地覆盖已经公开的缓存 URL。发布前统一入口会自动执行 `--check`。
+
 ### 正文外部图片的来源记录
 
 `docs/asset-provenance.yml` 仍是所有正式题图的唯一生产契约。若单篇随笔还使用了较多外部正文图片、官方媒体包素材或规则书必要裁图，可在 `docs/article-assets/<uid>.yml` 另存一份文章级来源记录，逐项保存正式资产路径、直接来源、处理方式、尺寸与 SHA-256。它只补充正文素材的可追溯性，不替代题图契约，也不保存下载包、完整规则书、未采用候选或过程截图。当前实例见 `docs/article-assets/202608021600.yml`。

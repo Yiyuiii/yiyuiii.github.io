@@ -4,15 +4,15 @@ Yiyu Chen 的双语个人站点，发布随笔、公开项目与合作论文。�
 
 ## 目录
 
-- _posts：当前正式文章。
-- _pages、_layouts、_includes、_plugins：页面、布局、组件与本站插件。
-- _data：欢迎页、小玩意、关于页、项目、论文、界面文字与旧 URL 契约。
-- assets：当前生产样式、脚本、favicon 和文章媒体。
-- scripts：项目同步、翻译检查、封面处理、构建产物检查与本地预览。
-- tests：源码、数据、构建结果与浏览器回归。
-- docs/content-editing.md：内容维护流程。
-- docs/asset-provenance.yml：当前文章封面的来源、许可与哈希。
-- docs/superpowers：已批准的设计与实施计划。
+- `_posts`：当前正式文章。
+- `_pages`、`_layouts`、`_includes`、`_plugins`：页面、布局、组件与本站插件。
+- `_data`：欢迎页、小玩意、关于页、项目、论文、界面文字与旧 URL 契约。
+- `assets`：当前生产样式、脚本、favicon 和文章媒体。
+- `scripts`：统一验证、项目同步、翻译检查、资源处理、构建产物检查与本地预览。
+- `tests`：源码、数据、构建结果与浏览器回归。
+- `docs/content-editing.md`：内容维护流程。
+- `docs/asset-provenance.yml`：当前文章封面的来源、许可与哈希。
+- `docs/superpowers`：已批准的设计与实施计划。
 
 正式 master 当前树不得保存完整历史稿、AI 审阅稿、封面候选或原始大图。合并正式化分支前，下面的命令必须无输出：
 
@@ -20,181 +20,80 @@ Yiyu Chen 的双语个人站点，发布随笔、公开项目与合作论文。�
 git ls-files docs/content-revisions docs/content-covers
 ```
 
-只有已经进入 master 且提交仍可达的正式版本，才承诺可由普通 Git 历史长期恢复。临时 worktree 或分支的中间提交在删除分支或 squash 后不保证可达；确需长期保留时，应使用经批准的受保护 tag、归档分支、仓库外 git bundle 或专门资产库，不要把过程档案放回 master 当前树。当前生产资源的法律与处理信息由 docs/asset-provenance.yml 维护。
+只有已经进入 master 且提交仍可达的正式版本，才承诺可由普通 Git 历史长期恢复。临时 worktree 或分支的中间提交在删除分支或 squash 后不保证可达；确需长期保留时，应使用经批准的受保护 tag、归档分支、仓库外 git bundle 或专门资产库，不要把过程档案放回 master 当前树。当前生产资源的法律与处理信息由 `docs/asset-provenance.yml` 维护。
 
 ## 验证
 
 ### 环境前提
 
 - Python 3.12。
-- Ruby 3.3.5 与 Bundler。
-- ImageMagick，且命令已加入 PATH。
-- Node.js 20 或更高版本。
-- Google Chrome。
+- Ruby 3.3.5、Bundler 2.5。
+- Node.js 24。
+- 浏览器回归使用 Playwright 自带的 Chromium；不需要 ImageMagick 或系统 Chrome。
 
-### 首次准备
+首次准备：
 
 ```powershell
 python -m pip install -r scripts/requirements.txt
 bundle install
 npm ci
+npx playwright install --no-shell chromium
 ```
 
-### 源码与数据检查
+### 统一入口
+
+日常完整验证（不含耗时较长的浏览器回归）：
 
 ```powershell
-python -m pytest -q
-python scripts/translation_guard.py --check --production
+python scripts/validate.py
 ```
 
-CI 还会运行 `python scripts/sync_projects.py`；本地执行该联网检查前必须设置可用的 `GITHUB_TOKEN`。若使用 GitHub CLI，可先完成 `gh auth login`，再执行 `$env:GITHUB_TOKEN = gh auth token`；不要配置宽权限个人令牌。
-
-### Production 构建
-
-下面的 PowerShell 会保存并精确恢复调用者原有的 `JEKYLL_ENV`；原变量不存在时才在结束后删除。
+发布前与 CI 使用同一个入口并追加完整 Playwright 回归：
 
 ```powershell
-$hadJekyllEnv = Test-Path Env:\JEKYLL_ENV
-$previousJekyllEnv = if ($hadJekyllEnv) { $env:JEKYLL_ENV } else { $null }
-try {
-  $env:JEKYLL_ENV = "production"
-  bundle exec jekyll build --trace
-  if ($LASTEXITCODE -ne 0) { throw "Jekyll build failed with exit code $LASTEXITCODE." }
-} finally {
-  if ($hadJekyllEnv) {
-    Set-Item Env:\JEKYLL_ENV -Value $previousJekyllEnv
-  } else {
-    Remove-Item Env:\JEKYLL_ENV -ErrorAction SilentlyContinue
-  }
-}
-
-python scripts/check_site.py --site _site
-python scripts/check_legacy_urls.py --site _site
+python scripts/validate.py --browser
 ```
 
-Ruby production build 使用 Jekyll 4.4.1；精确 CI 流程见 .github/workflows/deploy.yml。
+统一入口依次执行 Python 测试、JavaScript 逻辑测试、公开仓库同步、双语检查、缩略图检查、正文响应式派生图检查、production Jekyll 构建、构建产物检查和旧 URL 检查；`--browser` 再对刚生成的 `_site` 启动随机 loopback 预览并运行浏览器回归。脚本只给 Jekyll 子进程设置 `JEKYLL_ENV=production`，不会覆盖调用者环境。
 
-### 浏览器回归
+公开仓库同步是联网验证。本地运行前应设置可用的 `GITHUB_TOKEN`；若使用 GitHub CLI，可先完成 `gh auth login`，再执行 `$env:GITHUB_TOKEN = gh auth token`。不要配置宽权限个人令牌。仅在已经有本次可信同步生成的 `_data/project_runtime.yml` 时，才可用 `--skip-project-sync` 做离线排查；该选项不是发布验证的替代品。
 
-首选跨平台入口如下。它会验证 `_site` 和自定义 404，直接在随机 loopback 端口启动预览服务，只给 Playwright 子进程设置 `SITE_URL`，并在成功、失败或中断后关闭服务：
-
-```powershell
-python scripts/run_browser_tests.py --site _site
-```
-
-只运行指定规格时，把参数放在 `--` 后：
+只排查某个浏览器规格时，可复用已经成功构建的 `_site`：
 
 ```powershell
 python scripts/run_browser_tests.py --site _site -- tests/browser/site.spec.mjs
 ```
 
-下面保留的 PowerShell 是旧版手工等价流程，仅供排查启动器自身时参考；日常验证和 CI 应统一使用上面的 Python 入口：
+也可让统一入口完成前置检查和新构建，并把 `--` 后的参数传给 Playwright：
 
 ```powershell
-$hadSiteUrl = Test-Path Env:\SITE_URL
-$previousSiteUrl = if ($hadSiteUrl) { $env:SITE_URL } else { $null }
-$siteServer = $null
-$workflowError = $null
-try {
-  $portProbe = [System.Net.Sockets.TcpListener]::new(
-    [System.Net.IPAddress]::Loopback,
-    0
-  )
-  $portProbe.Start()
-  try {
-    $sitePort = ([System.Net.IPEndPoint]$portProbe.LocalEndpoint).Port
-  } finally {
-    $portProbe.Stop()
-  }
-
-  $env:SITE_URL = "http://127.0.0.1:$sitePort"
-  $repoRoot = (git rev-parse --show-toplevel).Trim()
-  if ($LASTEXITCODE -ne 0) { throw "Cannot resolve the repository root." }
-  $siteRoot = (Resolve-Path -LiteralPath "_site" -ErrorAction Stop).Path
-  $pythonCommands = @(Get-Command python -CommandType Application -ErrorAction Stop)
-  $pythonPath = $pythonCommands[0].Path
-  $serverStartInfo = [System.Diagnostics.ProcessStartInfo]::new()
-  $serverStartInfo.FileName = $pythonPath
-  $serverStartInfo.WorkingDirectory = $repoRoot
-  $serverStartInfo.UseShellExecute = $false
-  $serverStartInfo.CreateNoWindow = $true
-  $serverStartInfo.Arguments = "scripts/serve_site.py --bind 127.0.0.1 --port $sitePort"
-  $serverStartInfo.EnvironmentVariables["SITE_PREVIEW_ROOT"] = $siteRoot
-  $siteServer = [System.Diagnostics.Process]::Start($serverStartInfo)
-  if ($null -eq $siteServer) { throw "Failed to start the local site server." }
-
-  $siteReady = $false
-  $siteDeadline = (Get-Date).AddSeconds(10)
-  do {
-    if ($siteServer.HasExited) {
-      throw "Local site server exited with code $($siteServer.ExitCode) before becoming ready."
-    }
-    try {
-      Invoke-WebRequest -Uri "$env:SITE_URL/" -UseBasicParsing -TimeoutSec 1 | Out-Null
-      if ($siteServer.HasExited) {
-        throw "Local site server exited with code $($siteServer.ExitCode) during readiness check."
-      }
-      $siteReady = $true
-    } catch {
-      if ($siteServer.HasExited) {
-        throw "Local site server exited with code $($siteServer.ExitCode) before becoming ready."
-      }
-      Start-Sleep -Milliseconds 200
-    }
-  } until ($siteReady -or (Get-Date) -ge $siteDeadline)
-  if (-not $siteReady) {
-    if ($siteServer.HasExited) {
-      throw "Local site server exited with code $($siteServer.ExitCode) before becoming ready."
-    }
-    throw "Local site server did not become ready."
-  }
-
-  npm run test:browser
-  if ($LASTEXITCODE -ne 0) { throw "Browser tests failed with exit code $LASTEXITCODE." }
-} catch {
-  $workflowError = $_
-} finally {
-  $cleanupFailures = [System.Collections.Generic.List[string]]::new()
-  if ($null -ne $siteServer) {
-    try {
-      if (-not $siteServer.HasExited) { $siteServer.Kill() }
-      if (-not $siteServer.WaitForExit(5000)) {
-        $cleanupFailures.Add("Local site server did not exit within 5000 ms after Kill().")
-      }
-    } catch {
-      $cleanupFailures.Add("Local site server cleanup failed: $($_.Exception.Message)")
-    } finally {
-      try { $siteServer.Dispose() } catch {
-        $cleanupFailures.Add("Local site server disposal failed: $($_.Exception.Message)")
-      }
-    }
-  }
-  try {
-    if ($hadSiteUrl) {
-      Set-Item Env:\SITE_URL -Value $previousSiteUrl
-    } else {
-      Remove-Item Env:\SITE_URL -ErrorAction Stop
-    }
-  } catch {
-    $cleanupFailures.Add("SITE_URL restoration failed: $($_.Exception.Message)")
-  }
-  if ($cleanupFailures.Count -gt 0) {
-    $cleanupMessage = $cleanupFailures -join "; "
-    if ($null -ne $workflowError) {
-      throw "Browser regression failed: $($workflowError.Exception.Message); cleanup also failed: $cleanupMessage"
-    }
-    throw "Browser cleanup failed: $cleanupMessage"
-  }
-  if ($null -ne $workflowError) { throw $workflowError }
-}
+python scripts/validate.py --browser -- tests/browser/site.spec.mjs
 ```
 
-也可通过 `SITE_URL` 指向另一个等价的 `_site` 预览；此时应自行确保服务生命周期和构建内容一致。
+Ruby 依赖由已提交的 `Gemfile.lock` 固定；依赖有意变更时才更新锁文件。精确 CI 流程见 `.github/workflows/deploy.yml`。
+
+### 可选外部服务维护检查
+
+外部题源审计不会进入普通验证或 CI，必须由维护者显式选择联网。AniList 的单次生产形状探针使用：
+
+```powershell
+node tests/tools/audit-acg-relation-quiz-live.mjs --run-live
+```
+
+它每次只发送一个 GraphQL POST，不自动翻页或重试，也不输出题目内容。CMA 与萌娘百科的既有显式维护工具位于 `tests/tools/audit-art-glimpse-live.mjs` 和 `tests/tools/audit-moegirl-quiz-live.mjs`；运行前先阅读各脚本顶部的请求数量与输出边界。
+
+构建后的外链可达性检查同样是独立、非发布阻断的维护入口：
+
+```powershell
+python scripts/check_site.py --site _site --external-links
+```
+
+外部站点可能限流、拒绝 `HEAD` 或临时不可用，因此该结果用于维护排查，不得替代统一发布门禁，也不应直接加入普通 CI。
 
 ## 部署
 
-Pull request 只执行验证并上传 site-preview。master 的 push，或在 master 上通过 `workflow_dispatch` 手动触发工作流时，build 成功后才会部署 `_site`；不要直接把生成目录提交到 master。
+Pull request 只执行验证并上传 `site-preview`。master 的 push，或在 master 上通过 `workflow_dispatch` 手动触发工作流时，build 成功后才会部署 `_site`；不要直接把生成目录提交到 master。
 
 ## 许可
 
-站点代码与仓库整体许可见 LICENSE。文章封面可能采用不同许可，逐项以 docs/asset-provenance.yml 和文章中的可见署名为准。
+站点代码与仓库整体许可见 `LICENSE`。文章封面可能采用不同许可，逐项以 `docs/asset-provenance.yml` 和文章中的可见署名为准。
