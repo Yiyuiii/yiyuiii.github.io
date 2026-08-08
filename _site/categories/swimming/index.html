@@ -1,0 +1,542 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Swimming | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="yiyuiii 的随笔、公开项目与合作论文。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/categories/swimming/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/categories/swimming/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="website"> <meta property="og:title" content="Swimming"> <meta property="og:url" content="https://yiyuiii.github.io/categories/swimming/"> <meta property="og:description" content="yiyuiii 的随笔、公开项目与合作论文。"> <meta property="og:locale" content="en_US"> <meta property="og:image" content="https://yiyuiii.github.io/assets/img/favicons/android-chrome-256x256.png"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Swimming"> <meta name="twitter:description" content="yiyuiii 的随笔、公开项目与合作论文。"> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/img/favicons/android-chrome-256x256.png"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "url": "https://yiyuiii.github.io/categories/swimming/",
+    "headline": "Swimming",
+    "description": "yiyuiii 的随笔、公开项目与合作论文。",
+    "inLanguage": "en",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    }
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">Skip to content</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/en/" aria-label="Return to the English welcome page"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="Turn off the sunlight background" aria-pressed="true" data-enable-light-label="Turn on the sunlight background" data-disable-light-label="Turn off the sunlight background" data-enable-dark-label="Turn on the moonlight background" data-disable-dark-label="Turn off the moonlight background" data-status-light-on="Sunlight background is on" data-status-light-off="Sunlight background is off" data-status-dark-on="Moonlight background is on" data-status-dark-off="Moonlight background is off" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/en/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="Primary navigation"> <a href="/en/">Welcome</a> <a href="/en/writing/">Writing</a> <a href="/en/projects/">GitHub</a> <a href="/en/publications/">Papers</a> <a href="/en/toys/">Toys</a> <a href="/en/about/">About yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="Search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="Switch to the night appearance" aria-pressed="false" data-enable-light-label="Switch to the light appearance" data-enable-dark-label="Switch to the night appearance" data-status-light="Light appearance is on" data-status-dark="Night appearance is on" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/writing/?missing_translation=1" aria-label="Switch to Chinese"> 中 </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="post"> <header class="post-header"> <h1 class="post-title">Swimming</h1> <p class="post-description">Writing categories</p> </header> <article class="archive"> <div class="table-responsive"> <table class="table table-sm table-borderless"> <tr> <th scope="row">2023-07-23</th> <td><a class="post-link" href="/en/posts/understanding-swimming/">Understanding Swimming</a></td> </tr> </table> </div> </article> </div> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="en" data-loading-text="Loading comments…" data-retry-text="Try again" data-error-text="Comments could not be loaded. Try again, or use the GitHub Discussions link above." data-auto-load-enabled-text="Automatic comment loading is on." data-auto-load-disabled-text="Automatic comment loading is off." data-auto-load-unavailable-text="Your browser could not save this setting. You can still show comments manually." aria-labelledby="page-comments-title-en"> <h2 id="page-comments-title-en">Comments</h2> <p class="page-comments__introduction"> Comments are public and stored in <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>. This page connects to giscus.app and GitHub and sends the current page path only after you show comments manually or enable automatic loading. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information. </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>Show comments (~0.13 MB first load)</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-en" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-en" class="page-comments__auto-load-label">Auto-load comments on this site</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">Enable JavaScript and use the button above to show comments, or use the GitHub Discussions link above.</p></noscript> </section> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="Enter a term to start searching." data-no-results="No matching content found." data-missing-translation="This item has no English version yet. You are viewing the English writing index."> <div class="search-dialog__header"> <h2 id="search-title">Search this site</h2> <button id="search-close" class="icon-button" type="button" aria-label="Close search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">Search this site</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search writing, projects, papers, or toys"> <p id="search-status" class="search-status" aria-live="polite">Enter a term to start searching.</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+  
+    
+      
+      {
+        "title": "Building Trust with Timid Zebra Finches: From Environment to Positive Training",
+        "description": "A welfare-first trust ladder for zebra finches—stable surroundings, a health baseline, observable stress signals, immediate reinforcement, and reversible steps.",
+        "tags": ["Zebra finches","Animal welfare"],
+        "url": "/en/posts/building-trust-with-zebra-finches/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Four-Colour Outerwear System That Reduces Daily Decisions",
+        "description": "Turns brick red, warm beige, olive, and charcoal into a personal outerwear system, filtered by real occasions, wardrobe compatibility, silhouette, and maintenance.",
+        "tags": ["Clothing","Colour"],
+        "url": "/en/posts/a-four-color-outerwear-system/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "From Owning Tools to Cooking Easily: A Minimal System for a Small Kitchen",
+        "description": "Organises a small kitchen around real action chains, a minimum capability set, purchase gates, visible inventory, and cleanup resets, with clear food-safety boundaries.",
+        "tags": ["Kitchen","Personal systems"],
+        "url": "/en/posts/a-minimal-system-for-a-small-kitchen/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "From Running to Maintainable: A Minimal Operations Loop for a Minecraft Server",
+        "description": "A compact Minecraft server operations loop—Java compatibility, a dedicated identity, supervised startup, least exposure, tested restores, staged upgrades, and monitoring.",
+        "tags": ["Minecraft","Server operations"],
+        "url": "/en/posts/a-minimal-operations-loop-for-a-minecraft-server/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "SETI Rules: From Setup to Your First Complete Game",
+        "description": "Official illustrations and play order connect setup, turns, actions, round ends, and scoring into one game, without fragmented rulebook lookup or fixed-pace video; Space Agencies and promos follow.",
+        "tags": ["SETI","Space Agencies","Board Games","Rules"],
+        "url": "/en/posts/learning-seti-board-game/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Age of Innovation",
+        "description": "A cross-round valuation of coins, tools, books, scholars, science, navigation, and buildings, placing immediate exchanges and future production on one scale for medium- and long-term planning.",
+        "tags": ["Age of Innovation","Board Games"],
+        "url": "/en/posts/age-of-innovation-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Troyes",
+        "description": "A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply.",
+        "tags": ["Troyes","Board Games"],
+        "url": "/en/posts/troyes-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Gaia Project",
+        "description": "An approximate common scale for credits, ore, knowledge, QIC, buildings, and endgame points, then checked against faction exceptions to give experience-based planning a reproducible baseline.",
+        "tags": ["Gaia Project","Board Games"],
+        "url": "/en/posts/gaia-project-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Understanding Swimming",
+        "description": "A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies.",
+        "tags": ["Swimming"],
+        "url": "/en/posts/understanding-swimming/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Break the Code Strategy Guide",
+        "description": "Drawn from nearly 500 BGA games, this guide treats questions as candidate-set partitions and connects them to deduction, turn order, and endgame play, so the method transfers beyond fixed rankings.",
+        "tags": ["Break the Code","Board Games"],
+        "url": "/en/posts/break-the-code-strategy-guide/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Quantitative Strategy Guide to Seasons",
+        "description": "A common point scale for energy, levels, crystallization, cards, and dice actions, tested against drafting and interaction to answer “which choice is worth more now?” beyond isolated card ratings.",
+        "tags": ["Seasons","Board Games"],
+        "url": "/en/posts/quantitative-strategy-guide-to-seasons/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "PC Build Log",
+        "description": "A complete R5 5600 + RX 6600 XT build record that keeps requirements, component trade-offs, prices, and assembly problems together, showing how a budget became a balanced machine.",
+        "tags": ["PC Building"],
+        "url": "/en/posts/pc-build-log/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building Shape-Matched ASCII Art",
+        "description": "A shape-aware ASCII-art method using glyph templates, comparison, histogram equalization, and grayscale consistency to make outlines follow source images more closely than average-brightness mapping.",
+        "tags": ["NoneBot","Python","ASCII Art"],
+        "url": "/en/posts/building-shape-matched-ascii-art/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Cloud Servers and Deployment Architecture: From Domains to Reliable Operations",
+        "description": "A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting.",
+        "tags": ["Cloud Servers"],
+        "url": "/en/posts/notes-on-cloud-servers/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Practical Guide to Reliable Reinforcement Learning Experiments",
+        "description": "A reproducible RL workflow spanning environment contracts, Gymnasium semantics, open task distributions, visual pre-training, method choice, reward, replay, debugging, and uncertainty reporting.",
+        "tags": ["Reinforcement Learning","Meta-Reinforcement Learning","Representation Learning"],
+        "url": "/en/posts/reinforcement-learning-issues/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building on GitHub Pages: From Static Hosting to Reproducible Deployment",
+        "description": "Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically.",
+        "tags": ["GitHub"],
+        "url": "/en/posts/build-a-personal-github-page/",
+        "kind": "Writing"
+      }
+      
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "A NoneBot2 plugin that turns chat commands into multilingual character voices through configurable speech-synthesis APIs and voice parameters.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "A unified benchmark for reproducible high-dimensional Bayesian optimization experiments, combining synthetic and realistic tasks with representative algorithm wrappers.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "A lightweight solver for Turing Machine puzzles that enumerates valid codes, searches the best three-verifier questioning plan, and estimates success.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "A lightweight voice-to-voice LLM demo connecting local SenseVoice ASR, an OpenAI-compatible chat API, and Edge TTS with free components.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "Zero-shot online cross-task transfer for LLM-based hyperparameter optimization: one LLM call per BO round proposes target candidates and selects an auxiliary query.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "MCP tools for Codex to delegate implementation and request independent Claude Code reviews with explicit authority, provider routing, and structured results.",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-b-ijcnn-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey on High-dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Hongye Cao, Yang Gao, Dong Li, Jianye Hao · Journal of Software",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-survey-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/en/publications/#trust-region-newton-ecai-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey of Meta-reinforcement Learning Research",
+      "description": "Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao · Journal of Software · 2024 Top-20 High-Attention Review Paper",
+      "tags": [2024],
+      "url": "/en/publications/#meta-rl-survey-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/en/publications/#supervised-dr-ppsn-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/en/publications/#casil-aamas-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/en/publications/#radar-rl-2023",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/en/publications/#tild-aamas-2023",
+      "kind": "Papers"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "Moegirlpedia quiz",
+        "description": "Read the Chinese anonymized introduction and choose the matching entry.",
+        "tags": ["encyclopedia","Moegirlpedia","Chinese","entry","quiz"],
+        "url": "/en/toys/#moegirl-quiz",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Artwork quiz (Cleveland Museum of Art)",
+        "description": "Choose the quiz direction and whether to show title, artist, or date.",
+        "tags": ["art","matching","painting","museum","Cleveland","image","quiz"],
+        "url": "/en/toys/#art-glimpse",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Anime protagonist quiz (AniList)",
+        "description": "Choose among three four-choice links between anime and their main characters.",
+        "tags": ["AniList","anime","character","main role","relation","quiz"],
+        "url": "/en/toys/#anilist-role-quiz",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Color difference challenge",
+        "description": "Find the subtly different tile and see how far you can go.",
+        "tags": ["color","vision","perception","challenge"],
+        "url": "/en/toys/#color-challenge",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Ten-second estimate",
+        "description": "Stop as close to ten seconds as you can without watching a timer.",
+        "tags": ["ten seconds","time","intuition","challenge"],
+        "url": "/en/toys/#ten-second",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Reaction time",
+        "description": "Wait for the signal, then respond as quickly as possible.",
+        "tags": ["reaction","time","speed","challenge"],
+        "url": "/en/toys/#reaction-time",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Number Wordle",
+        "description": "Use exact and digit-only matches to deduce the hidden number code.",
+        "tags": ["number Wordle","codebreaker","deduction","logic","numbers","game"],
+        "url": "/en/toys/#codebreaker",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Make 24",
+        "description": "Use each of four numbers once and combine them to make exactly 24.",
+        "tags": ["make 24","arithmetic","fractions","mental math","logic","game"],
+        "url": "/en/toys/#make-24",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Lights Out",
+        "description": "Flip a cell and its neighbours, then plan a route to turn every light off.",
+        "tags": ["lights out","grid","minimum moves","planning","logic","game"],
+        "url": "/en/toys/#lights-out",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Random password",
+        "description": "Generate a configurable random password in your browser.",
+        "tags": ["random","password","security","generator"],
+        "url": "/en/toys/#random-password",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Random numbers",
+        "description": "Generate one or more random results from an integer range.",
+        "tags": ["random","number","integer","generator"],
+        "url": "/en/toys/#random-number",
+        "kind": "Toys"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>

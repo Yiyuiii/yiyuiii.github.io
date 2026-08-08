@@ -1,0 +1,605 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Building on GitHub Pages: From Static Hosting to Reproducible Deployment | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically."> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/en/posts/build-a-personal-github-page/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/en/posts/build-a-personal-github-page/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/build-a-personal-github-page/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="Building on GitHub Pages: From Static Hosting to Reproducible Deployment"> <meta property="og:url" content="https://yiyuiii.github.io/en/posts/build-a-personal-github-page/"> <meta property="og:description" content="Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically."> <meta property="og:locale" content="en_US"> <meta property="og:locale:alternate" content="zh_CN"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202109160000/cover-homepage-2026-07-30.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Building on GitHub Pages: From Static Hosting to Reproducible Deployment"> <meta name="twitter:description" content="Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically."> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202109160000/cover-homepage-2026-07-30.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/en/posts/build-a-personal-github-page/",
+    "headline": "Building on GitHub Pages: From Static Hosting to Reproducible Deployment",
+    "description": "Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically.",
+    "inLanguage": "en",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2021-09-16T00:00:00+08:00",
+    "dateModified": "2026-08-08T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">Skip to content</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/en/" aria-label="Return to the English welcome page"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="Turn off the sunlight background" aria-pressed="true" data-enable-light-label="Turn on the sunlight background" data-disable-light-label="Turn off the sunlight background" data-enable-dark-label="Turn on the moonlight background" data-disable-dark-label="Turn off the moonlight background" data-status-light-on="Sunlight background is on" data-status-light-off="Sunlight background is off" data-status-dark-on="Moonlight background is on" data-status-dark-off="Moonlight background is off" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/en/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="Primary navigation"> <a href="/en/">Welcome</a> <a href="/en/writing/">Writing</a> <a href="/en/projects/">GitHub</a> <a href="/en/publications/">Papers</a> <a href="/en/toys/">Toys</a> <a href="/en/about/">About yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="Search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="Switch to the night appearance" aria-pressed="false" data-enable-light-label="Switch to the light appearance" data-enable-dark-label="Switch to the night appearance" data-status-light="Light appearance is on" data-status-dark="Night appearance is on" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/" aria-label="Switch to Chinese"> 中 </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>Building on GitHub Pages: From Static Hosting to Reproducible Deployment</h1> <div class="article-meta"> <div class="article-tags"> <a href="/en/writing/?tag=GitHub">GitHub</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> First published <time datetime="2021-09-16">2021-09-16</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span> Last revised <time datetime="2026-08-08">2026-08-08</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">Revision history</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2021-09-16">2021-09-16</time> <span>Initial publication</span> </li> <li> <time datetime="2026-08-08">2026-08-08</time> <span>Researched and rewritten by GPT-5.6 Sol; replaced the obsolete theme-specific account with a current guide to hosting boundaries, Jekyll dependencies, Pages workflows, domains, CI, and troubleshooting</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>Sections</summary> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#understand-the-system-before-choosing-tools">Understand the system before choosing tools</a> <ul> <li class="toc-entry toc-h3"><a href="#what-github-pages-hosts">What GitHub Pages hosts</a></li> <li class="toc-entry toc-h3"><a href="#the-four-stage-model">The four-stage model</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#choose-a-publishing-path">Choose a publishing path</a> <ul> <li class="toc-entry toc-h3"><a href="#publish-from-a-branch">Publish from a branch</a></li> <li class="toc-entry toc-h3"><a href="#publish-with-github-actions">Publish with GitHub Actions</a></li> <li class="toc-entry toc-h3"><a href="#decide-by-ownership-not-fashion">Decide by ownership, not fashion</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#make-jekyll-builds-reproducible">Make Jekyll builds reproducible</a> <ul> <li class="toc-entry toc-h3"><a href="#know-what-each-ruby-tool-does">Know what each Ruby tool does</a></li> <li class="toc-entry toc-h3"><a href="#establish-one-local-command-path">Establish one local command path</a></li> <li class="toc-entry toc-h3"><a href="#test-the-artifact-not-only-the-source">Test the artifact, not only the source</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#configure-a-custom-domain-safely">Configure a custom domain safely</a></li> <li class="toc-entry toc-h2"><a href="#troubleshoot-by-locating-the-failed-stage">Troubleshoot by locating the failed stage</a></li> <li class="toc-entry toc-h2"><a href="#keep-changing-facts-out-of-the-architecture">Keep changing facts out of the architecture</a></li> <li class="toc-entry toc-h2"><a href="#official-references">Official references</a></li> </ul> </nav> </details> <figure class="article-cover"> <img height="640" width="640" class="article-cover__image" src="/assets/posts/202109160000/cover-homepage-2026-07-30.webp" alt="The Chinese writing index of this personal GitHub Pages site" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>Cover: this site’s Chinese writing index on 30 July 2026; screenshot and site content by the author.</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <p>I first published this article after building my own site in 2021. The implementation has since changed, so this revision rebuilds the tutorial around the parts that remain useful.</p> <p><span id="building-a-personal-github-page" aria-hidden="true"></span></p> <p>The durable lesson is not where a button happens to be today. It is the boundary between source, build environment, generated artifact, and public hosting. Once that boundary is explicit, themes and product interfaces can change without turning the whole site into a mystery.</p> <h2 id="understand-the-system-before-choosing-tools">Understand the system before choosing tools</h2> <h3 id="what-github-pages-hosts">What GitHub Pages hosts</h3> <p><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" rel="external nofollow noopener" target="_blank">GitHub Pages is a static-site hosting service</a>. Its public output is HTML, CSS, JavaScript, images, fonts, and other static files. Pages may build those files from source first, but it does not run a long-lived application server and does not execute server-side PHP, Ruby, or Python for each request.</p> <p>That boundary leads to three practical rules:</p> <ul> <li>Browser-side JavaScript can call an external API, but a credential embedded in the repository or shipped JavaScript is public. Keep secrets and privileged operations off a Pages site.</li> <li>Features such as accounts, private data, payments, and trusted form processing need a separate backend or a managed service with an appropriate security model.</li> <li>A static-site generator is a compiler, not the production server. Jekyll runs before deployment and emits the files that Pages serves afterward.</li> </ul> <p>Pages supports two URL shapes. A user or organization site is normally stored in <code class="language-plaintext highlighter-rouge">&lt;owner&gt;.github.io</code> and published at the domain root. A project site belongs to a repository and is normally published below <code class="language-plaintext highlighter-rouge">/&lt;repository&gt;/</code>. That extra path matters when generating links and assets.</p> <table> <thead> <tr> <th>Site type</th> <th>Typical repository</th> <th>Default URL</th> <th>Common URL concern</th> </tr> </thead> <tbody> <tr> <td>User or organization site</td> <td><code class="language-plaintext highlighter-rouge">&lt;owner&gt;.github.io</code></td> <td><code class="language-plaintext highlighter-rouge">https://&lt;owner&gt;.github.io/</code></td> <td>Usually an empty base path</td> </tr> <tr> <td>Project site</td> <td>Any project repository</td> <td><code class="language-plaintext highlighter-rouge">https://&lt;owner&gt;.github.io/&lt;repository&gt;/</code></td> <td>Links and assets must include the project base path</td> </tr> </tbody> </table> <p>The official <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site" rel="external nofollow noopener" target="_blank">site-creation guide</a> is the current authority for repository visibility, entry files, account plans, and setup screens. Treat those as product facts to verify, not values to memorize from a dated tutorial.</p> <h3 id="the-four-stage-model">The four-stage model</h3> <p>A maintainable deployment has four distinguishable stages:</p> <ol> <li> <strong>Source:</strong> Markdown, layouts, data, configuration, code, and dependency declarations stored in Git.</li> <li> <strong>Build:</strong> a pinned toolchain converts the source into a static directory and reports errors.</li> <li> <strong>Artifact:</strong> the exact generated directory that has passed automated checks.</li> <li> <strong>Deploy:</strong> GitHub Pages publishes that artifact and associates it with the Pages environment and domain.</li> </ol> <p>Keeping these stages separate answers many debugging questions. A Markdown error is a source or build problem. A missing file in <code class="language-plaintext highlighter-rouge">_site</code> is a build or artifact problem. A valid artifact that never reaches the public URL is a deployment problem. A public page whose images point to the wrong path is usually a build-configuration problem, even though it appears in the browser.</p> <h2 id="choose-a-publishing-path">Choose a publishing path</h2> <p>GitHub currently supports <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" rel="external nofollow noopener" target="_blank">publishing from a branch or with a custom GitHub Actions workflow</a>. Both end at Pages hosting, but they assign responsibility differently.</p> <h3 id="publish-from-a-branch">Publish from a branch</h3> <p>In the repository’s Pages settings, choose <strong>Deploy from a branch</strong>, then select the branch and either its root or <code class="language-plaintext highlighter-rouge">/docs</code> directory. GitHub publishes changes from that location and uses Jekyll by default unless the publishing source contains <code class="language-plaintext highlighter-rouge">.nojekyll</code>.</p> <p>This path is appropriate when the source is already static output or when a conventional Jekyll site fits GitHub’s built-in environment. It minimizes workflow code, but it also gives you less control over Ruby, Jekyll, plugins, pre-build steps, and validation. If an unsupported plugin or another generator is essential, move the build into Actions rather than making the branch build imitate a custom server.</p> <h3 id="publish-with-github-actions">Publish with GitHub Actions</h3> <p>Choose <strong>GitHub Actions</strong> when the project needs an explicit toolchain, arbitrary generators, tests before release, or a clean separation between source and generated output. The current official flow is:</p> <ol> <li>check out the source;</li> <li>configure Pages metadata;</li> <li>build the static site;</li> <li>upload one Pages artifact;</li> <li>deploy that artifact from a job with the required Pages and identity-token permissions.</li> </ol> <p>The following skeleton uses the action major versions shown by GitHub’s official documentation on the revision date. Before copying it into a new repository, compare it with the current <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages" rel="external nofollow noopener" target="_blank">custom-workflow guide</a> or the workflow template offered in the repository’s Pages settings.</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">pages</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+
+<span class="na">permissions</span><span class="pi">:</span>
+  <span class="na">contents</span><span class="pi">:</span> <span class="s">read</span>
+  <span class="na">pages</span><span class="pi">:</span> <span class="s">read</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">env</span><span class="pi">:</span>
+      <span class="na">JEKYLL_ENV</span><span class="pi">:</span> <span class="s">production</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803</span> <span class="c1"># v6</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b</span> <span class="c1"># v1.321.0</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">bundler-cache</span><span class="pi">:</span> <span class="kc">true</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Setup Pages</span>
+        <span class="na">id</span><span class="pi">:</span> <span class="s">pages</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b</span> <span class="c1"># v5</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">bundle exec jekyll build --trace --baseurl "$"</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b</span> <span class="c1"># v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./_site</span>
+
+  <span class="na">deploy</span><span class="pi">:</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">github.event_name != 'pull_request' &amp;&amp; github.ref == 'refs/heads/main'</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build</span>
+    <span class="na">permissions</span><span class="pi">:</span>
+      <span class="na">pages</span><span class="pi">:</span> <span class="s">write</span>
+      <span class="na">id-token</span><span class="pi">:</span> <span class="s">write</span>
+    <span class="na">concurrency</span><span class="pi">:</span>
+      <span class="na">group</span><span class="pi">:</span> <span class="s">pages</span>
+      <span class="na">cancel-in-progress</span><span class="pi">:</span> <span class="kc">false</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">github-pages</span>
+      <span class="na">url</span><span class="pi">:</span> <span class="s">$</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy</span>
+        <span class="na">id</span><span class="pi">:</span> <span class="s">deployment</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e</span> <span class="c1"># v4</span>
+</code></pre></div></div> <p>Use this as architecture, not as an immutable version list. The comments show the action versions checked on this article’s revision date, while each <code class="language-plaintext highlighter-rouge">uses:</code> line pins the exact commit that was verified; GitHub’s <a href="https://docs.github.com/en/actions/reference/security/secure-use" rel="external nofollow noopener" target="_blank">secure-use guidance</a> identifies a full commit SHA as the immutable reference. Let Dependabot or a deliberate maintenance pass propose reviewed SHA updates rather than silently following a moving tag. Keep the Ruby version in <code class="language-plaintext highlighter-rouge">.ruby-version</code> or set it explicitly in the workflow; the maintained <a href="https://github.com/ruby/setup-ruby" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">ruby/setup-ruby</code> action</a> reads the project version and can run <code class="language-plaintext highlighter-rouge">bundle install</code> from <code class="language-plaintext highlighter-rouge">Gemfile.lock</code> through <code class="language-plaintext highlighter-rouge">bundler-cache</code>. The build job has read-only repository and Pages access; the deployment job alone receives write and identity-token permissions, runs only for <code class="language-plaintext highlighter-rouge">main</code>, and serializes production deployments. <code class="language-plaintext highlighter-rouge">configure-pages</code> supplies the project-site base path to Jekyll. Add the project’s own test commands between build and upload, and let pull requests execute the build without deploying. Protect the <code class="language-plaintext highlighter-rouge">github-pages</code> environment as a second branch guard. A different generator can replace the Ruby and build steps while preserving the artifact and deploy stages.</p> <h3 id="decide-by-ownership-not-fashion">Decide by ownership, not fashion</h3> <table> <thead> <tr> <th>Question</th> <th>Branch publishing</th> <th>Custom Actions</th> </tr> </thead> <tbody> <tr> <td>Who defines the build environment?</td> <td>GitHub’s built-in Pages/Jekyll environment</td> <td>The repository workflow and lockfiles</td> </tr> <tr> <td>Can arbitrary pre-build checks run?</td> <td>Limited</td> <td>Yes</td> </tr> <tr> <td>Is generated output kept in the source branch?</td> <td>Sometimes</td> <td>Not required; upload an artifact</td> </tr> <tr> <td>Best fit</td> <td>Small static or conventional Jekyll site</td> <td>Tested, customized, or multi-step site</td> </tr> </tbody> </table> <p>Avoid maintaining two deployment paths at once. Local scripts and CI should produce the same output model, and only one path should be authorized to publish it.</p> <h2 id="make-jekyll-builds-reproducible">Make Jekyll builds reproducible</h2> <h3 id="know-what-each-ruby-tool-does">Know what each Ruby tool does</h3> <p>Jekyll is a Ruby gem. RubyGems distributes gems. A <code class="language-plaintext highlighter-rouge">Gemfile</code> declares the direct gems a project needs. Bundler resolves that graph, installs it, and records exact resolved versions in <code class="language-plaintext highlighter-rouge">Gemfile.lock</code>. <code class="language-plaintext highlighter-rouge">bundle exec</code> then runs a command inside that selected dependency environment instead of silently picking a different system-wide executable.</p> <p>The official <a href="https://jekyllrb.com/docs/" rel="external nofollow noopener" target="_blank">Jekyll introduction</a> and <a href="https://bundler.io/guides/getting_started.html" rel="external nofollow noopener" target="_blank">Bundler guide</a> describe this relationship. The command is <code class="language-plaintext highlighter-rouge">bundle</code>, never <code class="language-plaintext highlighter-rouge">buddle</code>; the normal local entry point is <code class="language-plaintext highlighter-rouge">bundle exec jekyll serve</code>.</p> <p>A minimal dependency file for a custom Actions build can begin like this:</p> <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">source</span> <span class="s2">"https://rubygems.org"</span>
+
+<span class="n">gem</span> <span class="s2">"jekyll"</span>
+
+<span class="n">group</span> <span class="ss">:jekyll_plugins</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s2">"jekyll-feed"</span>
+<span class="k">end</span>
+</code></pre></div></div> <p>Run <code class="language-plaintext highlighter-rouge">bundle install</code> to resolve and install dependencies. For an application such as a website, commit both <code class="language-plaintext highlighter-rouge">Gemfile</code> and <code class="language-plaintext highlighter-rouge">Gemfile.lock</code>; Bundler’s <a href="https://bundler.io/man/bundle-install.1.html" rel="external nofollow noopener" target="_blank">lockfile documentation</a> explains why later installations then use the same dependency snapshot. Update dependencies intentionally with <code class="language-plaintext highlighter-rouge">bundle update &lt;gem&gt;</code> or an equivalent reviewed dependency-update process, rebuild, and commit the resulting lockfile change.</p> <p>Branch publishing is a special case: GitHub’s built-in Jekyll environment, supported plugins, and <code class="language-plaintext highlighter-rouge">github-pages</code> gem govern production compatibility. Follow GitHub’s current <a href="https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll" rel="external nofollow noopener" target="_blank">Pages and Jekyll documentation</a> rather than assuming the newest local Jekyll and every third-party plugin are supported there.</p> <h3 id="establish-one-local-command-path">Establish one local command path</h3> <p>From a fresh checkout, the basic loop should be short enough that every contributor actually uses it:</p> <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">bundle install
+bundle exec jekyll serve --livereload
+</span></code></pre></div></div> <p>Before pushing, run the production build and the project’s checks rather than relying only on the development server:</p> <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">bundle exec jekyll build --trace
+bundle exec jekyll doctor
+</span></code></pre></div></div> <p>GitHub also maintains a <a href="https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll" rel="external nofollow noopener" target="_blank">local Jekyll testing guide</a>. A real repository should document its required Ruby version and wrap any additional link, HTML, accessibility, or browser checks in one validation command. CI must call that same entry point instead of reimplementing a weaker approximation.</p> <p>For stronger reproducibility, periodically test a clean checkout with an empty dependency cache. A warm local machine can hide an undeclared gem, an ignored generated file, or a platform-specific dependency that a fresh Linux runner will expose.</p> <h3 id="test-the-artifact-not-only-the-source">Test the artifact, not only the source</h3> <p>A successful <code class="language-plaintext highlighter-rouge">jekyll build</code> proves that generation completed; it does not prove that the site works. At minimum, CI should verify:</p> <ul> <li>the expected entry file exists in <code class="language-plaintext highlighter-rouge">_site</code>;</li> <li>internal links and referenced local assets resolve;</li> <li>project-site URLs honor <code class="language-plaintext highlighter-rouge">baseurl</code>;</li> <li>pages that require JavaScript still have meaningful static HTML;</li> <li>no secret, draft, cache, or source-only file entered the artifact;</li> <li>a browser can load representative desktop and mobile pages without console errors;</li> <li>deployment runs only after the exact artifact under test succeeds.</li> </ul> <p>Store a preview artifact for pull requests when visual review matters. This turns review into an inspection of the candidate output rather than a guess based on Markdown alone.</p> <h2 id="configure-a-custom-domain-safely">Configure a custom domain safely</h2> <p>Domain setup spans two control planes: GitHub Pages must know which domain belongs to the site, and the DNS provider must route that domain to Pages. Configure the custom domain in Pages settings before publishing DNS records; GitHub recommends verifying the domain to reduce takeover risk.</p> <p>For a subdomain such as <code class="language-plaintext highlighter-rouge">www.example.com</code>, the usual record is a <code class="language-plaintext highlighter-rouge">CNAME</code> pointing directly to <code class="language-plaintext highlighter-rouge">&lt;owner&gt;.github.io</code>, without a repository path. Apex domains use provider-supported <code class="language-plaintext highlighter-rouge">ALIAS</code> or <code class="language-plaintext highlighter-rouge">ANAME</code> records, or the current Pages <code class="language-plaintext highlighter-rouge">A</code> and optional <code class="language-plaintext highlighter-rouge">AAAA</code> records. Do not copy IP addresses from an old article: read the current <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site" rel="external nofollow noopener" target="_blank">custom-domain instructions</a> when changing DNS. Avoid wildcard records unless you have a separately justified and secured design.</p> <p>Check public DNS rather than trusting only a provider dashboard:</p> <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">dig example.com A
+dig www.example.com CNAME
+</span></code></pre></div></div> <p>On PowerShell, <code class="language-plaintext highlighter-rouge">Resolve-DnsName example.com</code> provides the same kind of external check. DNS propagation and certificate issuance are asynchronous, so distinguish “the record is not visible yet” from “the record points to the wrong target.”</p> <p>After DNS is correct, enable <strong>Enforce HTTPS</strong>. GitHub’s <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https" rel="external nofollow noopener" target="_blank">HTTPS guide</a> covers certificate provisioning and mixed-content failures. Load every stylesheet, script, image, and font over HTTPS or from the same origin; otherwise a valid page certificate does not prevent the browser from blocking insecure assets.</p> <p>With branch publishing, setting a custom domain may create a <code class="language-plaintext highlighter-rouge">CNAME</code> file in the source. With a custom Actions workflow, the Pages setting or API is authoritative and an existing repository <code class="language-plaintext highlighter-rouge">CNAME</code> is not what activates the domain. Recheck the current documentation whenever switching publication modes.</p> <h2 id="troubleshoot-by-locating-the-failed-stage">Troubleshoot by locating the failed stage</h2> <p>Start with the most specific evidence: the failed workflow job, its first meaningful error, the generated artifact, and the Pages settings. Email notifications and browser symptoms are secondary clues.</p> <table> <thead> <tr> <th>Symptom</th> <th>Inspect first</th> <th>Likely correction</th> </tr> </thead> <tbody> <tr> <td>Build fails locally</td> <td>The first error from <code class="language-plaintext highlighter-rouge">bundle exec jekyll build --trace</code> </td> <td>Fix front matter, configuration, dependency, plugin, or source syntax before deployment</td> </tr> <tr> <td>Local build passes but CI fails</td> <td>Ruby/platform assumptions, ignored files, filename case, lockfile, production environment</td> <td>Reproduce from a clean checkout using CI’s inputs</td> </tr> <tr> <td>Workflow succeeds but the site is old</td> <td>The deployed run, artifact identity, deploy-job condition, Pages source</td> <td>Confirm the expected commit actually produced and deployed the artifact</td> </tr> <tr> <td>Root URL returns 404</td> <td>Pages source, repository naming, entry file at artifact root</td> <td>Put the entry file in the configured source or artifact root</td> </tr> <tr> <td>HTML loads but CSS or images return 404</td> <td>Generated URLs, <code class="language-plaintext highlighter-rouge">url</code>, <code class="language-plaintext highlighter-rouge">baseurl</code>, absolute versus relative paths</td> <td>Generate URLs for the user-site or project-site path actually being deployed</td> </tr> <tr> <td>Custom domain or certificate fails</td> <td>Public DNS records, extra conflicting records, Pages domain setting</td> <td>Correct DNS, wait for propagation, then restart certificate provisioning if needed</td> </tr> <tr> <td>HTTPS page reports insecure content</td> <td>Browser network panel and generated asset URLs</td> <td>Replace <code class="language-plaintext highlighter-rouge">http://</code> asset references and rebuild</td> </tr> </tbody> </table> <p>For built-in Jekyll failures, use GitHub’s current <a href="https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-jekyll-build-errors-for-github-pages-sites" rel="external nofollow noopener" target="_blank">build-error guide</a>. For a custom workflow, make the build run on <code class="language-plaintext highlighter-rouge">pull_request</code> so errors appear before merge, and inspect the Actions log rather than trying to infer the cause from the public 404 page.</p> <p>If the configuration appears correct but the public site still fails, check GitHub Status and the repository’s Pages deployment history before changing DNS or code. Multiple speculative fixes at once destroy the evidence needed to identify the failed stage.</p> <h2 id="keep-changing-facts-out-of-the-architecture">Keep changing facts out of the architecture</h2> <p>Some facts in this area are intentionally time-sensitive: plan eligibility, quotas, build timeouts, supported gems and plugins, runner images, action major versions, DNS addresses, billing, and the exact settings interface. Check them when they affect a decision.</p> <p>For example, GitHub maintains a dedicated <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits" rel="external nofollow noopener" target="_blank">Pages limits page</a>. Linking to that live contract is more reliable than copying today’s bandwidth or build-rate values into a tutorial and presenting them as permanent constraints.</p> <p>Before a new deployment or a major maintenance pass, verify this short list:</p> <ol> <li>Pages supports the repository visibility and intended use under the current plan.</li> <li>The selected branch or workflow is still the configured publishing source.</li> <li>Ruby, Jekyll, plugins, Actions, and lockfiles describe one compatible build.</li> <li>A clean local or CI build produces the artifact that was actually tested.</li> <li>DNS values and HTTPS status match GitHub’s current domain documentation.</li> <li>Current limits fit the site’s generated size, build duration, and expected traffic.</li> </ol> <p>That checklist survives product redesigns because it asks where authority resides. The exact answer may change; the method for obtaining and validating it does not.</p> <h2 id="official-references">Official references</h2> <ul> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" rel="external nofollow noopener" target="_blank">What is GitHub Pages?</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site" rel="external nofollow noopener" target="_blank">Creating a GitHub Pages site</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" rel="external nofollow noopener" target="_blank">Configuring a publishing source</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages" rel="external nofollow noopener" target="_blank">Using custom workflows with GitHub Pages</a></li> <li><a href="https://github.com/ruby/setup-ruby" rel="external nofollow noopener" target="_blank">Set up Ruby in GitHub Actions</a></li> <li><a href="https://jekyllrb.com/docs/" rel="external nofollow noopener" target="_blank">Jekyll documentation</a></li> <li><a href="https://jekyllrb.com/tutorials/using-jekyll-with-bundler/" rel="external nofollow noopener" target="_blank">Using Jekyll with Bundler</a></li> <li><a href="https://bundler.io/guides/getting_started.html" rel="external nofollow noopener" target="_blank">Bundler getting started</a></li> <li><a href="https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll" rel="external nofollow noopener" target="_blank">Testing a Pages site locally with Jekyll</a></li> <li><a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site" rel="external nofollow noopener" target="_blank">Managing a custom domain</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https" rel="external nofollow noopener" target="_blank">Securing a Pages site with HTTPS</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits" rel="external nofollow noopener" target="_blank">GitHub Pages limits</a></li> </ul> </div> </article> <aside class="article-side-toc"> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#understand-the-system-before-choosing-tools">Understand the system before choosing tools</a> <ul> <li class="toc-entry toc-h3"><a href="#what-github-pages-hosts">What GitHub Pages hosts</a></li> <li class="toc-entry toc-h3"><a href="#the-four-stage-model">The four-stage model</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#choose-a-publishing-path">Choose a publishing path</a> <ul> <li class="toc-entry toc-h3"><a href="#publish-from-a-branch">Publish from a branch</a></li> <li class="toc-entry toc-h3"><a href="#publish-with-github-actions">Publish with GitHub Actions</a></li> <li class="toc-entry toc-h3"><a href="#decide-by-ownership-not-fashion">Decide by ownership, not fashion</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#make-jekyll-builds-reproducible">Make Jekyll builds reproducible</a> <ul> <li class="toc-entry toc-h3"><a href="#know-what-each-ruby-tool-does">Know what each Ruby tool does</a></li> <li class="toc-entry toc-h3"><a href="#establish-one-local-command-path">Establish one local command path</a></li> <li class="toc-entry toc-h3"><a href="#test-the-artifact-not-only-the-source">Test the artifact, not only the source</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#configure-a-custom-domain-safely">Configure a custom domain safely</a></li> <li class="toc-entry toc-h2"><a href="#troubleshoot-by-locating-the-failed-stage">Troubleshoot by locating the failed stage</a></li> <li class="toc-entry toc-h2"><a href="#keep-changing-facts-out-of-the-architecture">Keep changing facts out of the architecture</a></li> <li class="toc-entry toc-h2"><a href="#official-references">Official references</a></li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="en" data-loading-text="Loading comments…" data-retry-text="Try again" data-error-text="Comments could not be loaded. Try again, or use the GitHub Discussions link above." data-auto-load-enabled-text="Automatic comment loading is on." data-auto-load-disabled-text="Automatic comment loading is off." data-auto-load-unavailable-text="Your browser could not save this setting. You can still show comments manually." aria-labelledby="page-comments-title-en"> <h2 id="page-comments-title-en">Comments</h2> <p class="page-comments__introduction"> Comments are public and stored in <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>. This page connects to giscus.app and GitHub and sends the current page path only after you show comments manually or enable automatic loading. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information. </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>Show comments (~0.13 MB first load)</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-en" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-en" class="page-comments__auto-load-label">Auto-load comments on this site</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">Enable JavaScript and use the button above to show comments, or use the GitHub Discussions link above.</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="Enter a term to start searching." data-no-results="No matching content found." data-missing-translation="This item has no English version yet. You are viewing the English writing index."> <div class="search-dialog__header"> <h2 id="search-title">Search this site</h2> <button id="search-close" class="icon-button" type="button" aria-label="Close search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">Search this site</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search writing, projects, papers, or toys"> <p id="search-status" class="search-status" aria-live="polite">Enter a term to start searching.</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+  
+    
+      
+      {
+        "title": "Building Trust with Timid Zebra Finches: From Environment to Positive Training",
+        "description": "A welfare-first trust ladder for zebra finches—stable surroundings, a health baseline, observable stress signals, immediate reinforcement, and reversible steps.",
+        "tags": ["Zebra finches","Animal welfare"],
+        "url": "/en/posts/building-trust-with-zebra-finches/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Four-Colour Outerwear System That Reduces Daily Decisions",
+        "description": "Turns brick red, warm beige, olive, and charcoal into a personal outerwear system, filtered by real occasions, wardrobe compatibility, silhouette, and maintenance.",
+        "tags": ["Clothing","Colour"],
+        "url": "/en/posts/a-four-color-outerwear-system/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "From Owning Tools to Cooking Easily: A Minimal System for a Small Kitchen",
+        "description": "Organises a small kitchen around real action chains, a minimum capability set, purchase gates, visible inventory, and cleanup resets, with clear food-safety boundaries.",
+        "tags": ["Kitchen","Personal systems"],
+        "url": "/en/posts/a-minimal-system-for-a-small-kitchen/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "From Running to Maintainable: A Minimal Operations Loop for a Minecraft Server",
+        "description": "A compact Minecraft server operations loop—Java compatibility, a dedicated identity, supervised startup, least exposure, tested restores, staged upgrades, and monitoring.",
+        "tags": ["Minecraft","Server operations"],
+        "url": "/en/posts/a-minimal-operations-loop-for-a-minecraft-server/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "SETI Rules: From Setup to Your First Complete Game",
+        "description": "Official illustrations and play order connect setup, turns, actions, round ends, and scoring into one game, without fragmented rulebook lookup or fixed-pace video; Space Agencies and promos follow.",
+        "tags": ["SETI","Space Agencies","Board Games","Rules"],
+        "url": "/en/posts/learning-seti-board-game/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Age of Innovation",
+        "description": "A cross-round valuation of coins, tools, books, scholars, science, navigation, and buildings, placing immediate exchanges and future production on one scale for medium- and long-term planning.",
+        "tags": ["Age of Innovation","Board Games"],
+        "url": "/en/posts/age-of-innovation-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Troyes",
+        "description": "A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply.",
+        "tags": ["Troyes","Board Games"],
+        "url": "/en/posts/troyes-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Gaia Project",
+        "description": "An approximate common scale for credits, ore, knowledge, QIC, buildings, and endgame points, then checked against faction exceptions to give experience-based planning a reproducible baseline.",
+        "tags": ["Gaia Project","Board Games"],
+        "url": "/en/posts/gaia-project-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Understanding Swimming",
+        "description": "A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies.",
+        "tags": ["Swimming"],
+        "url": "/en/posts/understanding-swimming/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Break the Code Strategy Guide",
+        "description": "Drawn from nearly 500 BGA games, this guide treats questions as candidate-set partitions and connects them to deduction, turn order, and endgame play, so the method transfers beyond fixed rankings.",
+        "tags": ["Break the Code","Board Games"],
+        "url": "/en/posts/break-the-code-strategy-guide/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Quantitative Strategy Guide to Seasons",
+        "description": "A common point scale for energy, levels, crystallization, cards, and dice actions, tested against drafting and interaction to answer “which choice is worth more now?” beyond isolated card ratings.",
+        "tags": ["Seasons","Board Games"],
+        "url": "/en/posts/quantitative-strategy-guide-to-seasons/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "PC Build Log",
+        "description": "A complete R5 5600 + RX 6600 XT build record that keeps requirements, component trade-offs, prices, and assembly problems together, showing how a budget became a balanced machine.",
+        "tags": ["PC Building"],
+        "url": "/en/posts/pc-build-log/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building Shape-Matched ASCII Art",
+        "description": "A shape-aware ASCII-art method using glyph templates, comparison, histogram equalization, and grayscale consistency to make outlines follow source images more closely than average-brightness mapping.",
+        "tags": ["NoneBot","Python","ASCII Art"],
+        "url": "/en/posts/building-shape-matched-ascii-art/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Cloud Servers and Deployment Architecture: From Domains to Reliable Operations",
+        "description": "A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting.",
+        "tags": ["Cloud Servers"],
+        "url": "/en/posts/notes-on-cloud-servers/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Practical Guide to Reliable Reinforcement Learning Experiments",
+        "description": "A reproducible RL workflow spanning environment contracts, Gymnasium semantics, open task distributions, visual pre-training, method choice, reward, replay, debugging, and uncertainty reporting.",
+        "tags": ["Reinforcement Learning","Meta-Reinforcement Learning","Representation Learning"],
+        "url": "/en/posts/reinforcement-learning-issues/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building on GitHub Pages: From Static Hosting to Reproducible Deployment",
+        "description": "Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically.",
+        "tags": ["GitHub"],
+        "url": "/en/posts/build-a-personal-github-page/",
+        "kind": "Writing"
+      }
+      
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "A NoneBot2 plugin that turns chat commands into multilingual character voices through configurable speech-synthesis APIs and voice parameters.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "A unified benchmark for reproducible high-dimensional Bayesian optimization experiments, combining synthetic and realistic tasks with representative algorithm wrappers.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "A lightweight solver for Turing Machine puzzles that enumerates valid codes, searches the best three-verifier questioning plan, and estimates success.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "A lightweight voice-to-voice LLM demo connecting local SenseVoice ASR, an OpenAI-compatible chat API, and Edge TTS with free components.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "Zero-shot online cross-task transfer for LLM-based hyperparameter optimization: one LLM call per BO round proposes target candidates and selects an auxiliary query.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "MCP tools for Codex to delegate implementation and request independent Claude Code reviews with explicit authority, provider routing, and structured results.",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-b-ijcnn-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey on High-dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Hongye Cao, Yang Gao, Dong Li, Jianye Hao · Journal of Software",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-survey-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/en/publications/#trust-region-newton-ecai-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey of Meta-reinforcement Learning Research",
+      "description": "Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao · Journal of Software · 2024 Top-20 High-Attention Review Paper",
+      "tags": [2024],
+      "url": "/en/publications/#meta-rl-survey-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/en/publications/#supervised-dr-ppsn-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/en/publications/#casil-aamas-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/en/publications/#radar-rl-2023",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/en/publications/#tild-aamas-2023",
+      "kind": "Papers"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "Moegirlpedia quiz",
+        "description": "Read the Chinese anonymized introduction and choose the matching entry.",
+        "tags": ["encyclopedia","Moegirlpedia","Chinese","entry","quiz"],
+        "url": "/en/toys/#moegirl-quiz",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Artwork quiz (Cleveland Museum of Art)",
+        "description": "Choose the quiz direction and whether to show title, artist, or date.",
+        "tags": ["art","matching","painting","museum","Cleveland","image","quiz"],
+        "url": "/en/toys/#art-glimpse",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Anime protagonist quiz (AniList)",
+        "description": "Choose among three four-choice links between anime and their main characters.",
+        "tags": ["AniList","anime","character","main role","relation","quiz"],
+        "url": "/en/toys/#anilist-role-quiz",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Color difference challenge",
+        "description": "Find the subtly different tile and see how far you can go.",
+        "tags": ["color","vision","perception","challenge"],
+        "url": "/en/toys/#color-challenge",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Ten-second estimate",
+        "description": "Stop as close to ten seconds as you can without watching a timer.",
+        "tags": ["ten seconds","time","intuition","challenge"],
+        "url": "/en/toys/#ten-second",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Reaction time",
+        "description": "Wait for the signal, then respond as quickly as possible.",
+        "tags": ["reaction","time","speed","challenge"],
+        "url": "/en/toys/#reaction-time",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Number Wordle",
+        "description": "Use exact and digit-only matches to deduce the hidden number code.",
+        "tags": ["number Wordle","codebreaker","deduction","logic","numbers","game"],
+        "url": "/en/toys/#codebreaker",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Make 24",
+        "description": "Use each of four numbers once and combine them to make exactly 24.",
+        "tags": ["make 24","arithmetic","fractions","mental math","logic","game"],
+        "url": "/en/toys/#make-24",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Lights Out",
+        "description": "Flip a cell and its neighbours, then plan a route to turn every light off.",
+        "tags": ["lights out","grid","minimum moves","planning","logic","game"],
+        "url": "/en/toys/#lights-out",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Random password",
+        "description": "Generate a configurable random password in your browser.",
+        "tags": ["random","password","security","generator"],
+        "url": "/en/toys/#random-password",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Random numbers",
+        "description": "Generate one or more random results from an integer range.",
+        "tags": ["random","number","integer","generator"],
+        "url": "/en/toys/#random-number",
+        "kind": "Toys"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>

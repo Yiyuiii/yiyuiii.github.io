@@ -1,0 +1,545 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Understanding Swimming | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies."> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/en/posts/understanding-swimming/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/en/posts/understanding-swimming/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/understanding-swimming/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="Understanding Swimming"> <meta property="og:url" content="https://yiyuiii.github.io/en/posts/understanding-swimming/"> <meta property="og:description" content="A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies."> <meta property="og:locale" content="en_US"> <meta property="og:locale:alternate" content="zh_CN"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202307232000/cover-breaststroke-square.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Understanding Swimming"> <meta name="twitter:description" content="A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies."> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202307232000/cover-breaststroke-square.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/en/posts/understanding-swimming/",
+    "headline": "Understanding Swimming",
+    "description": "A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies.",
+    "inLanguage": "en",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2023-07-23T20:00:00+08:00",
+    "dateModified": "2026-08-08T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">Skip to content</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/en/" aria-label="Return to the English welcome page"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="Turn off the sunlight background" aria-pressed="true" data-enable-light-label="Turn on the sunlight background" data-disable-light-label="Turn off the sunlight background" data-enable-dark-label="Turn on the moonlight background" data-disable-dark-label="Turn off the moonlight background" data-status-light-on="Sunlight background is on" data-status-light-off="Sunlight background is off" data-status-dark-on="Moonlight background is on" data-status-dark-off="Moonlight background is off" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/en/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="Primary navigation"> <a href="/en/">Welcome</a> <a href="/en/writing/">Writing</a> <a href="/en/projects/">GitHub</a> <a href="/en/publications/">Papers</a> <a href="/en/toys/">Toys</a> <a href="/en/about/">About yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="Search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="Switch to the night appearance" aria-pressed="false" data-enable-light-label="Switch to the light appearance" data-enable-dark-label="Switch to the night appearance" data-status-light="Light appearance is on" data-status-dark="Night appearance is on" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/" aria-label="Switch to Chinese"> 中 </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>Understanding Swimming</h1> <div class="article-meta"> <div class="article-tags"> <a href="/en/writing/?tag=Swimming">Swimming</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> First published <time datetime="2023-07-23">2023-07-23</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span> Last revised <time datetime="2026-08-08">2026-08-08</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">Revision history</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2023-07-23">2023-07-23</time> <span>Initial draft</span> </li> <li> <time datetime="2026-08-08">2026-08-08</time> <span>Researched and rewritten by GPT-5.6 Sol; replaced incorrect claims about buoyancy, health, and emergencies with an authoritative pool-safety, physics, and step-by-step 50-metre breaststroke guide</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>Sections</summary> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#scope-and-safety-boundaries">Scope and Safety Boundaries</a> <ul> <li class="toc-entry toc-h3"><a href="#before-practising">Before Practising</a></li> <li class="toc-entry toc-h3"><a href="#stop-when-these-signs-appear">Stop When These Signs Appear</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#three-durable-principles-of-moving-in-water">Three Durable Principles of Moving in Water</a> <ul> <li class="toc-entry toc-h3"><a href="#pressure-increases-buoyancy-does-not-simply-grow-with-depth">Pressure Increases; Buoyancy Does Not Simply Grow with Depth</a></li> <li class="toc-entry toc-h3"><a href="#breathing-affects-both-gas-exchange-and-trim">Breathing Affects Both Gas Exchange and Trim</a></li> <li class="toc-entry toc-h3"><a href="#drag-ultimately-limits-propulsion">Drag Ultimately Limits Propulsion</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#equipment-and-location">Equipment and Location</a> <ul> <li class="toc-entry toc-h3"><a href="#basic-equipment">Basic Equipment</a></li> <li class="toc-entry toc-h3"><a href="#what-is-not-a-rescue-guarantee">What Is Not a Rescue Guarantee</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#from-zero-to-50-metres-of-breaststroke">From Zero to 50 Metres of Breaststroke</a> <ul> <li class="toc-entry toc-h3"><a href="#1-entry-exhalation-and-recovery-to-standing">1. Entry, Exhalation, and Recovery to Standing</a></li> <li class="toc-entry toc-h3"><a href="#2-floating-rotation-and-streamlining">2. Floating, Rotation, and Streamlining</a></li> <li class="toc-entry toc-h3"><a href="#3-breaststroke-kick">3. Breaststroke Kick</a></li> <li class="toc-entry toc-h3"><a href="#4-arms-breathing-and-full-timing">4. Arms, Breathing, and Full Timing</a></li> <li class="toc-entry toc-h3"><a href="#5-extending-10-metres-to-50-metres">5. Extending 10 Metres to 50 Metres</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#common-sticking-points">Common Sticking Points</a></li> <li class="toc-entry toc-h2"> <a href="#emergencies-helping-others-and-pool-hygiene">Emergencies, Helping Others, and Pool Hygiene</a> <ul> <li class="toc-entry toc-h3"><a href="#when-you-are-in-distress">When You Are in Distress</a></li> <li class="toc-entry toc-h3"><a href="#when-someone-else-is-in-distress">When Someone Else Is in Distress</a></li> <li class="toc-entry toc-h3"><a href="#shared-pool-hygiene">Shared Pool Hygiene</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#continuing-practice">Continuing Practice</a></li> </ul> </nav> </details> <figure class="article-cover"> <img height="640" width="640" class="article-cover__image" src="/assets/posts/202307232000/cover-breaststroke-square.webp" alt="Breaststroke practice in a regular swimming pool" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>Cover: <a href="https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg" rel="external nofollow noopener" target="_blank">Swimming.breaststroke.arp.750pix</a>, photograph by Adrian Pingstone; license: Public domain; cropped to a square for this site.</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <h2 id="scope-and-safety-boundaries">Scope and Safety Boundaries</h2> <p>This is a route for adult beginners in a <strong>lifeguarded pool</strong>. It starts with safe entry, recovery to standing, and floating, then progresses toward 50 continuous metres of breaststroke. It does not replace an in-person instructor, rescue training, or medical advice, and swimming 50 metres is not proof that someone is ready to swim alone in open water.</p> <p>The <a href="https://www.redcross.org/get-help/how-to-prepare-for-emergencies/types-of-emergencies/water-safety.html" rel="external nofollow noopener" target="_blank">American Red Cross definition of water competency</a> combines hazard awareness, entering the water and getting a breath, staying afloat, changing position, swimming a distance, getting out safely, and helping others. Knowing one stroke covers only part of that set.</p> <h3 id="before-practising">Before Practising</h3> <ul> <li>Choose a well-maintained pool with clear boundaries and a lifeguard. As a beginner, stay where you can stand and have an instructor or reliable buddy watching from close range.</li> <li>Locate the ladder, wall, depth transition, and lifeguard before starting. Follow the facility’s rules on lanes, diving, swim caps, and health conditions.</li> <li>Never swim alone or after drinking alcohol or taking medication that impairs judgement or balance. If a condition can affect consciousness, breathing, the heart, or motor control, first ask a clinician and instructor what conditions are appropriate.</li> <li>Do not hold breath contests underwater or hyperventilate to extend a dive. The US CDC’s <a href="https://www.cdc.gov/drowning/prevention/" rel="external nofollow noopener" target="_blank">drowning-prevention guidance</a> warns that hyperventilation and prolonged breath-holding can cause unconsciousness and drowning.</li> </ul> <h3 id="stop-when-these-signs-appear">Stop When These Signs Appear</h3> <p>New chest pain or pressure, marked shortness of breath, near-fainting, confusion, or sudden loss of motor control are not signals to “push through until you adapt.” Call for help immediately, have the lifeguard intervene, and activate the local emergency system; do not swim away alone or wait to see whether the symptoms persist. Chest discomfort and shortness of breath are warning signs that require immediate action; see the <a href="https://www.heart.org/en/health-topics/heart-attack/warning-signs-of-a-heart-attack" rel="external nofollow noopener" target="_blank">American Heart Association’s symptom guidance</a>. Other events, such as ordinary fatigue or a mild sputter, still call for leaving the water first and then following the symptom boundaries below.</p> <h2 id="three-durable-principles-of-moving-in-water">Three Durable Principles of Moving in Water</h2> <h3 id="pressure-increases-buoyancy-does-not-simply-grow-with-depth">Pressure Increases; Buoyancy Does Not Simply Grow with Depth</h3> <p>Hydrostatic pressure increases with depth:</p> \[p=p_0+\rho gh.\] <p>Here $p$ is pressure, measured in pascals, not force. Net buoyancy is the combined effect of pressure over an object’s surfaces. Under <a href="https://openstax.org/books/university-physics-volume-1/pages/14-4-archimedes-principle-and-buoyancy" rel="external nofollow noopener" target="_blank">Archimedes’ principle</a>, its magnitude equals the weight of the displaced fluid:</p> \[F_{\mathrm{B}}=\rho_{\mathrm{water}}gV_{\mathrm{displaced}}.\] <p>In an ordinary pool, if water density and displaced body volume remain approximately unchanged, the net buoyant force on a fully submerged body does not keep increasing merely because the body moves deeper. Ignoring drag, active motion, and contact with the pool for the moment, the static difference between buoyancy and weight is:</p> \[\Delta F_{\mathrm{B-W}}=F_{\mathrm{B}}-mg.\] <p>The total force during ascent, descent, or swimming also includes fluid drag and active propulsion. Body composition, lung volume, and posture vary. Some people float easily while others sink slowly; neither result is a test of willpower or talent. Inhaling increases chest volume and changes average density and trim, while exhaling does the reverse, but a full exhalation does not create “unlimited downward acceleration.” At greater depth, pressure can also compress gas in the lungs or equipment and change displaced volume and buoyancy, so “approximately independent of depth” applies only under the stated conditions. Beginners should not test whether they can reach the bottom by emptying their lungs underwater.</p> <h3 id="breathing-affects-both-gas-exchange-and-trim">Breathing Affects Both Gas Exchange and Trim</h3> <p>The lungs sit in the upper body, so the chest is usually more buoyant than the legs. Lifting the head too high, flexing at the hips, or recovering the knees too early also increases frontal area and encourages the legs to drop. The answer is to relax the neck, look down, regain a streamlined shape during the glide, and obtain each breath through timing rather than forcing the body perfectly horizontal.</p> <p>Exhale steadily and controllably underwater, then inhale quickly through the mouth when the face clears the surface. If water often enters the nose, practise “face in—slow exhale through the nose or nose and mouth—raise the face or stand” at the wall. A nose clip can be a temporary aid while an instructor observes. Do not rely on the assumption that trapped nasal air guarantees water cannot enter.</p> <h3 id="drag-ultimately-limits-propulsion">Drag Ultimately Limits Propulsion</h3> <p>As swimming speed rises, drag usually grows rapidly. A useful approximation is:</p> \[F_{\mathrm{D}}\approx \frac{1}{2}\rho C_{\mathrm{D}}Av^2.\] <p>$A$ is frontal area, while $C_{\mathrm{D}}$ summarises shape and related effects. Pulling and kicking create propulsion, while the body and recovery motions also create drag. Near a steady speed, the two are roughly balanced; buoyancy or one kick cannot produce endless acceleration. A beginner’s highest-value improvements are usually reducing unnecessary frontal area, directing propulsion behind the body, and returning to a streamline after each action.</p> <h2 id="equipment-and-location">Equipment and Location</h2> <h3 id="basic-equipment">Basic Equipment</h3> <ul> <li>A well-fitting swimsuit, goggles, towel, and drinking water; add a swim cap when the facility requires one.</li> <li>Goggles should seal without excessive strap tension. Clean them or use a compatible anti-fog method according to their instructions rather than treating saliva as a public-hygiene solution.</li> <li>Kickboards, noodles, fins, and snorkels are teaching aids to use for a purpose explained by an instructor. They change body position and do not prove that the swimmer will remain safe without them.</li> </ul> <h3 id="what-is-not-a-rescue-guarantee">What Is Not a Rescue Guarantee</h3> <p>Swim rings, water wings, and ordinary inflatables can slip off or create false confidence; they are not drowning-prevention equipment. The CDC’s <a href="https://www.cdc.gov/drowning/prevention/summer-swim-safety.html" rel="external nofollow noopener" target="_blank">pool and open-water safety guidance</a> recommends a properly sized, fully fastened, approved life jacket for applicable water activities. Open water also adds temperature, current, waves, visibility, weather, and boat traffic. The pool progression in this article does not replace an open-water risk assessment.</p> <h2 id="from-zero-to-50-metres-of-breaststroke">From Zero to 50 Metres of Breaststroke</h2> <p>The <a href="https://www.swimming.org/learntoswim/swim-england-adult-learn-to-swim-awards/" rel="external nofollow noopener" target="_blank">Swim England Adult Learn to Swim Framework</a> treats entry, exit, flotation, treading water, rotation, streamlining, breathing, travel, and water safety as shared foundations. The table below is this article’s narrower practice route toward 50 metres of breaststroke, not that organisation’s adult water-competency certification. It advances by demonstrated skills rather than lessons attended.</p> <table> <thead> <tr> <th>Stage</th> <th>Readiness Signal</th> <th>If It Is Not Stable Yet</th> </tr> </thead> <tbody> <tr> <td>1. Entry, exhale, stand</td> <td>Enter while holding the wall, exhale continuously with the face in, then stand calmly</td> <td>Stay at standing depth with instructor support and do not enter deep water</td> </tr> <tr> <td>2. Float and rotate</td> <td>Recover from a front float to standing, then try a back float or roll to a breathing position</td> <td>Use the wall, a noodle, or instructor support and shorten each float</td> </tr> <tr> <td>3. Push and glide</td> <td>Arms squeeze near the ears, body lengthens, and the swimmer glides before choosing to stand</td> <td>Fix head, hip, and arm position before adding propulsion</td> </tr> <tr> <td>4. Breaststroke kick</td> <td>Repeated kicks propel the swimmer 5–10 metres without knee or hip pain</td> <td>Break the action into heel recovery, foot turn, backward sweep, and closure at the wall</td> </tr> <tr> <td>5. Arms and breathing</td> <td>One arm cycle produces a calm breath and a return to extension</td> <td>Make the pull smaller and practise the rhythm standing or during a short glide</td> </tr> <tr> <td>6. Full coordination</td> <td>“Pull—breathe—kick—glide” covers 10 metres without panic</td> <td>Change one element at a time and return to 3–5 metre repetitions</td> </tr> <tr> <td>7. Distance progression</td> <td>Technique remains recognisable through 25 metres, then through 50 metres</td> <td>Rest fully and replace deteriorating long swims with high-quality short ones</td> </tr> </tbody> </table> <h3 id="1-entry-exhalation-and-recovery-to-standing">1. Entry, Exhalation, and Recovery to Standing</h3> <p>Enter by ladder or from a safe seated position and always know where the nearest support is. First exhale with the lips touching the water, then submerge the face. Make bubbles while the face is down and continue exhaling until raising the face; inhale only after standing or clearing the surface. The goal is not a longer breath hold but confidence that every repetition can be ended deliberately.</p> <p>To recover to standing, tuck the chin, bend the knees toward the body, press the hands down through the water, and place the feet on the floor. Practise only in standing depth with supervision. If the feet do not find the floor, take the wall or instructor’s support rather than fighting through panic.</p> <h3 id="2-floating-rotation-and-streamlining">2. Floating, Rotation, and Streamlining</h3> <p>For a front float, take a normal breath, place the face in, relax the neck, and let the limbs open naturally. After a few seconds, recover to standing in the sequence above. For a back float, place the ears in the water, look upward, and relax the abdomen while an instructor can support the shoulders and back. A swimmer does not need to remain motionless at the surface indefinitely; being able to rotate to a breathing position or stand is more important.</p> <p>For a push and glide, overlap the hands, squeeze the arms near the ears, look down, and lengthen the body from fingertips to toes. Push gently from the wall and do nothing at first, noticing how drag gradually removes speed. Add the breaststroke kick only after the glide and recovery to standing are controlled.</p> <h3 id="3-breaststroke-kick">3. Breaststroke Kick</h3> <p>Begin with the legs extended and together. Draw the heels toward the seat while keeping the knees behind the body and avoiding excessive width. Turn the soles outward and backward, sweep backward, outward, and then inward with the feet and inner lower legs, and finish with the legs together and long. The water should be driven mostly behind the swimmer rather than by pulling the knees hard toward the chest.</p> <p>Have an instructor check ankle orientation at the wall, then use a kickboard for short 5–10 metre repeats. Stop for sharp knee or hip pain rather than forcing a larger range. Breaststroke kick is technically demanding; immediate observation is more useful than rehearsing the wrong pattern many times.</p> <h3 id="4-arms-breathing-and-full-timing">4. Arms, Breathing, and Full Timing</h3> <p>From streamline, pitch the hands slightly outward and downward, then sweep them inward toward the chest. Inhale through the mouth as the shoulders and upper body rise naturally, shoot the hands forward, and return the head to neutral. The pull need not continue to the hips, and the breath should not be created by throwing the neck backward. <a href="https://www.swimming.org/masters/improving-your-breaststroke-technique/" rel="external nofollow noopener" target="_blank">Swim England’s breaststroke guidance</a> likewise emphasises streamlining during the glide, relaxed neck and shoulders, and coordinated actions.</p> <p>Use this sequence for the complete stroke:</p> <ol> <li> <strong>Pull</strong>: sweep the arms out and in as the body begins to rise;</li> <li> <strong>Breathe</strong>: inhale when the mouth clears the water;</li> <li> <strong>Kick</strong>: recover and kick the legs as the arms extend forward;</li> <li> <strong>Glide</strong>: extend and close the arms and legs while exhaling steadily underwater.</li> </ol> <p>Start with three to five cycles and add distance only while standing or taking the wall remains calm. Speed is not the goal of this stage. If speed makes the swimmer lift the head, kick randomly, skip the exhale, or lose direction, return to short repeats.</p> <h3 id="5-extending-10-metres-to-50-metres">5. Extending 10 Metres to 50 Metres</h3> <p>Increase one variable at a time: distance, repetition count, or speed. Build several stable 10-metre repeats before trying 15–25 metres. Once the swimmer can maintain rhythm to the end of 25 metres, touch the wall, communicate clearly, and breathe normally, attempt 50 metres after full rest. Technique breaking down under fatigue is a stop signal, not a barrier that must be forced through.</p> <p>A 50-metre attempt can use four completion criteria: no prolonged breath-holding, a reasonably controlled line, “pull—breathe—kick—glide” still present at the end, and an independent wall hold and safe exit afterward. Ideally, have an instructor watch or record one length and choose only the single issue with the greatest safety or efficiency impact for the next practice.</p> <h2 id="common-sticking-points">Common Sticking Points</h2> <ul> <li> <strong>Panic as soon as the face enters</strong>: reduce the task to one exhale and one recovery to standing before asking for flotation or travel. Extend submersion only after repeated calm successes.</li> <li> <strong>Water enters the nose</strong>: keep a small nasal exhale underwater and never inhale during a head turn or lift. Rehearse the exact path repeatedly at the wall.</li> <li> <strong>The legs keep sinking</strong>: check for a lifted head, flexed hips, and excessive tension during exhalation before blaming the kick. Do not mask poor trim with frantic kicking.</li> <li> <strong>The kick creates no travel</strong>: common causes include permanently pointed feet, force directed sideways, excessive knee recovery, or failure to close the legs. Ask an instructor to view the soles from behind.</li> <li> <strong>Breathlessness after a few cycles</strong>: confirm that air is actually leaving underwater, shorten each repeat, and rest longer at the wall. Do not hyperventilate beforehand to “store oxygen.”</li> <li> <strong>Inhaling water</strong>: stop moving, stand, take the wall, or ask for help; do not turn sputtering into another drill that day. A mild cough that resolves quickly and completely, with normal breathing and behaviour restored, can be watched by an alert companion. Persistent or severe coughing calls for prompt medical assessment, while laboured breathing, sleepiness, confusion, or abnormal behaviour calls for activating emergency care immediately. The American Red Cross <a href="https://www.redcross.org/take-a-class/resources/articles/dry-or-delayed-secondary-drowning" rel="external nofollow noopener" target="_blank">post-submersion symptom guidance</a> also explains that “dry drowning” and “delayed drowning” are not accepted medical diagnoses.</li> </ul> <h2 id="emergencies-helping-others-and-pool-hygiene">Emergencies, Helping Others, and Pool Hygiene</h2> <h3 id="when-you-are-in-distress">When You Are in Distress</h3> <p>Ask for help early. If possible, roll onto the back to keep the airway at the surface, hold the wall or a flotation aid, and wave and call to the lifeguard. Do not wait until all strength is gone. Do not grab an unprepared ordinary swimmer; panicked contact can cost both people their breathing position.</p> <h3 id="when-someone-else-is-in-distress">When Someone Else Is in Distress</h3> <p>Shout for help and alert the lifeguard, while directing a specific person to call local emergency services and bring an AED. Without water-rescue training, do not enter for direct contact. The American Red Cross rule is <a href="https://www.redcross.org/take-a-class/teach-water-safety/whale-tales/lesson-8" rel="external nofollow noopener" target="_blank">“reach or throw, don’t go”</a>: extend a long object from a stable position or throw something buoyant for the person to hold.</p> <p>If the person is unresponsive and not breathing normally after removal, follow the emergency dispatcher’s instructions, start CPR immediately, and use an AED as soon as possible. When the rescuer can give breaths, drowning resuscitation should combine breaths with chest compressions; see the <a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-and-pediatric-special-circumstances-of-resuscitation" rel="external nofollow noopener" target="_blank">2025 American Heart Association drowning-resuscitation guidance</a>. Do not delay CPR while an AED is fetched or prepared. Keep the person out of standing water; while compressions continue, dry the bare chest quickly and attach the pads, pausing contact only when the device instructs rescuers to analyse or shock. Formal training substantially improves readiness, but lack of a certificate should not become a reason to wait. An AED analyses the rhythm and gives spoken instructions, and the <a href="https://www.redcross.org/take-a-class/resources/articles/what-to-know-about-aeds-skills-facts" rel="external nofollow noopener" target="_blank">American Red Cross explains</a> that an untrained person may use one in an emergency. Follow the dispatcher, device, and on-scene professionals; an article cannot replace a course.</p> <h3 id="shared-pool-hygiene">Shared Pool Hygiene</h3> <p>Do not swallow pool water, stay out when ill with diarrhoea, shower before entering, and dry the ears and wash the body and equipment afterward. Chlorine and filtration do not eliminate every pathogen instantly, and even a small amount of contaminated water can cause illness; see the CDC’s <a href="https://www.cdc.gov/healthy-swimming/safety/what-you-can-do-to-stay-healthy-in-swimming-pools.html" rel="external nofollow noopener" target="_blank">healthy-pool guidance</a>. Follow a clinician’s advice and the facility’s rules for wounds, skin conditions, or other health questions rather than diagnosing swimming fitness from an online checklist.</p> <h2 id="continuing-practice">Continuing Practice</h2> <p>Give each session one main objective, such as “recover to standing consistently,” “turn the soles correctly,” or “keep exhaling for 25 metres.” Begin by reviewing safe entry, exhalation, and recovery. Use the middle of the session for short component drills and full coordination, then finish at low intensity while direction and breathing remain controlled. Record <strong>the conditions under which a skill is repeatable</strong>, not just accumulated metres.</p> <p>This route is complete when you can enter and exit safely in a supervised pool, regain the breathing position, float or roll onto the back, swim 50 continuous metres of breaststroke, and call for help appropriately. Formal lessons should then add treading water, other strokes, deep-water adaptation, and rescue knowledge. Open water is a new risk environment that requires a new assessment rather than a direct extrapolation from pool distance.</p> <p>The institutional guidance and links in this article were last reviewed on 2026-08-08. Safety rules, course standards, and local facility requirements change; follow the lifeguard, instructor, medical professional, and latest official guidance at the time of practice.</p> </div> </article> <aside class="article-side-toc"> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#scope-and-safety-boundaries">Scope and Safety Boundaries</a> <ul> <li class="toc-entry toc-h3"><a href="#before-practising">Before Practising</a></li> <li class="toc-entry toc-h3"><a href="#stop-when-these-signs-appear">Stop When These Signs Appear</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#three-durable-principles-of-moving-in-water">Three Durable Principles of Moving in Water</a> <ul> <li class="toc-entry toc-h3"><a href="#pressure-increases-buoyancy-does-not-simply-grow-with-depth">Pressure Increases; Buoyancy Does Not Simply Grow with Depth</a></li> <li class="toc-entry toc-h3"><a href="#breathing-affects-both-gas-exchange-and-trim">Breathing Affects Both Gas Exchange and Trim</a></li> <li class="toc-entry toc-h3"><a href="#drag-ultimately-limits-propulsion">Drag Ultimately Limits Propulsion</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#equipment-and-location">Equipment and Location</a> <ul> <li class="toc-entry toc-h3"><a href="#basic-equipment">Basic Equipment</a></li> <li class="toc-entry toc-h3"><a href="#what-is-not-a-rescue-guarantee">What Is Not a Rescue Guarantee</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#from-zero-to-50-metres-of-breaststroke">From Zero to 50 Metres of Breaststroke</a> <ul> <li class="toc-entry toc-h3"><a href="#1-entry-exhalation-and-recovery-to-standing">1. Entry, Exhalation, and Recovery to Standing</a></li> <li class="toc-entry toc-h3"><a href="#2-floating-rotation-and-streamlining">2. Floating, Rotation, and Streamlining</a></li> <li class="toc-entry toc-h3"><a href="#3-breaststroke-kick">3. Breaststroke Kick</a></li> <li class="toc-entry toc-h3"><a href="#4-arms-breathing-and-full-timing">4. Arms, Breathing, and Full Timing</a></li> <li class="toc-entry toc-h3"><a href="#5-extending-10-metres-to-50-metres">5. Extending 10 Metres to 50 Metres</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#common-sticking-points">Common Sticking Points</a></li> <li class="toc-entry toc-h2"> <a href="#emergencies-helping-others-and-pool-hygiene">Emergencies, Helping Others, and Pool Hygiene</a> <ul> <li class="toc-entry toc-h3"><a href="#when-you-are-in-distress">When You Are in Distress</a></li> <li class="toc-entry toc-h3"><a href="#when-someone-else-is-in-distress">When Someone Else Is in Distress</a></li> <li class="toc-entry toc-h3"><a href="#shared-pool-hygiene">Shared Pool Hygiene</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#continuing-practice">Continuing Practice</a></li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="en" data-loading-text="Loading comments…" data-retry-text="Try again" data-error-text="Comments could not be loaded. Try again, or use the GitHub Discussions link above." data-auto-load-enabled-text="Automatic comment loading is on." data-auto-load-disabled-text="Automatic comment loading is off." data-auto-load-unavailable-text="Your browser could not save this setting. You can still show comments manually." aria-labelledby="page-comments-title-en"> <h2 id="page-comments-title-en">Comments</h2> <p class="page-comments__introduction"> Comments are public and stored in <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>. This page connects to giscus.app and GitHub and sends the current page path only after you show comments manually or enable automatic loading. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information. </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>Show comments (~0.13 MB first load)</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-en" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-en" class="page-comments__auto-load-label">Auto-load comments on this site</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">Enable JavaScript and use the button above to show comments, or use the GitHub Discussions link above.</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="Enter a term to start searching." data-no-results="No matching content found." data-missing-translation="This item has no English version yet. You are viewing the English writing index."> <div class="search-dialog__header"> <h2 id="search-title">Search this site</h2> <button id="search-close" class="icon-button" type="button" aria-label="Close search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">Search this site</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search writing, projects, papers, or toys"> <p id="search-status" class="search-status" aria-live="polite">Enter a term to start searching.</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+  
+    
+      
+      {
+        "title": "Building Trust with Timid Zebra Finches: From Environment to Positive Training",
+        "description": "A welfare-first trust ladder for zebra finches—stable surroundings, a health baseline, observable stress signals, immediate reinforcement, and reversible steps.",
+        "tags": ["Zebra finches","Animal welfare"],
+        "url": "/en/posts/building-trust-with-zebra-finches/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Four-Colour Outerwear System That Reduces Daily Decisions",
+        "description": "Turns brick red, warm beige, olive, and charcoal into a personal outerwear system, filtered by real occasions, wardrobe compatibility, silhouette, and maintenance.",
+        "tags": ["Clothing","Colour"],
+        "url": "/en/posts/a-four-color-outerwear-system/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "From Owning Tools to Cooking Easily: A Minimal System for a Small Kitchen",
+        "description": "Organises a small kitchen around real action chains, a minimum capability set, purchase gates, visible inventory, and cleanup resets, with clear food-safety boundaries.",
+        "tags": ["Kitchen","Personal systems"],
+        "url": "/en/posts/a-minimal-system-for-a-small-kitchen/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "From Running to Maintainable: A Minimal Operations Loop for a Minecraft Server",
+        "description": "A compact Minecraft server operations loop—Java compatibility, a dedicated identity, supervised startup, least exposure, tested restores, staged upgrades, and monitoring.",
+        "tags": ["Minecraft","Server operations"],
+        "url": "/en/posts/a-minimal-operations-loop-for-a-minecraft-server/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "SETI Rules: From Setup to Your First Complete Game",
+        "description": "Official illustrations and play order connect setup, turns, actions, round ends, and scoring into one game, without fragmented rulebook lookup or fixed-pace video; Space Agencies and promos follow.",
+        "tags": ["SETI","Space Agencies","Board Games","Rules"],
+        "url": "/en/posts/learning-seti-board-game/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Age of Innovation",
+        "description": "A cross-round valuation of coins, tools, books, scholars, science, navigation, and buildings, placing immediate exchanges and future production on one scale for medium- and long-term planning.",
+        "tags": ["Age of Innovation","Board Games"],
+        "url": "/en/posts/age-of-innovation-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Troyes",
+        "description": "A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply.",
+        "tags": ["Troyes","Board Games"],
+        "url": "/en/posts/troyes-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Gaia Project",
+        "description": "An approximate common scale for credits, ore, knowledge, QIC, buildings, and endgame points, then checked against faction exceptions to give experience-based planning a reproducible baseline.",
+        "tags": ["Gaia Project","Board Games"],
+        "url": "/en/posts/gaia-project-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Understanding Swimming",
+        "description": "A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies.",
+        "tags": ["Swimming"],
+        "url": "/en/posts/understanding-swimming/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Break the Code Strategy Guide",
+        "description": "Drawn from nearly 500 BGA games, this guide treats questions as candidate-set partitions and connects them to deduction, turn order, and endgame play, so the method transfers beyond fixed rankings.",
+        "tags": ["Break the Code","Board Games"],
+        "url": "/en/posts/break-the-code-strategy-guide/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Quantitative Strategy Guide to Seasons",
+        "description": "A common point scale for energy, levels, crystallization, cards, and dice actions, tested against drafting and interaction to answer “which choice is worth more now?” beyond isolated card ratings.",
+        "tags": ["Seasons","Board Games"],
+        "url": "/en/posts/quantitative-strategy-guide-to-seasons/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "PC Build Log",
+        "description": "A complete R5 5600 + RX 6600 XT build record that keeps requirements, component trade-offs, prices, and assembly problems together, showing how a budget became a balanced machine.",
+        "tags": ["PC Building"],
+        "url": "/en/posts/pc-build-log/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building Shape-Matched ASCII Art",
+        "description": "A shape-aware ASCII-art method using glyph templates, comparison, histogram equalization, and grayscale consistency to make outlines follow source images more closely than average-brightness mapping.",
+        "tags": ["NoneBot","Python","ASCII Art"],
+        "url": "/en/posts/building-shape-matched-ascii-art/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Cloud Servers and Deployment Architecture: From Domains to Reliable Operations",
+        "description": "A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting.",
+        "tags": ["Cloud Servers"],
+        "url": "/en/posts/notes-on-cloud-servers/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Practical Guide to Reliable Reinforcement Learning Experiments",
+        "description": "A reproducible RL workflow spanning environment contracts, Gymnasium semantics, open task distributions, visual pre-training, method choice, reward, replay, debugging, and uncertainty reporting.",
+        "tags": ["Reinforcement Learning","Meta-Reinforcement Learning","Representation Learning"],
+        "url": "/en/posts/reinforcement-learning-issues/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building on GitHub Pages: From Static Hosting to Reproducible Deployment",
+        "description": "Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically.",
+        "tags": ["GitHub"],
+        "url": "/en/posts/build-a-personal-github-page/",
+        "kind": "Writing"
+      }
+      
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "A NoneBot2 plugin that turns chat commands into multilingual character voices through configurable speech-synthesis APIs and voice parameters.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "A unified benchmark for reproducible high-dimensional Bayesian optimization experiments, combining synthetic and realistic tasks with representative algorithm wrappers.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "A lightweight solver for Turing Machine puzzles that enumerates valid codes, searches the best three-verifier questioning plan, and estimates success.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "A lightweight voice-to-voice LLM demo connecting local SenseVoice ASR, an OpenAI-compatible chat API, and Edge TTS with free components.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "Zero-shot online cross-task transfer for LLM-based hyperparameter optimization: one LLM call per BO round proposes target candidates and selects an auxiliary query.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "MCP tools for Codex to delegate implementation and request independent Claude Code reviews with explicit authority, provider routing, and structured results.",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-b-ijcnn-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey on High-dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Hongye Cao, Yang Gao, Dong Li, Jianye Hao · Journal of Software",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-survey-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/en/publications/#trust-region-newton-ecai-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey of Meta-reinforcement Learning Research",
+      "description": "Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao · Journal of Software · 2024 Top-20 High-Attention Review Paper",
+      "tags": [2024],
+      "url": "/en/publications/#meta-rl-survey-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/en/publications/#supervised-dr-ppsn-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/en/publications/#casil-aamas-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/en/publications/#radar-rl-2023",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/en/publications/#tild-aamas-2023",
+      "kind": "Papers"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "Moegirlpedia quiz",
+        "description": "Read the Chinese anonymized introduction and choose the matching entry.",
+        "tags": ["encyclopedia","Moegirlpedia","Chinese","entry","quiz"],
+        "url": "/en/toys/#moegirl-quiz",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Artwork quiz (Cleveland Museum of Art)",
+        "description": "Choose the quiz direction and whether to show title, artist, or date.",
+        "tags": ["art","matching","painting","museum","Cleveland","image","quiz"],
+        "url": "/en/toys/#art-glimpse",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Anime protagonist quiz (AniList)",
+        "description": "Choose among three four-choice links between anime and their main characters.",
+        "tags": ["AniList","anime","character","main role","relation","quiz"],
+        "url": "/en/toys/#anilist-role-quiz",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Color difference challenge",
+        "description": "Find the subtly different tile and see how far you can go.",
+        "tags": ["color","vision","perception","challenge"],
+        "url": "/en/toys/#color-challenge",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Ten-second estimate",
+        "description": "Stop as close to ten seconds as you can without watching a timer.",
+        "tags": ["ten seconds","time","intuition","challenge"],
+        "url": "/en/toys/#ten-second",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Reaction time",
+        "description": "Wait for the signal, then respond as quickly as possible.",
+        "tags": ["reaction","time","speed","challenge"],
+        "url": "/en/toys/#reaction-time",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Number Wordle",
+        "description": "Use exact and digit-only matches to deduce the hidden number code.",
+        "tags": ["number Wordle","codebreaker","deduction","logic","numbers","game"],
+        "url": "/en/toys/#codebreaker",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Make 24",
+        "description": "Use each of four numbers once and combine them to make exactly 24.",
+        "tags": ["make 24","arithmetic","fractions","mental math","logic","game"],
+        "url": "/en/toys/#make-24",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Lights Out",
+        "description": "Flip a cell and its neighbours, then plan a route to turn every light off.",
+        "tags": ["lights out","grid","minimum moves","planning","logic","game"],
+        "url": "/en/toys/#lights-out",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Random password",
+        "description": "Generate a configurable random password in your browser.",
+        "tags": ["random","password","security","generator"],
+        "url": "/en/toys/#random-password",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Random numbers",
+        "description": "Generate one or more random results from an integer range.",
+        "tags": ["random","number","integer","generator"],
+        "url": "/en/toys/#random-number",
+        "kind": "Toys"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="/assets/js/mathjax-loader.js?v=e7c0e958ed0a177f51b1fb72368692d3" data-runtime-src="/assets/vendor/mathjax/3.2.2/tex-mml-chtml.min.js" data-runtime-integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" data-font-url="/assets/vendor/mathjax/3.2.2/output/chtml/fonts/woff-v2/"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>

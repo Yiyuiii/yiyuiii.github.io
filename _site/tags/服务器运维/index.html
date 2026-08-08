@@ -1,0 +1,542 @@
+<!DOCTYPE html> <html lang="zh"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 服务器运维 | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="yiyuiii 的随笔、公开项目与合作论文。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%90%E7%BB%B4/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%90%E7%BB%B4/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="website"> <meta property="og:title" content="服务器运维"> <meta property="og:url" content="https://yiyuiii.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%90%E7%BB%B4/"> <meta property="og:description" content="yiyuiii 的随笔、公开项目与合作论文。"> <meta property="og:locale" content="zh_CN"> <meta property="og:image" content="https://yiyuiii.github.io/assets/img/favicons/android-chrome-256x256.png"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="服务器运维"> <meta name="twitter:description" content="yiyuiii 的随笔、公开项目与合作论文。"> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/img/favicons/android-chrome-256x256.png"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "url": "https://yiyuiii.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%90%E7%BB%B4/",
+    "headline": "服务器运维",
+    "description": "yiyuiii 的随笔、公开项目与合作论文。",
+    "inLanguage": "zh-CN",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    }
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="关闭日光背景" aria-pressed="true" data-enable-light-label="开启日光背景" data-disable-light-label="关闭日光背景" data-enable-dark-label="开启月光背景" data-disable-dark-label="关闭月光背景" data-status-light-on="日光背景已开启" data-status-light-off="日光背景已关闭" data-status-dark-on="月光背景已开启" data-status-dark-off="月光背景已关闭" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="主导航"> <a href="/">欢迎</a> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/toys/">小玩意</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到夜晚样式" aria-pressed="false" data-enable-light-label="切换到明亮样式" data-enable-dark-label="切换到夜晚样式" data-status-light="已切换到明亮样式" data-status-dark="已切换到夜晚样式" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/writing/?missing_translation=1" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="post"> <header class="post-header"> <h1 class="post-title">服务器运维</h1> <p class="post-description">随笔标签</p> </header> <article class="archive"> <div class="table-responsive"> <table class="table table-sm table-borderless"> <tr> <th scope="row">2026年8月8日</th> <td><a class="post-link" href="/posts/Minecraft%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%9C%80%E5%B0%8F%E8%BF%90%E7%BB%B4%E9%97%AD%E7%8E%AF/">从能运行到可维护：Minecraft 服务器的最小运维闭环</a></td> </tr> </table> </div> </article> </div> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="zh-CN" data-loading-text="正在加载评论……" data-retry-text="重新加载" data-error-text="评论暂时无法加载；你可以重试，或使用上方 GitHub Discussions 链接。" data-auto-load-enabled-text="已开启自动加载评论。" data-auto-load-disabled-text="已关闭自动加载评论。" data-auto-load-unavailable-text="浏览器无法保存自动加载设置；你仍可手动显示评论。" aria-labelledby="page-comments-title-zh"> <h2 id="page-comments-title-zh">评论</h2> <p class="page-comments__introduction"> 评论公开保存在 <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>。只有在你手动显示评论或开启自动加载后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。 </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>显示评论（首次约 0.13 MB）</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-zh" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-zh" class="page-comments__auto-load-label">在本站自动加载评论</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">请启用 JavaScript 后选择上方按钮显示评论，或使用上方 GitHub Discussions 链接。</p></noscript> </section> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目、论文或小玩意"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+      
+      {
+        "title": "与胆小的珍珠鸟建立信任：从环境到正向训练",
+        "description": "以稳定环境、健康基线、可观察压力信号、即时奖励和逐级选择建立珍珠鸟信任；明确区分个人观察、动物福利原则与必须交给禽类兽医的问题。",
+        "tags": ["珍珠鸟","动物福利"],
+        "url": "/posts/%E4%B8%8E%E7%8F%8D%E7%8F%A0%E9%B8%9F%E5%BB%BA%E7%AB%8B%E4%BF%A1%E4%BB%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "用四种颜色建立一套不费脑的外套系统",
+        "description": "用砖红、米黄、橄榄绿和炭灰建立个人外套调色盘，再以场景、轮廓、现有衣橱与维护成本筛选款式；不把主观偏好包装成普遍色彩定律。",
+        "tags": ["穿搭","色彩"],
+        "url": "/posts/%E5%9B%9B%E7%A7%8D%E9%A2%9C%E8%89%B2%E7%9A%84%E5%A4%96%E5%A5%97%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从买齐工具到顺手做饭：小厨房的最小系统",
+        "description": "从实际动作链而非商品品类组织小厨房，用最小能力集、购买闸门、可见库存和清洁复位减少做饭摩擦；个人经验不冒充营养或食品安全指南。",
+        "tags": ["厨房","个人系统"],
+        "url": "/posts/%E5%B0%8F%E5%8E%A8%E6%88%BF%E7%9A%84%E6%9C%80%E5%B0%8F%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从能运行到可维护：Minecraft 服务器的最小运维闭环",
+        "description": "把 Java 兼容性、专用账户、受控启动、最小暴露、备份恢复、升级演练和监控串成一条小型服务器运维闭环；示例不包含私人端口、账号或玩家标识。",
+        "tags": ["Minecraft","服务器运维"],
+        "url": "/posts/Minecraft%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%9C%80%E5%B0%8F%E8%BF%90%E7%BB%B4%E9%97%AD%E7%8E%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "《SETI》桌游规则：从摆桌到完成第一局",
+        "description": "依照真实游玩顺序，用官方图片把摆桌、回合、行动、轮末与计分连成一局；比按组件查规则书或拖动教学视频更适合纯文字学习，末尾另收扩展与促销牌。",
+        "tags": ["桌游","规则教学","SETI"],
+        "url": "/posts/SETI%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E5%AE%8C%E6%88%90%E7%AC%AC%E4%B8%80%E5%B1%80/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《大创造时代》资源-分值量化计算思路",
+        "description": "用跨轮迭代估算金币、工具、书、学者、科学轨、航海和建筑收益，把当前兑换和未来产出放进同一尺度；比静态汇率更适合中长期规划。",
+        "tags": ["大创造时代","桌游"],
+        "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《特鲁瓦》资源-分值量化分析攻略",
+        "description": "把影响力、事件、骰子、功能牌和金钱放到同一价值框架，说明共享骰池怎样改变随机资源的价格；适合比较跨系统行动，补足单卡点评缺少的全局尺度。",
+        "tags": ["特鲁瓦","桌游"],
+        "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《盖亚计划》资源-分值量化计算思路",
+        "description": "把钱、矿、知识、QIC、建筑收益和终局分数换到近似统一尺度，再逐种族检查例外，为经验打法提供一套可复算的宏观规划基准。",
+        "tags": ["盖亚计划","桌游"],
+        "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "了解游泳",
+        "description": "从安全入水、漂浮与呼吸开始，按蛙泳腿、手、配合和距离进阶练到 50 米；同时解释浮力、阻力与遇险处置的可靠边界。",
+        "tags": ["游泳"],
+        "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "逻辑对决桌游攻略",
+        "description": "基于近 500 局 BGA 实战，把问题选择写成候选集划分，并连到数字推理、先后手与终局攻防；比记固定问题评级更能迁移到新局面。",
+        "tags": ["逻辑对决","桌游"],
+        "url": "/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四季物语量化分析攻略",
+        "description": "用统一分值估算元素、召唤等级、晶化、卡牌和骰子行动，再把资源约束、轮抽和对抗放回实战；比单张卡牌评级更适合回答“此刻哪种选择更值”。",
+        "tags": ["四季物语","桌游"],
+        "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "装机记录",
+        "description": "以 R5 5600 + RX 6600 XT 实际装机为例，把需求、部件取舍、价格和组装问题放在同一份记录中，展示预算如何一步步变成平衡配置。",
+        "tags": ["装机"],
+        "url": "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "制作一张匹配形状的字符画",
+        "description": "从平均灰度匹配推进到字符形状匹配，给出字符模板、局部比较、直方图均衡和灰度一致性实现，适合想让轮廓更贴近原图的读者。",
+        "tags": ["NoneBot","Python","字符画"],
+        "url": "/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "云服务器与部署架构：从域名到可靠运行",
+        "description": "用一条完整请求链解释 DNS、CDN、代理、云网络、计算与存储，再给出产品选型、安全部署、成本复核和故障定位清单。",
+        "tags": ["云服务器"],
+        "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "可靠强化学习实验与工程指南",
+        "description": "从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。",
+        "tags": ["强化学习","元强化学习","表征学习"],
+        "url": "/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "GitHub Pages 建站：从静态托管到可复现部署",
+        "description": "从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。",
+        "tags": ["GitHub"],
+        "url": "/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "把角色语音合成 API 接入 NoneBot2：用聊天指令生成中、英、日、韩语音，并可配置角色、语速、语气与接口参数。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "统一的高维贝叶斯优化基准：汇集合成与真实任务、代表性算法封装，便于开展可复现的对比实验。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "轻量《图灵机》谜题求解器：枚举有效密码，搜索三次验证的最佳提问方案，并估算成功率。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "轻量语音对话示例：用免费组件串联本地 SenseVoice 语音识别、OpenAI 兼容聊天接口与 Edge TTS。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "面向大语言模型超参数优化的零样本在线跨任务迁移：每轮只调用一次模型，同时提出目标候选并选择辅助查询。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "为 Codex 提供 MCP 任务工具：可委托 Claude Code 实现或发起独立审阅，并显式约束权限、模型来源与结构化结果。",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/publications/#hdbo-b-ijcnn-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "高维贝叶斯优化研究综述",
+      "description": "陈泉霖, 陈奕宇, 霍静, 曹宏业, 高阳, 李栋, 郝建业 · 软件学报",
+      "tags": [2025],
+      "url": "/publications/#hdbo-survey-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/publications/#trust-region-newton-ecai-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "元强化学习研究综述",
+      "description": "陈奕宇, 霍静, 丁天雨, 高阳 · 软件学报 · 2024年高被关注综述论文",
+      "tags": [2024],
+      "url": "/publications/#meta-rl-survey-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/publications/#supervised-dr-ppsn-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/publications/#casil-aamas-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/publications/#radar-rl-2023",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/publications/#tild-aamas-2023",
+      "kind": "论文"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "萌娘百科猜猜",
+        "description": "读读匿名化的导言，看看四个候选里谁是答案。",
+        "tags": ["百科","萌娘百科","条目","问答"],
+        "url": "/toys/#moegirl-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "名画猜猜（克利夫兰艺术博物馆）",
+        "description": "可选择猜题方向，以及题名、作者、年代等线索。",
+        "tags": ["名画","配对","艺术","博物馆","克利夫兰","图像","猜题"],
+        "url": "/toys/#art-glimpse",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "动画主角猜猜（AniList）",
+        "description": "可选择动画找主角、主角找动画或同作主角配对。",
+        "tags": ["AniList","动画","角色","主角","关系","猜题"],
+        "url": "/toys/#anilist-role-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "色差挑战",
+        "description": "找出颜色略有不同的方块，看看你能走到第几关。",
+        "tags": ["颜色","视觉","辨识","挑战"],
+        "url": "/toys/#color-challenge",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "盲估十秒",
+        "description": "不看计时器，凭感觉停在十秒附近。",
+        "tags": ["十秒","时间","直觉","挑战"],
+        "url": "/toys/#ten-second",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "反应时间",
+        "description": "等待信号出现后尽快作出反应。",
+        "tags": ["反应","时间","速度","挑战"],
+        "url": "/toys/#reaction-time",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "数字 Wordle",
+        "description": "根据“完全命中”和“仅数字命中”，逐步排除隐藏答案。",
+        "tags": ["数字 Wordle","数字码","推理","排除","逻辑","游戏"],
+        "url": "/toys/#codebreaker",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "凑成 24",
+        "description": "四个数各用一次，选择运算顺序，让最后的精确结果等于 24。",
+        "tags": ["凑成 24","四则运算","分数","心算","逻辑","游戏"],
+        "url": "/toys/#make-24",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "翻灯",
+        "description": "每次翻转一格和它的四邻格，用尽量清晰的规划让所有灯熄灭。",
+        "tags": ["翻灯","网格","最短步数","规划","逻辑","游戏"],
+        "url": "/toys/#lights-out",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "随机密码",
+        "description": "在当前浏览器中生成可调整的随机密码。",
+        "tags": ["随机","密码","安全","生成器"],
+        "url": "/toys/#random-password",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "随机数字",
+        "description": "从指定整数范围中生成一个或多个随机结果。",
+        "tags": ["随机","数字","整数","生成器"],
+        "url": "/toys/#random-number",
+        "kind": "小玩意"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>

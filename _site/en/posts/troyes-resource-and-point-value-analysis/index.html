@@ -1,0 +1,545 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Quantifying Resource and Point Values in Troyes | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply."> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/en/posts/troyes-resource-and-point-value-analysis/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/en/posts/troyes-resource-and-point-value-analysis/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/troyes-resource-and-point-value-analysis/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="Quantifying Resource and Point Values in Troyes"> <meta property="og:url" content="https://yiyuiii.github.io/en/posts/troyes-resource-and-point-value-analysis/"> <meta property="og:description" content="A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply."> <meta property="og:locale" content="en_US"> <meta property="og:locale:alternate" content="zh_CN"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202407012233/cover-bgg-1091724-square.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Quantifying Resource and Point Values in Troyes"> <meta name="twitter:description" content="A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply."> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202407012233/cover-bgg-1091724-square.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/en/posts/troyes-resource-and-point-value-analysis/",
+    "headline": "Quantifying Resource and Point Values in Troyes",
+    "description": "A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply.",
+    "inLanguage": "en",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2024-07-01T20:00:00+08:00",
+    "dateModified": "2024-07-01T20:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">Skip to content</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/en/" aria-label="Return to the English welcome page"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="Turn off the sunlight background" aria-pressed="true" data-enable-light-label="Turn on the sunlight background" data-disable-light-label="Turn off the sunlight background" data-enable-dark-label="Turn on the moonlight background" data-disable-dark-label="Turn off the moonlight background" data-status-light-on="Sunlight background is on" data-status-light-off="Sunlight background is off" data-status-dark-on="Moonlight background is on" data-status-dark-off="Moonlight background is off" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/en/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="Primary navigation"> <a href="/en/">Welcome</a> <a href="/en/writing/">Writing</a> <a href="/en/projects/">GitHub</a> <a href="/en/publications/">Papers</a> <a href="/en/toys/">Toys</a> <a href="/en/about/">About yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="Search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="Switch to the night appearance" aria-pressed="false" data-enable-light-label="Switch to the light appearance" data-enable-dark-label="Switch to the night appearance" data-status-light="Light appearance is on" data-status-dark="Night appearance is on" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/" aria-label="Switch to Chinese"> 中 </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>Quantifying Resource and Point Values in Troyes</h1> <div class="article-meta"> <div class="article-tags"> <a href="/en/writing/?tag=Board+Games">Board Games</a> <a href="/en/writing/?tag=Troyes">Troyes</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> First published <time datetime="2024-07-01">2024-07-01</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">Revision history</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2024-07-01">2024-07-01</time> <span>First published</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>Sections</summary> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#preface">Preface</a></li> <li class="toc-entry toc-h2"><a href="#influence">Influence</a></li> <li class="toc-entry toc-h2"> <a href="#resolving-events">Resolving Events</a> <ul> <li class="toc-entry toc-h3"><a href="#returns-from-event-cards">Returns from Event Cards</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#using-dice">Using Dice</a></li> <li class="toc-entry toc-h2"><a href="#activity-cards">Activity Cards</a></li> <li class="toc-entry toc-h2"><a href="#money">Money</a></li> </ul> </nav> </details> <figure class="article-cover"> <img height="1024" width="1024" class="article-cover__image" src="/assets/posts/202407012233/cover-bgg-1091724-square.webp" alt="A four-player game of Troyes" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>Cover image: <a href="https://boardgamegeek.com/image/1091724/troyes" rel="external nofollow noopener" target="_blank">Overview of the board. 4 player game.</a>, photographed by BoardGameGeek user verminose, <a href="https://creativecommons.org/licenses/by-nc/3.0/" rel="external nofollow noopener" target="_blank">CC BY-NC 3.0</a>; square crop by this site.</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <h2 id="preface">Preface</h2> <p>In Troyes, players’ actions depend on random die values. The mechanism for buying other players’ dice turns what would have been highly random individual output into a shared public supply, balancing randomness and strategy in a novel way.</p> <p>After playing two games of Troyes, I had an intuition that its scoring returns could be approximated with a simple quantitative model. This article records that process.</p> <p>Because this is a point-scoring game, we can work backward from victory points to estimate the returns on each resource.</p> <h2 id="influence">Influence</h2> <p>Spending 1 Influence to reroll a die gives an expected result of 3.5 pips. Rerolling a 1 is optimal, so the expected gain is 2.5 pips.</p> <p>Spending 4 Influence reliably lets you flip up to 3 dice. Flipping each die from 1 to 6 is optimal, for an expected gain of 15 pips, or 3.75 pips per Influence on average.</p> <p>Because both accumulating 4 Influence and maximizing its return are difficult, I provisionally value 1 Influence at 3 pips.</p> <p>Note that making full use of Influence requires keeping a corresponding number of your own dice available.</p> <h2 id="resolving-events">Resolving Events</h2> <p>Event cards provide the most direct conversion from pips to victory points.</p> <p>Each cube costs 2–4 pips of dice and grants 1 Influence. An event card that requires 2 pips per cube therefore cannot lose value.</p> <h3 id="returns-from-event-cards">Returns from Event Cards</h3> <p>Suppose you spend the minimum needed to secure first place:</p> <p>$4 \times 2=8$ pips securely yields $2+1=3$ points plus 4 Influence, so 8 pips = 3 points + 12 pips;</p> <p>$2 \times 4=8$ or $3 \times 3=9$ pips securely yields $3+1=4$ points plus 2 or 3 Influence, so 9 pips = 4 points + 9 pips;</p> <p>$3 \times 4=12$ pips securely yields $4+1=5$ points plus 3 Influence, so 12 pips = 5 points + 9 pips.</p> <p>We can see that event cards with smaller denominators grant more Influence and therefore offer higher returns.</p> <p>If instead you pay the full cost to complete an event card:</p> <p>$7 \times 2=14$ pips yields $2+1=3$ points plus 7 Influence, so 14 pips = 3 points + 21 pips;</p> <p>$4 \times 4=16$ or $5 \times 3=15$ pips yields $3+1=4$ points plus 4–5 Influence, so 15 pips = 4 points + 12–15 pips.</p> <p>Taking second place costs 2–4 pips and yields 1–2 points plus 1 Influence, which is roughly equivalent to getting 1–2 points for free.</p> <p>These returns show that paying the full cost to finish an event card gives a return similar to taking second place. When enough event cards are available, the optimal choice is therefore to avoid helping another player secure first place at minimum cost and instead clear an event card alone.</p> <p>My suggested strategy is to prepare to clear event cards by yourself and simply ensure that every event card you have already invested in can be completed.</p> <p>In addition, because actions on event cards fully repay their cost, their return depends on the maximum number of red pips a player can obtain.</p> <h2 id="using-dice">Using Dice</h2> <p>Buying dice: using cost-effective combinations as the reference, paying 2–4 coins for 4–6 pips is always worth doing. After you pay someone to buy a die, other players may later pay you to buy yours, so there is no need to be overly concerned about the money.</p> <p>Dealing with black dice: based on the value of Influence above, fighting a black die worth 3 pips or less is profitable; otherwise it loses value.</p> <p>Cathedral: 1–3 pips = 1 Influence + 1 point, while 4–6 pips = 2 Influence + 1 point. The first placement in each row grants another 2 points, so that first placement is worth 3 points and later placements are worth 1 point.</p> <p>Citizens: if obtaining a citizen costs 2 Influence, the die produced by that citizen is equivalent to a per-round return of 2–4 coins. I therefore suggest using low-value dice to adjust your citizens’ positions, displace another player’s citizen, or acquire a citizen for an Activity-card space you plan to use later.</p> <p>Converting to money: the standard action converts 2 yellow pips into 1 coin. It is a very poor action and should not be used as a basis for valuation.</p> <h2 id="activity-cards">Activity Cards</h2> <p>Activity cards provide many high-value actions and strongly affect the conversion between resources and value over the course of a game. A space on an Activity card returns 2 Influence plus 2–6 coins, equivalent to 1–3 points; it is roughly value-neutral, so I do not repeat it in every calculation below.</p> <p>(White 1) Monk: 3 white pips = 3a yellow pips − a white pips. The return is 2a−3 pips, although producing yellow pips requires a yellow card to make use of them.</p> <p>(White 2) Templar: 3 white pips = 2a red pips − a white pips. The return is a−3 pips. This card does not generate much value, but its strength is that it can use as many as 12 red pips to secure first place on an event card.</p> <p>(White 3) Procession: 4 white pips = 2 points. This is a low-efficiency finishing action for the end of the game.</p> <p>(Red 1) Archer: 2 red pips = a $\frac{2}{3}$ chance of placing a cube, approximately 4 pips. On event cards with a denominator of 3 or more, this produces nearly twice the normal return.</p> <p>(Red 2) Mercenary: 2 red pips = 3 coins, a severe loss.</p> <p>(Red 3) Captain: 4 red pips = x points. A return of 3 points is relatively acceptable, and the card is very strong when you are the only player using red dice.</p> <p>(Yellow 1) Miller: 4 yellow pips = 4 or more coins. Six coins is relatively acceptable, but repeatedly generating money has limited use, and it does not help if the money is only going toward buying dice.</p> <p>(Yellow 2) Goldsmith: 3 yellow pips = +5 red pips, an exceptionally efficient conversion.</p> <p>(Yellow 3) Artisan: 4 yellow pips + 3 coins = 2 points, an extremely inefficient finishing action for the end of the game.</p> <h2 id="money">Money</h2> <p>Money is mainly used to take spaces on Activity cards, buy dice, convert points through advanced yellow cards, and score Character cards.</p> <p>Taking Activity-card spaces has mediocre conversion efficiency; buying dice and scoring Character cards are necessary actions; and converting money into points through advanced yellow cards is a severe loss. Money therefore functions more as a constraint on which actions are available than as a primary way to generate points.</p> </div> </article> <aside class="article-side-toc"> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#preface">Preface</a></li> <li class="toc-entry toc-h2"><a href="#influence">Influence</a></li> <li class="toc-entry toc-h2"> <a href="#resolving-events">Resolving Events</a> <ul> <li class="toc-entry toc-h3"><a href="#returns-from-event-cards">Returns from Event Cards</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#using-dice">Using Dice</a></li> <li class="toc-entry toc-h2"><a href="#activity-cards">Activity Cards</a></li> <li class="toc-entry toc-h2"><a href="#money">Money</a></li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="en" data-loading-text="Loading comments…" data-retry-text="Try again" data-error-text="Comments could not be loaded. Try again, or use the GitHub Discussions link above." data-auto-load-enabled-text="Automatic comment loading is on." data-auto-load-disabled-text="Automatic comment loading is off." data-auto-load-unavailable-text="Your browser could not save this setting. You can still show comments manually." aria-labelledby="page-comments-title-en"> <h2 id="page-comments-title-en">Comments</h2> <p class="page-comments__introduction"> Comments are public and stored in <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>. This page connects to giscus.app and GitHub and sends the current page path only after you show comments manually or enable automatic loading. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information. </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>Show comments (~0.13 MB first load)</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-en" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-en" class="page-comments__auto-load-label">Auto-load comments on this site</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">Enable JavaScript and use the button above to show comments, or use the GitHub Discussions link above.</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="Enter a term to start searching." data-no-results="No matching content found." data-missing-translation="This item has no English version yet. You are viewing the English writing index."> <div class="search-dialog__header"> <h2 id="search-title">Search this site</h2> <button id="search-close" class="icon-button" type="button" aria-label="Close search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">Search this site</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search writing, projects, papers, or toys"> <p id="search-status" class="search-status" aria-live="polite">Enter a term to start searching.</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+  
+    
+      
+      {
+        "title": "Building Trust with Timid Zebra Finches: From Environment to Positive Training",
+        "description": "A welfare-first trust ladder for zebra finches—stable surroundings, a health baseline, observable stress signals, immediate reinforcement, and reversible steps.",
+        "tags": ["Zebra finches","Animal welfare"],
+        "url": "/en/posts/building-trust-with-zebra-finches/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Four-Colour Outerwear System That Reduces Daily Decisions",
+        "description": "Turns brick red, warm beige, olive, and charcoal into a personal outerwear system, filtered by real occasions, wardrobe compatibility, silhouette, and maintenance.",
+        "tags": ["Clothing","Colour"],
+        "url": "/en/posts/a-four-color-outerwear-system/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "From Owning Tools to Cooking Easily: A Minimal System for a Small Kitchen",
+        "description": "Organises a small kitchen around real action chains, a minimum capability set, purchase gates, visible inventory, and cleanup resets, with clear food-safety boundaries.",
+        "tags": ["Kitchen","Personal systems"],
+        "url": "/en/posts/a-minimal-system-for-a-small-kitchen/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "From Running to Maintainable: A Minimal Operations Loop for a Minecraft Server",
+        "description": "A compact Minecraft server operations loop—Java compatibility, a dedicated identity, supervised startup, least exposure, tested restores, staged upgrades, and monitoring.",
+        "tags": ["Minecraft","Server operations"],
+        "url": "/en/posts/a-minimal-operations-loop-for-a-minecraft-server/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "SETI Rules: From Setup to Your First Complete Game",
+        "description": "Official illustrations and play order connect setup, turns, actions, round ends, and scoring into one game, without fragmented rulebook lookup or fixed-pace video; Space Agencies and promos follow.",
+        "tags": ["SETI","Space Agencies","Board Games","Rules"],
+        "url": "/en/posts/learning-seti-board-game/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Age of Innovation",
+        "description": "A cross-round valuation of coins, tools, books, scholars, science, navigation, and buildings, placing immediate exchanges and future production on one scale for medium- and long-term planning.",
+        "tags": ["Age of Innovation","Board Games"],
+        "url": "/en/posts/age-of-innovation-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Troyes",
+        "description": "A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply.",
+        "tags": ["Troyes","Board Games"],
+        "url": "/en/posts/troyes-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Gaia Project",
+        "description": "An approximate common scale for credits, ore, knowledge, QIC, buildings, and endgame points, then checked against faction exceptions to give experience-based planning a reproducible baseline.",
+        "tags": ["Gaia Project","Board Games"],
+        "url": "/en/posts/gaia-project-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Understanding Swimming",
+        "description": "A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies.",
+        "tags": ["Swimming"],
+        "url": "/en/posts/understanding-swimming/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Break the Code Strategy Guide",
+        "description": "Drawn from nearly 500 BGA games, this guide treats questions as candidate-set partitions and connects them to deduction, turn order, and endgame play, so the method transfers beyond fixed rankings.",
+        "tags": ["Break the Code","Board Games"],
+        "url": "/en/posts/break-the-code-strategy-guide/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Quantitative Strategy Guide to Seasons",
+        "description": "A common point scale for energy, levels, crystallization, cards, and dice actions, tested against drafting and interaction to answer “which choice is worth more now?” beyond isolated card ratings.",
+        "tags": ["Seasons","Board Games"],
+        "url": "/en/posts/quantitative-strategy-guide-to-seasons/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "PC Build Log",
+        "description": "A complete R5 5600 + RX 6600 XT build record that keeps requirements, component trade-offs, prices, and assembly problems together, showing how a budget became a balanced machine.",
+        "tags": ["PC Building"],
+        "url": "/en/posts/pc-build-log/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building Shape-Matched ASCII Art",
+        "description": "A shape-aware ASCII-art method using glyph templates, comparison, histogram equalization, and grayscale consistency to make outlines follow source images more closely than average-brightness mapping.",
+        "tags": ["NoneBot","Python","ASCII Art"],
+        "url": "/en/posts/building-shape-matched-ascii-art/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Cloud Servers and Deployment Architecture: From Domains to Reliable Operations",
+        "description": "A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting.",
+        "tags": ["Cloud Servers"],
+        "url": "/en/posts/notes-on-cloud-servers/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Practical Guide to Reliable Reinforcement Learning Experiments",
+        "description": "A reproducible RL workflow spanning environment contracts, Gymnasium semantics, open task distributions, visual pre-training, method choice, reward, replay, debugging, and uncertainty reporting.",
+        "tags": ["Reinforcement Learning","Meta-Reinforcement Learning","Representation Learning"],
+        "url": "/en/posts/reinforcement-learning-issues/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building on GitHub Pages: From Static Hosting to Reproducible Deployment",
+        "description": "Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically.",
+        "tags": ["GitHub"],
+        "url": "/en/posts/build-a-personal-github-page/",
+        "kind": "Writing"
+      }
+      
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "A NoneBot2 plugin that turns chat commands into multilingual character voices through configurable speech-synthesis APIs and voice parameters.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "A unified benchmark for reproducible high-dimensional Bayesian optimization experiments, combining synthetic and realistic tasks with representative algorithm wrappers.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "A lightweight solver for Turing Machine puzzles that enumerates valid codes, searches the best three-verifier questioning plan, and estimates success.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "A lightweight voice-to-voice LLM demo connecting local SenseVoice ASR, an OpenAI-compatible chat API, and Edge TTS with free components.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "Zero-shot online cross-task transfer for LLM-based hyperparameter optimization: one LLM call per BO round proposes target candidates and selects an auxiliary query.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "MCP tools for Codex to delegate implementation and request independent Claude Code reviews with explicit authority, provider routing, and structured results.",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-b-ijcnn-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey on High-dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Hongye Cao, Yang Gao, Dong Li, Jianye Hao · Journal of Software",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-survey-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/en/publications/#trust-region-newton-ecai-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey of Meta-reinforcement Learning Research",
+      "description": "Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao · Journal of Software · 2024 Top-20 High-Attention Review Paper",
+      "tags": [2024],
+      "url": "/en/publications/#meta-rl-survey-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/en/publications/#supervised-dr-ppsn-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/en/publications/#casil-aamas-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/en/publications/#radar-rl-2023",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/en/publications/#tild-aamas-2023",
+      "kind": "Papers"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "Moegirlpedia quiz",
+        "description": "Read the Chinese anonymized introduction and choose the matching entry.",
+        "tags": ["encyclopedia","Moegirlpedia","Chinese","entry","quiz"],
+        "url": "/en/toys/#moegirl-quiz",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Artwork quiz (Cleveland Museum of Art)",
+        "description": "Choose the quiz direction and whether to show title, artist, or date.",
+        "tags": ["art","matching","painting","museum","Cleveland","image","quiz"],
+        "url": "/en/toys/#art-glimpse",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Anime protagonist quiz (AniList)",
+        "description": "Choose among three four-choice links between anime and their main characters.",
+        "tags": ["AniList","anime","character","main role","relation","quiz"],
+        "url": "/en/toys/#anilist-role-quiz",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Color difference challenge",
+        "description": "Find the subtly different tile and see how far you can go.",
+        "tags": ["color","vision","perception","challenge"],
+        "url": "/en/toys/#color-challenge",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Ten-second estimate",
+        "description": "Stop as close to ten seconds as you can without watching a timer.",
+        "tags": ["ten seconds","time","intuition","challenge"],
+        "url": "/en/toys/#ten-second",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Reaction time",
+        "description": "Wait for the signal, then respond as quickly as possible.",
+        "tags": ["reaction","time","speed","challenge"],
+        "url": "/en/toys/#reaction-time",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Number Wordle",
+        "description": "Use exact and digit-only matches to deduce the hidden number code.",
+        "tags": ["number Wordle","codebreaker","deduction","logic","numbers","game"],
+        "url": "/en/toys/#codebreaker",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Make 24",
+        "description": "Use each of four numbers once and combine them to make exactly 24.",
+        "tags": ["make 24","arithmetic","fractions","mental math","logic","game"],
+        "url": "/en/toys/#make-24",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Lights Out",
+        "description": "Flip a cell and its neighbours, then plan a route to turn every light off.",
+        "tags": ["lights out","grid","minimum moves","planning","logic","game"],
+        "url": "/en/toys/#lights-out",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Random password",
+        "description": "Generate a configurable random password in your browser.",
+        "tags": ["random","password","security","generator"],
+        "url": "/en/toys/#random-password",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Random numbers",
+        "description": "Generate one or more random results from an integer range.",
+        "tags": ["random","number","integer","generator"],
+        "url": "/en/toys/#random-number",
+        "kind": "Toys"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="/assets/js/mathjax-loader.js?v=e7c0e958ed0a177f51b1fb72368692d3" data-runtime-src="/assets/vendor/mathjax/3.2.2/tex-mml-chtml.min.js" data-runtime-integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" data-font-url="/assets/vendor/mathjax/3.2.2/output/chtml/fonts/woff-v2/"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>

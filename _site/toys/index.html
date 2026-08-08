@@ -1,0 +1,749 @@
+<!DOCTYPE html> <html lang="zh"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 小玩意 | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="几秒钟就能上手的站内功能与轻量实验。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/toys/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/toys/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/toys/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/toys/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/toys/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="website"> <meta property="og:title" content="小玩意"> <meta property="og:url" content="https://yiyuiii.github.io/toys/"> <meta property="og:description" content="几秒钟就能上手的站内功能与轻量实验。"> <meta property="og:locale" content="zh_CN"> <meta property="og:locale:alternate" content="en_US"> <meta property="og:image" content="https://yiyuiii.github.io/assets/img/favicons/android-chrome-256x256.png"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="小玩意"> <meta name="twitter:description" content="几秒钟就能上手的站内功能与轻量实验。"> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/img/favicons/android-chrome-256x256.png"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "url": "https://yiyuiii.github.io/toys/",
+    "headline": "小玩意",
+    "description": "几秒钟就能上手的站内功能与轻量实验。",
+    "inLanguage": "zh-CN",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    }
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="stylesheet" href="/assets/css/toys.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="关闭日光背景" aria-pressed="true" data-enable-light-label="开启日光背景" data-disable-light-label="关闭日光背景" data-enable-dark-label="开启月光背景" data-disable-dark-label="关闭月光背景" data-status-light-on="日光背景已开启" data-status-light-off="日光背景已关闭" data-status-dark-on="月光背景已开启" data-status-dark-off="月光背景已关闭" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="主导航"> <a href="/">欢迎</a> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/toys/" aria-current="page">小玩意</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到夜晚样式" aria-pressed="false" data-enable-light-label="切换到明亮样式" data-enable-dark-label="切换到夜晚样式" data-status-light="已切换到明亮样式" data-status-dark="已切换到夜晚样式" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/toys/" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="page-shell"> <article class="page-content"> <div class="toy-index" data-toy-index="" data-toy-loading="正在载入这个项目的本站脚本……" data-toy-load-error="暂时无法载入这个项目的本站脚本。"> <header class="toy-index__header"> <h1 class="sr-only">小玩意</h1> <p class="toy-index__introduction">点开玩~</p> </header> <div class="toy-list"> <section class="toy-group" data-toy-group="database" aria-labelledby="toy-group-database-title"> <h2 id="toy-group-database-title" class="toy-group__title">知识问答</h2> <div class="toy-group__items"> <details id="moegirl-quiz" class="toy-entry" data-toy-disclosure="" data-toy-assets="moegirl"> <summary class="toy-entry__summary"> <h3 id="moegirl-quiz-title"> <span class="toy-entry__title">萌娘百科猜猜</span> <small class="toy-entry__description">读读匿名化的导言，看看四个候选里谁是答案。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="moegirl-quiz-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message="">正在载入这个项目的本站脚本……</span> <button type="button" data-toy-loader-retry="" hidden="">重试载入</button> </div> <div class="moegirl-quiz" data-moegirl-quiz="" data-api-endpoint="https://zh.moegirl.org.cn/api.php" data-timeout-ms="10000" data-batch-size="50" data-history-size="24" aria-labelledby="moegirl-quiz-title"> <p class="moegirl-quiz__privacy">点击开始后，本页只会向萌娘百科 API 请求一次，取得一批随机条目的纯文字导言与分类，再在浏览器本地筛选本题，并将线索中可识别的条目标题片段替换为 ⬛。萌娘百科可看到这次请求、你的 IP 地址和本站 Origin；本站不使用 Cookie、持久化存储或跟踪，也不请求图片。</p> <div class="moegirl-quiz__interactive" data-quiz-interactive="" hidden=""> <button class="moegirl-quiz__start" type="button" data-quiz-start=""> 开始一题 </button> <div class="moegirl-quiz__round" data-quiz-round="" hidden=""> <div class="moegirl-quiz__clue" data-quiz-clue="" tabindex="-1" hidden=""> <p class="moegirl-quiz__clue-label">这是什么？</p> <p class="moegirl-quiz__clue-text" data-quiz-clue-text=""></p> </div> <div class="moegirl-quiz__options" data-quiz-options="" role="group" aria-label="候选条目" hidden=""></div> </div> <p class="moegirl-quiz__status" data-quiz-status="" aria-live="polite" aria-atomic="true"></p> <p class="moegirl-quiz__source" data-quiz-source="" hidden=""> <a data-quiz-source-link="" href="" target="_blank" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer"></a> <span>线索是上方来源条目的匿名化节选；条目文本按来源页标示的许可协议提供，再次使用时请保留来源与署名。</span> <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer">查看 CC BY-NC-SA 3.0 协议</a> </p> </div> <noscript> <p class="moegirl-quiz__noscript">此小玩意需要 JavaScript；未启用时不会连接萌娘百科。</p> </noscript> <script type="application/json" data-quiz-copy="">{"eyebrow":"萌娘百科猜猜","title":"根据线索，猜猜这是什么？","description":"看完线索，你能从四个条目中猜出答案吗？","privacy":"点击开始后，本页只会向萌娘百科 API 请求一次，取得一批随机条目的纯文字导言与分类，再在浏览器本地筛选本题，并将线索中可识别的条目标题片段替换为 ⬛。萌娘百科可看到这次请求、你的 IP 地址和本站 Origin；本站不使用 Cookie、持久化存储或跟踪，也不请求图片。","start":"开始一题","again":"再来一题","retry":"重试","loading":"正在向萌娘百科随机发现本题候选……","options_label":"候选条目","clue_label":"这是什么？","redaction":"⬛","correct":"答对了！这是 {title}。","incorrect":"没猜中；答案是 {title}。","network_error":"暂时没能取得文字线索，请稍后重试。","no_clue_error":"本次随机结果里没有足够的合适条目线索，请再试一次。","random_error":"浏览器无法提供可靠随机数，暂时不能出题。","source_label":"查看萌娘百科来源条目：{title}","license":"线索是上方来源条目的匿名化节选；条目文本按来源页标示的许可协议提供，再次使用时请保留来源与署名。","license_label":"查看 CC BY-NC-SA 3.0 协议","no_js":"此小玩意需要 JavaScript；未启用时不会连接萌娘百科。"}</script> </div> </div> </details> <details id="art-glimpse" class="toy-entry" data-toy-disclosure="" data-toy-assets="art"> <summary class="toy-entry__summary"> <h3 id="art-glimpse-title"> <span class="toy-entry__title">名画猜猜（克利夫兰艺术博物馆）</span> <small class="toy-entry__description">可选择猜题方向，以及题名、作者、年代等线索。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="art-glimpse-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message="">正在向萌娘百科随机发现本题候选……</span> <button type="button" data-toy-loader-retry="" hidden="">重试</button> </div> <section class="toy-challenge art-glimpse" data-art-glimpse="" aria-labelledby="art-glimpse-title"> <p class="toy-challenge__instructions">在馆藏名片与完整画面之间双向猜题；题型和名片显示的题名、作者、年代都可自行选择。</p> <div data-art-glimpse-enhanced="" hidden=""> <p id="art-glimpse-title-privacy" class="toy-challenge__note art-glimpse__privacy"> 点击开始后，本页会向克利夫兰艺术博物馆开放接口发送一次小批量 GET，从带图且题名、作者、年代完整的 CC0 风景绘画中以随机浅偏移取得本题候选；“馆藏名片 → 画面”会从官方图片 CDN 加载四幅约 900px 的 JPEG，“画面 → 馆藏名片”只加载题目所需的一幅。不会续页、补请求或预取下一题。开放馆藏仍可能出现宗教、神话或非色情人体形象，文字筛选不能完全排除。博物馆及其服务商可看到请求和你的 IP，API 还可看到本站 Origin；图片不发送本页来源地址。响应只留在当前页面内存，本站不使用 Cookie 或持久化存储。 </p> <div class="toy-challenge__interactive art-glimpse__interactive" data-art-glimpse-interactive="" hidden=""> <details class="toy-settings knowledge-quiz-settings" data-art-glimpse-settings=""> <summary> <span class="toy-settings__title">玩法设置</span> <span class="toy-settings__summary" data-art-glimpse-settings-summary=""></span> <span class="toy-settings__adjust">调整</span> </summary> <div class="toy-settings__panel"> <fieldset class="toy-fieldset"> <legend>启用哪些题型</legend> <div class="toy-checks"> <label class="toy-check"> <input type="checkbox" value="metadata_to_image" data-art-glimpse-kind=""> 看名片找画 </label> <label class="toy-check"> <input type="checkbox" value="image_to_metadata" data-art-glimpse-kind=""> 看画找名片 </label> </div> <p class="toy-field-help">每题会从已启用的题型中随机选择；设置只在当前页面有效。</p> </fieldset> <fieldset class="toy-fieldset"> <legend>显示哪些馆藏信息</legend> <div class="toy-checks"> <label class="toy-check"> <input type="checkbox" value="title" data-art-glimpse-clue-field-option=""> 题名 </label> <label class="toy-check"> <input type="checkbox" value="creator" data-art-glimpse-clue-field-option=""> 作者 </label> <label class="toy-check"> <input type="checkbox" value="date" data-art-glimpse-clue-field-option=""> 年代 </label> </div> <p class="toy-field-help">同一组信息会用于“看名片找画”的题面和“看画找名片”的候选；至少保留一项。</p> </fieldset> <div class="toy-settings__actions"> <button type="button" data-art-glimpse-settings-reset="">恢复默认</button> <button type="button" class="toy-settings__apply" data-art-glimpse-settings-apply="">应用设置</button> </div> <p class="toy-settings__status" data-art-glimpse-settings-status="" aria-live="polite" aria-atomic="true"></p> </div> </details> <button class="art-glimpse__start" type="button" data-art-glimpse-start=""> 开始一题 </button> <div class="art-glimpse__round" data-art-glimpse-round="" hidden=""> <section class="art-glimpse__clue" data-art-glimpse-clue="" tabindex="-1" aria-label="在馆藏名片与完整画面之间双向猜题；题型和名片显示的题名、作者、年代都可自行选择。"> <p class="art-glimpse__prompt" data-art-glimpse-prompt=""></p> <dl class="art-glimpse__clue-card" data-art-glimpse-clue-card=""> <div data-art-glimpse-clue-field="title"> <dt>题名（馆方原文）</dt> <dd data-art-glimpse-clue-title=""></dd> </div> <div data-art-glimpse-clue-field="creator"> <dt>作者</dt> <dd data-art-glimpse-clue-maker=""></dd> </div> <div data-art-glimpse-clue-field="date"> <dt>年代</dt> <dd data-art-glimpse-clue-date=""></dd> </div> </dl> <div class="art-glimpse__clue-image" data-art-glimpse-clue-image="" hidden=""></div> </section> <div class="art-glimpse__choices" data-art-glimpse-choices="" role="group" aria-label="在馆藏名片与完整画面之间双向猜题；题型和名片显示的题名、作者、年代都可自行选择。"></div> </div> <p class="toy-challenge__status art-glimpse__status" data-art-glimpse-status="" aria-live="polite" aria-atomic="true"></p> <section class="art-glimpse__reveal" data-art-glimpse-reveal="" hidden="" aria-labelledby="art-glimpse-title-reveal"> <h4 id="art-glimpse-title-reveal">本题作品</h4> <p class="art-glimpse__title" data-art-glimpse-title=""></p> <p class="art-glimpse__maker" data-art-glimpse-maker=""></p> <p class="art-glimpse__date" data-art-glimpse-date=""></p> <p><a data-art-glimpse-source="" target="_blank" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer"></a></p> <p class="art-glimpse__attribution">作品元数据与图片由克利夫兰艺术博物馆开放获取计划提供；题面只显示你在玩法设置中启用的馆藏信息或完整画面，揭晓恢复完整资料，图片与作答均不保存。</p> <p class="art-glimpse__links"> <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer">查看 CC0 1.0 公共领域贡献声明</a> <a href="https://www.clevelandart.org/open-access" target="_blank" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer">查看博物馆开放获取说明</a> </p> </section> </div> </div> <noscript><p class="toy-challenge__noscript">此小玩意需要 JavaScript；未启用时不会连接博物馆接口或图片服务。</p></noscript> <script type="application/json" data-art-glimpse-config="">
+    {
+      "endpoint": "https://openaccess-api.clevelandart.org/api/artworks/",
+      "api_host": "openaccess-api.clevelandart.org",
+      "image_host": "openaccess-cdn.clevelandart.org",
+      "artwork_hosts": ["clevelandart.org","www.clevelandart.org"],
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "open_access_url": "https://www.clevelandart.org/open-access",
+      "query": "landscape",
+      "artwork_type": "Painting",
+      "batch_size": 12,
+      "candidate_count": 4,
+      "safe_skip_max": 300,
+      "timeout_ms": 12000,
+      "image_timeout_ms": 10000,
+      "max_response_chars": 262144,
+      "max_image_bytes": 1200000,
+      "max_round_image_bytes": 4000000,
+      "page_lang": "zh",
+      "copy": {"instructions":"在馆藏名片与完整画面之间双向猜题；题型和名片显示的题名、作者、年代都可自行选择。","privacy":"点击开始后，本页会向克利夫兰艺术博物馆开放接口发送一次小批量 GET，从带图且题名、作者、年代完整的 CC0 风景绘画中以随机浅偏移取得本题候选；“馆藏名片 → 画面”会从官方图片 CDN 加载四幅约 900px 的 JPEG，“画面 → 馆藏名片”只加载题目所需的一幅。不会续页、补请求或预取下一题。开放馆藏仍可能出现宗教、神话或非色情人体形象，文字筛选不能完全排除。博物馆及其服务商可看到请求和你的 IP，API 还可看到本站 Origin；图片不发送本页来源地址。响应只留在当前页面内存，本站不使用 Cookie 或持久化存储。","start":"开始一题","again":"再来一题","retry":"重试","loading_metadata":"正在从博物馆开放馆藏中发现本题……","loading_images":{"metadata_to_image":"正在加载本题的四幅馆藏图……","image_to_metadata":"正在加载本题馆藏图……"},"prompts":{"metadata_to_image":"这张馆藏名片对应哪幅画？","image_to_metadata":"这幅画对应哪张馆藏名片？"},"settings_title":"玩法设置","settings_adjust":"调整","settings_all":"两种题型","settings_summary":"{types} · {clues}","settings_legend":"启用哪些题型","settings_help":"每题会从已启用的题型中随机选择；设置只在当前页面有效。","clue_settings_legend":"显示哪些馆藏信息","clue_settings_help":"同一组信息会用于“看名片找画”的题面和“看画找名片”的候选；至少保留一项。","clue_setting_labels":{"title":"题名","creator":"作者","date":"年代"},"clue_settings_separator":"、","settings_apply":"应用设置","settings_reset":"恢复默认","settings_applied":"玩法设置已应用；下一题按新设置生成。","settings_defaults_ready":"已恢复默认：两种题型，显示题名和作者；应用后生效。","settings_required":"请至少启用一种题型。","clue_settings_required":"请至少显示题名、作者或年代中的一项。","type_labels":{"metadata_to_image":"看名片找画","image_to_metadata":"看画找名片"},"clue_title_label":"题名（馆方原文）","clue_artist_label":"作者","clue_date_label":"年代","options_labels":{"metadata_to_image":"四幅候选馆藏图","image_to_metadata":"四张候选馆藏名片"},"choice_label":"选择候选作品 {number}","choice_image_alt":"候选作品 {number}","clue_image_alt":"本题馆藏图","metadata_choice_label":"选择候选名片 {number}：{details}","metadata_detail_label":"{label}：{value}","feedback":{"metadata_to_image":{"correct":"答对了！你找到了《{title}》。","incorrect":"没猜中；《{title}》的正确画面已标出。"},"image_to_metadata":{"correct":"答对了！这幅画是《{title}》。","incorrect":"没猜中；这幅画是《{title}》。"}},"correct_badge":"答案","selected_badge":"你的选择","no_question":"本次小批结果不足以按当前题型和馆藏信息组成四个不重复的合格候选；可由你主动重试。","network_error":"暂时没能取得馆藏资料，请稍后重试。","image_errors":{"metadata_to_image":"本题的四幅馆藏图没有全部载入；可由你主动重试。","image_to_metadata":"本题的馆藏图没有载入；可由你主动重试。"},"random_error":"当前浏览器无法提供可靠随机数，暂时不能出题。","reveal_label":"本题作品","unknown_artist":"作者不详","unknown_date":"年代不详","source_label":"在克利夫兰艺术博物馆查看《{title}》","attribution":"作品元数据与图片由克利夫兰艺术博物馆开放获取计划提供；题面只显示你在玩法设置中启用的馆藏信息或完整画面，揭晓恢复完整资料，图片与作答均不保存。","license_label":"查看 CC0 1.0 公共领域贡献声明","open_access_label":"查看博物馆开放获取说明","no_js":"此小玩意需要 JavaScript；未启用时不会连接博物馆接口或图片服务。"}
+    }
+  </script> </section> </div> </details> <details id="anilist-role-quiz" class="toy-entry" data-toy-disclosure="" data-toy-assets="acg-logic acg-ui"> <summary class="toy-entry__summary"> <h3 id="anilist-role-quiz-title"> <span class="toy-entry__title">动画主角猜猜（AniList）</span> <small class="toy-entry__description">可选择动画找主角、主角找动画或同作主角配对。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="anilist-role-quiz-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message=""></span> <button type="button" data-toy-loader-retry="" hidden="">重试</button> </div> <div class="acg-relation-quiz" data-acg-relation-quiz="" aria-labelledby="anilist-role-quiz-title"> <div data-acg-enhanced="" hidden=""> <p class="acg-relation-quiz__source-label">可选择动画找主角、主角找动画或同作主角配对（均依据 AniList MAIN 标注）</p> <p id="anilist-role-quiz-title-privacy" class="acg-relation-quiz__privacy" data-acg-privacy=""> 点击开始后，浏览器通常会先向 AniList 做一次跨域权限检查，再发送一次官方 GraphQL POST 查询，从按流行度排列的前 360 部动画中随机选择一页，取得六部作品及每部最多十个角色关系；不会自动翻页或重试。AniList 可看到这些请求、你的 IP 地址和本站 Origin；请求不携带凭据。响应只留在当前页面内存，不保存题目或作答，也不请求封面。AniList 网站界面主要使用英文，API 没有独立中文题名或中文角色名字段；中文页会保留作品原文与罗马字，并在角色存在原文名时显示“原文名（拉丁字母名）”。AniList 的 MAIN 通常对应主角或核心主角团，可能不止一人；三种题型都直接采用该站关系标注，不按戏份另行判断。 </p> <div data-acg-interactive="" hidden=""> <details class="toy-settings knowledge-quiz-settings" data-acg-settings=""> <summary> <span class="toy-settings__title">题型</span> <span class="toy-settings__summary" data-acg-settings-summary=""></span> <span class="toy-settings__adjust">调整</span> </summary> <div class="toy-settings__panel"> <fieldset class="toy-fieldset"> <legend>启用哪些题型</legend> <div class="toy-checks"> <label class="toy-check"> <input type="checkbox" value="anime_to_character" data-acg-kind=""> 动画 → 主角 </label> <label class="toy-check"> <input type="checkbox" value="character_to_anime" data-acg-kind=""> 主角 → 动画 </label> <label class="toy-check"> <input type="checkbox" value="character_to_character" data-acg-kind=""> 主角 → 同作主角 </label> </div> <p class="toy-field-help">每题只会从已启用且本批数据能够组成无歧义四选一的题型中随机选择。</p> </fieldset> <div class="toy-settings__actions"> <button type="button" data-acg-settings-reset="">恢复全部</button> <button type="button" class="toy-settings__apply" data-acg-settings-apply="">应用设置</button> </div> <p class="toy-settings__status" data-acg-settings-status="" aria-live="polite" aria-atomic="true"></p> </div> </details> <button class="acg-relation-quiz__start" type="button" data-acg-start="">开始一题</button> <div class="acg-relation-quiz__round" data-acg-round="" hidden=""> <p class="acg-relation-quiz__prompt" data-acg-prompt="" tabindex="-1"></p> <div class="acg-relation-quiz__options" data-acg-options="" role="group" aria-label="候选答案"></div> </div> <p class="acg-relation-quiz__status" data-acg-status="" aria-live="polite" aria-atomic="true"></p> <div class="acg-relation-quiz__source" data-acg-source="" hidden=""> <a data-acg-source-link="" target="_blank" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer"></a> <p data-acg-attribution="">作品名、角色名和 MAIN／SUPPORTING 关系来自 AniList；本站排除了其成人标记、Ecchi／Hentai 类型、若干敏感标签及命中本地敏感词的作品名或角色名，只显示文字。该过滤不能代表适合所有平台的完整内容分级。</p> <a data-acg-terms-link="" href="https://docs.anilist.co/guide/terms-of-use" target="_blank" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer">查看 AniList API 使用条款</a> </div> </div> </div> <noscript><p class="acg-relation-quiz__noscript">此小玩意需要 JavaScript；未启用时不会连接 AniList。</p></noscript> <script type="application/json" data-acg-config="">
+    {
+      "page_lang": "zh",
+      "timeout_ms": 10000,
+      "max_response_chars": 262144,
+      "recent_history_size": 16,
+      "source": {"id":"anilist_role","adapter":"anilist_role","endpoint":"https://graphql.anilist.co","method":"POST","page_min":1,"page_max":60,"media_per_page":6,"characters_per_media":10,"source_home":"https://anilist.co/","terms_url":"https://docs.anilist.co/guide/terms-of-use"},
+      "copy": {"source_label":"可选择动画找主角、主角找动画或同作主角配对（均依据 AniList MAIN 标注）","start":"开始一题","again":"再来一题","retry":"重试","options_label":"候选答案","settings_title":"题型","settings_adjust":"调整","settings_all":"全部三种","settings_selected":"已启用 {count} 种","settings_legend":"启用哪些题型","settings_help":"每题只会从已启用且本批数据能够组成无歧义四选一的题型中随机选择。","settings_apply":"应用设置","settings_reset":"恢复全部","settings_applied":"题型设置已应用；下一题按新设置生成。","settings_defaults_ready":"已勾选全部三种题型；应用后生效。","settings_required":"请至少启用一种题型。","type_labels":{"anime_to_character":"动画 → 主角","character_to_anime":"主角 → 动画","character_to_character":"主角 → 同作主角"},"network_error":"暂时没能取得本题数据，请稍后主动重试。","no_round_error":"本次响应没有形成一组无歧义的四选一题目；你可以主动重试。","random_error":"浏览器无法提供可靠随机数，暂时不能出题。","source_prefix":"数据来源：","no_js":"此小玩意需要 JavaScript；未启用时不会连接 AniList。"},
+      "source_copy": {"privacy":"点击开始后，浏览器通常会先向 AniList 做一次跨域权限检查，再发送一次官方 GraphQL POST 查询，从按流行度排列的前 360 部动画中随机选择一页，取得六部作品及每部最多十个角色关系；不会自动翻页或重试。AniList 可看到这些请求、你的 IP 地址和本站 Origin；请求不携带凭据。响应只留在当前页面内存，不保存题目或作答，也不请求封面。AniList 网站界面主要使用英文，API 没有独立中文题名或中文角色名字段；中文页会保留作品原文与罗马字，并在角色存在原文名时显示“原文名（拉丁字母名）”。AniList 的 MAIN 通常对应主角或核心主角团，可能不止一人；三种题型都直接采用该站关系标注，不按戏份另行判断。","loading":"正在从 AniList 取得一小批角色关系……","prompts":{"anime_to_character":"《{title}》的主角之一是谁？","character_to_anime":"“{character}”是哪部动画的主角之一？","character_to_character":"以下哪位与“{character}”是同一部动画的主角？"},"feedback":{"anime_to_character":{"correct":"答对了！“{answer}”是《{title}》的主要角色。","incorrect":"没猜中；“{answer}”是《{title}》的主要角色。"},"character_to_anime":{"correct":"答对了！“{character}”是《{answer}》的主要角色。","incorrect":"没猜中；“{character}”是《{answer}》的主要角色。"},"character_to_character":{"correct":"答对了！“{character}”和“{answer}”都是《{title}》的主要角色。","incorrect":"没猜中；“{character}”和“{answer}”都是《{title}》的主要角色。"}},"source_link_label":"在 AniList 查看《{title}》","attribution":"作品名、角色名和 MAIN／SUPPORTING 关系来自 AniList；本站排除了其成人标记、Ecchi／Hentai 类型、若干敏感标签及命中本地敏感词的作品名或角色名，只显示文字。该过滤不能代表适合所有平台的完整内容分级。","terms_label":"查看 AniList API 使用条款"}
+    }
+  </script> </div> </div> </details> </div> </section> <section class="toy-group" data-toy-group="quick-challenges" aria-labelledby="toy-group-quick-challenges-title"> <h2 id="toy-group-quick-challenges-title" class="toy-group__title">轻松挑战</h2> <div class="toy-group__items"> <details id="color-challenge" class="toy-entry" data-toy-disclosure="" data-toy-assets="random color"> <summary class="toy-entry__summary"> <h3 id="color-challenge-title"> <span class="toy-entry__title">色差挑战</span> <small class="toy-entry__description">找出颜色略有不同的方块，看看你能走到第几关。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="color-challenge-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message=""></span> <button type="button" data-toy-loader-retry="" hidden="">重试</button> </div> <section class="toy-challenge toy-color-challenge" data-toy-color-challenge="" aria-label="找出不一样的颜色"> <p class="toy-challenge__instructions">在 16 个色块中找出不同的一格。默认均衡穿插明暗、鲜淡与色相变化；每三题结算一次，答对至少两题升一级，否则降一级。每题答对 +1、答错 -1，因此积分可以为负。</p> <p class="toy-challenge__note">颜色保持在适中的亮度范围，色差会在转换为最终 8-bit RGB 后重新核验。这项本地游戏不发送或保存结果，也不是色觉检查或医学评估。</p> <div class="toy-challenge__interactive" data-challenge-interactive="" hidden=""> <details class="toy-settings toy-color-settings" data-color-settings=""> <summary> <span class="toy-settings__title toy-color-settings__title">玩法设置</span> <span class="toy-settings__summary toy-color-settings__summary" data-color-settings-summary=""></span> <span class="toy-settings__adjust toy-color-settings__adjust">调整</span> </summary> <div class="toy-settings__panel toy-color-settings__panel"> <fieldset class="toy-fieldset toy-presets"> <legend>快捷预设</legend> <button type="button" data-color-preset="all">综合随机</button> <button type="button" data-color-preset="lightness">仅明暗</button> <button type="button" data-color-preset="chroma">仅鲜淡</button> <button type="button" data-color-preset="hue">仅色相</button> </fieldset> <fieldset class="toy-fieldset"> <legend>启用的变化</legend> <div class="toy-checks"> <label class="toy-check"><input type="checkbox" value="lightness" data-color-variation=""> 明暗</label> <label class="toy-check"><input type="checkbox" value="chroma" data-color-variation=""> 鲜淡</label> <label class="toy-check"><input type="checkbox" value="hue" data-color-variation=""> 色相</label> </div> <p class="toy-field-help">启用多项时，每题只使用一种变化；系统会均衡轮换，不会在同一格里混合多个方向。</p> </fieldset> <fieldset class="toy-fieldset"> <legend>主色范围</legend> <div class="toy-checks"> <label class="toy-check"><input type="radio" name="color-hue-scope" value="all" data-color-hue-scope=""> 全部色相</label> <label class="toy-check"><input type="radio" name="color-hue-scope" value="custom" data-color-hue-scope=""> 选择范围</label> </div> <div class="toy-color-settings__hues" data-color-custom-hues="" hidden=""> <label style="--toy-hue: 30deg"><input type="checkbox" value="0" data-color-hue-sector=""><span aria-hidden="true"></span>红</label> <label style="--toy-hue: 90deg"><input type="checkbox" value="1" data-color-hue-sector=""><span aria-hidden="true"></span>黄</label> <label style="--toy-hue: 150deg"><input type="checkbox" value="2" data-color-hue-sector=""><span aria-hidden="true"></span>绿</label> <label style="--toy-hue: 210deg"><input type="checkbox" value="3" data-color-hue-sector=""><span aria-hidden="true"></span>青</label> <label style="--toy-hue: 270deg"><input type="checkbox" value="4" data-color-hue-sector=""><span aria-hidden="true"></span>蓝</label> <label style="--toy-hue: 330deg"><input type="checkbox" value="5" data-color-hue-sector=""><span aria-hidden="true"></span>品红</label> </div> <p class="toy-field-help">六个名称把连续的 OKLCH 色相环等分为 60° 范围，只是方向提示，不是六个固定颜色。色相题中，重复色块位于所选范围，那个不同色块可能向相邻色相偏移。</p> </fieldset> <div class="toy-color-settings__neutral"> <label class="toy-check"><input type="checkbox" data-color-neutral=""> 在明暗题中加入中性灰</label> <p class="toy-field-help">灰色没有有效色相，因此这个选项只用于明暗变化。</p> </div> <fieldset class="toy-fieldset"> <legend>难度方式</legend> <div class="toy-checks"> <label class="toy-check"><input type="radio" name="color-progression" value="auto" data-color-progression=""> 自动进阶</label> <label class="toy-check"><input type="radio" name="color-progression" value="fixed" data-color-progression=""> 固定难度</label> </div> <label class="toy-color-settings__level" data-color-fixed-wrap="" hidden=""> <span>固定等级</span> <input type="range" min="1" max="25" step="1" value="9" data-color-fixed-level=""> <output data-color-fixed-output="">9/25</output> </label> </fieldset> <p class="toy-field-help">调整只会在点击应用后生效；应用会清空本局积分与统计。</p> <div class="toy-settings__actions toy-color-settings__actions"> <button type="button" data-color-reset="">恢复默认</button> <button type="button" class="toy-settings__apply" data-color-apply="">应用并开始新一局</button> </div> <p class="toy-settings__status toy-color-settings__status" data-color-settings-status="" aria-live="polite" aria-atomic="true"></p> </div> </details> <dl class="toy-color-challenge__stats toy-color-challenge__stats--primary"> <div> <dt>积分</dt> <dd data-color-score="">0</dd> </div> <div> <dt>难度</dt> <dd data-color-level=""></dd> </div> <div> <dt>本组三题</dt> <dd data-color-block=""></dd> </div> <div> <dt>当前色差</dt> <dd data-color-difference=""></dd> </div> </dl> <details class="toy-color-challenge__more"> <summary>更多统计</summary> <dl class="toy-color-challenge__stats toy-color-challenge__stats--secondary"> <div> <dt>已答题数</dt> <dd data-color-answered="">0</dd> </div> <div> <dt>答题统计</dt> <dd data-color-record=""></dd> </div> <div> <dt>连续答对</dt> <dd data-color-streak=""></dd> </div> <div> <dt>到达过的最高难度</dt> <dd data-color-highest=""></dd> </div> <div> <dt>顶级组通过数</dt> <dd data-color-extreme="">0</dd> </div> <div> <dt>基础端重复数</dt> <dd data-color-foundation="">0</dd> </div> </dl> </details> <div class="toy-color-challenge__grid" data-color-grid="" role="group" aria-label="十六个色块"></div> <div class="toy-challenge__actions"> <button type="button" data-color-next="">下一题</button> </div> <p class="toy-challenge__status" data-challenge-status="" aria-live="polite" aria-atomic="true"></p> </div> <p class="toy-challenge__unavailable" data-challenge-unavailable="" hidden="">当前浏览器无法提供安全的本地随机源，因此这项挑战已停用。</p> <noscript><p class="toy-challenge__noscript">这项本地挑战需要 JavaScript；结果不会被发送或保存。</p></noscript> <script type="application/json" data-challenge-copy="">
+    {
+      "applied": "设置已应用，新一局已经开始。",
+      "blockSettledValue": "已结算 · 净分 {score}",
+      "blockValue": "{answered}/3 · 净分 {score}",
+      "cleared": "已完成全部标准等级，继续量化边缘练习；顶级组三题已通过 {count} 组。",
+      "correct": "答对，积分 {score}；不同色块是第 {answer} 格。",
+      "correctCellLabel": "第 {number} 格，不同的颜色",
+      "incorrectCellLabel": "第 {number} 格，你选择了这里，但它不是不同色块",
+      "cellLabel": "第 {number} 格",
+      "defaultsReady": "默认设置已填入；应用后会开始新一局。",
+      "extremeContinues": "继续量化边缘练习；顶级组三题已通过 {count} 组。",
+      "fixedContinues": "本组三题净分 {score}；固定练习继续保持在 {level}/25。",
+      "foundationContinues": "当前已经是最容易的等级，将继续基础练习。",
+      "highestValue": "{level}/{count}",
+      "hueRequired": "请至少选择一段色相。",
+      "incorrect": "没有猜中，积分 {score}；不同色块是第 {answer} 格。",
+      "levelDown": "本组三题净分为负，难度降至 {level}/{count}。",
+      "levelUp": "本组三题净分为正，难度升至 {level}/{count}。",
+      "levelValue": "{level}/{count} · {zone}",
+      "notAvailable": "—",
+      "perceptualDifference": "{variation} · ΔEOK {delta}（最终 RGB）",
+      "presetReady": "预设已填入；应用后会开始新一局。",
+      "recordValue": "答对 {correct} · 答错 {wrong} · 正确率 {accuracy}",
+      "streakValue": "当前 {current} · 最佳 {best}",
+      "summaryAllHues": "全部色相",
+      "summaryAuto": "自动进阶",
+      "summaryComposite": "综合变化",
+      "summaryFixed": "固定 {level}/25",
+      "summaryHueCount": "{count} 段色相",
+      "summaryMixed": "{count} 种变化",
+      "summaryNeutralSuffix": " + 中性灰",
+      "unavailable": "当前浏览器无法提供安全的本地随机源，因此这项挑战已停用。",
+      "variationRequired": "请至少启用一种变化。",
+      "variations": {"lightness":"明暗","chroma":"鲜淡","hue":"色相"},
+      "zones": ["基础练习","感知阶梯","量化边缘"]
+    }
+  </script> </section> </div> </details> <details id="ten-second" class="toy-entry" data-toy-disclosure="" data-toy-assets="random history challenges"> <summary class="toy-entry__summary"> <h3 id="ten-second-title"> <span class="toy-entry__title">盲估十秒</span> <small class="toy-entry__description">不看计时器，凭感觉停在十秒附近。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="ten-second-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message=""></span> <button type="button" data-toy-loader-retry="" hidden="">重试</button> </div> <section class="toy-challenge toy-ten-second" data-toy-ten-second="" aria-label="盲估十秒"> <p class="toy-challenge__instructions">点击开始后在心里默数十秒，再点击停止；过程中不会显示实时计时。</p> <p class="toy-challenge__note">当前浏览器最多保存 100 次完成记录；这些记录不会上传、跨设备同步或参与排名，并可在历史区随时清空。</p> <div class="toy-challenge__interactive" data-challenge-interactive="" hidden=""> <div class="toy-challenge__actions"> <button type="button" data-ten-primary="">开始</button> <button type="button" data-ten-restart="" hidden="">立即重来</button> </div> <p class="toy-challenge__status" data-challenge-status="" aria-live="polite" aria-atomic="true"></p> </div> <section class="toy-history" data-challenge-history="" aria-label="盲估十秒本机历史" hidden=""> <p class="toy-challenge__note" data-history-persistence="" hidden=""></p> <p class="toy-history__empty" data-history-empty="">完成一次后，这里会显示本机统计和趋势图。</p> <div data-history-stats="" hidden=""> <dl class="toy-history__stats"> <div> <dt>有效 / 保留</dt> <dd data-history-value="retained">—</dd> </div> <div> <dt>清空后累计完成</dt> <dd data-history-value="completed">0</dd> </div> <div> <dt>最佳误差</dt> <dd data-history-value="best">—</dd> </div> <div> <dt>典型误差</dt> <dd data-history-value="typical">—</dd> </div> <div> <dt>整体倾向</dt> <dd data-history-value="tendency">—</dd> </div> <div> <dt>最近五个有效成绩中位数</dt> <dd data-history-value="recent">—</dd> </div> </dl> <p class="toy-challenge__note">圆点表示每次完成结果；达到五个有效成绩后显示最近五次中位数趋势线。</p> </div> <div class="toy-history__chart" data-history-chart="" hidden=""></div> <details class="toy-history__records" data-history-records="" hidden=""> <summary>查看完整本机记录</summary> <div class="toy-history__table-wrap"> <table> <caption class="sr-only">盲估十秒本机历史</caption> <thead> <tr> <th scope="col">次序</th> <th scope="col">结果</th> <th scope="col">统计状态</th> </tr> </thead> <tbody data-history-table-body=""></tbody> </table> </div> </details> <div class="toy-history__actions"> <button type="button" data-history-clear="" hidden="">清空本机历史</button> <span data-history-confirmation="" hidden=""> <span>确定清空本机保存的全部盲估结果吗？</span> <button type="button" data-history-confirm-clear="">确认清空</button> <button type="button" data-history-cancel-clear="">取消</button> </span> </div> <p data-history-clear-status="" aria-live="polite" aria-atomic="true"></p> </section> <p class="toy-challenge__unavailable" data-challenge-unavailable="" hidden="">当前浏览器无法启动本地计时，因此这项挑战已停用。</p> <noscript><p class="toy-challenge__noscript">这项挑战需要 JavaScript 在本地计时；结果不会被发送或保存。</p></noscript> <script type="application/json" data-challenge-copy="">
+    {
+      "start": "开始",
+      "stop": "停止",
+      "again": "再试一次",
+      "restart": "立即重来",
+      "running": "计时已经开始；当你认为十秒到了，就点击停止。",
+      "result": "你估计了 {elapsed} 秒，{direction}{difference} 秒。",
+      "early": "提前了",
+      "late": "超出了",
+      "exact": "你估计了 {elapsed} 秒，误差不到 0.01 秒。",
+      "cancelled": "页面或挑战被隐藏，本次计时已经取消。",
+      "unavailable": "当前浏览器无法启动本地计时，因此这项挑战已停用。",
+      "memoryOnly": "当前浏览器不允许本地存储；统计仅在本次打开页面期间有效。",
+      "notAvailable": "—",
+      "secondsValue": "{value} 秒",
+      "signedSecondsValue": "{direction}{value} 秒",
+      "exactValue": "误差不到 0.01 秒",
+      "validRetainedValue": "{valid} / {retained}",
+      "chartTitle": "盲估十秒误差趋势",
+      "chartDescription": "当前保留 {count} 次记录。最新误差：{latest}；最近五个有效成绩的中位数：{trend}。",
+      "older": "较早",
+      "newer": "最近",
+      "tenSampleValue": "{elapsed} 秒；{error}",
+      "included": "计入汇总",
+      "excluded": "未计入汇总",
+      "cleared": "盲估十秒的本机历史已清空。",
+      "clearFailed": "当前页面的历史已清空，但浏览器未允许删除原先保存的副本。"
+    }
+  </script> </section> </div> </details> <details id="reaction-time" class="toy-entry" data-toy-disclosure="" data-toy-assets="random history challenges"> <summary class="toy-entry__summary"> <h3 id="reaction-time-title"> <span class="toy-entry__title">反应时间</span> <small class="toy-entry__description">等待信号出现后尽快作出反应。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="reaction-time-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message=""></span> <button type="button" data-toy-loader-retry="" hidden="">重试</button> </div> <section class="toy-challenge toy-reaction-time" data-toy-reaction-time="" data-state="idle" aria-label="反应时间"> <p class="toy-challenge__instructions">点击开始，等待提示出现后，再尽快点击同一个按钮。</p> <p class="toy-challenge__note">当前浏览器最多保存 100 次完成记录及抢跑次数；这些记录不会上传、跨设备同步、参与排名或用于能力评估，并可在历史区随时清空。</p> <div class="toy-challenge__interactive" data-challenge-interactive="" hidden=""> <div class="toy-challenge__actions"> <button type="button" data-reaction-primary="">开始</button> </div> <p class="toy-challenge__status" data-challenge-status="" aria-live="polite" aria-atomic="true"></p> </div> <section class="toy-history" data-challenge-history="" aria-label="反应时间本机历史" hidden=""> <p class="toy-challenge__note" data-history-persistence="" hidden=""></p> <p class="toy-history__empty" data-history-empty="">完成一次后，这里会显示本机统计和趋势图。</p> <div data-history-stats="" hidden=""> <dl class="toy-history__stats"> <div> <dt>有效 / 保留</dt> <dd data-history-value="retained">—</dd> </div> <div> <dt>清空后累计完成</dt> <dd data-history-value="completed">0</dd> </div> <div> <dt>最佳成绩</dt> <dd data-history-value="best">—</dd> </div> <div> <dt>中位数</dt> <dd data-history-value="typical">—</dd> </div> <div> <dt>最近五个有效成绩中位数</dt> <dd data-history-value="recent">—</dd> </div> <div> <dt>抢跑</dt> <dd data-history-value="falseStarts">0</dd> </div> </dl> <p class="toy-challenge__note">圆点表示每次完成结果；达到五个有效成绩后显示最近五次中位数趋势线。请只比较同一设备、同一输入方式下的结果。</p> </div> <div class="toy-history__chart" data-history-chart="" hidden=""></div> <details class="toy-history__records" data-history-records="" hidden=""> <summary>查看完整本机记录</summary> <div class="toy-history__table-wrap"> <table> <caption class="sr-only">反应时间本机历史</caption> <thead> <tr> <th scope="col">次序</th> <th scope="col">结果</th> <th scope="col">统计状态</th> </tr> </thead> <tbody data-history-table-body=""></tbody> </table> </div> </details> <div class="toy-history__actions"> <button type="button" data-history-clear="" hidden="">清空本机历史</button> <span data-history-confirmation="" hidden=""> <span>确定清空本机保存的全部反应时间结果和抢跑记录吗？</span> <button type="button" data-history-confirm-clear="">确认清空</button> <button type="button" data-history-cancel-clear="">取消</button> </span> </div> <p data-history-clear-status="" aria-live="polite" aria-atomic="true"></p> </section> <p class="toy-challenge__unavailable" data-challenge-unavailable="" hidden="">当前浏览器无法提供安全的本地随机源，因此这项挑战已停用。</p> <noscript><p class="toy-challenge__noscript">这项挑战需要 JavaScript 在本地计时；结果不会被发送或保存。</p></noscript> <script type="application/json" data-challenge-copy="">
+    {
+      "start": "开始",
+      "wait": "请等待…",
+      "now": "就是现在！",
+      "again": "再试一次",
+      "waiting": "请等到提示出现后再点击。",
+      "ready": "现在，请点击按钮。",
+      "tooSoon": "点早了；准备好后可以重新尝试。",
+      "result": "本设备上本次反应时间为 {milliseconds} 毫秒。",
+      "cancelled": "页面或挑战被隐藏，本次尝试已经取消。",
+      "unavailable": "当前浏览器无法提供安全的本地随机源，因此这项挑战已停用。",
+      "memoryOnly": "当前浏览器不允许本地存储；统计仅在本次打开页面期间有效。",
+      "notAvailable": "—",
+      "millisecondsValue": "{value} 毫秒",
+      "validRetainedValue": "{valid} / {retained}",
+      "falseStartsValue": "{count} 次（{rate}%）",
+      "chartTitle": "反应时间趋势",
+      "chartDescription": "当前保留 {count} 次记录。最新成绩：{latest}；最近五个有效成绩的中位数：{trend}。",
+      "older": "较早",
+      "newer": "最近",
+      "included": "计入汇总",
+      "excluded": "未计入汇总",
+      "cleared": "反应时间的本机历史已清空。",
+      "clearFailed": "当前页面的历史已清空，但浏览器未允许删除原先保存的副本。"
+    }
+  </script> </section> </div> </details> </div> </section> <section class="toy-group" data-toy-group="logic-puzzles" aria-labelledby="toy-group-logic-puzzles-title"> <h2 id="toy-group-logic-puzzles-title" class="toy-group__title">逻辑谜题</h2> <div class="toy-group__items"> <details id="codebreaker" class="toy-entry" data-toy-disclosure="" data-toy-assets="random codebreaker"> <summary class="toy-entry__summary"> <h3 id="codebreaker-title"> <span class="toy-entry__title">数字 Wordle</span> <small class="toy-entry__description">根据“完全命中”和“仅数字命中”，逐步排除隐藏答案。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="codebreaker-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message=""></span> <button type="button" data-toy-loader-retry="" hidden="">重试</button> </div> <section class="toy-challenge toy-codebreaker" data-toy-codebreaker="" aria-label="数字 Wordle"> <p class="toy-challenge__instructions">猜出隐藏的数字码。每个匹配数字只会计入一类：“完全命中”表示数字和位置都对；“仅数字命中”表示数字存在但位置不同。</p> <p class="toy-challenge__note">答案、设置和本局记录只保留在当前页面内存中，不会发送或保存；结果也不是智力或逻辑能力评估。</p> <div class="toy-challenge__interactive" data-challenge-interactive="" data-code-interactive="" hidden=""> <details class="toy-settings toy-codebreaker-settings" data-code-settings=""> <summary> <span class="toy-settings__title">玩法规则</span> <span class="toy-settings__summary" data-code-settings-summary=""></span> <span class="toy-settings__adjust">调整</span> </summary> <div class="toy-settings__panel"> <fieldset class="toy-fieldset toy-presets"> <legend>快捷预设</legend> <button type="button" data-code-preset="beginner">入门</button> <button type="button" data-code-preset="standard">标准</button> <button type="button" data-code-preset="duplicates">可重复</button> </fieldset> <div class="toy-codebreaker-settings__fields"> <label> <span>数字码长度</span> <select data-code-length=""> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> <option value="6">6</option> </select> </label> <label> <span>作答机会</span> <select data-code-attempts=""> <option value="6">6</option> <option value="8">8</option> <option value="10">10</option> <option value="12">12</option> </select> </label> <label class="toy-check toy-codebreaker-settings__duplicates"> <input type="checkbox" data-code-duplicates=""> <span>允许数字重复</span> </label> </div> <p class="toy-codebreaker-settings__candidates"> <span>当前候选范围</span> <output data-code-candidates=""></output> </p> <p class="toy-field-help">调整只会在点击应用后生效；应用会清空当前这一局。</p> <div class="toy-settings__actions"> <button type="button" data-code-reset="">恢复默认</button> <button type="button" class="toy-settings__apply" data-code-apply="">应用并开始新一局</button> </div> <p class="toy-settings__status" data-code-settings-status="" aria-live="polite" aria-atomic="true"></p> </div> </details> <dl class="toy-codebreaker__stats"> <div> <dt>已用机会</dt> <dd data-code-attempts-used=""></dd> </div> <div> <dt>剩余机会</dt> <dd data-code-remaining=""></dd> </div> </dl> <form class="toy-codebreaker__form" data-code-form="" novalidate=""> <label for="codebreaker-guess">你的猜测</label> <div class="toy-codebreaker__input-row"> <input id="codebreaker-guess" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" aria-describedby="codebreaker-guess-help" data-code-input=""> <button type="submit" data-code-submit="">提交猜测</button> </div> <p id="codebreaker-guess-help" class="toy-field-help" data-code-input-help=""></p> </form> <div class="toy-codebreaker__history" data-code-history="" hidden=""> <div class="toy-codebreaker__table-wrap"> <table> <caption class="sr-only">本局猜测记录</caption> <thead> <tr> <th scope="col">次数</th> <th scope="col">猜测</th> <th scope="col" title="数字和位置都匹配"> <span aria-hidden="true">完全命中</span> <span class="sr-only">数字和位置都匹配</span> </th> <th scope="col" title="数字匹配但位置不同"> <span aria-hidden="true">仅数字命中</span> <span class="sr-only">数字匹配但位置不同</span> </th> </tr> </thead> <tbody data-code-history-body=""></tbody> </table> </div> </div> <div class="toy-challenge__actions"> <button type="button" data-code-reveal="">显示答案</button> <button type="button" data-code-new="">重置题目</button> </div> <p class="toy-challenge__status" data-code-status="" aria-live="polite" aria-atomic="true"></p> </div> <p class="toy-challenge__unavailable" data-challenge-unavailable="" data-code-unavailable="" hidden="">当前浏览器无法提供安全的本地随机源，因此这项游戏已停用。</p> <noscript><p class="toy-challenge__noscript">这项本地游戏需要 JavaScript；不会发送或保存任何内容。</p></noscript> <script type="application/json" data-code-copy="">
+    {
+      "applied": "规则已应用，新的数字码已经准备好。",
+      "attemptsValue": "{used}/{total}",
+      "candidateValue": "{count} 个可能答案",
+      "defaultsReady": "默认设置已填入；应用后会开始新一局。",
+      "duplicatesAllowed": "允许重复",
+      "duplicatesDisallowed": "不重复",
+      "feedback": "{guess}：完全命中 {exact} 位，仅数字命中 {misplaced} 位；还剩 {remaining} 次。",
+      "inputHelp": "请输入 {length} 位数字{unique}。",
+      "invalidDigits": "请输入恰好 {length} 位 0 到 9 的数字。",
+      "invalidDuplicates": "当前规则下，每个数字最多使用一次。",
+      "locale": "zh-CN",
+      "lost": "机会已经用完，数字码是 {secret}。",
+      "newGame": "新的数字码已经准备好。",
+      "presetReady": "预设已填入；应用后会开始新一局。",
+      "revealed": "答案是 {secret}；本局已结束。若要重新尝试，请重置题目。",
+      "settingsSummary": "{length} 位 · {duplicates} · {attempts} 次 · {candidates} 种组合",
+      "uniqueSuffix": "，不要重复",
+      "unavailable": "当前浏览器无法提供安全的本地随机源，因此这项游戏已停用。",
+      "won": "答对了，数字码是 {secret}；共使用 {attempts} 次。"
+    }
+  </script> </section> </div> </details> <details id="make-24" class="toy-entry" data-toy-disclosure="" data-toy-assets="random make24"> <summary class="toy-entry__summary"> <h3 id="make-24-title"> <span class="toy-entry__title">凑成 24</span> <small class="toy-entry__description">四个数各用一次，选择运算顺序，让最后的精确结果等于 24。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="make-24-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message=""></span> <button type="button" data-toy-loader-retry="" hidden="">重试</button> </div> <section class="toy-challenge toy-make-24" data-toy-make-24="" aria-label="凑成 24"> <p class="toy-challenge__instructions">四个数都要恰好使用一次。依次选择左边的数、运算符和右边的数；经过三次精确运算后，让最后一个值等于 24。</p> <p class="toy-challenge__note">题目、设置和步骤只保留在当前页面内存中，不会发送或保存；结果也不是数学能力评估。</p> <div class="toy-challenge__interactive" data-challenge-interactive="" data-make24-interactive="" hidden=""> <details class="toy-settings toy-make-24-settings" data-make24-settings=""> <summary> <span class="toy-settings__title">题目范围</span> <span class="toy-settings__summary" data-make24-settings-summary=""></span> <span class="toy-settings__adjust">调整</span> </summary> <div class="toy-settings__panel"> <label class="toy-settings__field" for="make24-pool"> <span>数字组合范围</span> <select id="make24-pool" data-make24-pool=""> <option value="integer">整数过程</option> <option value="fraction">需要分数</option> <option value="all">完整题池</option> </select> </label> <output class="toy-settings__candidate" for="make24-pool" data-make24-pool-count=""></output> <p class="toy-settings__notice">调整只会在点击应用后生效；应用会清空当前题目。</p> <div class="toy-settings__actions"> <button type="button" data-make24-settings-reset="">恢复默认</button> <button type="button" class="toy-settings__apply" data-make24-settings-apply="">应用并换题</button> </div> <p class="toy-settings__status" data-make24-settings-status="" aria-live="polite" aria-atomic="true"></p> </div> </details> <p id="make24-prompt" class="toy-make-24__prompt" data-make24-prompt="" aria-live="polite" aria-atomic="true"></p> <div class="toy-make-24__values" data-make24-values="" role="group" aria-label="当前数字" aria-describedby="make24-prompt"></div> <div class="toy-make-24__operators" data-make24-operators="" role="group" aria-label="运算符"> <button type="button" data-make24-operator="+" aria-pressed="false" aria-label="加">+</button> <button type="button" data-make24-operator="-" aria-pressed="false" aria-label="减">−</button> <button type="button" data-make24-operator="*" aria-pressed="false" aria-label="乘">×</button> <button type="button" data-make24-operator="/" aria-pressed="false" aria-label="除">÷</button> </div> <div class="toy-make-24__steps" data-make24-steps="" hidden=""> <p>已完成步骤</p> <ol data-make24-step-list=""></ol> </div> <div class="toy-make-24__steps toy-make-24__answer" data-make24-answer="" tabindex="-1" hidden=""> <p>一种解法</p> <ol data-make24-answer-list=""></ol> </div> <div class="toy-challenge__actions toy-make-24__actions"> <button type="button" data-make24-undo="">撤销</button> <button type="button" data-make24-reveal="">显示答案</button> <button type="button" data-make24-reset="">重置题目</button> <button type="button" data-make24-new="">换一道题</button> </div> <p class="toy-challenge__status" data-make24-status="" aria-live="polite" aria-atomic="true"></p> </div> <p class="toy-challenge__unavailable" data-challenge-unavailable="" data-make24-unavailable="" hidden="">当前无法生成精确题池或取得安全的本地随机数，因此这项游戏已停用。</p> <noscript><p class="toy-challenge__noscript">这项本地游戏需要 JavaScript；不会发送或保存任何内容。</p></noscript> <script type="application/json" data-make24-copy="">
+    {
+      "applied": "题目范围已应用，新题目已经准备好。",
+      "defaultsReady": "默认题目范围已填入；应用后会换题。",
+      "dividedByZero": "不能除以零，请另选右边的数。",
+      "locale": "zh-CN",
+      "merged": "{equation}；还剩 {values}。",
+      "newGame": "新题目已经准备好。",
+      "poolAll": "完整题池",
+      "poolCount": "{count} 组不同数字",
+      "poolFraction": "需要分数",
+      "poolInteger": "整数过程",
+      "promptIdle": "先选择左边的数。",
+      "promptOperator": "已选择 {value}，请选择运算符。",
+      "promptRevealed": "答案已显示在下方；重置题目后可重新尝试。",
+      "promptRight": "{value} {operator} … 请选择右边的数。",
+      "revealed": "已显示一种解法，本次尝试结束。",
+      "reset": "当前题目已重置。",
+      "selectionCleared": "未完成的选择已清除。",
+      "settingsSummary": "{pool} · {count} 组",
+      "stuck": "最后得到 {value}，不是 24；请撤销一步或重置题目。",
+      "unavailable": "当前无法生成精确题池或取得安全的本地随机数，因此这项游戏已停用。",
+      "valueName": "数值 {value}，第 {index} 项",
+      "undone": "已撤销一步；还剩 {count} 个数。",
+      "won": "三步正好得到 24。"
+    }
+  </script> </section> </div> </details> <details id="lights-out" class="toy-entry" data-toy-disclosure="" data-toy-assets="random lights"> <summary class="toy-entry__summary"> <h3 id="lights-out-title"> <span class="toy-entry__title">翻灯</span> <small class="toy-entry__description">每次翻转一格和它的四邻格，用尽量清晰的规划让所有灯熄灭。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="lights-out-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message=""></span> <button type="button" data-toy-loader-retry="" hidden="">重试</button> </div> <section class="toy-challenge toy-lights-out" data-toy-lights-out="" aria-label="翻灯"> <p class="toy-challenge__instructions">按下一格会翻转它自己和上下左右的有效邻格。让所有灯熄灭；步数没有上限。</p> <p class="toy-challenge__note">棋盘、设置和操作只保留在当前页面内存中，不会发送或保存；结果也不是能力评估。</p> <div class="toy-challenge__interactive" data-challenge-interactive="" data-lights-interactive="" hidden=""> <details class="toy-settings toy-lights-settings" data-lights-settings=""> <summary> <span class="toy-settings__title">题目范围</span> <span class="toy-settings__summary" data-lights-settings-summary=""></span> <span class="toy-settings__adjust">调整</span> </summary> <div class="toy-settings__panel"> <label class="toy-settings__field" for="lights-size"> <span>棋盘尺寸</span> <select id="lights-size" data-lights-size=""> <option value="3">3 × 3</option> <option value="4" selected>4 × 4</option> </select> </label> <label class="toy-settings__field" for="lights-band"> <span>最少步数</span> <select id="lights-band" data-lights-band=""> <option value="short">2–3 步</option> <option value="medium" selected>4–5 步</option> <option value="long" data-lights-long-option=""></option> </select> </label> <output class="toy-settings__candidate" for="lights-size lights-band" data-lights-pool-count=""></output> <p class="toy-settings__notice">调整只会在点击应用后生效；应用会清空当前题目。</p> <div class="toy-settings__actions"> <button type="button" data-lights-settings-reset="">恢复默认</button> <button type="button" class="toy-settings__apply" data-lights-settings-apply="">应用并换题</button> </div> <p class="toy-settings__status" data-lights-settings-status="" aria-live="polite" aria-atomic="true"></p> </div> </details> <dl class="toy-lights-out__stats"> <div> <dt>当前亮灯</dt> <dd data-lights-lit="">0</dd> </div> <div> <dt>已走步数</dt> <dd data-lights-moves="">0</dd> </div> </dl> <div class="toy-lights-out__grid" data-lights-grid="" role="grid"></div> <div class="toy-challenge__actions toy-lights-out__actions"> <button type="button" data-lights-undo="">撤销</button> <button type="button" data-lights-reset="">重置题目</button> <button type="button" data-lights-new="">换一道题</button> </div> <p class="toy-challenge__status" data-lights-status="" aria-live="polite" aria-atomic="true"></p> </div> <p class="toy-challenge__unavailable" data-challenge-unavailable="" data-lights-unavailable="" hidden="">当前无法生成精确题池或取得安全的本地随机数，因此这项游戏已停用。</p> <noscript><p class="toy-challenge__noscript">这项本地游戏需要 JavaScript；不会发送或保存任何内容。</p></noscript> <script type="application/json" data-lights-copy="">
+    {
+      "applied": "题目范围已应用，新题目已经准备好。",
+      "bandLong": "6–{max} 步",
+      "bandMedium": "4–5 步",
+      "bandShort": "2–3 步",
+      "boardCount": "{count} 个不同局面",
+      "cellLabel": "第 {row} 行，第 {column} 列，{state}",
+      "defaultsReady": "默认尺寸和范围已填入；应用后会换题。",
+      "gridLabel": "{size} 翻灯棋盘",
+      "lightOff": "暗",
+      "lightOn": "亮",
+      "locale": "zh-CN",
+      "newGame": "新题目已经准备好。",
+      "pressed": "按下第 {row} 行、第 {column} 列；第 {moves} 步后还有 {lit} 盏灯亮。",
+      "reset": "当前题目已重置。",
+      "settingsSummary": "{size} · {band} · {count} 个局面",
+      "undo": "已撤销上一步；走了 {moves} 步，还有 {lit} 盏灯亮。",
+      "unavailable": "当前无法生成精确题池或取得安全的本地随机数，因此这项游戏已停用。",
+      "won": "所有灯都熄灭了，共走 {moves} 步；本题最少需要 {optimal} 步。"
+    }
+  </script> </section> </div> </details> </div> </section> <section class="toy-group" data-toy-group="random-generators" aria-labelledby="toy-group-random-generators-title"> <h2 id="toy-group-random-generators-title" class="toy-group__title">随机生成</h2> <div class="toy-group__items"> <details id="random-password" class="toy-entry" data-toy-disclosure="" data-toy-assets="random generators"> <summary class="toy-entry__summary"> <h3 id="random-password-title"> <span class="toy-entry__title">随机密码</span> <small class="toy-entry__description">在当前浏览器中生成可调整的随机密码。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="random-password-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message=""></span> <button type="button" data-toy-loader-retry="" hidden="">重试</button> </div> <form class="toy-tool toy-password" data-toy-random-password=""> <div data-generator-interactive="" hidden=""> <p class="toy-tool__note">密码只在当前页面中生成，不会发送、保存或记录。真实账户仍建议交给可信的密码管理器保管。</p> <div class="toy-form-field"> <label for="random-password-length">长度</label> <input id="random-password-length" data-password-length="" type="number" min="8" max="128" step="1" value="20" inputmode="numeric" aria-describedby="random-password-length-help"> <p id="random-password-length-help" class="toy-field-help">可选 8–128；少于 16 位时会提示偏短。</p> </div> <fieldset class="toy-fieldset"> <legend>使用的字符</legend> <label><input data-password-group="lowercase" type="checkbox" checked> 小写字母</label> <label><input data-password-group="uppercase" type="checkbox" checked> 大写字母</label> <label><input data-password-group="digits" type="checkbox" checked> 数字</label> <label><input data-password-group="symbols" type="checkbox" checked> 常用符号</label> </fieldset> <label class="toy-check"><input data-password-ambiguous="" type="checkbox" checked> 排除容易混淆的字符</label> <div class="toy-actions"> <button type="submit" data-password-generate="">生成密码</button> </div> <div class="toy-output" data-password-output-wrap="" hidden=""> <label for="random-password-output">生成的密码</label> <input id="random-password-output" data-password-output="" type="password" readonly spellcheck="false" autocomplete="off"> <div class="toy-actions toy-actions--secondary"> <button type="button" data-password-visibility="">显示密码</button> <button type="button" data-password-copy="">复制</button> </div> </div> <p class="toy-status" data-password-status="" aria-live="polite" aria-atomic="true"></p> </div> <noscript><p class="toy-noscript">这个生成器需要 JavaScript；本站不会为此加载外部脚本。</p></noscript> <script type="application/json" data-password-copy-data="">{"local_note":"密码只在当前页面中生成，不会发送、保存或记录。真实账户仍建议交给可信的密码管理器保管。","length_label":"长度","length_help":"可选 8–128；少于 16 位时会提示偏短。","groups_label":"使用的字符","lowercase":"小写字母","uppercase":"大写字母","digits":"数字","symbols":"常用符号","exclude_ambiguous":"排除容易混淆的字符","generate":"生成密码","regenerate":"重新生成","show":"显示密码","hide":"隐藏密码","copy":"复制","output_label":"生成的密码","generated":"已生成一个新密码。","copied":"已复制密码。","copy_failed":"无法写入剪贴板，已选中密码，请手动复制。","short_warning":"这个长度偏短；建议至少使用 16 位。","group_error":"请至少选择一种字符。","length_error":"长度必须是 8–128 之间的整数，且不能少于所选字符组数量。","random_error":"当前浏览器无法提供安全随机数，因此没有生成密码。","no_js":"这个生成器需要 JavaScript；本站不会为此加载外部脚本。"}</script> </form> </div> </details> <details id="random-number" class="toy-entry" data-toy-disclosure="" data-toy-assets="random generators"> <summary class="toy-entry__summary"> <h3 id="random-number-title"> <span class="toy-entry__title">随机数字</span> <small class="toy-entry__description">从指定整数范围中生成一个或多个随机结果。</small> </h3> </summary> <div class="toy-entry__body" aria-labelledby="random-number-title"> <div class="toy-loader-status" data-toy-loader-status="" role="status" aria-live="polite" hidden=""> <span data-toy-loader-message=""></span> <button type="button" data-toy-loader-retry="" hidden=""></button> </div> <form class="toy-tool toy-number" data-toy-random-number=""> <div data-generator-interactive="" hidden=""> <p class="toy-tool__note">生成结果是闭区间内的均匀随机整数，只在当前页面中计算。</p> <div class="toy-number__fields"> <label>最小值<input data-number-minimum="" type="number" step="1" value="1" inputmode="numeric"></label> <label>最大值<input data-number-maximum="" type="number" step="1" value="100" inputmode="numeric"></label> <label>数量<input data-number-count="" type="number" min="1" max="100" step="1" value="1" inputmode="numeric"></label> </div> <div class="toy-checks"> <label class="toy-check"><input data-number-unique="" type="checkbox"> 结果不重复</label> <label class="toy-check"><input data-number-sort="" type="checkbox"> 按从小到大排列</label> </div> <fieldset class="toy-fieldset toy-presets"> <legend>快捷范围</legend> <button type="button" data-number-preset="" data-minimum="0" data-maximum="1">硬币（0–1）</button> <button type="button" data-number-preset="" data-minimum="1" data-maximum="6">D6</button> <button type="button" data-number-preset="" data-minimum="1" data-maximum="20">D20</button> </fieldset> <div class="toy-actions"> <button type="submit" data-number-generate="">生成数字</button> </div> <div class="toy-output" data-number-output-wrap="" hidden=""> <label for="random-number-output">生成的随机数字</label> <textarea id="random-number-output" data-number-output="" rows="3" readonly spellcheck="false"></textarea> <div class="toy-actions toy-actions--secondary"> <button type="button" data-number-copy="">复制全部</button> </div> </div> <p class="toy-status" data-number-status="" aria-live="polite" aria-atomic="true"></p> </div> <noscript><p class="toy-noscript">这个生成器需要 JavaScript；本站不会为此加载外部脚本。</p></noscript> <script type="application/json" data-number-copy-data="">{"local_note":"生成结果是闭区间内的均匀随机整数，只在当前页面中计算。","minimum":"最小值","maximum":"最大值","count":"数量","unique":"结果不重复","sort":"按从小到大排列","presets_label":"快捷范围","coin":"硬币（0–1）","d6":"D6","d20":"D20","generate":"生成数字","regenerate":"重新生成","copy":"复制全部","output_label":"生成的随机数字","generated":"已生成 {count} 个随机数字。","copied":"已复制全部结果。","copy_failed":"无法写入剪贴板，已选中结果，请手动复制。","range_error":"最小值和最大值必须是安全整数，且闭区间长度不能超过安全整数范围。","count_error":"数量必须是 1–100 之间的整数。","unique_error":"选择不重复时，数量不能大于区间内可用数字的数量。","random_error":"当前浏览器无法提供安全随机数，因此没有生成数字。","no_js":"这个生成器需要 JavaScript；本站不会为此加载外部脚本。"}</script> </form> </div> </details> </div> </section> </div> <script type="application/json" data-toy-asset-manifest="">
+    {
+      "random": "/assets/js/toy-random.js?v=51aeb05ea67284f36a66cc5da3ed0d20",
+      "generators": "/assets/js/toy-generators.js?v=cfc6231efef7a6f288b45ce681e76d22",
+      "history": "/assets/js/toy-challenge-history.js?v=eb8d8ee8b129d4537ae3b8fe56bb18a4",
+      "challenges": "/assets/js/toy-challenges.js?v=f800eabcf49a4220a929b3c93e453919",
+      "color": "/assets/js/toy-color-challenge.js?v=18fb913d0e03bf73d8e69b33503cc84f",
+      "codebreaker": "/assets/js/toy-codebreaker.js?v=89fcbcd7e2d1f3352343323770089b77",
+      "make24": "/assets/js/toy-make-24.js?v=bb4928c8b1303e4f7572f905262f624b",
+      "lights": "/assets/js/toy-lights-out.js?v=c718d424b5a501393517f2fae49b4d30",
+      "moegirl": "/assets/js/moegirl-quiz.js?v=ce2fba53e9114f12ea30ca704280db77",
+      "art": "/assets/js/art-glimpse.js?v=8c46e78b65f17913b0cfa76d34b7b970",
+      "acg-logic": "/assets/js/acg-relation-quiz-logic.js?v=4628a534ed91ca6d480166185bb79660",
+      "acg-ui": "/assets/js/acg-relation-quiz.js?v=c46d7b5b23dbed1282dc6a738c513a9e"
+    }
+  </script> <script src="/assets/js/toy-loader.js?v=9912fe0af156bf70c7738eb3d8ea5515" defer></script> </div> </article> </div> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="zh-CN" data-loading-text="正在加载评论……" data-retry-text="重新加载" data-error-text="评论暂时无法加载；你可以重试，或使用上方 GitHub Discussions 链接。" data-auto-load-enabled-text="已开启自动加载评论。" data-auto-load-disabled-text="已关闭自动加载评论。" data-auto-load-unavailable-text="浏览器无法保存自动加载设置；你仍可手动显示评论。" aria-labelledby="page-comments-title-zh"> <h2 id="page-comments-title-zh">评论</h2> <p class="page-comments__introduction"> 评论公开保存在 <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>。只有在你手动显示评论或开启自动加载后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。 </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>显示评论（首次约 0.13 MB）</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-zh" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-zh" class="page-comments__auto-load-label">在本站自动加载评论</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">请启用 JavaScript 后选择上方按钮显示评论，或使用上方 GitHub Discussions 链接。</p></noscript> </section> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目、论文或小玩意"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+      
+      {
+        "title": "与胆小的珍珠鸟建立信任：从环境到正向训练",
+        "description": "以稳定环境、健康基线、可观察压力信号、即时奖励和逐级选择建立珍珠鸟信任；明确区分个人观察、动物福利原则与必须交给禽类兽医的问题。",
+        "tags": ["珍珠鸟","动物福利"],
+        "url": "/posts/%E4%B8%8E%E7%8F%8D%E7%8F%A0%E9%B8%9F%E5%BB%BA%E7%AB%8B%E4%BF%A1%E4%BB%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "用四种颜色建立一套不费脑的外套系统",
+        "description": "用砖红、米黄、橄榄绿和炭灰建立个人外套调色盘，再以场景、轮廓、现有衣橱与维护成本筛选款式；不把主观偏好包装成普遍色彩定律。",
+        "tags": ["穿搭","色彩"],
+        "url": "/posts/%E5%9B%9B%E7%A7%8D%E9%A2%9C%E8%89%B2%E7%9A%84%E5%A4%96%E5%A5%97%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从买齐工具到顺手做饭：小厨房的最小系统",
+        "description": "从实际动作链而非商品品类组织小厨房，用最小能力集、购买闸门、可见库存和清洁复位减少做饭摩擦；个人经验不冒充营养或食品安全指南。",
+        "tags": ["厨房","个人系统"],
+        "url": "/posts/%E5%B0%8F%E5%8E%A8%E6%88%BF%E7%9A%84%E6%9C%80%E5%B0%8F%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从能运行到可维护：Minecraft 服务器的最小运维闭环",
+        "description": "把 Java 兼容性、专用账户、受控启动、最小暴露、备份恢复、升级演练和监控串成一条小型服务器运维闭环；示例不包含私人端口、账号或玩家标识。",
+        "tags": ["Minecraft","服务器运维"],
+        "url": "/posts/Minecraft%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%9C%80%E5%B0%8F%E8%BF%90%E7%BB%B4%E9%97%AD%E7%8E%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "《SETI》桌游规则：从摆桌到完成第一局",
+        "description": "依照真实游玩顺序，用官方图片把摆桌、回合、行动、轮末与计分连成一局；比按组件查规则书或拖动教学视频更适合纯文字学习，末尾另收扩展与促销牌。",
+        "tags": ["桌游","规则教学","SETI"],
+        "url": "/posts/SETI%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E5%AE%8C%E6%88%90%E7%AC%AC%E4%B8%80%E5%B1%80/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《大创造时代》资源-分值量化计算思路",
+        "description": "用跨轮迭代估算金币、工具、书、学者、科学轨、航海和建筑收益，把当前兑换和未来产出放进同一尺度；比静态汇率更适合中长期规划。",
+        "tags": ["大创造时代","桌游"],
+        "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《特鲁瓦》资源-分值量化分析攻略",
+        "description": "把影响力、事件、骰子、功能牌和金钱放到同一价值框架，说明共享骰池怎样改变随机资源的价格；适合比较跨系统行动，补足单卡点评缺少的全局尺度。",
+        "tags": ["特鲁瓦","桌游"],
+        "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《盖亚计划》资源-分值量化计算思路",
+        "description": "把钱、矿、知识、QIC、建筑收益和终局分数换到近似统一尺度，再逐种族检查例外，为经验打法提供一套可复算的宏观规划基准。",
+        "tags": ["盖亚计划","桌游"],
+        "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "了解游泳",
+        "description": "从安全入水、漂浮与呼吸开始，按蛙泳腿、手、配合和距离进阶练到 50 米；同时解释浮力、阻力与遇险处置的可靠边界。",
+        "tags": ["游泳"],
+        "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "逻辑对决桌游攻略",
+        "description": "基于近 500 局 BGA 实战，把问题选择写成候选集划分，并连到数字推理、先后手与终局攻防；比记固定问题评级更能迁移到新局面。",
+        "tags": ["逻辑对决","桌游"],
+        "url": "/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四季物语量化分析攻略",
+        "description": "用统一分值估算元素、召唤等级、晶化、卡牌和骰子行动，再把资源约束、轮抽和对抗放回实战；比单张卡牌评级更适合回答“此刻哪种选择更值”。",
+        "tags": ["四季物语","桌游"],
+        "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "装机记录",
+        "description": "以 R5 5600 + RX 6600 XT 实际装机为例，把需求、部件取舍、价格和组装问题放在同一份记录中，展示预算如何一步步变成平衡配置。",
+        "tags": ["装机"],
+        "url": "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "制作一张匹配形状的字符画",
+        "description": "从平均灰度匹配推进到字符形状匹配，给出字符模板、局部比较、直方图均衡和灰度一致性实现，适合想让轮廓更贴近原图的读者。",
+        "tags": ["NoneBot","Python","字符画"],
+        "url": "/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "云服务器与部署架构：从域名到可靠运行",
+        "description": "用一条完整请求链解释 DNS、CDN、代理、云网络、计算与存储，再给出产品选型、安全部署、成本复核和故障定位清单。",
+        "tags": ["云服务器"],
+        "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "可靠强化学习实验与工程指南",
+        "description": "从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。",
+        "tags": ["强化学习","元强化学习","表征学习"],
+        "url": "/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "GitHub Pages 建站：从静态托管到可复现部署",
+        "description": "从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。",
+        "tags": ["GitHub"],
+        "url": "/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "把角色语音合成 API 接入 NoneBot2：用聊天指令生成中、英、日、韩语音，并可配置角色、语速、语气与接口参数。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "统一的高维贝叶斯优化基准：汇集合成与真实任务、代表性算法封装，便于开展可复现的对比实验。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "轻量《图灵机》谜题求解器：枚举有效密码，搜索三次验证的最佳提问方案，并估算成功率。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "轻量语音对话示例：用免费组件串联本地 SenseVoice 语音识别、OpenAI 兼容聊天接口与 Edge TTS。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "面向大语言模型超参数优化的零样本在线跨任务迁移：每轮只调用一次模型，同时提出目标候选并选择辅助查询。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "为 Codex 提供 MCP 任务工具：可委托 Claude Code 实现或发起独立审阅，并显式约束权限、模型来源与结构化结果。",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/publications/#hdbo-b-ijcnn-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "高维贝叶斯优化研究综述",
+      "description": "陈泉霖, 陈奕宇, 霍静, 曹宏业, 高阳, 李栋, 郝建业 · 软件学报",
+      "tags": [2025],
+      "url": "/publications/#hdbo-survey-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/publications/#trust-region-newton-ecai-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "元强化学习研究综述",
+      "description": "陈奕宇, 霍静, 丁天雨, 高阳 · 软件学报 · 2024年高被关注综述论文",
+      "tags": [2024],
+      "url": "/publications/#meta-rl-survey-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/publications/#supervised-dr-ppsn-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/publications/#casil-aamas-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/publications/#radar-rl-2023",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/publications/#tild-aamas-2023",
+      "kind": "论文"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "萌娘百科猜猜",
+        "description": "读读匿名化的导言，看看四个候选里谁是答案。",
+        "tags": ["百科","萌娘百科","条目","问答"],
+        "url": "/toys/#moegirl-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "名画猜猜（克利夫兰艺术博物馆）",
+        "description": "可选择猜题方向，以及题名、作者、年代等线索。",
+        "tags": ["名画","配对","艺术","博物馆","克利夫兰","图像","猜题"],
+        "url": "/toys/#art-glimpse",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "动画主角猜猜（AniList）",
+        "description": "可选择动画找主角、主角找动画或同作主角配对。",
+        "tags": ["AniList","动画","角色","主角","关系","猜题"],
+        "url": "/toys/#anilist-role-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "色差挑战",
+        "description": "找出颜色略有不同的方块，看看你能走到第几关。",
+        "tags": ["颜色","视觉","辨识","挑战"],
+        "url": "/toys/#color-challenge",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "盲估十秒",
+        "description": "不看计时器，凭感觉停在十秒附近。",
+        "tags": ["十秒","时间","直觉","挑战"],
+        "url": "/toys/#ten-second",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "反应时间",
+        "description": "等待信号出现后尽快作出反应。",
+        "tags": ["反应","时间","速度","挑战"],
+        "url": "/toys/#reaction-time",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "数字 Wordle",
+        "description": "根据“完全命中”和“仅数字命中”，逐步排除隐藏答案。",
+        "tags": ["数字 Wordle","数字码","推理","排除","逻辑","游戏"],
+        "url": "/toys/#codebreaker",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "凑成 24",
+        "description": "四个数各用一次，选择运算顺序，让最后的精确结果等于 24。",
+        "tags": ["凑成 24","四则运算","分数","心算","逻辑","游戏"],
+        "url": "/toys/#make-24",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "翻灯",
+        "description": "每次翻转一格和它的四邻格，用尽量清晰的规划让所有灯熄灭。",
+        "tags": ["翻灯","网格","最短步数","规划","逻辑","游戏"],
+        "url": "/toys/#lights-out",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "随机密码",
+        "description": "在当前浏览器中生成可调整的随机密码。",
+        "tags": ["随机","密码","安全","生成器"],
+        "url": "/toys/#random-password",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "随机数字",
+        "description": "从指定整数范围中生成一个或多个随机结果。",
+        "tags": ["随机","数字","整数","生成器"],
+        "url": "/toys/#random-number",
+        "kind": "小玩意"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>

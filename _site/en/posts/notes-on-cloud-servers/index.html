@@ -1,0 +1,553 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Cloud Servers and Deployment Architecture: From Domains to Reliable Operations | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting."> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/en/posts/notes-on-cloud-servers/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/en/posts/notes-on-cloud-servers/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/notes-on-cloud-servers/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="Cloud Servers and Deployment Architecture: From Domains to Reliable Operations"> <meta property="og:url" content="https://yiyuiii.github.io/en/posts/notes-on-cloud-servers/"> <meta property="og:description" content="A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting."> <meta property="og:locale" content="en_US"> <meta property="og:locale:alternate" content="zh_CN"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202208142347/cover-cloud-console-2026-07-30.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Cloud Servers and Deployment Architecture: From Domains to Reliable Operations"> <meta name="twitter:description" content="A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting."> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202208142347/cover-cloud-console-2026-07-30.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/en/posts/notes-on-cloud-servers/",
+    "headline": "Cloud Servers and Deployment Architecture: From Domains to Reliable Operations",
+    "description": "A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting.",
+    "inLanguage": "en",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2022-08-14T23:47:00+08:00",
+    "dateModified": "2026-08-08T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">Skip to content</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/en/" aria-label="Return to the English welcome page"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="Turn off the sunlight background" aria-pressed="true" data-enable-light-label="Turn on the sunlight background" data-disable-light-label="Turn off the sunlight background" data-enable-dark-label="Turn on the moonlight background" data-disable-dark-label="Turn off the moonlight background" data-status-light-on="Sunlight background is on" data-status-light-off="Sunlight background is off" data-status-dark-on="Moonlight background is on" data-status-dark-off="Moonlight background is off" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/en/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="Primary navigation"> <a href="/en/">Welcome</a> <a href="/en/writing/">Writing</a> <a href="/en/projects/">GitHub</a> <a href="/en/publications/">Papers</a> <a href="/en/toys/">Toys</a> <a href="/en/about/">About yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="Search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="Switch to the night appearance" aria-pressed="false" data-enable-light-label="Switch to the light appearance" data-enable-dark-label="Switch to the night appearance" data-status-light="Light appearance is on" data-status-dark="Night appearance is on" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/" aria-label="Switch to Chinese"> 中 </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>Cloud Servers and Deployment Architecture: From Domains to Reliable Operations</h1> <div class="article-meta"> <div class="article-tags"> <a href="/en/writing/?tag=Cloud+Servers">Cloud Servers</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> First published <time datetime="2022-08-14">2022-08-14</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span> Last revised <time datetime="2026-08-08">2026-08-08</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">Revision history</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2022-08-14">2022-08-14</time> <span>Initial draft</span> </li> <li> <time datetime="2026-08-08">2026-08-08</time> <span>Researched and rewritten by GPT-5.6 Sol as a vendor-neutral guide to cloud servers and deployment architecture; removed time-sensitive pricing, region, and software-ecosystem recommendations</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>Sections</summary> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#first-draw-the-complete-path-of-one-request">First Draw the Complete Path of One Request</a> <ul> <li class="toc-entry toc-h3"><a href="#domain-names-and-dns-a-name-is-not-a-server">Domain Names and DNS: A Name Is Not a Server</a></li> <li class="toc-entry toc-h3"><a href="#cdns-reverse-proxies-and-load-balancers-three-different-jobs">CDNs, Reverse Proxies, and Load Balancers: Three Different Jobs</a></li> <li class="toc-entry toc-h3"><a href="#applications-databases-and-object-storage-separate-their-lifecycles">Applications, Databases, and Object Storage: Separate Their Lifecycles</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#choosing-compute-trading-control-for-management">Choosing Compute: Trading Control for Management</a> <ul> <li class="toc-entry toc-h3"><a href="#a-practical-selection-order">A Practical Selection Order</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#networking-and-tls-allow-only-required-traffic-at-every-layer">Networking and TLS: Allow Only Required Traffic at Every Layer</a> <ul> <li class="toc-entry toc-h3"><a href="#public-and-private-networks-subnets-routes-and-nat">Public and Private Networks, Subnets, Routes, and NAT</a></li> <li class="toc-entry toc-h3"><a href="#security-groups-network-acls-and-host-firewalls-are-not-substitutes">Security Groups, Network ACLs, and Host Firewalls Are Not Substitutes</a></li> <li class="toc-entry toc-h3"><a href="#a-port-is-only-a-listener-tls-can-have-two-legs">A Port Is Only a Listener; TLS Can Have Two Legs</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#security-and-reliability-deploy-recovery-alongside-the-service">Security and Reliability: Deploy Recovery Alongside the Service</a> <ul> <li class="toc-entry toc-h3"><a href="#identity-secrets-and-least-privilege">Identity, Secrets, and Least Privilege</a></li> <li class="toc-entry toc-h3"><a href="#patches-the-supply-chain-and-reproducible-deployment">Patches, the Supply Chain, and Reproducible Deployment</a></li> <li class="toc-entry toc-h3"><a href="#a-backup-must-prove-itself-through-a-restore-exercise">A Backup Must Prove Itself Through a Restore Exercise</a></li> <li class="toc-entry toc-h3"><a href="#logs-metrics-traces-and-alerts-answer-different-questions">Logs, Metrics, Traces, and Alerts Answer Different Questions</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#costs-and-providers-compare-a-complete-workload-not-one-sticker-price">Costs and Providers: Compare a Complete Workload, Not One Sticker Price</a></li> <li class="toc-entry toc-h2"><a href="#a-rollback-capable-recoverable-deployment-workflow">A Rollback-Capable, Recoverable Deployment Workflow</a></li> <li class="toc-entry toc-h2"><a href="#troubleshooting-follow-the-request-path-from-outside-in">Troubleshooting: Follow the Request Path from Outside In</a></li> <li class="toc-entry toc-h2"><a href="#keeping-this-article-from-going-stale-again">Keeping This Article from Going Stale Again</a></li> </ul> </nav> </details> <figure class="article-cover"> <img height="720" width="720" class="article-cover__image" src="/assets/posts/202208142347/cover-cloud-console-2026-07-30.webp" alt="Illustration of a cloud-server instance console" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>Cover: an illustration of a cloud-server instance console (created for this site); it depicts managing a VPS in a browser and does not represent the dashboard of any real cloud provider.</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <p>I began by asking how a domain, DNS, and a VPS fit together. Deploying a real service taught me that network boundaries, identity, data recovery, and observability matter just as much to long-term operation.</p> <p>This article does not name the “cheapest provider” or offer a one-command installer. Prices, regions, plan quotas, free tiers, and product catalogs change. The article keeps the architectural logic that can travel between providers; before a purchase or deployment, it asks you to recheck dynamic facts on the provider’s official pages that day. The facts in this revision were checked on <strong>2026-08-08</strong>.</p> <h2 id="first-draw-the-complete-path-of-one-request">First Draw the Complete Path of One Request</h2> <p>For an ordinary web service, one request can traverse all or some of these layers:</p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Browser
+  -&gt; domain name and DNS
+  -&gt; CDN / edge reverse proxy
+  -&gt; load balancer
+  -&gt; cloud firewall / security group / routing / NAT
+  -&gt; cloud VM or container platform
+  -&gt; reverse proxy / application process
+  -&gt; database / object storage / external service
+</code></pre></div></div> <p>A small site often combines several layers: one VM can run both the reverse proxy and application, or a managed platform can provide TLS, routing, and compute together. Combining components does not erase their logical boundaries. During an incident, you still need to test each layer separately.</p> <h3 id="domain-names-and-dns-a-name-is-not-a-server">Domain Names and DNS: A Name Is Not a Server</h3> <p>A domain is a stable public name, while DNS is a distributed naming system. A registrar maintains the registration relationship, an authoritative DNS service publishes resource records, and a recursive resolver queries and caches results for clients. <a href="https://datatracker.ietf.org/doc/html/rfc1034" rel="external nofollow noopener" target="_blank">RFC 1034</a> defines this hierarchical, distributed, and cached model.</p> <p>Common records for hosting include:</p> <ul> <li> <code class="language-plaintext highlighter-rouge">A</code> and <code class="language-plaintext highlighter-rouge">AAAA</code>: map a name to an IPv4 or IPv6 address, respectively.</li> <li> <code class="language-plaintext highlighter-rouge">CNAME</code>: makes one name an alias of another canonical name; it is not port forwarding.</li> <li> <code class="language-plaintext highlighter-rouge">MX</code>: identifies mail exchangers and their priorities.</li> <li> <code class="language-plaintext highlighter-rouge">TXT</code>: carries text required by a particular protocol, commonly for domain-control and email-policy verification.</li> <li> <code class="language-plaintext highlighter-rouge">SRV</code>: under <a href="https://datatracker.ietf.org/doc/html/rfc2782" rel="external nofollow noopener" target="_blank">RFC 2782</a>, publishes a service, protocol, target host, port, priority, and weight; a client uses it only if that client explicitly supports SRV.</li> </ul> <p>A TTL is an upper bound on caching, not a promise that a change will “finish propagating worldwide” after a fixed time. Before a planned migration, lower the TTL in advance, restore a normal value afterward, and keep the old endpoint alive until old caches have mostly aged out.</p> <h3 id="cdns-reverse-proxies-and-load-balancers-three-different-jobs">CDNs, Reverse Proxies, and Load Balancers: Three Different Jobs</h3> <ul> <li>A <strong>CDN</strong> caches reusable responses at edge locations near visitors, reducing origin requests and long-distance transfer. It does not automatically help dynamic requests, signed-in responses, or a badly designed cache policy.</li> <li>A <strong>reverse proxy</strong> receives client requests on behalf of backends. It can terminate TLS, route by hostname or path, enforce rate limits, and forward traffic to an application.</li> <li>A <strong>load balancer</strong> distributes requests among multiple available backends and commonly uses health checks to remove unhealthy nodes. With only one backend, it cannot create high availability by itself.</li> </ul> <p>The <a href="https://developers.cloudflare.com/reference-architecture/architectures/cdn/" rel="external nofollow noopener" target="_blank">Cloudflare CDN reference architecture</a> is one provider implementation: edge nodes sit in front of origins as reverse proxies and can answer from cache or fetch from the origin. Cache keys, origin behavior, health checks, and billing semantics differ by provider, so recheck the relevant official documentation on deployment day.</p> <h3 id="applications-databases-and-object-storage-separate-their-lifecycles">Applications, Databases, and Object Storage: Separate Their Lifecycles</h3> <p>An application process should be replaceable where possible: code, dependencies, and startup behavior should be reconstructible from versioned configuration. Do not leave the sole copy of important data in one VM’s or container’s local filesystem.</p> <ul> <li>A <strong>database</strong> provides queries, indexes, concurrency control, and defined consistency semantics. It is suitable for application state and relational data.</li> <li> <strong>Object storage</strong> organizes files as keys, objects, and metadata. It is suitable for uploads, static assets, archives, and backups; do not assume it behaves like a normal mountable disk.</li> <li> <strong>Block storage / a cloud volume</strong> appears to a host as a disk and suits filesystems or database volumes. A snapshot can be recovery material, but it is not automatically an independent and recoverable backup.</li> </ul> <p>Object versioning can reduce the recovery cost of accidental deletion and overwrite. For example, the <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html" rel="external nofollow noopener" target="_blank">Amazon S3 Versioning documentation</a> describes one implementation that retains multiple object versions. This is only a mechanism example: when selecting a service, also verify consistency, versioning, locking, lifecycle rules, cross-region replication, and restore charges.</p> <h2 id="choosing-compute-trading-control-for-management">Choosing Compute: Trading Control for Management</h2> <p><a href="https://csrc.nist.gov/pubs/sp/800/145/final" rel="external nofollow noopener" target="_blank">NIST SP 800-145</a> distinguishes IaaS, PaaS, and SaaS. Real compute products also use overlapping labels such as “containers,” “functions,” and “serverless.” Instead of memorizing names, ask: Who manages the operating system? Who patches it? Can you choose the kernel, network, and runtime? What is the smallest scaling unit?</p> <table> <thead> <tr> <th>Form</th> <th>What you get</th> <th>What you manage</th> <th>Better suited to</th> <th>Main cost</th> </tr> </thead> <tbody> <tr> <td>VPS / cloud VM</td> <td>A manageable virtual machine and configurable networking</td> <td>OS, patches, runtime, capacity, and most failures</td> <td>Root/admin access, custom software, or learning the whole system</td> <td>High operational responsibility; host tenancy can affect isolation and performance variation</td> </tr> <tr> <td>Bare metal</td> <td>Direct use of a physical server without a customer-visible hypervisor layer</td> <td>More system, hardware, and capacity planning</td> <td>Hardware-level isolation, special licensing, predictable hardware, or specific accelerators</td> <td>Larger starting cost and scaling unit</td> </tr> <tr> <td>Container</td> <td>A repeatable image of the application and user-space dependencies</td> <td>Image, runtime configuration, secrets, state, and orchestration boundary</td> <td>Consistent packaging, rapid releases, or multiple replicas</td> <td>A container is neither a backup nor a VM; self-managed orchestration adds complexity</td> </tr> <tr> <td>Managed PaaS</td> <td>A managed path from code or an image to a running service</td> <td>Application, data, configuration, and product constraints</td> <td>Web/API services, small teams, and long-running services without host management</td> <td>Platform limits on runtime, networking, debugging, and portability</td> </tr> <tr> <td>Function / serverless</td> <td>A platform-scheduled execution unit triggered by events</td> <td>Function code, permissions, events, and external state</td> <td>Intermittent jobs, event processing, and elastically scaling APIs</td> <td>Execution limits, cold starts, concurrency, debugging, and unit cost require a current product review</td> </tr> </tbody> </table> <p>Execution abstraction and hardware tenancy are separate axes. A VM may run on multi-tenant hardware, as a dedicated instance, or on a dedicated/sole-tenant host. A dedicated host still runs VMs and is not the same product as bare metal. Compare both dimensions explicitly; the <a href="https://cloud.google.com/compute/docs/instances/about-vm-tenancy" rel="external nofollow noopener" target="_blank">Google Cloud VM-tenancy guide</a> and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html" rel="external nofollow noopener" target="_blank">Amazon EC2 Dedicated Hosts documentation</a> show two provider implementations.</p> <p>“Container” and “serverless” are not points on the same classification axis. A container is a packaging and execution format that can run on a self-managed VM, a managed cluster, or a serverless container platform. The <a href="https://kubernetes.io/docs/concepts/containers/" rel="external nofollow noopener" target="_blank">Kubernetes container documentation</a> emphasizes that an image includes code and runtime dependencies. The <a href="https://learn.microsoft.com/en-us/azure/architecture/guide/technology-choices/compute-decision-tree" rel="external nofollow noopener" target="_blank">Azure compute selection guide</a> illustrates the practical exchange between control and management convenience across VMs, PaaS, containers, and FaaS. These links explain mechanisms; they are not unconditional product recommendations.</p> <h3 id="a-practical-selection-order">A Practical Selection Order</h3> <ol> <li> <strong>Write down the workload first:</strong> Is it a continuously running web service, a scheduled job, a queue consumer, a database, or GPU computation?</li> <li> <strong>List non-negotiable boundaries:</strong> OS, privileged ports, local disk, special networking, drivers, end-to-end latency, data residency, and compliance.</li> <li> <strong>Among candidates that satisfy those boundaries, choose the simplest option with the highest acceptable level of management.</strong> Take on lower-level operations only after showing that platform constraints are unacceptable.</li> <li> <strong>Validate with a small prototype:</strong> Test release, rollback, scaling, logs, backup, restore, and worst-case monthly cost, not only whether the program starts.</li> </ol> <h2 id="networking-and-tls-allow-only-required-traffic-at-every-layer">Networking and TLS: Allow Only Required Traffic at Every Layer</h2> <h3 id="public-and-private-networks-subnets-routes-and-nat">Public and Private Networks, Subnets, Routes, and NAT</h3> <p>The private IPv4 ranges reserved by <a href="https://datatracker.ietf.org/doc/html/rfc1918" rel="external nofollow noopener" target="_blank">RFC 1918</a> are not globally routed on the public Internet. In AWS and platforms that use the same convention, a “public subnet” is a subnet whose route table reaches an Internet gateway; even there, a workload also needs an Internet-routable address and permissive filtering before it can receive new public connections. The <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html" rel="external nofollow noopener" target="_blank">AWS Internet-gateway documentation</a> defines that convention. Other clouds need not use the label: <a href="https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses" rel="external nofollow noopener" target="_blank">Azure models a public IP as a separate resource</a>, while <a href="https://cloud.google.com/vpc/docs/vpc" rel="external nofollow noopener" target="_blank">Google Cloud documents VPC routes and firewall rules independently</a>. Across providers, inspect the external address or edge endpoint, effective routes, and inbound filters rather than inferring reachability from a subnet name.</p> <ul> <li>A <strong>subnet</strong> allocates workloads from part of a virtual network’s address range.</li> <li>A <strong>route table</strong> selects the next hop or gateway for a destination prefix.</li> <li>An <strong>Internet or edge gateway</strong>—under provider-specific names—can connect a virtual network to the public Internet, but a route does not mean a firewall has allowed the traffic.</li> <li> <strong>NAT</strong> commonly lets private IPv4 resources initiate connections outward and receive response traffic through translated addresses and ports. It does not automatically accept new connections initiated from the Internet. The <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat.html" rel="external nofollow noopener" target="_blank">AWS NAT mechanism documentation</a> provides one provider implementation of this behavior.</li> </ul> <p>A common boundary for a small web system is to place only the load balancer or reverse proxy at the public entry point. Application instances and databases stay private. The database accepts its designated port only from the application identity or subnet, not from <code class="language-plaintext highlighter-rouge">0.0.0.0/0</code>.</p> <h3 id="security-groups-network-acls-and-host-firewalls-are-not-substitutes">Security Groups, Network ACLs, and Host Firewalls Are Not Substitutes</h3> <p>Names differ between cloud platforms, but the controls can be separated by what they govern:</p> <ul> <li>A <strong>cloud firewall / security group</strong> commonly attaches to a network interface or resource and filters by source, destination, protocol, and port.</li> <li>A <strong>network ACL</strong> commonly operates at the subnet boundary as a coarse guardrail. It may be stateless, so return traffic must also match rules.</li> <li>A <strong>host firewall</strong> filters inside the operating system and preserves a final constraint even if cloud-side rules are accidentally loosened.</li> <li> <strong>Application authorization</strong> determines what someone may do after connecting. Network reachability does not grant a user application permission.</li> </ul> <p>The <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html" rel="external nofollow noopener" target="_blank">AWS security group documentation</a> shows one stateful, resource-level implementation. Before writing rules, build a real traffic matrix: “who → whom → which protocol/port → why,” and then implement each row. Do not leave all ports open simply because it is convenient during troubleshooting.</p> <h3 id="a-port-is-only-a-listener-tls-can-have-two-legs">A Port Is Only a Listener; TLS Can Have Two Legs</h3> <p>TCP 443 reachability requires a routable address, an effective route, permission through every firewall layer, and a process listening on the expected address. Serving HTTPS correctly for a hostname additionally requires DNS—or an explicit diagnostic override—plus the intended <code class="language-plaintext highlighter-rouge">Host</code>/SNI value, a valid certificate chain, and matching application routing. A port does not create a service, and allowing a security-group rule does not start a process that is not listening.</p> <p><a href="https://datatracker.ietf.org/doc/html/rfc8446" rel="external nofollow noopener" target="_blank">TLS 1.3 is standardized in RFC 8446</a>. When a CDN or edge proxy sits between a visitor and the origin, there are commonly two independent TLS legs:</p> <ol> <li> <strong>Visitor ↔ edge:</strong> the edge presents the browser with a publicly trusted certificate matching the requested hostname.</li> <li> <strong>Edge ↔ origin:</strong> the origin presents another certificate that the edge validates, and the connection should use a strict verification mode.</li> </ol> <p>The <a href="https://developers.cloudflare.com/ssl/" rel="external nofollow noopener" target="_blank">Cloudflare SSL/TLS overview</a> explicitly distinguishes edge and origin certificates. The <a href="https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/" rel="external nofollow noopener" target="_blank">Cloudflare Origin CA documentation</a> also warns that its Origin CA certificates are intended for a proxied edge-to-origin link. If the proxy is paused and a browser connects directly to such an origin, the browser may not trust the certificate. Therefore, “the CDN has HTTPS” does not prove that the origin connection is encrypted or authenticated.</p> <h2 id="security-and-reliability-deploy-recovery-alongside-the-service">Security and Reliability: Deploy Recovery Alongside the Service</h2> <h3 id="identity-secrets-and-least-privilege">Identity, Secrets, and Least Privilege</h3> <ul> <li>Enable multi-factor authentication for human accounts, and do not use the root or owner account for routine work.</li> <li>Give people and workloads separate identities. Prefer short-lived credentials, workload identities, or instance roles; do not embed long-lived access keys in code, images, or repositories.</li> <li>Start with no permission, then add only the required “action + resource + condition.” Periodically remove unused permissions.</li> <li>Inject secrets through a dedicated secret service or deployment platform with rotation, revocation, and audit support. Do not log secrets, session tokens, or complete personal data.</li> </ul> <p>The <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html" rel="external nofollow noopener" target="_blank">AWS IAM security practices</a> are one verifiable provider implementation: they recommend temporary credentials, MFA, least privilege, and regular cleanup of unused credentials. On another platform, look for equivalent identity and secret mechanisms rather than copying AWS product names.</p> <h3 id="patches-the-supply-chain-and-reproducible-deployment">Patches, the Supply Chain, and Reproducible Deployment</h3> <p>A self-managed VM requires maintenance of its OS, runtime, reverse proxy, application, and dependencies. <a href="https://csrc.nist.gov/pubs/sp/800/40/r4/final" rel="external nofollow noopener" target="_blank">NIST SP 800-40 Rev. 4</a> defines patch management as the preventive-maintenance process of identifying, prioritizing, acquiring, installing, and verifying updates, rather than an occasional upgrade.</p> <p>Safe automation is not “download the latest script and run it as root.” Deployment inputs should be reviewable, version-pinned, and integrity-checked. Use the least privilege and validate in staging or another rollback-capable environment first. After an update, test service state and a critical request; do not treat a zero command exit code as the only success criterion.</p> <h3 id="a-backup-must-prove-itself-through-a-restore-exercise">A Backup Must Prove Itself Through a Restore Exercise</h3> <p>Define two targets first: <strong>RPO</strong> is how much data loss is acceptable, while <strong>RTO</strong> is how much downtime is acceptable. Only then can you decide backup frequency, retention, replica location, and restoration procedure.</p> <ul> <li>Back up databases, objects, essential configuration, and the means to recover secrets. Do not treat temporary files that can be rebuilt from code and images as primary data.</li> <li>Isolate at least one recovery copy from the production failure domain. The right separation—credentials, account, project, region, or offline media—depends on the threat model.</li> <li>Monitor backup jobs and retention policies, but remember that “job succeeded” does not prove the data is usable.</li> <li>Regularly restore from an empty state into an isolated environment, then verify data integrity, application startup, permissions, and elapsed time.</li> </ul> <p><a href="https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final" rel="external nofollow noopener" target="_blank">NIST SP 800-34 Rev. 1</a> places backup and recovery inside a full contingency plan and emphasizes testing, exercises, and continuing maintenance. Volume snapshots, automated database backups, and object versions can all be components, but each must participate in a real restore exercise.</p> <h3 id="logs-metrics-traces-and-alerts-answer-different-questions">Logs, Metrics, Traces, and Alerts Answer Different Questions</h3> <ul> <li> <strong>Logs</strong> record discrete events: when, in which component, and for which request something happened.</li> <li> <strong>Metrics</strong> express request rate, error rate, latency, saturation, and business outcomes as time series.</li> <li> <strong>Traces</strong> join the path of one request through proxies, applications, and downstream dependencies.</li> <li> <strong>Alerts</strong> notify the right person of an actionable abnormal condition; not every log line should alert.</li> </ul> <p>The <a href="https://opentelemetry.io/docs/concepts/signals/" rel="external nofollow noopener" target="_blank">OpenTelemetry signals overview</a> provides tool-neutral concepts for logs, metrics, and traces. A minimum operational monitoring set should include an external health check, HTTP errors and latency, host/container resources, database capacity and connections, backup outcomes, certificate expiry, and an alert-delivery path that has actually been tested.</p> <h2 id="costs-and-providers-compare-a-complete-workload-not-one-sticker-price">Costs and Providers: Compare a Complete Workload, Not One Sticker Price</h2> <p>“How much is the smallest instance per month?” is almost never the complete cost. On the same date, in the same currency, and under the same tax assumptions, enter the same workload sheet into each candidate provider’s official calculator:</p> <table> <thead> <tr> <th>Category</th> <th>Inputs that must be recorded</th> </tr> </thead> <tbody> <tr> <td>Compute</td> <td>Architecture, vCPU, memory, GPU, running hours, peak concurrency, scaling floor, and reservation/commitment term</td> </tr> <tr> <td>Storage</td> <td>Capacity, IOPS/throughput, snapshots, object request count, versions, and lifecycle rules</td> </tr> <tr> <td>Network</td> <td>Ingress, egress, cross-region/zone transfer, CDN origin traffic, public IPs, load balancers, and NAT</td> </tr> <tr> <td>Platform</td> <td>Database instances, backup retention, log ingestion/retention, secret requests, image registry, DNS queries, and support plan</td> </tr> <tr> <td>Risk</td> <td>Overage bounds, quotas, SLA prerequisites, failure domains, data residency, export methods, and deletion process</td> </tr> <tr> <td>Labor</td> <td>Patching, on-call work, database operations, security review, migration, and incident recovery time</td> </tr> </tbody> </table> <p>Use spending limits or budget alerts to control surprises, but first determine whether a control merely sends a notification or forcibly stops services. Do not assume billing stops automatically when a budget threshold is reached. Save the date, region, rate-card version or screenshot, inputs, and assumptions for every comparison. Recalculate when purchasing rather than treating a historical number from this or any blog as a quote.</p> <p>Beyond price, measure latency, packet loss, and route stability from target users to candidate regions. Check support response, product retirement policy, data export, and exit costs. Network quality is a measurement of “user location + time + carrier + region + protocol,” not a permanent consequence of a label such as “Hong Kong,” “domestic,” or “overseas.”</p> <h2 id="a-rollback-capable-recoverable-deployment-workflow">A Rollback-Capable, Recoverable Deployment Workflow</h2> <ol> <li> <strong>Define the service boundary:</strong> record data classification, user locations, capacity, SLO, RPO, RTO, compliance, and the budget ceiling.</li> <li> <strong>Draw the architecture and traffic matrix:</strong> mark every component’s public/private boundary, ports, identities, storage location, and failure domain.</li> <li> <strong>Establish account guardrails:</strong> protect the owner account; create separate identities, MFA, least privilege, audit logs, budget alerts, and quota alerts for routine administration.</li> <li> <strong>Define infrastructure and guardrails in one reviewable change:</strong> prefer versioned IaC or reproducible official tools; declare restrictive routes, security groups/firewalls, and the management path before any public endpoint is attached. Keep application and data resources private from creation, pin dependencies, review changes, and do not execute unreviewed remote scripts.</li> <li> <strong>Create resources without an exposure window:</strong> verify the effective traffic matrix first, then create or attach only the intended public entry point. Reach the management plane through a VPN, identity-aware proxy, or restricted sources; connect applications, databases, and storage through minimum rules.</li> <li> <strong>Build a replaceable runtime:</strong> use supported systems/runtimes, a non-privileged application user, and pinned, verified packages or images. Do not accumulate the sole configuration through manual edits on one machine.</li> <li> <strong>Configure secrets and TLS:</strong> inject secrets through a secret service, automate certificate issuance/renewal, and verify client-to-edge and edge-to-origin independently.</li> <li> <strong>Prepare recovery before release:</strong> create backups, write rollback and blank-state restoration procedures, and actually exercise them.</li> <li> <strong>Validate data before cutover:</strong> check schema compatibility, counts or checksums, application compatibility, and the rollback path before accepting production writes. If the new system will receive writes, decide in advance whether dual-write, reverse replication, or fail-forward is required; a blind rollback may lose new data. The <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/strategy-database-migration/cut-over.html" rel="external nofollow noopener" target="_blank">AWS database-cutover guide</a> is one provider example of validating before redirecting applications.</li> <li> <strong>Establish operational visibility before traffic:</strong> verify structured logs, critical metrics, external probes, backup status, alert delivery, dashboards, and a named responder. A health endpoint without a tested notification path is not operational readiness.</li> <li> <strong>Release to limited traffic:</strong> run business smoke tests and continue data-consistency checks after cutover. Increase traffic gradually with explicit stop, rollback, or fail-forward conditions.</li> <li> <strong>Hand over an operations runbook:</strong> preserve owners, dashboards, alerts, common incidents, scaling, patching, certificates, backup restoration, and service retirement procedures.</li> </ol> <p>For a small personal project, these artifacts can be one Markdown page and a configuration repository. The format is not the point. What matters is whether they really let you rebuild, roll back, and recover from an empty environment.</p> <h2 id="troubleshooting-follow-the-request-path-from-outside-in">Troubleshooting: Follow the Request Path from Outside In</h2> <p>First capture one reproducible sample: time including timezone, client network, URL, request ID, expected result, and actual result. Then inspect layer by layer:</p> <table> <thead> <tr> <th>Order</th> <th>Question to answer</th> <th>Common observations</th> </tr> </thead> <tbody> <tr> <td>1. Client</td> <td>Are the URL, protocol, time, proxy, and local network correct?</td> <td>Compare another network/client</td> </tr> <tr> <td>2. DNS</td> <td>Do authoritative answers, recursive caches, A/AAAA/CNAME records, and TTL match expectations?</td> <td> <code class="language-plaintext highlighter-rouge">dig</code>, <code class="language-plaintext highlighter-rouge">nslookup</code> </td> </tr> <tr> <td>3. Connection and TLS</td> <td>Can TCP connect; are certificate hostname, chain, expiry, and SNI correct?</td> <td> <code class="language-plaintext highlighter-rouge">curl -v https://host/</code>, <code class="language-plaintext highlighter-rouge">openssl s_client -servername host</code> </td> </tr> <tr> <td>4. CDN / edge</td> <td>Is DNS actually proxied, and did cache, WAF, redirects, or origin rules rewrite the result?</td> <td>Response headers, edge logs, origin test that preserves Host/SNI</td> </tr> <tr> <td>5. Load balancer</td> <td>Do the listener, route, health check, and backend port agree?</td> <td>Backend health, access logs</td> </tr> <tr> <td>6. Cloud network</td> <td>Do addresses, routes, NAT, security groups, and ACLs all permit this path?</td> <td>Flow logs, route table, rule-hit counters</td> </tr> <tr> <td>7. Host/container</td> <td>Does the host firewall allow it, and is a process listening on the expected address and port?</td> <td> <code class="language-plaintext highlighter-rouge">ss -lntup</code>, service manager, container state</td> </tr> <tr> <td>8. Application and dependencies</td> <td>Are configuration, secrets, database, object storage, and external APIs healthy?</td> <td>Structured logs, metrics, traces, dependency health</td> </tr> </tbody> </table> <p>When comparing an origin without changing public DNS, <code class="language-plaintext highlighter-rouge">curl --resolve</code> can direct a hostname to a chosen IP while preserving the URL hostname for HTTP and TLS; the <a href="https://curl.se/docs/manpage.html" rel="external nofollow noopener" target="_blank">curl manual</a> documents this behavior. Run that test from an authorized diagnostic location and do not expose the origin or disable edge protection merely to troubleshoot; see Cloudflare’s <a href="https://developers.cloudflare.com/fundamentals/security/protect-your-origin-server/" rel="external nofollow noopener" target="_blank">origin-protection guidance</a> for one provider example. Also remember that <code class="language-plaintext highlighter-rouge">curl -I</code> sends <code class="language-plaintext highlighter-rouge">HEAD</code>: a service may reject <code class="language-plaintext highlighter-rouge">HEAD</code> while accepting a normal <code class="language-plaintext highlighter-rouge">GET</code>.</p> <p>Change one variable at a time, and set a clear removal time for any port, rule, or logging level temporarily loosened for diagnosis. Use the table as a causal model, not a mandatory ritual: an explicit application-layer 4xx/5xx or application trace can justify going directly to layer 8, while a request that never reaches the entry point makes an application restart low-information.</p> <h2 id="keeping-this-article-from-going-stale-again">Keeping This Article from Going Stale Again</h2> <p>The fundamental boundaries in this article come from standards and long-maintained official architecture documentation. The following facts still require a new check for every real decision:</p> <ul> <li>product existence, region availability, quotas, and SLA prerequisites;</li> <li>prices, free tiers, public IPv4, NAT, load balancing, logging, and egress charges;</li> <li>supported operating systems, runtimes, API versions, and retirement plans;</li> <li>certificate lifetime, issuance/renewal rules, TLS policy, and browser trust chains;</li> <li>measured network quality for target users, data residency, and legal requirements.</li> </ul> <p>The principal first-party sources cited in this article include the IETF standards for DNS, SRV, private IPv4, and TLS; the NIST guidance for cloud computing, patching, and contingency recovery; Cloudflare’s mechanism documentation for CDNs and two-leg TLS; the Kubernetes container documentation; the Azure compute selection guide; the AWS implementation documentation for object versions, VPC, and IAM; and the OpenTelemetry definition of observability signals. Provider documentation is used here only to explain a verifiable mechanism, not as an unconditional recommendation of the provider’s products.</p> </div> </article> <aside class="article-side-toc"> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#first-draw-the-complete-path-of-one-request">First Draw the Complete Path of One Request</a> <ul> <li class="toc-entry toc-h3"><a href="#domain-names-and-dns-a-name-is-not-a-server">Domain Names and DNS: A Name Is Not a Server</a></li> <li class="toc-entry toc-h3"><a href="#cdns-reverse-proxies-and-load-balancers-three-different-jobs">CDNs, Reverse Proxies, and Load Balancers: Three Different Jobs</a></li> <li class="toc-entry toc-h3"><a href="#applications-databases-and-object-storage-separate-their-lifecycles">Applications, Databases, and Object Storage: Separate Their Lifecycles</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#choosing-compute-trading-control-for-management">Choosing Compute: Trading Control for Management</a> <ul> <li class="toc-entry toc-h3"><a href="#a-practical-selection-order">A Practical Selection Order</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#networking-and-tls-allow-only-required-traffic-at-every-layer">Networking and TLS: Allow Only Required Traffic at Every Layer</a> <ul> <li class="toc-entry toc-h3"><a href="#public-and-private-networks-subnets-routes-and-nat">Public and Private Networks, Subnets, Routes, and NAT</a></li> <li class="toc-entry toc-h3"><a href="#security-groups-network-acls-and-host-firewalls-are-not-substitutes">Security Groups, Network ACLs, and Host Firewalls Are Not Substitutes</a></li> <li class="toc-entry toc-h3"><a href="#a-port-is-only-a-listener-tls-can-have-two-legs">A Port Is Only a Listener; TLS Can Have Two Legs</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#security-and-reliability-deploy-recovery-alongside-the-service">Security and Reliability: Deploy Recovery Alongside the Service</a> <ul> <li class="toc-entry toc-h3"><a href="#identity-secrets-and-least-privilege">Identity, Secrets, and Least Privilege</a></li> <li class="toc-entry toc-h3"><a href="#patches-the-supply-chain-and-reproducible-deployment">Patches, the Supply Chain, and Reproducible Deployment</a></li> <li class="toc-entry toc-h3"><a href="#a-backup-must-prove-itself-through-a-restore-exercise">A Backup Must Prove Itself Through a Restore Exercise</a></li> <li class="toc-entry toc-h3"><a href="#logs-metrics-traces-and-alerts-answer-different-questions">Logs, Metrics, Traces, and Alerts Answer Different Questions</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#costs-and-providers-compare-a-complete-workload-not-one-sticker-price">Costs and Providers: Compare a Complete Workload, Not One Sticker Price</a></li> <li class="toc-entry toc-h2"><a href="#a-rollback-capable-recoverable-deployment-workflow">A Rollback-Capable, Recoverable Deployment Workflow</a></li> <li class="toc-entry toc-h2"><a href="#troubleshooting-follow-the-request-path-from-outside-in">Troubleshooting: Follow the Request Path from Outside In</a></li> <li class="toc-entry toc-h2"><a href="#keeping-this-article-from-going-stale-again">Keeping This Article from Going Stale Again</a></li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="en" data-loading-text="Loading comments…" data-retry-text="Try again" data-error-text="Comments could not be loaded. Try again, or use the GitHub Discussions link above." data-auto-load-enabled-text="Automatic comment loading is on." data-auto-load-disabled-text="Automatic comment loading is off." data-auto-load-unavailable-text="Your browser could not save this setting. You can still show comments manually." aria-labelledby="page-comments-title-en"> <h2 id="page-comments-title-en">Comments</h2> <p class="page-comments__introduction"> Comments are public and stored in <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>. This page connects to giscus.app and GitHub and sends the current page path only after you show comments manually or enable automatic loading. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information. </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>Show comments (~0.13 MB first load)</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-en" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-en" class="page-comments__auto-load-label">Auto-load comments on this site</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">Enable JavaScript and use the button above to show comments, or use the GitHub Discussions link above.</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="Enter a term to start searching." data-no-results="No matching content found." data-missing-translation="This item has no English version yet. You are viewing the English writing index."> <div class="search-dialog__header"> <h2 id="search-title">Search this site</h2> <button id="search-close" class="icon-button" type="button" aria-label="Close search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">Search this site</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search writing, projects, papers, or toys"> <p id="search-status" class="search-status" aria-live="polite">Enter a term to start searching.</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+  
+    
+      
+      {
+        "title": "Building Trust with Timid Zebra Finches: From Environment to Positive Training",
+        "description": "A welfare-first trust ladder for zebra finches—stable surroundings, a health baseline, observable stress signals, immediate reinforcement, and reversible steps.",
+        "tags": ["Zebra finches","Animal welfare"],
+        "url": "/en/posts/building-trust-with-zebra-finches/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Four-Colour Outerwear System That Reduces Daily Decisions",
+        "description": "Turns brick red, warm beige, olive, and charcoal into a personal outerwear system, filtered by real occasions, wardrobe compatibility, silhouette, and maintenance.",
+        "tags": ["Clothing","Colour"],
+        "url": "/en/posts/a-four-color-outerwear-system/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "From Owning Tools to Cooking Easily: A Minimal System for a Small Kitchen",
+        "description": "Organises a small kitchen around real action chains, a minimum capability set, purchase gates, visible inventory, and cleanup resets, with clear food-safety boundaries.",
+        "tags": ["Kitchen","Personal systems"],
+        "url": "/en/posts/a-minimal-system-for-a-small-kitchen/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "From Running to Maintainable: A Minimal Operations Loop for a Minecraft Server",
+        "description": "A compact Minecraft server operations loop—Java compatibility, a dedicated identity, supervised startup, least exposure, tested restores, staged upgrades, and monitoring.",
+        "tags": ["Minecraft","Server operations"],
+        "url": "/en/posts/a-minimal-operations-loop-for-a-minecraft-server/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "SETI Rules: From Setup to Your First Complete Game",
+        "description": "Official illustrations and play order connect setup, turns, actions, round ends, and scoring into one game, without fragmented rulebook lookup or fixed-pace video; Space Agencies and promos follow.",
+        "tags": ["SETI","Space Agencies","Board Games","Rules"],
+        "url": "/en/posts/learning-seti-board-game/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Age of Innovation",
+        "description": "A cross-round valuation of coins, tools, books, scholars, science, navigation, and buildings, placing immediate exchanges and future production on one scale for medium- and long-term planning.",
+        "tags": ["Age of Innovation","Board Games"],
+        "url": "/en/posts/age-of-innovation-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Troyes",
+        "description": "A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply.",
+        "tags": ["Troyes","Board Games"],
+        "url": "/en/posts/troyes-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Gaia Project",
+        "description": "An approximate common scale for credits, ore, knowledge, QIC, buildings, and endgame points, then checked against faction exceptions to give experience-based planning a reproducible baseline.",
+        "tags": ["Gaia Project","Board Games"],
+        "url": "/en/posts/gaia-project-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Understanding Swimming",
+        "description": "A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies.",
+        "tags": ["Swimming"],
+        "url": "/en/posts/understanding-swimming/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Break the Code Strategy Guide",
+        "description": "Drawn from nearly 500 BGA games, this guide treats questions as candidate-set partitions and connects them to deduction, turn order, and endgame play, so the method transfers beyond fixed rankings.",
+        "tags": ["Break the Code","Board Games"],
+        "url": "/en/posts/break-the-code-strategy-guide/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Quantitative Strategy Guide to Seasons",
+        "description": "A common point scale for energy, levels, crystallization, cards, and dice actions, tested against drafting and interaction to answer “which choice is worth more now?” beyond isolated card ratings.",
+        "tags": ["Seasons","Board Games"],
+        "url": "/en/posts/quantitative-strategy-guide-to-seasons/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "PC Build Log",
+        "description": "A complete R5 5600 + RX 6600 XT build record that keeps requirements, component trade-offs, prices, and assembly problems together, showing how a budget became a balanced machine.",
+        "tags": ["PC Building"],
+        "url": "/en/posts/pc-build-log/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building Shape-Matched ASCII Art",
+        "description": "A shape-aware ASCII-art method using glyph templates, comparison, histogram equalization, and grayscale consistency to make outlines follow source images more closely than average-brightness mapping.",
+        "tags": ["NoneBot","Python","ASCII Art"],
+        "url": "/en/posts/building-shape-matched-ascii-art/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Cloud Servers and Deployment Architecture: From Domains to Reliable Operations",
+        "description": "A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting.",
+        "tags": ["Cloud Servers"],
+        "url": "/en/posts/notes-on-cloud-servers/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Practical Guide to Reliable Reinforcement Learning Experiments",
+        "description": "A reproducible RL workflow spanning environment contracts, Gymnasium semantics, open task distributions, visual pre-training, method choice, reward, replay, debugging, and uncertainty reporting.",
+        "tags": ["Reinforcement Learning","Meta-Reinforcement Learning","Representation Learning"],
+        "url": "/en/posts/reinforcement-learning-issues/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building on GitHub Pages: From Static Hosting to Reproducible Deployment",
+        "description": "Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically.",
+        "tags": ["GitHub"],
+        "url": "/en/posts/build-a-personal-github-page/",
+        "kind": "Writing"
+      }
+      
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "A NoneBot2 plugin that turns chat commands into multilingual character voices through configurable speech-synthesis APIs and voice parameters.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "A unified benchmark for reproducible high-dimensional Bayesian optimization experiments, combining synthetic and realistic tasks with representative algorithm wrappers.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "A lightweight solver for Turing Machine puzzles that enumerates valid codes, searches the best three-verifier questioning plan, and estimates success.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "A lightweight voice-to-voice LLM demo connecting local SenseVoice ASR, an OpenAI-compatible chat API, and Edge TTS with free components.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "Zero-shot online cross-task transfer for LLM-based hyperparameter optimization: one LLM call per BO round proposes target candidates and selects an auxiliary query.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "MCP tools for Codex to delegate implementation and request independent Claude Code reviews with explicit authority, provider routing, and structured results.",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-b-ijcnn-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey on High-dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Hongye Cao, Yang Gao, Dong Li, Jianye Hao · Journal of Software",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-survey-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/en/publications/#trust-region-newton-ecai-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey of Meta-reinforcement Learning Research",
+      "description": "Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao · Journal of Software · 2024 Top-20 High-Attention Review Paper",
+      "tags": [2024],
+      "url": "/en/publications/#meta-rl-survey-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/en/publications/#supervised-dr-ppsn-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/en/publications/#casil-aamas-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/en/publications/#radar-rl-2023",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/en/publications/#tild-aamas-2023",
+      "kind": "Papers"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "Moegirlpedia quiz",
+        "description": "Read the Chinese anonymized introduction and choose the matching entry.",
+        "tags": ["encyclopedia","Moegirlpedia","Chinese","entry","quiz"],
+        "url": "/en/toys/#moegirl-quiz",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Artwork quiz (Cleveland Museum of Art)",
+        "description": "Choose the quiz direction and whether to show title, artist, or date.",
+        "tags": ["art","matching","painting","museum","Cleveland","image","quiz"],
+        "url": "/en/toys/#art-glimpse",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Anime protagonist quiz (AniList)",
+        "description": "Choose among three four-choice links between anime and their main characters.",
+        "tags": ["AniList","anime","character","main role","relation","quiz"],
+        "url": "/en/toys/#anilist-role-quiz",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Color difference challenge",
+        "description": "Find the subtly different tile and see how far you can go.",
+        "tags": ["color","vision","perception","challenge"],
+        "url": "/en/toys/#color-challenge",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Ten-second estimate",
+        "description": "Stop as close to ten seconds as you can without watching a timer.",
+        "tags": ["ten seconds","time","intuition","challenge"],
+        "url": "/en/toys/#ten-second",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Reaction time",
+        "description": "Wait for the signal, then respond as quickly as possible.",
+        "tags": ["reaction","time","speed","challenge"],
+        "url": "/en/toys/#reaction-time",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Number Wordle",
+        "description": "Use exact and digit-only matches to deduce the hidden number code.",
+        "tags": ["number Wordle","codebreaker","deduction","logic","numbers","game"],
+        "url": "/en/toys/#codebreaker",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Make 24",
+        "description": "Use each of four numbers once and combine them to make exactly 24.",
+        "tags": ["make 24","arithmetic","fractions","mental math","logic","game"],
+        "url": "/en/toys/#make-24",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Lights Out",
+        "description": "Flip a cell and its neighbours, then plan a route to turn every light off.",
+        "tags": ["lights out","grid","minimum moves","planning","logic","game"],
+        "url": "/en/toys/#lights-out",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Random password",
+        "description": "Generate a configurable random password in your browser.",
+        "tags": ["random","password","security","generator"],
+        "url": "/en/toys/#random-password",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Random numbers",
+        "description": "Generate one or more random results from an integer range.",
+        "tags": ["random","number","integer","generator"],
+        "url": "/en/toys/#random-number",
+        "kind": "Toys"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>

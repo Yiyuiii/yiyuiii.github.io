@@ -1,0 +1,605 @@
+<!DOCTYPE html> <html lang="zh"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> GitHub Pages 建站：从静态托管到可复现部署 | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/build-a-personal-github-page/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="GitHub Pages 建站：从静态托管到可复现部署"> <meta property="og:url" content="https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/"> <meta property="og:description" content="从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。"> <meta property="og:locale" content="zh_CN"> <meta property="og:locale:alternate" content="en_US"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202109160000/cover-homepage-2026-07-30.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="GitHub Pages 建站：从静态托管到可复现部署"> <meta name="twitter:description" content="从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。"> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202109160000/cover-homepage-2026-07-30.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+    "headline": "GitHub Pages 建站：从静态托管到可复现部署",
+    "description": "从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。",
+    "inLanguage": "zh-CN",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2021-09-16T00:00:00+08:00",
+    "dateModified": "2026-08-08T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="关闭日光背景" aria-pressed="true" data-enable-light-label="开启日光背景" data-disable-light-label="关闭日光背景" data-enable-dark-label="开启月光背景" data-disable-dark-label="关闭月光背景" data-status-light-on="日光背景已开启" data-status-light-off="日光背景已关闭" data-status-dark-on="月光背景已开启" data-status-dark-off="月光背景已关闭" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="主导航"> <a href="/">欢迎</a> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/toys/">小玩意</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到夜晚样式" aria-pressed="false" data-enable-light-label="切换到明亮样式" data-enable-dark-label="切换到夜晚样式" data-status-light="已切换到明亮样式" data-status-dark="已切换到夜晚样式" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/posts/build-a-personal-github-page/" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>GitHub Pages 建站：从静态托管到可复现部署</h1> <div class="article-meta"> <div class="article-tags"> <a href="/writing/?tag=GitHub">GitHub</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> 初稿 <time datetime="2021-09-16">2021.09.16</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span> 最近修订 <time datetime="2026-08-08">2026.08.08</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">修订历史</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2021-09-16">2021.09.16</time> <span>初稿</span> </li> <li> <time datetime="2026-08-08">2026.08.08</time> <span>由 GPT-5.6 Sol 重新调研并重写；以当前资料替换过时的主题实践，完整重构托管边界、Jekyll 依赖、Pages 工作流、域名、CI 与故障排查</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>章节</summary> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#%E5%85%88%E7%90%86%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%86%8D%E9%80%89%E6%8B%A9%E5%B7%A5%E5%85%B7">先理解系统，再选择工具</a> <ul> <li class="toc-entry toc-h3"><a href="#github-pages-%E6%89%98%E7%AE%A1%E4%BB%80%E4%B9%88">GitHub Pages 托管什么</a></li> <li class="toc-entry toc-h3"><a href="#%E5%9B%9B%E9%98%B6%E6%AE%B5%E6%A8%A1%E5%9E%8B">四阶段模型</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E9%80%89%E6%8B%A9%E5%8F%91%E5%B8%83%E8%B7%AF%E5%BE%84">选择发布路径</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%BB%8E%E5%88%86%E6%94%AF%E5%8F%91%E5%B8%83">从分支发布</a></li> <li class="toc-entry toc-h3"><a href="#%E9%80%9A%E8%BF%87-github-actions-%E5%8F%91%E5%B8%83">通过 GitHub Actions 发布</a></li> <li class="toc-entry toc-h3"><a href="#%E6%8C%89%E8%B4%A3%E4%BB%BB%E8%BE%B9%E7%95%8C%E9%80%89%E6%8B%A9%E8%80%8C%E9%9D%9E%E8%BF%BD%E9%9A%8F%E6%BD%AE%E6%B5%81">按责任边界选择，而非追随潮流</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E8%AE%A9-jekyll-%E6%9E%84%E5%BB%BA%E5%8F%AF%E4%BB%A5%E5%A4%8D%E7%8E%B0">让 Jekyll 构建可以复现</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%88%86%E6%B8%85%E5%90%84%E4%B8%AA-ruby-%E5%B7%A5%E5%85%B7%E7%9A%84%E8%81%8C%E8%B4%A3">分清各个 Ruby 工具的职责</a></li> <li class="toc-entry toc-h3"><a href="#%E5%BB%BA%E7%AB%8B%E5%94%AF%E4%B8%80%E7%9A%84%E6%9C%AC%E5%9C%B0%E5%91%BD%E4%BB%A4%E8%B7%AF%E5%BE%84">建立唯一的本地命令路径</a></li> <li class="toc-entry toc-h3"><a href="#%E6%B5%8B%E8%AF%95%E4%BA%A7%E7%89%A9%E8%80%8C%E4%B8%8D%E5%8F%AA%E6%B5%8B%E8%AF%95%E6%BA%90%E7%A0%81">测试产物，而不只测试源码</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D">安全配置自定义域名</a></li> <li class="toc-entry toc-h2"><a href="#%E6%8C%89%E5%A4%B1%E8%B4%A5%E9%98%B6%E6%AE%B5%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C">按失败阶段排查故障</a></li> <li class="toc-entry toc-h2"><a href="#%E5%B0%86%E6%98%93%E5%8F%98%E4%BA%8B%E5%AE%9E%E7%95%99%E5%9C%A8%E6%9E%B6%E6%9E%84%E4%B9%8B%E5%A4%96">将易变事实留在架构之外</a></li> <li class="toc-entry toc-h2"><a href="#%E5%AE%98%E6%96%B9%E8%B5%84%E6%96%99">官方资料</a></li> </ul> </nav> </details> <figure class="article-cover"> <img height="640" width="640" class="article-cover__image" src="/assets/posts/202109160000/cover-homepage-2026-07-30.webp" alt="这个个人 GitHub Pages 站点的中文随笔首页" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>题图：本站于 2026 年 7 月 30 日的中文随笔首页；截图及站点内容均由作者制作。</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <p>这篇文章最初写于 2021 年，当时我刚搭建好自己的站点。具体实现后来已经变化，因此这次修订围绕仍然有用的部分重新组织教程。</p> <p><span id="building-a-personal-github-page" aria-hidden="true"></span></p> <p>真正持久的经验不是某个按钮今天位于哪里，而是分清源码、构建环境、生成产物和公开托管之间的边界。一旦这条边界清楚，主题和产品界面即使变化，整座站点也不会重新变成难以解释的黑箱。</p> <h2 id="先理解系统再选择工具">先理解系统，再选择工具</h2> <h3 id="github-pages-托管什么">GitHub Pages 托管什么</h3> <p><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" rel="external nofollow noopener" target="_blank">GitHub Pages 是静态站点托管服务</a>。它向读者提供 HTML、CSS、JavaScript、图片、字体等静态文件。Pages 可以先从源码构建这些文件，但不会运行长期驻留的应用服务器，也不会在每次请求时执行服务端 PHP、Ruby 或 Python。</p> <p>这条边界带来三条实用规则：</p> <ul> <li>浏览器端 JavaScript 可以请求外部 API，但写入仓库或随 JavaScript 下发的凭据都是公开的。密钥和高权限操作不应放在 Pages 站点中。</li> <li>账号、私有数据、支付、可信表单处理等功能需要独立后端，或采用安全模型合适的托管服务。</li> <li>静态站点生成器是编译器，不是生产服务器。Jekyll 在部署前运行，生成 Pages 随后提供的文件。</li> </ul> <p>Pages 支持两种 URL 形态。用户或组织站点通常存放在 <code class="language-plaintext highlighter-rouge">&lt;owner&gt;.github.io</code> 仓库并发布在域名根路径；项目站点属于某个仓库，默认发布在 <code class="language-plaintext highlighter-rouge">/&lt;repository&gt;/</code> 下。生成链接和资源地址时，不能忽略这段额外路径。</p> <table> <thead> <tr> <th>站点类型</th> <th>典型仓库</th> <th>默认 URL</th> <th>常见 URL 注意点</th> </tr> </thead> <tbody> <tr> <td>用户或组织站点</td> <td><code class="language-plaintext highlighter-rouge">&lt;owner&gt;.github.io</code></td> <td><code class="language-plaintext highlighter-rouge">https://&lt;owner&gt;.github.io/</code></td> <td>基础路径通常为空</td> </tr> <tr> <td>项目站点</td> <td>任意项目仓库</td> <td><code class="language-plaintext highlighter-rouge">https://&lt;owner&gt;.github.io/&lt;repository&gt;/</code></td> <td>链接和资源必须包含项目基础路径</td> </tr> </tbody> </table> <p>仓库可见性、入口文件、账号套餐和设置界面等当前细节，应以官方<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site" rel="external nofollow noopener" target="_blank">站点创建指南</a>为准。它们是需要复核的产品事实，不应从一篇有日期的教程里背下来。</p> <h3 id="四阶段模型">四阶段模型</h3> <p>一套可维护的部署可以分成四个阶段：</p> <ol> <li> <strong>源码：</strong> Git 中保存的 Markdown、布局、数据、配置、代码和依赖声明。</li> <li> <strong>构建：</strong> 由锁定的工具链把源码转换成静态目录，并报告错误。</li> <li> <strong>产物：</strong> 已通过自动检查的那一个生成目录。</li> <li> <strong>部署：</strong> GitHub Pages 发布该产物，并把它关联到 Pages 环境和域名。</li> </ol> <p>分开这四个阶段，许多故障便有了明确归属。Markdown 错误属于源码或构建；<code class="language-plaintext highlighter-rouge">_site</code> 中缺少文件属于构建或产物；有效产物没有到达公开 URL 属于部署；公开页面中的图片指向错误路径，虽然表现于浏览器，通常仍是构建配置问题。</p> <h2 id="选择发布路径">选择发布路径</h2> <p>GitHub 目前支持<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" rel="external nofollow noopener" target="_blank">从分支发布或通过自定义 GitHub Actions 工作流发布</a>。两者最终都使用 Pages 托管，但责任边界不同。</p> <h3 id="从分支发布">从分支发布</h3> <p>在仓库 Pages 设置中选择 <strong>Deploy from a branch</strong>，再指定分支以及其根目录或 <code class="language-plaintext highlighter-rouge">/docs</code> 目录。GitHub 会发布该位置的变更；除非发布源中存在 <code class="language-plaintext highlighter-rouge">.nojekyll</code>，否则默认使用 Jekyll 构建。</p> <p>如果发布源本来就是静态产物，或者传统 Jekyll 站点完全适配 GitHub 内置环境，这条路径最省事。代价是对 Ruby、Jekyll、插件、构建前处理和验证步骤的控制较少。若必须使用不受支持的插件或其它生成器，应把构建移入 Actions，而不是让分支构建勉强模拟自定义服务器。</p> <h3 id="通过-github-actions-发布">通过 GitHub Actions 发布</h3> <p>当项目需要明确工具链、任意生成器、发布前测试，或需要将源码和生成产物彻底分开时，选择 <strong>GitHub Actions</strong>。当前官方流程是：</p> <ol> <li>检出源码；</li> <li>配置 Pages 元数据；</li> <li>构建静态站点；</li> <li>上传一个 Pages 产物；</li> <li>由拥有 Pages 与身份令牌必要权限的作业部署该产物。</li> </ol> <p>下面的骨架使用本文修订日 GitHub 官方文档展示的 Actions 主版本。复制到新仓库前，应与当前的<a href="https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages" rel="external nofollow noopener" target="_blank">自定义工作流指南</a>或仓库 Pages 设置提供的工作流模板比较。</p> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">pages</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+
+<span class="na">permissions</span><span class="pi">:</span>
+  <span class="na">contents</span><span class="pi">:</span> <span class="s">read</span>
+  <span class="na">pages</span><span class="pi">:</span> <span class="s">read</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">env</span><span class="pi">:</span>
+      <span class="na">JEKYLL_ENV</span><span class="pi">:</span> <span class="s">production</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803</span> <span class="c1"># v6</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b</span> <span class="c1"># v1.321.0</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">bundler-cache</span><span class="pi">:</span> <span class="kc">true</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Setup Pages</span>
+        <span class="na">id</span><span class="pi">:</span> <span class="s">pages</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b</span> <span class="c1"># v5</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">bundle exec jekyll build --trace --baseurl "$"</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b</span> <span class="c1"># v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./_site</span>
+
+  <span class="na">deploy</span><span class="pi">:</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">github.event_name != 'pull_request' &amp;&amp; github.ref == 'refs/heads/main'</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build</span>
+    <span class="na">permissions</span><span class="pi">:</span>
+      <span class="na">pages</span><span class="pi">:</span> <span class="s">write</span>
+      <span class="na">id-token</span><span class="pi">:</span> <span class="s">write</span>
+    <span class="na">concurrency</span><span class="pi">:</span>
+      <span class="na">group</span><span class="pi">:</span> <span class="s">pages</span>
+      <span class="na">cancel-in-progress</span><span class="pi">:</span> <span class="kc">false</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">github-pages</span>
+      <span class="na">url</span><span class="pi">:</span> <span class="s">$</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy</span>
+        <span class="na">id</span><span class="pi">:</span> <span class="s">deployment</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e</span> <span class="c1"># v4</span>
+</code></pre></div></div> <p>应把这段内容视为架构，而不是永久版本表。注释标出本文修订日核验的 action 版本，每一条 <code class="language-plaintext highlighter-rouge">uses:</code> 则固定到当时实际核验的完整 commit；GitHub 的<a href="https://docs.github.com/en/actions/reference/security/secure-use" rel="external nofollow noopener" target="_blank">安全使用指南</a>把完整 commit SHA 视为不可变引用。让 Dependabot 或明确的维护流程提出可审阅的 SHA 更新，不要静默跟随可移动标签。Ruby 版本应保存在 <code class="language-plaintext highlighter-rouge">.ruby-version</code>，或在工作流中显式设置；持续维护的 <a href="https://github.com/ruby/setup-ruby" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">ruby/setup-ruby</code> action</a>能读取项目版本，执行 <code class="language-plaintext highlighter-rouge">bundle install</code> 时遵循 <code class="language-plaintext highlighter-rouge">Gemfile.lock</code>，并通过 <code class="language-plaintext highlighter-rouge">bundler-cache</code> 缓存依赖。构建作业只获得仓库和 Pages 读权限；只有部署作业获得写入及身份令牌权限，它只允许 <code class="language-plaintext highlighter-rouge">main</code> 分支发布，并串行化生产部署。<code class="language-plaintext highlighter-rouge">configure-pages</code> 还会把项目站点基础路径传给 Jekyll。在构建和上传之间加入项目自己的检查命令，让拉取请求执行构建但不执行部署；同时把 <code class="language-plaintext highlighter-rouge">github-pages</code> 环境保护作为第二道分支护栏。使用其它生成器时，可以替换 Ruby 与构建步骤，但应保留产物与部署阶段。</p> <h3 id="按责任边界选择而非追随潮流">按责任边界选择，而非追随潮流</h3> <table> <thead> <tr> <th>问题</th> <th>分支发布</th> <th>自定义 Actions</th> </tr> </thead> <tbody> <tr> <td>谁定义构建环境？</td> <td>GitHub 内置的 Pages/Jekyll 环境</td> <td>仓库工作流和锁文件</td> </tr> <tr> <td>能否运行任意构建前检查？</td> <td>有限</td> <td>可以</td> </tr> <tr> <td>是否要把生成产物保存在源码分支？</td> <td>有时需要</td> <td>不需要；上传产物即可</td> </tr> <tr> <td>适合场景</td> <td>小型静态站点或传统 Jekyll 站点</td> <td>有测试、定制或多阶段构建的站点</td> </tr> </tbody> </table> <p>不要同时维护两条部署路径。本地脚本和 CI 应产生相同的输出模型，并且只授权其中一条路径发布产物。</p> <h2 id="让-jekyll-构建可以复现">让 Jekyll 构建可以复现</h2> <h3 id="分清各个-ruby-工具的职责">分清各个 Ruby 工具的职责</h3> <p>Jekyll 是 Ruby gem；RubyGems 负责分发 gem；<code class="language-plaintext highlighter-rouge">Gemfile</code> 声明项目直接需要的 gem；Bundler 解析并安装这张依赖图，把精确版本记录在 <code class="language-plaintext highlighter-rouge">Gemfile.lock</code>；<code class="language-plaintext highlighter-rouge">bundle exec</code> 则在该依赖环境内运行命令，避免无声调用另一个系统级可执行文件。</p> <p>官方的 <a href="https://jekyllrb.com/docs/" rel="external nofollow noopener" target="_blank">Jekyll 入门文档</a>与 <a href="https://bundler.io/guides/getting_started.html" rel="external nofollow noopener" target="_blank">Bundler 指南</a>解释了这层关系。命令是 <code class="language-plaintext highlighter-rouge">bundle</code>，不是 <code class="language-plaintext highlighter-rouge">buddle</code>；通常的本地入口是 <code class="language-plaintext highlighter-rouge">bundle exec jekyll serve</code>。</p> <p>使用自定义 Actions 构建时，最小依赖文件可以从下面开始：</p> <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">source</span> <span class="s2">"https://rubygems.org"</span>
+
+<span class="n">gem</span> <span class="s2">"jekyll"</span>
+
+<span class="n">group</span> <span class="ss">:jekyll_plugins</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s2">"jekyll-feed"</span>
+<span class="k">end</span>
+</code></pre></div></div> <p>运行 <code class="language-plaintext highlighter-rouge">bundle install</code> 解析并安装依赖。对于网站这样的应用，应提交 <code class="language-plaintext highlighter-rouge">Gemfile</code> 和 <code class="language-plaintext highlighter-rouge">Gemfile.lock</code>；Bundler 的<a href="https://bundler.io/man/bundle-install.1.html" rel="external nofollow noopener" target="_blank">锁文件文档</a>说明了后续安装为何能够复用同一份依赖快照。需要升级时，用 <code class="language-plaintext highlighter-rouge">bundle update &lt;gem&gt;</code> 或等价的受审依赖升级流程明确更新，重新构建，再提交产生的锁文件变更。</p> <p>从分支发布是一个特例：GitHub 内置 Jekyll 环境、支持的插件和 <code class="language-plaintext highlighter-rouge">github-pages</code> gem 决定生产兼容性。应遵循 GitHub 当前的 <a href="https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll" rel="external nofollow noopener" target="_blank">Pages 与 Jekyll 文档</a>，而不是假设最新本地 Jekyll 和所有第三方插件都能在该环境运行。</p> <h3 id="建立唯一的本地命令路径">建立唯一的本地命令路径</h3> <p>从全新检出开始，基本循环应该短到每位贡献者都会实际使用：</p> <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">bundle install
+bundle exec jekyll serve --livereload
+</span></code></pre></div></div> <p>推送前应执行生产构建和项目检查，而不只依赖开发服务器：</p> <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">bundle exec jekyll build --trace
+bundle exec jekyll doctor
+</span></code></pre></div></div> <p>GitHub 也维护了一份<a href="https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll" rel="external nofollow noopener" target="_blank">本地 Jekyll 测试指南</a>。真实项目应记录所需 Ruby 版本，并把链接、HTML、无障碍或浏览器检查包装进一个统一验证命令。CI 必须调用同一个入口，而不是重新实现一个更弱的近似版本。</p> <p>若要增强可复现性，应定期用空依赖缓存测试全新检出。长期使用的本机环境可能掩盖未声明的 gem、被忽略的生成文件，或者只有全新 Linux runner 才会暴露的平台依赖。</p> <h3 id="测试产物而不只测试源码">测试产物，而不只测试源码</h3> <p><code class="language-plaintext highlighter-rouge">jekyll build</code> 成功只证明生成过程完成，并不能证明站点可用。CI 至少应验证：</p> <ul> <li>预期入口文件存在于 <code class="language-plaintext highlighter-rouge">_site</code>；</li> <li>站内链接和引用的本地资源可以解析；</li> <li>项目站点 URL 正确遵循 <code class="language-plaintext highlighter-rouge">baseurl</code>；</li> <li>依赖 JavaScript 的页面仍有有意义的静态 HTML；</li> <li>密钥、草稿、缓存和仅供源码使用的文件没有进入产物；</li> <li>浏览器能无控制台错误地加载代表性桌面与移动页面；</li> <li>只有已经通过检查的同一个产物才能进入部署作业。</li> </ul> <p>若视觉审阅很重要，可以为拉取请求保存预览产物。这样，审阅者检查的是候选输出，而不是只根据 Markdown 猜测页面效果。</p> <h2 id="安全配置自定义域名">安全配置自定义域名</h2> <p>域名配置横跨两个控制面：GitHub Pages 必须知道哪个域名属于该站点，DNS 提供商必须把这个域名路由到 Pages。应先在 Pages 设置中配置自定义域名，再发布 DNS 记录；GitHub 建议验证域名，以降低域名接管风险。</p> <p>对于 <code class="language-plaintext highlighter-rouge">www.example.com</code> 一类子域名，通常使用 <code class="language-plaintext highlighter-rouge">CNAME</code> 直接指向 <code class="language-plaintext highlighter-rouge">&lt;owner&gt;.github.io</code>，不能带仓库路径。根域名可以使用 DNS 提供商支持的 <code class="language-plaintext highlighter-rouge">ALIAS</code> 或 <code class="language-plaintext highlighter-rouge">ANAME</code>，也可以使用 Pages 当前的 <code class="language-plaintext highlighter-rouge">A</code> 和可选 <code class="language-plaintext highlighter-rouge">AAAA</code> 记录。不要从旧文章复制 IP 地址：修改 DNS 时应阅读当前的<a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site" rel="external nofollow noopener" target="_blank">自定义域名说明</a>。除非另有经过论证和加固的设计，否则避免通配符记录。</p> <p>不要只相信 DNS 提供商的控制面板，应检查公共 DNS：</p> <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">dig example.com A
+dig www.example.com CNAME
+</span></code></pre></div></div> <p>在 PowerShell 中，<code class="language-plaintext highlighter-rouge">Resolve-DnsName example.com</code> 可以完成同类外部检查。DNS 传播与证书签发都是异步过程，因此需要区分“记录尚未公开可见”和“记录指向了错误目标”。</p> <p>DNS 正确后，启用 <strong>Enforce HTTPS</strong>。GitHub 的 <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https" rel="external nofollow noopener" target="_blank">HTTPS 指南</a>覆盖证书签发与混合内容故障。所有样式表、脚本、图片和字体都应通过 HTTPS 或同源加载；否则即使页面证书有效，浏览器仍可能拦截不安全资源。</p> <p>从分支发布时，设置自定义域名可能在源码中创建 <code class="language-plaintext highlighter-rouge">CNAME</code> 文件；使用自定义 Actions 工作流时，Pages 设置或 API 才是权威来源，仓库中已有的 <code class="language-plaintext highlighter-rouge">CNAME</code> 并不能启用域名。切换发布模式时应重新核对当前文档。</p> <h2 id="按失败阶段排查故障">按失败阶段排查故障</h2> <p>先查看最具体的证据：失败的工作流作业、其中第一条有意义的错误、生成产物和 Pages 设置。邮件通知与浏览器现象只是次级线索。</p> <table> <thead> <tr> <th>现象</th> <th>首先检查</th> <th>可能的修正</th> </tr> </thead> <tbody> <tr> <td>本地构建失败</td> <td> <code class="language-plaintext highlighter-rouge">bundle exec jekyll build --trace</code> 的第一条错误</td> <td>在部署前修正 front matter、配置、依赖、插件或源码语法</td> </tr> <tr> <td>本地通过但 CI 失败</td> <td>Ruby／平台假设、被忽略文件、文件名大小写、锁文件、生产环境</td> <td>使用 CI 的输入从全新检出复现</td> </tr> <tr> <td>工作流成功但站点内容仍旧</td> <td>已部署的运行记录、产物身份、部署作业条件、Pages 发布源</td> <td>确认预期提交确实生成并部署了该产物</td> </tr> <tr> <td>根 URL 返回 404</td> <td>Pages 发布源、仓库命名、产物根目录入口文件</td> <td>把入口文件放入配置的发布源或产物根目录</td> </tr> <tr> <td>HTML 正常但 CSS 或图片返回 404</td> <td>生成 URL、<code class="language-plaintext highlighter-rouge">url</code>、<code class="language-plaintext highlighter-rouge">baseurl</code>、绝对与相对路径</td> <td>针对实际部署的用户站点或项目站点路径生成 URL</td> </tr> <tr> <td>自定义域名或证书失败</td> <td>公共 DNS 记录、冲突的额外记录、Pages 域名设置</td> <td>修正 DNS，等待传播，必要时再重启证书签发</td> </tr> <tr> <td>HTTPS 页面报告不安全内容</td> <td>浏览器网络面板和生成后的资源 URL</td> <td>替换 <code class="language-plaintext highlighter-rouge">http://</code> 资源引用并重新构建</td> </tr> </tbody> </table> <p>使用内置 Jekyll 构建时，参考 GitHub 当前的<a href="https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-jekyll-build-errors-for-github-pages-sites" rel="external nofollow noopener" target="_blank">构建错误指南</a>。使用自定义工作流时，应让构建在 <code class="language-plaintext highlighter-rouge">pull_request</code> 事件运行，使错误在合并前出现；不要试图从公开 404 页面反推原因，而应检查 Actions 日志。</p> <p>如果配置看起来正确但公开站点仍有故障，应先检查 GitHub Status 和仓库的 Pages 部署历史，再修改 DNS 或代码。同时尝试多种猜测性修复，会破坏定位失败阶段所需的证据。</p> <h2 id="将易变事实留在架构之外">将易变事实留在架构之外</h2> <p>这一领域有些事实本来就具有时效性：套餐资格、额度、构建超时、受支持的 gem 与插件、runner 镜像、Actions 主版本、DNS 地址、计费方式和设置界面。只有它们会影响当前决策时，才应该重新查证。</p> <p>例如，GitHub 维护了一份独立的 <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits" rel="external nofollow noopener" target="_blank">Pages 限制页面</a>。链接到这份实时契约，比把今天的流量或构建频率数值抄入教程并当作永久限制更可靠。</p> <p>每次新部署或大规模维护前，可以复核下面的短清单：</p> <ol> <li>当前套餐下，Pages 是否支持仓库可见性和预期用途。</li> <li>所选分支或工作流是否仍是配置中的发布源。</li> <li>Ruby、Jekyll、插件、Actions 与锁文件是否描述同一套兼容构建。</li> <li>全新本地或 CI 构建是否产出了真正接受测试的产物。</li> <li>DNS 值和 HTTPS 状态是否符合 GitHub 当前域名文档。</li> <li>当前限制是否容纳站点生成体积、构建时间与预期流量。</li> </ol> <p>这份清单能够跨越产品改版，因为它追问权威事实位于哪里。具体答案可能变化，获取并验证答案的方法不会变化。</p> <h2 id="官方资料">官方资料</h2> <ul> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" rel="external nofollow noopener" target="_blank">什么是 GitHub Pages？</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site" rel="external nofollow noopener" target="_blank">创建 GitHub Pages 站点</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" rel="external nofollow noopener" target="_blank">配置发布源</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages" rel="external nofollow noopener" target="_blank">在 GitHub Pages 中使用自定义工作流</a></li> <li><a href="https://github.com/ruby/setup-ruby" rel="external nofollow noopener" target="_blank">在 GitHub Actions 中配置 Ruby</a></li> <li><a href="https://jekyllrb.com/docs/" rel="external nofollow noopener" target="_blank">Jekyll 文档</a></li> <li><a href="https://jekyllrb.com/tutorials/using-jekyll-with-bundler/" rel="external nofollow noopener" target="_blank">通过 Bundler 使用 Jekyll</a></li> <li><a href="https://bundler.io/guides/getting_started.html" rel="external nofollow noopener" target="_blank">Bundler 入门</a></li> <li><a href="https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll" rel="external nofollow noopener" target="_blank">在本地通过 Jekyll 测试 Pages 站点</a></li> <li><a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site" rel="external nofollow noopener" target="_blank">管理自定义域名</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https" rel="external nofollow noopener" target="_blank">通过 HTTPS 保护 Pages 站点</a></li> <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits" rel="external nofollow noopener" target="_blank">GitHub Pages 限制</a></li> </ul> </div> </article> <aside class="article-side-toc"> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"> <a href="#%E5%85%88%E7%90%86%E8%A7%A3%E7%B3%BB%E7%BB%9F%E5%86%8D%E9%80%89%E6%8B%A9%E5%B7%A5%E5%85%B7">先理解系统，再选择工具</a> <ul> <li class="toc-entry toc-h3"><a href="#github-pages-%E6%89%98%E7%AE%A1%E4%BB%80%E4%B9%88">GitHub Pages 托管什么</a></li> <li class="toc-entry toc-h3"><a href="#%E5%9B%9B%E9%98%B6%E6%AE%B5%E6%A8%A1%E5%9E%8B">四阶段模型</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E9%80%89%E6%8B%A9%E5%8F%91%E5%B8%83%E8%B7%AF%E5%BE%84">选择发布路径</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%BB%8E%E5%88%86%E6%94%AF%E5%8F%91%E5%B8%83">从分支发布</a></li> <li class="toc-entry toc-h3"><a href="#%E9%80%9A%E8%BF%87-github-actions-%E5%8F%91%E5%B8%83">通过 GitHub Actions 发布</a></li> <li class="toc-entry toc-h3"><a href="#%E6%8C%89%E8%B4%A3%E4%BB%BB%E8%BE%B9%E7%95%8C%E9%80%89%E6%8B%A9%E8%80%8C%E9%9D%9E%E8%BF%BD%E9%9A%8F%E6%BD%AE%E6%B5%81">按责任边界选择，而非追随潮流</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E8%AE%A9-jekyll-%E6%9E%84%E5%BB%BA%E5%8F%AF%E4%BB%A5%E5%A4%8D%E7%8E%B0">让 Jekyll 构建可以复现</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%88%86%E6%B8%85%E5%90%84%E4%B8%AA-ruby-%E5%B7%A5%E5%85%B7%E7%9A%84%E8%81%8C%E8%B4%A3">分清各个 Ruby 工具的职责</a></li> <li class="toc-entry toc-h3"><a href="#%E5%BB%BA%E7%AB%8B%E5%94%AF%E4%B8%80%E7%9A%84%E6%9C%AC%E5%9C%B0%E5%91%BD%E4%BB%A4%E8%B7%AF%E5%BE%84">建立唯一的本地命令路径</a></li> <li class="toc-entry toc-h3"><a href="#%E6%B5%8B%E8%AF%95%E4%BA%A7%E7%89%A9%E8%80%8C%E4%B8%8D%E5%8F%AA%E6%B5%8B%E8%AF%95%E6%BA%90%E7%A0%81">测试产物，而不只测试源码</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D">安全配置自定义域名</a></li> <li class="toc-entry toc-h2"><a href="#%E6%8C%89%E5%A4%B1%E8%B4%A5%E9%98%B6%E6%AE%B5%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C">按失败阶段排查故障</a></li> <li class="toc-entry toc-h2"><a href="#%E5%B0%86%E6%98%93%E5%8F%98%E4%BA%8B%E5%AE%9E%E7%95%99%E5%9C%A8%E6%9E%B6%E6%9E%84%E4%B9%8B%E5%A4%96">将易变事实留在架构之外</a></li> <li class="toc-entry toc-h2"><a href="#%E5%AE%98%E6%96%B9%E8%B5%84%E6%96%99">官方资料</a></li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="zh-CN" data-loading-text="正在加载评论……" data-retry-text="重新加载" data-error-text="评论暂时无法加载；你可以重试，或使用上方 GitHub Discussions 链接。" data-auto-load-enabled-text="已开启自动加载评论。" data-auto-load-disabled-text="已关闭自动加载评论。" data-auto-load-unavailable-text="浏览器无法保存自动加载设置；你仍可手动显示评论。" aria-labelledby="page-comments-title-zh"> <h2 id="page-comments-title-zh">评论</h2> <p class="page-comments__introduction"> 评论公开保存在 <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>。只有在你手动显示评论或开启自动加载后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。 </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>显示评论（首次约 0.13 MB）</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-zh" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-zh" class="page-comments__auto-load-label">在本站自动加载评论</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">请启用 JavaScript 后选择上方按钮显示评论，或使用上方 GitHub Discussions 链接。</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目、论文或小玩意"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+      
+      {
+        "title": "与胆小的珍珠鸟建立信任：从环境到正向训练",
+        "description": "以稳定环境、健康基线、可观察压力信号、即时奖励和逐级选择建立珍珠鸟信任；明确区分个人观察、动物福利原则与必须交给禽类兽医的问题。",
+        "tags": ["珍珠鸟","动物福利"],
+        "url": "/posts/%E4%B8%8E%E7%8F%8D%E7%8F%A0%E9%B8%9F%E5%BB%BA%E7%AB%8B%E4%BF%A1%E4%BB%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "用四种颜色建立一套不费脑的外套系统",
+        "description": "用砖红、米黄、橄榄绿和炭灰建立个人外套调色盘，再以场景、轮廓、现有衣橱与维护成本筛选款式；不把主观偏好包装成普遍色彩定律。",
+        "tags": ["穿搭","色彩"],
+        "url": "/posts/%E5%9B%9B%E7%A7%8D%E9%A2%9C%E8%89%B2%E7%9A%84%E5%A4%96%E5%A5%97%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从买齐工具到顺手做饭：小厨房的最小系统",
+        "description": "从实际动作链而非商品品类组织小厨房，用最小能力集、购买闸门、可见库存和清洁复位减少做饭摩擦；个人经验不冒充营养或食品安全指南。",
+        "tags": ["厨房","个人系统"],
+        "url": "/posts/%E5%B0%8F%E5%8E%A8%E6%88%BF%E7%9A%84%E6%9C%80%E5%B0%8F%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从能运行到可维护：Minecraft 服务器的最小运维闭环",
+        "description": "把 Java 兼容性、专用账户、受控启动、最小暴露、备份恢复、升级演练和监控串成一条小型服务器运维闭环；示例不包含私人端口、账号或玩家标识。",
+        "tags": ["Minecraft","服务器运维"],
+        "url": "/posts/Minecraft%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%9C%80%E5%B0%8F%E8%BF%90%E7%BB%B4%E9%97%AD%E7%8E%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "《SETI》桌游规则：从摆桌到完成第一局",
+        "description": "依照真实游玩顺序，用官方图片把摆桌、回合、行动、轮末与计分连成一局；比按组件查规则书或拖动教学视频更适合纯文字学习，末尾另收扩展与促销牌。",
+        "tags": ["桌游","规则教学","SETI"],
+        "url": "/posts/SETI%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E5%AE%8C%E6%88%90%E7%AC%AC%E4%B8%80%E5%B1%80/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《大创造时代》资源-分值量化计算思路",
+        "description": "用跨轮迭代估算金币、工具、书、学者、科学轨、航海和建筑收益，把当前兑换和未来产出放进同一尺度；比静态汇率更适合中长期规划。",
+        "tags": ["大创造时代","桌游"],
+        "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《特鲁瓦》资源-分值量化分析攻略",
+        "description": "把影响力、事件、骰子、功能牌和金钱放到同一价值框架，说明共享骰池怎样改变随机资源的价格；适合比较跨系统行动，补足单卡点评缺少的全局尺度。",
+        "tags": ["特鲁瓦","桌游"],
+        "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《盖亚计划》资源-分值量化计算思路",
+        "description": "把钱、矿、知识、QIC、建筑收益和终局分数换到近似统一尺度，再逐种族检查例外，为经验打法提供一套可复算的宏观规划基准。",
+        "tags": ["盖亚计划","桌游"],
+        "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "了解游泳",
+        "description": "从安全入水、漂浮与呼吸开始，按蛙泳腿、手、配合和距离进阶练到 50 米；同时解释浮力、阻力与遇险处置的可靠边界。",
+        "tags": ["游泳"],
+        "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "逻辑对决桌游攻略",
+        "description": "基于近 500 局 BGA 实战，把问题选择写成候选集划分，并连到数字推理、先后手与终局攻防；比记固定问题评级更能迁移到新局面。",
+        "tags": ["逻辑对决","桌游"],
+        "url": "/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四季物语量化分析攻略",
+        "description": "用统一分值估算元素、召唤等级、晶化、卡牌和骰子行动，再把资源约束、轮抽和对抗放回实战；比单张卡牌评级更适合回答“此刻哪种选择更值”。",
+        "tags": ["四季物语","桌游"],
+        "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "装机记录",
+        "description": "以 R5 5600 + RX 6600 XT 实际装机为例，把需求、部件取舍、价格和组装问题放在同一份记录中，展示预算如何一步步变成平衡配置。",
+        "tags": ["装机"],
+        "url": "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "制作一张匹配形状的字符画",
+        "description": "从平均灰度匹配推进到字符形状匹配，给出字符模板、局部比较、直方图均衡和灰度一致性实现，适合想让轮廓更贴近原图的读者。",
+        "tags": ["NoneBot","Python","字符画"],
+        "url": "/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "云服务器与部署架构：从域名到可靠运行",
+        "description": "用一条完整请求链解释 DNS、CDN、代理、云网络、计算与存储，再给出产品选型、安全部署、成本复核和故障定位清单。",
+        "tags": ["云服务器"],
+        "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "可靠强化学习实验与工程指南",
+        "description": "从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。",
+        "tags": ["强化学习","元强化学习","表征学习"],
+        "url": "/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "GitHub Pages 建站：从静态托管到可复现部署",
+        "description": "从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。",
+        "tags": ["GitHub"],
+        "url": "/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "把角色语音合成 API 接入 NoneBot2：用聊天指令生成中、英、日、韩语音，并可配置角色、语速、语气与接口参数。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "统一的高维贝叶斯优化基准：汇集合成与真实任务、代表性算法封装，便于开展可复现的对比实验。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "轻量《图灵机》谜题求解器：枚举有效密码，搜索三次验证的最佳提问方案，并估算成功率。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "轻量语音对话示例：用免费组件串联本地 SenseVoice 语音识别、OpenAI 兼容聊天接口与 Edge TTS。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "面向大语言模型超参数优化的零样本在线跨任务迁移：每轮只调用一次模型，同时提出目标候选并选择辅助查询。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "为 Codex 提供 MCP 任务工具：可委托 Claude Code 实现或发起独立审阅，并显式约束权限、模型来源与结构化结果。",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/publications/#hdbo-b-ijcnn-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "高维贝叶斯优化研究综述",
+      "description": "陈泉霖, 陈奕宇, 霍静, 曹宏业, 高阳, 李栋, 郝建业 · 软件学报",
+      "tags": [2025],
+      "url": "/publications/#hdbo-survey-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/publications/#trust-region-newton-ecai-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "元强化学习研究综述",
+      "description": "陈奕宇, 霍静, 丁天雨, 高阳 · 软件学报 · 2024年高被关注综述论文",
+      "tags": [2024],
+      "url": "/publications/#meta-rl-survey-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/publications/#supervised-dr-ppsn-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/publications/#casil-aamas-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/publications/#radar-rl-2023",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/publications/#tild-aamas-2023",
+      "kind": "论文"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "萌娘百科猜猜",
+        "description": "读读匿名化的导言，看看四个候选里谁是答案。",
+        "tags": ["百科","萌娘百科","条目","问答"],
+        "url": "/toys/#moegirl-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "名画猜猜（克利夫兰艺术博物馆）",
+        "description": "可选择猜题方向，以及题名、作者、年代等线索。",
+        "tags": ["名画","配对","艺术","博物馆","克利夫兰","图像","猜题"],
+        "url": "/toys/#art-glimpse",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "动画主角猜猜（AniList）",
+        "description": "可选择动画找主角、主角找动画或同作主角配对。",
+        "tags": ["AniList","动画","角色","主角","关系","猜题"],
+        "url": "/toys/#anilist-role-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "色差挑战",
+        "description": "找出颜色略有不同的方块，看看你能走到第几关。",
+        "tags": ["颜色","视觉","辨识","挑战"],
+        "url": "/toys/#color-challenge",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "盲估十秒",
+        "description": "不看计时器，凭感觉停在十秒附近。",
+        "tags": ["十秒","时间","直觉","挑战"],
+        "url": "/toys/#ten-second",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "反应时间",
+        "description": "等待信号出现后尽快作出反应。",
+        "tags": ["反应","时间","速度","挑战"],
+        "url": "/toys/#reaction-time",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "数字 Wordle",
+        "description": "根据“完全命中”和“仅数字命中”，逐步排除隐藏答案。",
+        "tags": ["数字 Wordle","数字码","推理","排除","逻辑","游戏"],
+        "url": "/toys/#codebreaker",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "凑成 24",
+        "description": "四个数各用一次，选择运算顺序，让最后的精确结果等于 24。",
+        "tags": ["凑成 24","四则运算","分数","心算","逻辑","游戏"],
+        "url": "/toys/#make-24",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "翻灯",
+        "description": "每次翻转一格和它的四邻格，用尽量清晰的规划让所有灯熄灭。",
+        "tags": ["翻灯","网格","最短步数","规划","逻辑","游戏"],
+        "url": "/toys/#lights-out",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "随机密码",
+        "description": "在当前浏览器中生成可调整的随机密码。",
+        "tags": ["随机","密码","安全","生成器"],
+        "url": "/toys/#random-password",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "随机数字",
+        "description": "从指定整数范围中生成一个或多个随机结果。",
+        "tags": ["随机","数字","整数","生成器"],
+        "url": "/toys/#random-number",
+        "kind": "小玩意"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>

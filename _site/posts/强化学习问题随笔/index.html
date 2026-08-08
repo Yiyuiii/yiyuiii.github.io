@@ -1,0 +1,564 @@
+<!DOCTYPE html> <html lang="zh"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 可靠强化学习实验与工程指南 | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/reinforcement-learning-issues/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="可靠强化学习实验与工程指南"> <meta property="og:url" content="https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/"> <meta property="og:description" content="从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。"> <meta property="og:locale" content="zh_CN"> <meta property="og:locale:alternate" content="en_US"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="可靠强化学习实验与工程指南"> <meta name="twitter:description" content="从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。"> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+    "headline": "可靠强化学习实验与工程指南",
+    "description": "从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。",
+    "inLanguage": "zh-CN",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2021-09-17T00:00:00+08:00",
+    "dateModified": "2026-08-08T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="关闭日光背景" aria-pressed="true" data-enable-light-label="开启日光背景" data-disable-light-label="关闭日光背景" data-enable-dark-label="开启月光背景" data-disable-dark-label="关闭月光背景" data-status-light-on="日光背景已开启" data-status-light-off="日光背景已关闭" data-status-dark-on="月光背景已开启" data-status-dark-off="月光背景已关闭" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="主导航"> <a href="/">欢迎</a> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/toys/">小玩意</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到夜晚样式" aria-pressed="false" data-enable-light-label="切换到明亮样式" data-enable-dark-label="切换到夜晚样式" data-status-light="已切换到明亮样式" data-status-dark="已切换到夜晚样式" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/posts/reinforcement-learning-issues/" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>可靠强化学习实验与工程指南</h1> <div class="article-meta"> <div class="article-tags"> <a href="/writing/?tag=%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0">强化学习</a> <a href="/writing/?tag=%E5%85%83%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0">元强化学习</a> <a href="/writing/?tag=%E8%A1%A8%E5%BE%81%E5%AD%A6%E4%B9%A0">表征学习</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> 初稿 <time datetime="2021-09-17">2021.09.17</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span> 最近修订 <time datetime="2026-08-08">2026.08.08</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">修订历史</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2021-09-17">2021.09.17</time> <span>初稿</span> </li> <li> <time datetime="2026-08-08">2026.08.08</time> <span>由 GPT-5.6 Sol 重新调研并重写，融合 Obsidian 中开放世界强化学习与预训练感知的历史笔记，扩展为任务定义、实现、调试与评估可靠性的系统指南</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>章节</summary> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#define-the-contract-before-the-algorithm">算法之前，先写清实验合同</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%85%88%E5%AE%9A%E4%B9%89%E5%86%B3%E7%AD%96%E9%97%AE%E9%A2%98">先定义决策问题</a> <ul> <li class="toc-entry toc-h3"><a href="#mdppomdp-%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E8%83%BD%E7%9C%8B%E5%88%B0%E4%BB%80%E4%B9%88">MDP、POMDP 与智能体能看到什么</a></li> <li class="toc-entry toc-h3"><a href="#state-may-hide-the-task">状态可能混入了未知任务</a></li> <li class="toc-entry toc-h3"><a href="#%E5%9B%9E%E5%90%88%E8%BE%B9%E7%95%8C%E5%B1%9E%E4%BA%8E%E6%A8%A1%E5%9E%8B%E5%AE%9A%E4%B9%89">回合边界属于模型定义</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%AE%9E%E7%8E%B0%E7%8E%AF%E5%A2%83%E5%A5%91%E7%BA%A6">实现环境契约</a> <ul> <li class="toc-entry toc-h3"><a href="#%E6%9C%89%E6%84%8F%E8%AF%86%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BD%93%E5%89%8D-gymnasium-api">有意识地使用当前 Gymnasium API</a></li> <li class="toc-entry toc-h3"><a href="#%E5%AD%A6%E4%B9%A0%E5%89%8D%E5%85%88%E9%AA%8C%E8%AF%81%E8%AF%AD%E4%B9%89">学习前先验证语义</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#open-task-distributions-change-evaluation">在固定任务之外先定义分布</a> <ul> <li class="toc-entry toc-h3"><a href="#long-horizon-is-more-than-gamma">长时程问题不等于简单增加折扣因子</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E6%A0%B9%E6%8D%AE%E7%BA%A6%E6%9D%9F%E9%80%89%E6%8B%A9%E5%AD%A6%E4%B9%A0%E6%88%96%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95">根据约束选择学习或评估方法</a></li> <li class="toc-entry toc-h2"> <a href="#%E6%8A%8A%E5%A5%96%E5%8A%B1%E4%B8%8E%E5%B0%BA%E5%BA%A6%E7%BA%B3%E5%85%A5%E5%AE%9E%E9%AA%8C%E8%AE%BE%E8%AE%A1">把奖励与尺度纳入实验设计</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%BC%98%E5%8C%96%E9%A2%84%E6%9C%9F%E7%BB%93%E6%9E%9C%E8%80%8C%E4%B8%8D%E6%98%AF%E6%96%B9%E4%BE%BF%E7%9A%84%E4%BB%A3%E7%90%86%E6%8C%87%E6%A0%87">优化预期结果，而不是方便的代理指标</a></li> <li class="toc-entry toc-h3"><a href="#%E6%98%8E%E7%A1%AE%E8%A7%82%E6%B5%8B%E5%8A%A8%E4%BD%9C%E5%92%8C%E5%A5%96%E5%8A%B1%E5%B0%BA%E5%BA%A6">明确观测、动作和奖励尺度</a></li> <li class="toc-entry toc-h3"><a href="#%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%A7%84%E5%88%99%E9%9C%80%E8%A6%81%E6%9D%A1%E4%BB%B6">网络结构规则需要条件</a></li> <li class="toc-entry toc-h3"><a href="#pretraining-is-a-transfer-hypothesis">视觉预训练是一项需要测量的迁移假设</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E6%8A%8A%E7%BB%8F%E9%AA%8C%E5%9B%9E%E6%94%BE%E8%A7%86%E4%B8%BA%E5%8F%98%E5%8C%96%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E9%9B%86">把经验回放视为变化中的数据集</a></li> <li class="toc-entry toc-h2"><a href="#%E5%88%86%E7%A6%BB%E8%AE%AD%E7%BB%83%E9%80%89%E6%8B%A9%E4%B8%8E%E8%AF%84%E4%BC%B0">分离训练、选择与评估</a></li> <li class="toc-entry toc-h2"><a href="#%E5%88%86%E5%B1%82%E8%B0%83%E8%AF%95">分层调试</a></li> <li class="toc-entry toc-h2"><a href="#%E6%8A%8A%E8%87%AA%E6%88%91%E5%8D%9A%E5%BC%88%E4%BD%9C%E4%B8%BA%E7%A7%8D%E7%BE%A4%E8%AF%84%E4%BC%B0">把自我博弈作为种群评估</a></li> <li class="toc-entry toc-h2"><a href="#%E6%8A%8A%E5%B7%A5%E5%85%B7%E5%BA%93%E8%A7%86%E4%B8%BA%E5%8F%AF%E6%9B%BF%E6%8D%A2%E4%BB%AA%E5%99%A8">把工具库视为可替换仪器</a></li> <li class="toc-entry toc-h2"><a href="#a-research-checklist">一张研究检查表</a></li> </ul> </nav> </details> <figure class="article-cover"> <img height="640" width="640" class="article-cover__image" src="/assets/posts/202109170000/cover-reinforcement-learning-diagram-square.webp" alt="典型的强化学习智能体—环境交互循环" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>题图：<a href="https://commons.wikimedia.org/wiki/File:Reinforcement_learning_diagram.svg" rel="external nofollow noopener" target="_blank">强化学习示意图</a>，作者为 Wikimedia Commons 用户 Megajuice（Wikimedia Commons user Megajuice），采用 <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="external nofollow noopener" target="_blank">CC0 1.0</a>；本站将其处理为方形版式。</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <p>强化学习（reinforcement learning，RL）实验失败时，问题往往先出在任务定义、隐藏任务、训练分布、回合边界、数据管线或评估协议，而不是优化器。本文把现有常青教程与 Obsidian 中两份关于开放世界强化学习、元强化学习和预训练感知的历史笔记合并，重新按一手资料核验。它侧重跨框架仍然成立的推理与检查方法；工具链接最后核验于 2026-08-08。</p> <h2 id="define-the-contract-before-the-algorithm">算法之前，先写清实验合同</h2> <p>DQN、SAC、PPO、模型式方法、离线强化学习或元强化学习都只是求解路线。算法最终优化的是形式化回报，研究者真正关心的却可能是安全、完成时间、泛化、样本成本，或多个互相冲突的目标。奖励、指标和资源预算若没有连接好，训练成功也可能只是成功优化了错误代理。</p> <p>我会在实现算法前冻结一页实验合同：</p> <table> <thead> <tr> <th>部分</th> <th>必须回答的问题</th> </tr> </thead> <tbody> <tr> <td>决策过程</td> <td>观测、动作、奖励、终止、时间尺度和随机性分别是什么？</td> </tr> <tr> <td>任务分布</td> <td>训练、验证、测试任务怎样产生，哪些因素被刻意留出？</td> </tr> <tr> <td>资源预算</td> <td>环境步数、真实交互、墙钟时间、算力和调参次数如何计入？</td> </tr> <tr> <td>评价单位</td> <td>以回合、任务、随机种子还是完整训练运行作为独立样本？</td> </tr> <tr> <td>基线</td> <td>随机策略、任务专用强基线、相邻方法和理想化上界分别是谁？</td> </tr> <tr> <td>失败条件</td> <td>崩溃、超时、无效动作、数值异常和缺失结果怎样处理？</td> </tr> </tbody> </table> <p>这张合同把“能否运行”和“结论是否成立”分开，也让后续每一项算法选择都能回到明确约束，而不是按方法热度推进。</p> <h2 id="先定义决策问题">先定义决策问题</h2> <h3 id="mdppomdp-与智能体能看到什么">MDP、POMDP 与智能体能看到什么</h3> <p>马尔可夫决策过程（MDP）通常写作 $(\mathcal{S}, \mathcal{A}, P, R, \gamma)$。在时刻 $t$，环境处于状态 $S_t$，智能体选择动作 $A_t$，环境再根据转移过程给出下一状态和奖励。折扣回报为</p> \[G_t = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}.\] <p>马尔可夫性质是对所选状态表征的要求：给定该表征和动作后，下一状态与奖励的条件分布不再依赖更早的历史。它并不是“神经网络收到了最新一帧传感器读数”。智能体实际得到的观测可能是、也可能不是满足马尔可夫性的状态。如果单幅画面不能反映速度，带延迟的执行器依赖先前指令，或者对手拥有私有信息，那么观测通常只是状态的局部视图，问题更适合描述为部分可观测马尔可夫决策过程（POMDP）。</p> <p>选择算法前，先明确写下：</p> <ol> <li>决策时可用的观测，包括单位和边界；</li> <li>动作空间及其可行性约束；</li> <li>转移时序——动作何时生效，结果何时被观测；</li> <li>奖励，以及它试图代表的真实目标；</li> <li>终止状态、外部截断、折扣率或有限时域。</li> </ol> <p>如果最新观测不足，应有依据地加入历史窗口、循环状态、状态估计器或信念状态。不能指望更大的前馈网络恢复从未进入观测的信息。</p> <p>长期适用的基础材料仍是 Sutton 与 Barto 的 <a href="https://mitpress.mit.edu/9780262039246/reinforcement-learning/" rel="external nofollow noopener" target="_blank"><em>Reinforcement Learning: An Introduction</em></a>，其中的定义比特定框架教程更稳定。</p> <h3 id="state-may-hide-the-task">状态可能混入了未知任务</h3> <p>“环境给出的向量”不自动等于充分状态。若相同观测在不同隐藏规则、目标或动力学下需要不同动作，智能体面对的其实是部分可观测问题。元强化学习使这个问题更明显：智能体需要从少量交互推断当前任务，再据此控制。<a href="https://proceedings.mlr.press/v97/rakelly19a.html" rel="external nofollow noopener" target="_blank">PEARL</a>把任务推断与控制分开，用概率上下文变量表达任务不确定性。这里更普遍的提醒是：任务表征应解释“为什么同一观测在这次任务中需要另一种行为”，而不只是压缩轨迹。</p> <p>离线数据还会把任务身份与采集策略混在一起。一个任务如果恰好由较强行为策略收集，编码器可能把“轨迹看起来更好”误认成任务身份。<a href="https://proceedings.mlr.press/v162/yuan22a.html" rel="external nofollow noopener" target="_blank">Robust Task Representations</a>直接研究了这种任务—行为策略混淆，以及测试时行为策略分布变化下的稳健表征。</p> <p>因此，状态与任务表征至少应接受三类反事实检查：</p> <ol> <li> <strong>相同任务，不同行为策略：</strong>表征是否仍接近，策略是否仍能适应？</li> <li> <strong>不同任务，相似轨迹质量：</strong>表征能否区分真正影响最优行为的因素？</li> <li> <strong>历史顺序或上下文被打乱：</strong>性能变化来自任务信息、时间信息，还是单纯的数据规模？</li> </ol> <p>没有这些检查，二维投影中的聚类只能说明编码器产生了分组，不能直接证明它“学到了任务”。</p> <h3 id="回合边界属于模型定义">回合边界属于模型定义</h3> <p>一次轨迹停止可能有两种不同原因：</p> <ul> <li> <strong>终止（termination）：</strong>MDP 到达任务定义内的终止条件，例如成功、失败，或者属于任务本身的有限时域终点。</li> <li> <strong>截断（truncation）：</strong>数据收集因 MDP 之外的条件停止，例如包装器的时间上限、模拟器中断，或外部安全监控器按设计在任务定义之外停止采集。如果越过安全边界本身就是任务定义中的失败，该事件应归为终止。</li> </ul> <p>这个区别会改变自举目标。以单步价值目标为例：</p> \[y_t = R_{t+1} + \gamma \left(1-\mathbb{1}[\text{terminated}_t]\right)V(S_{t+1}).\] <p>外部截断通常需要重置环境，但它本身不应抹去后继价值。反过来，如果时间上限本来就是有限时域 MDP 的一部分，它属于终止；当剩余时间会影响转移规律时，还必须把剩余时间放进观测。<a href="https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/" rel="external nofollow noopener" target="_blank">Gymnasium 时间上限教程</a>给出了当前接口下的操作性区分。</p> <h2 id="实现环境契约">实现环境契约</h2> <h3 id="有意识地使用当前-gymnasium-api">有意识地使用当前 Gymnasium API</h3> <p>当前的 <a href="https://gymnasium.farama.org/api/env/" rel="external nofollow noopener" target="_blank">Gymnasium <code class="language-plaintext highlighter-rouge">Env</code> 接口</a>将重置信息、终止和截断分开：</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">observation</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="nf">policy</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
+    <span class="n">next_observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+    <span class="n">replay</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span>
+        <span class="n">observation</span><span class="p">,</span>
+        <span class="n">action</span><span class="p">,</span>
+        <span class="n">reward</span><span class="p">,</span>
+        <span class="n">next_observation</span><span class="p">,</span>
+        <span class="n">terminated</span><span class="p">,</span>
+        <span class="n">truncated</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+        <span class="n">observation</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">reset</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">observation</span> <span class="o">=</span> <span class="n">next_observation</span>
+</code></pre></div></div> <p>除非学习代码已经把二者转换成明确的自举掩码，否则应分别保存 <code class="language-plaintext highlighter-rouge">terminated</code> 和 <code class="language-plaintext highlighter-rouge">truncated</code>。把它们重新合并成旧式 <code class="language-plaintext highlighter-rouge">done</code> 标志，是造成价值目标偏差的常见方式。</p> <h3 id="学习前先验证语义">学习前先验证语义</h3> <p>随机策略应能连续运行数千步，而不产生无效观测、非法奖励或矛盾的回合统计。至少为以下内容编写测试：</p> <ul> <li>观测的形状、数据类型、有限性、单位和声明边界；</li> <li>动作裁剪或拒绝逻辑，以及每个边界动作；</li> <li>在预期确定性的条件下，固定模拟器状态后的转移是否可复现；</li> <li>奖励分解，以及一条人工可算轨迹的累计回报；</li> <li>每一种终止和截断路径；</li> <li>包装器顺序，因为包装器可能改变观测、奖励和回合长度；</li> <li>向量化环境，尤其是各工作进程的重置和最终观测处理。</li> </ul> <p>环境检查器可以发现接口错误，却不能判断奖励是否描述了真正目标。应保留一个具有已知解的微型确定性环境，作为学习代码的回归测试。</p> <h2 id="open-task-distributions-change-evaluation">在固定任务之外先定义分布</h2> <p>单一固定关卡可以回答智能体是否记住一种解法，却很难回答它学到了多少可迁移能力。开放世界或程序生成环境把研究对象改成任务分布：目标、地图、对手、资源、规则组合和时程不断变化，训练集不可能枚举未来全部情况。</p> <p><a href="https://arxiv.org/abs/2107.12808" rel="external nofollow noopener" target="_blank">XLand 的开放式学习工作</a>把任务宇宙本身作为研究对象，并指出在大量不可直接比较的任务中，衡量学习进展也是开放问题。<a href="https://proceedings.mlr.press/v119/cobbe20a.html" rel="external nofollow noopener" target="_blank">Procgen</a>则用程序生成关卡把训练效率与对未见关卡的泛化分开。它们共同说明：任务越开放，越不能只报告训练分布上的平均回报。</p> <p>一个可解释的协议会先把任务空间拆成轴，再定义留出方式：</p> <ul> <li> <strong>组合留出：</strong>训练见过技能 A 和 B，但未见过两者的测试组合；</li> <li> <strong>参数外推：</strong>速度、规模、噪声或地形超出训练区间；</li> <li> <strong>规则变化：</strong>观测外观相似，但目标或转移机制改变；</li> <li> <strong>长时程变化：</strong>局部技能不变，完成目标所需的依赖链更长；</li> <li> <strong>行为策略变化：</strong>离线或元学习数据的采集分布发生改变。</li> </ul> <p>评价至少分别报告训练分布、插值任务、真正留出的组合和诊断性探针。若任务生成器在训练中持续改变，还要保存生成器版本和采样权重；否则“更开放”只是无法复现的形容词。</p> <h3 id="long-horizon-is-more-than-gamma">长时程问题不等于简单增加折扣因子</h3> <p>长距离规划同时包含奖励延迟、成功行为链稀疏、早期动作影响很晚才显现，以及高层目标需要调用多个低层技能等问题。增大折扣因子只改变回报权重，不能自动创建可发现的子目标或可靠记忆。</p> <p>我会把长时程能力分成三层检验：</p> <ol> <li> <strong>技能层：</strong>导航、交互、躲避或资源获取等局部技能能否独立完成？</li> <li> <strong>组合层：</strong>两个已学技能按新顺序连接时，错误发生在哪个接口？</li> <li> <strong>计划层：</strong>中间奖励稀少时，智能体能否保持目标、恢复失败并选择替代路线？</li> </ol> <p>分层策略、记忆模型、世界模型和序列建模都可能有帮助，但它们解决的瓶颈并不相同。截断时程、打乱历史、提供或移除子目标、替换低层技能等消融，可以避免把“模型更大”误解成“学会规划”。</p> <h2 id="根据约束选择学习或评估方法">根据约束选择学习或评估方法</h2> <p>算法名称应排在数据生成过程之后。动作类型会缩小选项，但交互成本、并行能力、部分可观测性、安全约束和是否已有日志数据往往更重要。</p> <table> <thead> <tr> <th>情境</th> <th>合理的起始方法</th> <th>主要成本或风险</th> </tr> </thead> <tbody> <tr> <td>小型且已知的有限 MDP</td> <td>动态规划或表格型时序差分方法</td> <td>状态空间增长</td> </tr> <tr> <td>离散动作、有在线模拟器且转移可复用</td> <td>DQN 家族等基于价值的离策略方法</td> <td>探索与价值高估；回放假设</td> </tr> <tr> <td>连续动作且环境交互昂贵</td> <td>SAC、TD3 等离策略演员—评论家方法</td> <td>组件耦合更多，且对尺度敏感</td> </tr> <tr> <td>有大量并行模拟器，需要简单且经过验证的基线</td> <td>PPO 等同策略策略梯度方法</td> <td>旧策略数据难以复用，可能需要大量交互</td> </tr> <tr> <td>只有固定日志，目标是学习新策略</td> <td>采用与数据覆盖范围和部署约束匹配的离线强化学习方法</td> <td>分布偏移和动作覆盖不足无法只靠优化修复</td> </tr> <tr> <td>只有固定日志，目标是评估既有策略</td> <td>采用与行为策略和覆盖假设匹配的离策略评估</td> <td>不受数据支持的动作及未知行为概率会使估计不可识别或方差很高</td> </tr> <tr> <td>存在可信模型，或模型可以被学习并验证</td> <td>规划或基于模型的强化学习</td> <td>模型偏差会沿虚构轨迹累积</td> </tr> </tbody> </table> <p>这张表是工程起点的启发式总结，不是定理或排行榜。可从 <a href="https://doi.org/10.1038/nature14236" rel="external nofollow noopener" target="_blank">DQN</a>、<a href="https://proceedings.mlr.press/v80/fujimoto18a.html" rel="external nofollow noopener" target="_blank">TD3</a>、<a href="https://proceedings.mlr.press/v80/haarnoja18b.html" rel="external nofollow noopener" target="_blank">SAC</a> 与 <a href="https://arxiv.org/abs/1707.06347" rel="external nofollow noopener" target="_blank">PPO</a> 的原始工作开始，再参考<a href="https://arxiv.org/abs/2005.01643" rel="external nofollow noopener" target="_blank">离线强化学习教程与综述</a>和<a href="https://proceedings.mlr.press/v48/jiang16.html" rel="external nofollow noopener" target="_blank">双重稳健离策略评估</a>这一原始研究实例；这些方法的假设和实验协议比名称更重要。<a href="https://stable-baselines3.readthedocs.io/en/master/guide/rl_tips.html" rel="external nofollow noopener" target="_blank">Stable-Baselines3 算法指南</a>可以作为带时效性的动作空间与实现交叉检查，但不是通用排行榜。先采用一个成熟基线，并把预算控制在能够调试的范围。只有在简单系统已经建立可信学习信号后，再加入循环结构、价值分布建模、优先回放、辅助损失或模型学习。</p> <p>同策略与离策略描述的是更新所用数据和生成数据的策略之间的关系。同策略方法把复用范围限制在与当前策略接近的数据；离策略方法可以复用旧数据，通常提高样本效率，但必须管理行为分布与当前目标之间的不匹配。这两个标签都不能推出某一族永远更稳定或更准确。</p> <h2 id="把奖励与尺度纳入实验设计">把奖励与尺度纳入实验设计</h2> <h3 id="优化预期结果而不是方便的代理指标">优化预期结果，而不是方便的代理指标</h3> <p>稠密奖励可能降低信用分配难度，但并不会自动变得更好。每一项塑形奖励都会改变容易优化的方向，也可能制造捷径。<a href="https://arxiv.org/abs/1606.06565" rel="external nofollow noopener" target="_blank">奖励劫持</a>指智能体在书面目标下取得高分，却没有完成设计者真正意图的普遍失败模式。</p> <p>可采用以下流程：</p> <ol> <li>定义成功指标，不要把所有指标同时复用为训练奖励；</li> <li>用人工构造的良好、失败、停滞和对抗轨迹检查奖励；</li> <li>分别记录每项奖励分量；</li> <li>查看高回报轨迹，不能只相信一条标量曲线；</li> <li>在能破坏已知捷径的环境变化下评估；</li> <li>如果违反安全约束不可接受，应采用动作屏蔽、安全盾、约束优化或独立监控等显式约束与运行时保护，不要只依赖一项软奖励惩罚。</li> </ol> <p>势函数塑形在特定假设下具有策略不变性结论。形如</p> \[F(s,a,s') = \gamma\Phi(s') - \Phi(s)\] <p>的塑形项可以在改变学习信号的同时保持最优策略；任意的“进度奖励”并不会继承这一保证。该保证还要求一致处理回合边界：有限回合实现通常把终止状态的势函数设为零，而外部截断不能被悄悄当成终止状态。参见 <a href="https://people.eecs.berkeley.edu/~russell/papers/icml99-shaping.pdf" rel="external nofollow noopener" target="_blank">Ng、Harada 与 Russell 的奖励变换论文</a>。</p> <h3 id="明确观测动作和奖励尺度">明确观测、动作和奖励尺度</h3> <p>当特征尺度相差多个数量级时，许多常见函数近似器与优化配置会更难训练。应把预处理写进环境契约：</p> <ul> <li>用仅从训练数据获得的统计量标准化无界连续观测；</li> <li>明确表示类别变量，不要把任意整数编号当成距离；</li> <li>条件允许时，令策略输出采用简单、对称的连续动作范围，再转换为执行器单位；</li> <li>显式保留裁剪并统计发生频率；</li> <li>即使学习器使用归一化或缩放后的奖励，也要记录原始任务回报。</li> </ul> <p>改变奖励尺度、折扣率或动作变换会影响优化，有时也会改变实际目标。它们属于实验参数，不是不可见的清理步骤。</p> <h3 id="网络结构规则需要条件">网络结构规则需要条件</h3> <p>不存在“卷积、池化或批归一化普遍不适合强化学习”的规则。应根据观测和训练分布选择归纳偏置：</p> <ul> <li>当局部空间结构有意义时，卷积很有用；</li> <li>当被丢弃的位置信息确实无关时，池化才有帮助；需要精确坐标的任务可能因此受损；</li> <li>当样本相关、回放数据混合多代策略、批量较小，或者行动阶段与学习阶段的统计量不一致时，批归一化可能难以处理；如果能控制统计量和训练／评估模式，它仍然可以工作；</li> <li>只有当输入的历史确实包含消除部分可观测性所需的信息时，循环或注意力模型才会有帮助。</li> </ul> <p>“正交初始化（orthogonal initialization）”而不是“正交归一化”，是一种可选的参数初始化方式，并不保证收敛。每次改变网络结构，都应在相同的环境步数、预处理、优化预算和种子协议下比较。</p> <h3 id="pretraining-is-a-transfer-hypothesis">视觉预训练是一项需要测量的迁移假设</h3> <p>从像素学习控制会把大量交互花在感知上。预训练编码器可能降低这部分成本，但“预训练”不是单一处理，也不保证跨域有效。<a href="https://proceedings.mlr.press/v162/parisi22a.html" rel="external nofollow noopener" target="_blank">Pre-trained Vision Models for Control</a>系统比较了多个控制域中的预训练方法、增强与特征层级；<a href="https://proceedings.mlr.press/v139/stooke21a.html" rel="external nofollow noopener" target="_blank">ATC</a>把表征学习与策略学习解耦，并比较冻结编码器、多任务数据和时序对比目标；<a href="https://openreview.net/forum?id=6qLzQeFGio" rel="external nofollow noopener" target="_blank">VC-1 的跨具身任务评估</a>进一步提醒我们，平均表现较强的视觉表征也不等于对每个下游任务都最好。</p> <p>最低限度的预训练实验应在同预算下比较：</p> <table> <thead> <tr> <th>条件</th> <th>编码器如何得到</th> <th>训练时如何更新</th> <th>主要识别对象</th> </tr> </thead> <tbody> <tr> <td>从零开始</td> <td>随机初始化</td> <td>与策略端到端更新</td> <td>当前任务数据能学到什么</td> </tr> <tr> <td>冻结预训练</td> <td>外部或多任务数据</td> <td>完全冻结</td> <td>现成表征是否直接可用</td> </tr> <tr> <td>微调预训练</td> <td>同一预训练检查点</td> <td>全部或分层更新</td> <td>适配是否弥补域差异</td> </tr> <tr> <td>冻结与在线特征融合</td> <td>预训练分支加任务分支</td> <td>分支独立或部分更新</td> <td>通用感知与任务信息是否互补</td> </tr> </tbody> </table> <p>四组条件应共享策略算法、环境步预算、动作输入、随机种子和评估任务。除了最终回报，还应报告早期样本效率、墙钟与显存成本、域外任务、任务推断稳定性和不同层特征的敏感性。冻结方式、增强、批量构成与非平稳数据会共同影响结论，不能把一个编码器名称当成迁移有效性的证据。</p> <h2 id="把经验回放视为变化中的数据集">把经验回放视为变化中的数据集</h2> <p>经验回放只适用于更新规则支持离策略数据的算法。缓冲区并非越大越好，其容量需要权衡：</p> <ul> <li> <strong>覆盖性：</strong>保留稀有结果和状态空间的不同区域；</li> <li> <strong>新鲜度：</strong>避免已不相关的旧策略行为占据主导；</li> <li> <strong>内存与吞吐：</strong>存储图像或长序列可能成为瓶颈；</li> <li> <strong>序列完整性：</strong>循环方法可能需要连续片段和预热，而不是孤立转移。</li> </ul> <p>应测量数据年龄分布、奖励或终止事件频率及采样比。如果环境或任务发生变化，要给数据标注版本或清空缓冲区，否则学习器可能静默混合不兼容的转移过程。</p> <p>优先经验回放（PER）使用时序差分误差等优先级采样转移，并用重要性权重减小采样偏差。原始 <a href="https://arxiv.org/abs/1511.05952" rel="external nofollow noopener" target="_blank">PER 论文</a>把它作为完整回放方案，而非只限训练早期的技巧。PER 可能提高学习效率，但在奖励含噪、存在离群值、优先级陈旧或多样性降低时，高误差未必代表高价值。应和均匀回放比较，记录有效样本权重，并调整优先级强度，而不是默认 PER 有益。</p> <h2 id="分离训练选择与评估">分离训练、选择与评估</h2> <p>训练曲线是诊断证据，不是最终估计。至少要区分三种用途：</p> <ol> <li> <strong>训练环境</strong>收集更新数据并拟合归一化统计量；</li> <li> <strong>验证环境</strong>选择检查点和超参数；</li> <li> <strong>测试环境</strong>只用于最终报告的比较。</li> </ol> <p>在需要一致的地方保持包装器和任务定义相同，但不要让评估共享可变的归一化统计量或经验回放。运行前就决定评估使用确定性动作、从随机策略采样，还是同时报告二者；应根据最终部署的策略决定，而不能选择结果更大的方式。</p> <p>评估报告至少应包含：</p> <ul> <li>环境与包装器版本、代码版本、硬件和数值设置；</li> <li>环境交互次数及其它重要计算预算；</li> <li>独立训练种子，而不只是从同一个已训练策略采集许多回合；</li> <li>各种子的回报与回合长度、失败、约束违反和任务专属指标；</li> <li>预先定义的检查点选择规则，以及同预算下的基线实现；</li> <li>区间估计或自助法不确定性，而不只是最好种子或均值。</li> </ul> <p><a href="https://arxiv.org/abs/1709.06560" rel="external nofollow noopener" target="_blank">Deep Reinforcement Learning that Matters</a>记录了实现和报告选择如何改变实验结论。<a href="https://arxiv.org/abs/2108.13264" rel="external nofollow noopener" target="_blank">Deep RL at the Edge of the Statistical Precipice</a>说明少量运行的点估计为何脆弱，并倡导区间估计、性能剖面和稳健的聚合指标。PyTorch 也提醒，不同版本、平台以及 CPU 与 GPU 之间不能保证完全复现；其<a href="https://docs.pytorch.org/docs/stable/notes/randomness" rel="external nofollow noopener" target="_blank">可复现性说明</a>介绍了如何控制随机源，以及在调试收益值得付出性能代价时请求确定性算法。</p> <h2 id="分层调试">分层调试</h2> <p>学习失败时，每次只检查一层：</p> <ol> <li> <strong>环境：</strong>重放一条人工轨迹，验证每项观测、奖励分量、边界和指标。</li> <li> <strong>数据：</strong>检查采样批量、自举掩码、动作范围、序列边界和回放数据年龄。</li> <li> <strong>损失：</strong>用小张量验证目标，检查广播、目标网络停止梯度、符号、归约和重要性权重。</li> <li> <strong>优化：</strong>记录梯度与参数范数、非数值、裁剪频率、熵或探索噪声，以及更新／数据比。</li> <li> <strong>学习信号：</strong>先解决老虎机或微型确定性 MDP，再解决标准小环境，最后进入完整任务。</li> <li> <strong>评估：</strong>让随机策略、固定动作、脚本策略和旧策略基线通过完全相同的评估器。</li> </ol> <p>PyTorch 提供 <a href="https://docs.pytorch.org/docs/stable/generated/torch.autograd.gradcheck.html" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">gradcheck</code></a>、<a href="https://docs.pytorch.org/docs/stable/autograd.html#debugging-and-anomaly-detection" rel="external nofollow noopener" target="_blank">自动微分异常检测</a>和 <a href="https://docs.pytorch.org/docs/stable/profiler.html" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">torch.profiler</code></a>。耐久诊断应使用断言和结构化日志；Python 的 <code class="language-plaintext highlighter-rouge">print()</code> 仍适合狭窄的局部检查，但不能替代实验记录。</p> <h2 id="把自我博弈作为种群评估">把自我博弈作为种群评估</h2> <p>自我博弈会使数据分布移动，因为每次更新策略都会改变环境的一部分。只对战最新对手可能掩盖遗忘和循环。简单的“高等级策略压制低等级策略”阶梯假定了传递性，但许多博弈可能出现石头剪刀布式关系：$A$ 击败 $B$，$B$ 击败 $C$，而 $C$ 又击败 $A$。</p> <p>应建立当前与历史检查点、固定脚本对手和独立训练种群之间的收益矩阵；报告角色或先后手不对称性，在可以计算时报告可利用度，并测试未参与训练的留出对手。训练时从种群或混合策略中采样对手，避免只对一个移动目标过拟合。<a href="https://arxiv.org/abs/1903.01373" rel="external nofollow noopener" target="_blank">Alpha-Rank</a>是多智能体交互中进行种群级评估的一项研究实例。AlphaZero 是完全信息零和博弈中成功自我博弈的重要案例，但这并不代表朴素的“只对战最新策略”具有普适性，参见 <a href="https://arxiv.org/abs/1712.01815" rel="external nofollow noopener" target="_blank">AlphaZero 论文</a>。</p> <h2 id="把工具库视为可替换仪器">把工具库视为可替换仪器</h2> <p>截至 2026-08-08，可以从以下入口开始：</p> <ul> <li> <a href="https://gymnasium.farama.org/" rel="external nofollow noopener" target="_blank">Gymnasium</a>：环境接口与包装器；</li> <li> <a href="https://docs.pytorch.org/docs/stable/" rel="external nofollow noopener" target="_blank">PyTorch</a>：可微模型、优化与诊断；</li> <li> <a href="https://stable-baselines3.readthedocs.io/en/master/" rel="external nofollow noopener" target="_blank">Stable-Baselines3</a>：紧凑的参考实现和实验工具；</li> <li> <a href="https://docs.ray.io/en/latest/rllib/" rel="external nofollow noopener" target="_blank">RLlib</a>：分布式采样和多智能体工作负载；</li> <li> <a href="https://github.com/AI4Finance-Foundation/ElegantRL" rel="external nofollow noopener" target="_blank">ElegantRL</a>：可供检查的另一实现来源，而不是永久默认选择。</li> </ul> <p>记录确切的软件包版本，并依据其测试和文档验证行为。工具库可以提供正确接口，却仍会把任务语义、奖励有效性、超参数预算和统计结论留给实验者。因此，长期有效的流程是：定义过程、测试环境、建立简单基线、检查数据、分离评估、量化不确定性，最后才增加算法复杂度。</p> <h2 id="a-research-checklist">一张研究检查表</h2> <p>在相信一条强化学习曲线之前，应确认：</p> <ul class="task-list"> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>任务、状态、隐藏上下文和评价指标已分别定义；</li> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>训练、验证和测试任务的生成与留出规则可复现；</li> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>终止、截断和自举掩码的语义经过人工轨迹测试；</li> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>长时程困难已分解为技能、组合与计划，而非只调整折扣因子；</li> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>预训练编码器有从零、冻结、微调或融合的同预算对照；</li> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>奖励塑形没有未经检查地改变真正目标；</li> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>回放容量、采样、年龄与行为分布被记录，而非只写缓冲区大小；</li> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>基线覆盖随机策略、任务专用强方法和相邻研究路线；</li> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>每个任务和种子的曲线、失败与不确定性都保留下来；</li> <li class="task-list-item"> <input type="checkbox" class="task-list-item-checkbox" disabled>关键结论有能够推翻它的消融或分布外测试。</li> </ul> <p>这张表不会替下一项研究决定算法。它做的是更基础的工作：算法名称出现之前，问题已经足够清楚；曲线出现之后，结论仍然经得起追问。</p> </div> </article> <aside class="article-side-toc"> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#define-the-contract-before-the-algorithm">算法之前，先写清实验合同</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%85%88%E5%AE%9A%E4%B9%89%E5%86%B3%E7%AD%96%E9%97%AE%E9%A2%98">先定义决策问题</a> <ul> <li class="toc-entry toc-h3"><a href="#mdppomdp-%E4%B8%8E%E6%99%BA%E8%83%BD%E4%BD%93%E8%83%BD%E7%9C%8B%E5%88%B0%E4%BB%80%E4%B9%88">MDP、POMDP 与智能体能看到什么</a></li> <li class="toc-entry toc-h3"><a href="#state-may-hide-the-task">状态可能混入了未知任务</a></li> <li class="toc-entry toc-h3"><a href="#%E5%9B%9E%E5%90%88%E8%BE%B9%E7%95%8C%E5%B1%9E%E4%BA%8E%E6%A8%A1%E5%9E%8B%E5%AE%9A%E4%B9%89">回合边界属于模型定义</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%AE%9E%E7%8E%B0%E7%8E%AF%E5%A2%83%E5%A5%91%E7%BA%A6">实现环境契约</a> <ul> <li class="toc-entry toc-h3"><a href="#%E6%9C%89%E6%84%8F%E8%AF%86%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BD%93%E5%89%8D-gymnasium-api">有意识地使用当前 Gymnasium API</a></li> <li class="toc-entry toc-h3"><a href="#%E5%AD%A6%E4%B9%A0%E5%89%8D%E5%85%88%E9%AA%8C%E8%AF%81%E8%AF%AD%E4%B9%89">学习前先验证语义</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#open-task-distributions-change-evaluation">在固定任务之外先定义分布</a> <ul> <li class="toc-entry toc-h3"><a href="#long-horizon-is-more-than-gamma">长时程问题不等于简单增加折扣因子</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E6%A0%B9%E6%8D%AE%E7%BA%A6%E6%9D%9F%E9%80%89%E6%8B%A9%E5%AD%A6%E4%B9%A0%E6%88%96%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95">根据约束选择学习或评估方法</a></li> <li class="toc-entry toc-h2"> <a href="#%E6%8A%8A%E5%A5%96%E5%8A%B1%E4%B8%8E%E5%B0%BA%E5%BA%A6%E7%BA%B3%E5%85%A5%E5%AE%9E%E9%AA%8C%E8%AE%BE%E8%AE%A1">把奖励与尺度纳入实验设计</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%BC%98%E5%8C%96%E9%A2%84%E6%9C%9F%E7%BB%93%E6%9E%9C%E8%80%8C%E4%B8%8D%E6%98%AF%E6%96%B9%E4%BE%BF%E7%9A%84%E4%BB%A3%E7%90%86%E6%8C%87%E6%A0%87">优化预期结果，而不是方便的代理指标</a></li> <li class="toc-entry toc-h3"><a href="#%E6%98%8E%E7%A1%AE%E8%A7%82%E6%B5%8B%E5%8A%A8%E4%BD%9C%E5%92%8C%E5%A5%96%E5%8A%B1%E5%B0%BA%E5%BA%A6">明确观测、动作和奖励尺度</a></li> <li class="toc-entry toc-h3"><a href="#%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E8%A7%84%E5%88%99%E9%9C%80%E8%A6%81%E6%9D%A1%E4%BB%B6">网络结构规则需要条件</a></li> <li class="toc-entry toc-h3"><a href="#pretraining-is-a-transfer-hypothesis">视觉预训练是一项需要测量的迁移假设</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E6%8A%8A%E7%BB%8F%E9%AA%8C%E5%9B%9E%E6%94%BE%E8%A7%86%E4%B8%BA%E5%8F%98%E5%8C%96%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E9%9B%86">把经验回放视为变化中的数据集</a></li> <li class="toc-entry toc-h2"><a href="#%E5%88%86%E7%A6%BB%E8%AE%AD%E7%BB%83%E9%80%89%E6%8B%A9%E4%B8%8E%E8%AF%84%E4%BC%B0">分离训练、选择与评估</a></li> <li class="toc-entry toc-h2"><a href="#%E5%88%86%E5%B1%82%E8%B0%83%E8%AF%95">分层调试</a></li> <li class="toc-entry toc-h2"><a href="#%E6%8A%8A%E8%87%AA%E6%88%91%E5%8D%9A%E5%BC%88%E4%BD%9C%E4%B8%BA%E7%A7%8D%E7%BE%A4%E8%AF%84%E4%BC%B0">把自我博弈作为种群评估</a></li> <li class="toc-entry toc-h2"><a href="#%E6%8A%8A%E5%B7%A5%E5%85%B7%E5%BA%93%E8%A7%86%E4%B8%BA%E5%8F%AF%E6%9B%BF%E6%8D%A2%E4%BB%AA%E5%99%A8">把工具库视为可替换仪器</a></li> <li class="toc-entry toc-h2"><a href="#a-research-checklist">一张研究检查表</a></li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="zh-CN" data-loading-text="正在加载评论……" data-retry-text="重新加载" data-error-text="评论暂时无法加载；你可以重试，或使用上方 GitHub Discussions 链接。" data-auto-load-enabled-text="已开启自动加载评论。" data-auto-load-disabled-text="已关闭自动加载评论。" data-auto-load-unavailable-text="浏览器无法保存自动加载设置；你仍可手动显示评论。" aria-labelledby="page-comments-title-zh"> <h2 id="page-comments-title-zh">评论</h2> <p class="page-comments__introduction"> 评论公开保存在 <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>。只有在你手动显示评论或开启自动加载后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。 </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>显示评论（首次约 0.13 MB）</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-zh" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-zh" class="page-comments__auto-load-label">在本站自动加载评论</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">请启用 JavaScript 后选择上方按钮显示评论，或使用上方 GitHub Discussions 链接。</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目、论文或小玩意"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+      
+      {
+        "title": "与胆小的珍珠鸟建立信任：从环境到正向训练",
+        "description": "以稳定环境、健康基线、可观察压力信号、即时奖励和逐级选择建立珍珠鸟信任；明确区分个人观察、动物福利原则与必须交给禽类兽医的问题。",
+        "tags": ["珍珠鸟","动物福利"],
+        "url": "/posts/%E4%B8%8E%E7%8F%8D%E7%8F%A0%E9%B8%9F%E5%BB%BA%E7%AB%8B%E4%BF%A1%E4%BB%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "用四种颜色建立一套不费脑的外套系统",
+        "description": "用砖红、米黄、橄榄绿和炭灰建立个人外套调色盘，再以场景、轮廓、现有衣橱与维护成本筛选款式；不把主观偏好包装成普遍色彩定律。",
+        "tags": ["穿搭","色彩"],
+        "url": "/posts/%E5%9B%9B%E7%A7%8D%E9%A2%9C%E8%89%B2%E7%9A%84%E5%A4%96%E5%A5%97%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从买齐工具到顺手做饭：小厨房的最小系统",
+        "description": "从实际动作链而非商品品类组织小厨房，用最小能力集、购买闸门、可见库存和清洁复位减少做饭摩擦；个人经验不冒充营养或食品安全指南。",
+        "tags": ["厨房","个人系统"],
+        "url": "/posts/%E5%B0%8F%E5%8E%A8%E6%88%BF%E7%9A%84%E6%9C%80%E5%B0%8F%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从能运行到可维护：Minecraft 服务器的最小运维闭环",
+        "description": "把 Java 兼容性、专用账户、受控启动、最小暴露、备份恢复、升级演练和监控串成一条小型服务器运维闭环；示例不包含私人端口、账号或玩家标识。",
+        "tags": ["Minecraft","服务器运维"],
+        "url": "/posts/Minecraft%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%9C%80%E5%B0%8F%E8%BF%90%E7%BB%B4%E9%97%AD%E7%8E%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "《SETI》桌游规则：从摆桌到完成第一局",
+        "description": "依照真实游玩顺序，用官方图片把摆桌、回合、行动、轮末与计分连成一局；比按组件查规则书或拖动教学视频更适合纯文字学习，末尾另收扩展与促销牌。",
+        "tags": ["桌游","规则教学","SETI"],
+        "url": "/posts/SETI%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E5%AE%8C%E6%88%90%E7%AC%AC%E4%B8%80%E5%B1%80/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《大创造时代》资源-分值量化计算思路",
+        "description": "用跨轮迭代估算金币、工具、书、学者、科学轨、航海和建筑收益，把当前兑换和未来产出放进同一尺度；比静态汇率更适合中长期规划。",
+        "tags": ["大创造时代","桌游"],
+        "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《特鲁瓦》资源-分值量化分析攻略",
+        "description": "把影响力、事件、骰子、功能牌和金钱放到同一价值框架，说明共享骰池怎样改变随机资源的价格；适合比较跨系统行动，补足单卡点评缺少的全局尺度。",
+        "tags": ["特鲁瓦","桌游"],
+        "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《盖亚计划》资源-分值量化计算思路",
+        "description": "把钱、矿、知识、QIC、建筑收益和终局分数换到近似统一尺度，再逐种族检查例外，为经验打法提供一套可复算的宏观规划基准。",
+        "tags": ["盖亚计划","桌游"],
+        "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "了解游泳",
+        "description": "从安全入水、漂浮与呼吸开始，按蛙泳腿、手、配合和距离进阶练到 50 米；同时解释浮力、阻力与遇险处置的可靠边界。",
+        "tags": ["游泳"],
+        "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "逻辑对决桌游攻略",
+        "description": "基于近 500 局 BGA 实战，把问题选择写成候选集划分，并连到数字推理、先后手与终局攻防；比记固定问题评级更能迁移到新局面。",
+        "tags": ["逻辑对决","桌游"],
+        "url": "/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四季物语量化分析攻略",
+        "description": "用统一分值估算元素、召唤等级、晶化、卡牌和骰子行动，再把资源约束、轮抽和对抗放回实战；比单张卡牌评级更适合回答“此刻哪种选择更值”。",
+        "tags": ["四季物语","桌游"],
+        "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "装机记录",
+        "description": "以 R5 5600 + RX 6600 XT 实际装机为例，把需求、部件取舍、价格和组装问题放在同一份记录中，展示预算如何一步步变成平衡配置。",
+        "tags": ["装机"],
+        "url": "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "制作一张匹配形状的字符画",
+        "description": "从平均灰度匹配推进到字符形状匹配，给出字符模板、局部比较、直方图均衡和灰度一致性实现，适合想让轮廓更贴近原图的读者。",
+        "tags": ["NoneBot","Python","字符画"],
+        "url": "/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "云服务器与部署架构：从域名到可靠运行",
+        "description": "用一条完整请求链解释 DNS、CDN、代理、云网络、计算与存储，再给出产品选型、安全部署、成本复核和故障定位清单。",
+        "tags": ["云服务器"],
+        "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "可靠强化学习实验与工程指南",
+        "description": "从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。",
+        "tags": ["强化学习","元强化学习","表征学习"],
+        "url": "/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "GitHub Pages 建站：从静态托管到可复现部署",
+        "description": "从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。",
+        "tags": ["GitHub"],
+        "url": "/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "把角色语音合成 API 接入 NoneBot2：用聊天指令生成中、英、日、韩语音，并可配置角色、语速、语气与接口参数。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "统一的高维贝叶斯优化基准：汇集合成与真实任务、代表性算法封装，便于开展可复现的对比实验。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "轻量《图灵机》谜题求解器：枚举有效密码，搜索三次验证的最佳提问方案，并估算成功率。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "轻量语音对话示例：用免费组件串联本地 SenseVoice 语音识别、OpenAI 兼容聊天接口与 Edge TTS。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "面向大语言模型超参数优化的零样本在线跨任务迁移：每轮只调用一次模型，同时提出目标候选并选择辅助查询。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "为 Codex 提供 MCP 任务工具：可委托 Claude Code 实现或发起独立审阅，并显式约束权限、模型来源与结构化结果。",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/publications/#hdbo-b-ijcnn-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "高维贝叶斯优化研究综述",
+      "description": "陈泉霖, 陈奕宇, 霍静, 曹宏业, 高阳, 李栋, 郝建业 · 软件学报",
+      "tags": [2025],
+      "url": "/publications/#hdbo-survey-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/publications/#trust-region-newton-ecai-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "元强化学习研究综述",
+      "description": "陈奕宇, 霍静, 丁天雨, 高阳 · 软件学报 · 2024年高被关注综述论文",
+      "tags": [2024],
+      "url": "/publications/#meta-rl-survey-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/publications/#supervised-dr-ppsn-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/publications/#casil-aamas-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/publications/#radar-rl-2023",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/publications/#tild-aamas-2023",
+      "kind": "论文"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "萌娘百科猜猜",
+        "description": "读读匿名化的导言，看看四个候选里谁是答案。",
+        "tags": ["百科","萌娘百科","条目","问答"],
+        "url": "/toys/#moegirl-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "名画猜猜（克利夫兰艺术博物馆）",
+        "description": "可选择猜题方向，以及题名、作者、年代等线索。",
+        "tags": ["名画","配对","艺术","博物馆","克利夫兰","图像","猜题"],
+        "url": "/toys/#art-glimpse",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "动画主角猜猜（AniList）",
+        "description": "可选择动画找主角、主角找动画或同作主角配对。",
+        "tags": ["AniList","动画","角色","主角","关系","猜题"],
+        "url": "/toys/#anilist-role-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "色差挑战",
+        "description": "找出颜色略有不同的方块，看看你能走到第几关。",
+        "tags": ["颜色","视觉","辨识","挑战"],
+        "url": "/toys/#color-challenge",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "盲估十秒",
+        "description": "不看计时器，凭感觉停在十秒附近。",
+        "tags": ["十秒","时间","直觉","挑战"],
+        "url": "/toys/#ten-second",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "反应时间",
+        "description": "等待信号出现后尽快作出反应。",
+        "tags": ["反应","时间","速度","挑战"],
+        "url": "/toys/#reaction-time",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "数字 Wordle",
+        "description": "根据“完全命中”和“仅数字命中”，逐步排除隐藏答案。",
+        "tags": ["数字 Wordle","数字码","推理","排除","逻辑","游戏"],
+        "url": "/toys/#codebreaker",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "凑成 24",
+        "description": "四个数各用一次，选择运算顺序，让最后的精确结果等于 24。",
+        "tags": ["凑成 24","四则运算","分数","心算","逻辑","游戏"],
+        "url": "/toys/#make-24",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "翻灯",
+        "description": "每次翻转一格和它的四邻格，用尽量清晰的规划让所有灯熄灭。",
+        "tags": ["翻灯","网格","最短步数","规划","逻辑","游戏"],
+        "url": "/toys/#lights-out",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "随机密码",
+        "description": "在当前浏览器中生成可调整的随机密码。",
+        "tags": ["随机","密码","安全","生成器"],
+        "url": "/toys/#random-password",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "随机数字",
+        "description": "从指定整数范围中生成一个或多个随机结果。",
+        "tags": ["随机","数字","整数","生成器"],
+        "url": "/toys/#random-number",
+        "kind": "小玩意"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="/assets/js/mathjax-loader.js?v=e7c0e958ed0a177f51b1fb72368692d3" data-runtime-src="/assets/vendor/mathjax/3.2.2/tex-mml-chtml.min.js" data-runtime-integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" data-font-url="/assets/vendor/mathjax/3.2.2/output/chtml/fonts/woff-v2/"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>
