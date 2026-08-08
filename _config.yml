@@ -154,7 +154,6 @@ plugins:
 - jekyll-socials
 - jekyll-tabs
 - jekyll-terser
-- jekyll-3rd-party-libraries
 - jekyll-toc
 - jemoji
 - al_folio_core

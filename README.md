@@ -72,6 +72,10 @@ python scripts/validate.py --browser -- tests/browser/site.spec.mjs
 
 Ruby 依赖由已提交的 `Gemfile.lock` 固定；依赖有意变更时才更新锁文件。精确 CI 流程见 `.github/workflows/deploy.yml`。
 
+### 依赖维护
+
+Dependabot 每月检查一次 Bundler、npm 与 Python 依赖，并按生态分组提出版本更新；每类最多同时保留 3 个更新 PR。仓库同时启用 Dependabot 漏洞告警，但不自动合并或自动修改生产分支。所有依赖更新仍须通过统一发布门禁后再人工合并。
+
 ### 可选外部服务维护检查
 
 外部题源审计不会进入普通验证或 CI，必须由维护者显式选择联网。AniList 的单次生产形状探针使用：

@@ -331,7 +331,7 @@ def _check_home(soup: BeautifulSoup, route: str, language: str) -> None:
 
     for image in soup.select(".home-shell img[src]"):
         source = image.get("src", "")
-        if not source.endswith("-index-v1-160.webp"):
+        if not source.endswith("-index-v2-160.webp"):
             raise SiteCheckError(f"{route}: home loads a non-derivative post image: {source}")
     source = str(soup).lower()
     if "mathjax" in source or "al_math" in source:
@@ -759,7 +759,7 @@ def _check_writing_entries(
             for item in thumbnail.get("srcset", "").split(", ")
             if item
         ]
-        if not source.endswith("-index-v1-160.webp"):
+        if not source.endswith("-index-v2-160.webp"):
             raise SiteCheckError(
                 f"{route}: thumbnail src for {title!r} is not the 160px derivative"
             )
@@ -767,9 +767,9 @@ def _check_writing_entries(
             len(candidates) != 2
             or candidates[0] != [source, "160w"]
             or candidates[1][1] != "320w"
-            or not candidates[1][0].endswith("-index-v1-320.webp")
-            or candidates[1][0].removesuffix("-index-v1-320.webp")
-            != source.removesuffix("-index-v1-160.webp")
+            or not candidates[1][0].endswith("-index-v2-320.webp")
+            or candidates[1][0].removesuffix("-index-v2-320.webp")
+            != source.removesuffix("-index-v2-160.webp")
         ):
             raise SiteCheckError(
                 f"{route}: thumbnail candidates for {title!r} are invalid"

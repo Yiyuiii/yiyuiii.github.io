@@ -270,9 +270,9 @@ def valid_site(root):
         '<a class="entry-main"><h2>四季物语量化分析攻略</h2>'
         '<p>完整摘要，不被截断。</p></a>'
         '<a class="entry-thumbnail"><img '
-        'src="/assets/posts/sample/cover-index-v1-160.webp" '
-        'srcset="/assets/posts/sample/cover-index-v1-160.webp 160w, '
-        '/assets/posts/sample/cover-index-v1-320.webp 320w" '
+        'src="/assets/posts/sample/cover-index-v2-160.webp" '
+        'srcset="/assets/posts/sample/cover-index-v2-160.webp 160w, '
+        '/assets/posts/sample/cover-index-v2-320.webp 320w" '
         'sizes="(max-width: 380px) 88px, (max-width: 640px) 109px, 134px" '
         'width="160" height="160" decoding="async" '
         'loading="eager" fetchpriority="high"></a></article>'
@@ -649,7 +649,7 @@ def test_writing_thumbnail_must_use_responsive_derivatives(tmp_path):
     path = tmp_path / "writing" / "index.html"
     source = path.read_text(encoding="utf-8")
     source = source.replace(
-        "/assets/posts/sample/cover-index-v1-160.webp 160w",
+        "/assets/posts/sample/cover-index-v2-160.webp 160w",
         "/assets/posts/sample/cover.webp 160w",
     )
     path.write_text(source, encoding="utf-8")

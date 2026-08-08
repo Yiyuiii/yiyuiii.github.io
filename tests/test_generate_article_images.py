@@ -23,7 +23,7 @@ def fixture_tree(tmp_path: Path, *, complete_manifest: bool = True):
     posts = tmp_path / "assets" / "posts" / "fixture"
     posts.mkdir(parents=True, exist_ok=True)
     source = posts / "source.png"
-    derivative = posts / "source-content-v1-10.webp"
+    derivative = posts / "source-content-v2-10.webp"
     Image.new("RGB", (20, 10), (20, 40, 60)).save(source, "PNG")
     Image.new("RGB", (10, 5), (20, 40, 60)).save(derivative, "WEBP")
 
@@ -32,7 +32,7 @@ def fixture_tree(tmp_path: Path, *, complete_manifest: bool = True):
         "published": "assets/posts/fixture/source.png",
         "variants": [
             {
-                "asset": "assets/posts/fixture/source-content-v1-10.webp",
+                "asset": "assets/posts/fixture/source-content-v2-10.webp",
                 "width": 10,
             }
         ],
@@ -51,7 +51,7 @@ def fixture_tree(tmp_path: Path, *, complete_manifest: bool = True):
             }
         )
     data = {
-        "version": 2,
+        "version": 3,
         "policy": dict(MODULE.EXPECTED_POLICY),
         "images": [record],
     }
@@ -92,7 +92,7 @@ def test_check_rejects_changed_source_and_derivative_bytes(tmp_path):
 def test_write_refreshes_hashes_and_dimensions_then_check_passes(tmp_path, monkeypatch):
     _, derivative, policy = fixture_tree(tmp_path, complete_manifest=False)
     derivative.unlink()
-    monkeypatch.setattr(MODULE, "pillow_version", "12.0.0")
+    monkeypatch.setattr(MODULE, "pillow_version", "12.3.0")
     monkeypatch.setattr(MODULE.features, "version", lambda name: "1.6.0")
 
     written = MODULE.generate(tmp_path, write=True)

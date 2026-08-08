@@ -248,7 +248,7 @@ test("welcome page never requests an original post cover", async ({ page }) => {
     if (
       pathname.startsWith("/assets/posts/")
       && /\.(?:webp|png|jpe?g)$/i.test(pathname)
-      && !/-index-v1-(?:160|320)\.webp$/i.test(pathname)
+      && !/-index-v2-(?:160|320)\.webp$/i.test(pathname)
     ) {
       originalCoverRequests.push(pathname);
     }
@@ -515,16 +515,16 @@ test("writing index requests only responsive cover derivatives", async ({
     source: new URL(image.src).pathname,
     candidates: image.srcset,
   })));
-  expect(selected.every((item) => item.current.endsWith("-index-v1-320.webp"))).toBe(
+  expect(selected.every((item) => item.current.endsWith("-index-v2-320.webp"))).toBe(
     true,
   );
-  expect(selected.every((item) => item.source.endsWith("-index-v1-160.webp"))).toBe(
+  expect(selected.every((item) => item.source.endsWith("-index-v2-160.webp"))).toBe(
     true,
   );
   expect(selected.every((item) => item.candidates.includes("160w")
     && item.candidates.includes("320w"))).toBe(true);
   expect([...requestedCovers].every((pathname) => (
-    /-index-v1-(160|320)\.webp$/.test(pathname)
+    /-index-v2-(160|320)\.webp$/.test(pathname)
   ))).toBe(true);
 
   await context.close();

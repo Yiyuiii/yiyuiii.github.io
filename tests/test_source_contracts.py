@@ -38,6 +38,18 @@ def test_config_selects_the_light_content_first_shell():
     assert "jekyll/scholar" not in config["plugins"]
     assert "al_search" not in config["plugins"]
     assert "al_citations" not in config["plugins"]
+    assert "jekyll-3rd-party-libraries" not in config["plugins"]
+    assert config["third_party_libraries"]["download"] is False
+
+
+def test_local_library_url_expander_replaces_the_vulnerable_download_plugin():
+    gemfile = text("Gemfile")
+    plugin = text("_plugins/third_party_library_urls.rb")
+
+    assert "jekyll-3rd-party-libraries" not in gemfile
+    assert 'VERSION_TOKEN = "{{version}}"' in plugin
+    assert 'Jekyll::Hooks.register :site, :after_init' in plugin
+    assert 'if libraries["download"]' in plugin
 
 
 def test_disabled_capabilities_do_not_register_build_plugins():

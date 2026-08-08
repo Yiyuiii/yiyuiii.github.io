@@ -15,7 +15,7 @@ EXPECTED_SIZES = (160, 320)
 
 
 def variant_path(asset: Path, size: int) -> Path:
-    return asset.with_name(f"{asset.stem}-index-v1-{size}.webp")
+    return asset.with_name(f"{asset.stem}-index-v2-{size}.webp")
 
 
 def test_generator_is_repeatable_and_checkable(tmp_path):
@@ -29,13 +29,13 @@ def test_generator_is_repeatable_and_checkable(tmp_path):
     provenance = {
         "version": 2,
         "index_derivatives": {
-            "version": 1,
+            "version": 2,
             "sizes": list(EXPECTED_SIZES),
             "format": "WEBP",
             "quality": 75,
             "method": 6,
             "resampling": "LANCZOS",
-            "pillow": "12.0.0",
+            "pillow": "12.3.0",
             "libwebp": "1.6.0",
             "strip_metadata": True,
         },
@@ -82,13 +82,13 @@ def test_committed_derivatives_match_sources_and_have_no_orphans():
     document = yaml.safe_load(PROVENANCE.read_text(encoding="utf-8"))
     assert document["version"] == 2
     assert document["index_derivatives"] == {
-        "version": 1,
+        "version": 2,
         "sizes": [160, 320],
         "format": "WEBP",
         "quality": 75,
         "method": 6,
         "resampling": "LANCZOS",
-        "pillow": "12.0.0",
+        "pillow": "12.3.0",
         "libwebp": "1.6.0",
         "strip_metadata": True,
     }
