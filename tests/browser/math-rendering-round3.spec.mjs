@@ -1,16 +1,16 @@
 import { expect, test } from "@playwright/test";
 
 const formulaPages = [
-  ["/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/", 1],
-  ["/en/posts/reinforcement-learning-issues/", 1],
+  ["/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/", 13],
+  ["/en/posts/reinforcement-learning-issues/", 13],
   ["/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/", 5],
   ["/en/posts/building-shape-matched-ascii-art/", 5],
   ["/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/", 13],
   ["/en/posts/quantitative-strategy-guide-to-seasons/", 13],
   ["/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/", 20],
   ["/en/posts/break-the-code-strategy-guide/", 20],
-  ["/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/", 18],
-  ["/en/posts/understanding-swimming/", 18],
+  ["/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/", 7],
+  ["/en/posts/understanding-swimming/", 7],
   ["/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/", 11],
   ["/en/posts/gaia-project-resource-and-point-value-analysis/", 11],
   ["/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/", 13],
@@ -135,7 +135,7 @@ test.describe("math rendering round 3", () => {
       "data-math-rendering-source",
       "local",
     );
-    await expect(page.locator(".post-content mjx-container")).toHaveCount(1);
+    await expect(page.locator(".post-content mjx-container")).toHaveCount(13);
     await expect(page.locator(".post-content mjx-merror")).toHaveCount(0);
 
     expect(mathJaxRequests.length).toBeGreaterThanOrEqual(2);

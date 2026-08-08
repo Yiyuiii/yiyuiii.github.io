@@ -1,5 +1,5 @@
 ---
-title: Building a Personal GitHub Page
+title: "Building on GitHub Pages: From Static Hosting to Reproducible Deployment"
 uid: "202109160000"
 author: Yiyu Chen
 date: 2021-09-16 00:00:00 +0800
@@ -14,159 +14,263 @@ article_cover:
   alt: "The Chinese writing index of this personal GitHub Pages site"
   caption: >-
     Cover: this site's Chinese writing index on 30 July 2026; screenshot and site content by the author.
-excerpt: This article is about my experience of how to successfully start a Personal GitHub website. 
+excerpt: >-
+  I first published this article after building my own site in 2021. The implementation has since changed, so this revision rebuilds the tutorial around the parts that remain useful.
 description: >-
-  A reproducible route through GitHub Pages, Jekyll, Ruby, theme setup, and common build failures, joining the pieces that scattered setup guides usually leave separate.
+  Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically.
+revisions:
+  - date: "2021-09-16"
+    note: Initial publication
+  - date: "2026-08-08"
+    note: Researched and rewritten by GPT-5.6 Sol; replaced the obsolete theme-specific account with a current guide to hosting boundaries, Jekyll dependencies, Pages workflows, domains, CI, and troubleshooting
 ---
 
-This article is about my experience of how to successfully start a Personal GitHub website. 
+I first published this article after building my own site in 2021. The implementation has since changed, so this revision rebuilds the tutorial around the parts that remain useful.
 
 <span id="building-a-personal-github-page" aria-hidden="true"></span>
 
-**Attention:** since there are variety of detailed tutorials available online, here we just focus on some key points. You may frequently open other websites.
+The durable lesson is not where a button happens to be today. It is the boundary between source, build environment, generated artifact, and public hosting. Once that boundary is explicit, themes and product interfaces can change without turning the whole site into a mystery.
 
-## Background
+## Understand the system before choosing tools
 
-During my hard going through, I found that there's plenty of background barriers in front of a beginner to arrange everything elegantly. So let's begin.
+### What GitHub Pages hosts
 
-### GitHub Pages
+[GitHub Pages is a static-site hosting service](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages). Its public output is HTML, CSS, JavaScript, images, fonts, and other static files. Pages may build those files from source first, but it does not run a long-lived application server and does not execute server-side PHP, Ruby, or Python for each request.
 
-[GitHub Pages](https://pages.github.com/) provides free personal & project websites for all users. 
+That boundary leads to three practical rules:
 
-Its pros are,
+- Browser-side JavaScript can call an external API, but a credential embedded in the repository or shipped JavaScript is public. Keep secrets and privileged operations off a Pages site.
+- Features such as accounts, private data, payments, and trusted form processing need a separate backend or a managed service with an appropriate security model.
+- A static-site generator is a compiler, not the production server. Jekyll runs before deployment and emits the files that Pages serves afterward.
 
-- Totally free
+Pages supports two URL shapes. A user or organization site is normally stored in `<owner>.github.io` and published at the domain root. A project site belongs to a repository and is normally published below `/<repository>/`. That extra path matters when generating links and assets.
 
-- Easy to manage
+| Site type | Typical repository | Default URL | Common URL concern |
+| --- | --- | --- | --- |
+| User or organization site | `<owner>.github.io` | `https://<owner>.github.io/` | Usually an empty base path |
+| Project site | Any project repository | `https://<owner>.github.io/<repository>/` | Links and assets must include the project base path |
 
-Its cons are,
+The official [site-creation guide](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) is the current authority for repository visibility, entry files, account plans, and setup screens. Treat those as product facts to verify, not values to memorize from a dated tutorial.
 
-- Static contents only
+### The four-stage model
 
-- Blogs cannot be indexed by Baidu
+A maintainable deployment has four distinguishable stages:
 
-- Space cannot be greater than 1G
+1. **Source:** Markdown, layouts, data, configuration, code, and dependency declarations stored in Git.
+2. **Build:** a pinned toolchain converts the source into a static directory and reports errors.
+3. **Artifact:** the exact generated directory that has passed automated checks.
+4. **Deploy:** GitHub Pages publishes that artifact and associates it with the Pages environment and domain.
 
-- Flow cannot exceed 100G monthly
+Keeping these stages separate answers many debugging questions. A Markdown error is a source or build problem. A missing file in `_site` is a build or artifact problem. A valid artifact that never reaches the public URL is a deployment problem. A public page whose images point to the wrong path is usually a build-configuration problem, even though it appears in the browser.
 
-- No more than 10 updates per hour
+## Choose a publishing path
 
-But it's free!
+GitHub currently supports [publishing from a branch or with a custom GitHub Actions workflow](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). Both end at Pages hosting, but they assign responsibility differently.
 
-To enable this feature, follow the steps below.
+### Publish from a branch
 
-1. Get a repository with name '\*.github.io'. The content of repository is the source of website.
-2. Enable feature in 'Repository - Setting - Pages'.
-3. Website '\*.github.io' is generated automatically each time the repository is updated. Upload a README, and watch it on '\*.github.io'.
+In the repository's Pages settings, choose **Deploy from a branch**, then select the branch and either its root or `/docs` directory. GitHub publishes changes from that location and uses Jekyll by default unless the publishing source contains `.nojekyll`.
 
-Notice that
+This path is appropriate when the source is already static output or when a conventional Jekyll site fits GitHub's built-in environment. It minimizes workflow code, but it also gives you less control over Ruby, Jekyll, plugins, pre-build steps, and validation. If an unsupported plugin or another generator is essential, move the build into Actions rather than making the branch build imitate a custom server.
 
-- Page building requires time. It's often done within 1 minute.
+### Publish with GitHub Actions
 
-- Page files generated is not visible on GitHub.
+Choose **GitHub Actions** when the project needs an explicit toolchain, arbitrary generators, tests before release, or a clean separation between source and generated output. The current official flow is:
 
-- GitHub Pages supports Jekyll, as well as pure HTML documents. The themes in 'Repository - Setting - Pages' are exactly Jekyll themes.
+1. check out the source;
+2. configure Pages metadata;
+3. build the static site;
+4. upload one Pages artifact;
+5. deploy that artifact from a job with the required Pages and identity-token permissions.
 
-Upon getting the website, the next step is to enrich it. Commonly on GitHub Pages we use Jekyll.
+The following skeleton uses the action major versions shown by GitHub's official documentation on the revision date. Before copying it into a new repository, compare it with the current [custom-workflow guide](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) or the workflow template offered in the repository's Pages settings.
 
-### Jekyll
+```yaml
+name: pages
 
-[Jekyll](https://jekyllrb.com/) provides generator of static websites and blogs without database. In most time, we update Jekyll websites with Markdown files.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
 
-For installation: <https://jekyllrb.com/docs/installation/>
+permissions:
+  contents: read
+  pages: read
 
-Jekyll is a Ruby 'package', so Ruby first.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      JEKYLL_ENV: production
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        with:
+          bundler-cache: true
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - run: bundle exec jekyll build --trace --baseurl "${{ steps.pages.outputs.base_path }}"
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: ./_site
 
-### Ruby
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+```
 
-[Ruby](https://www.ruby-lang.org/) is an object-oriented dynamic language. For our usage, Ruby+Devkit installed is all we need.
+Use this as architecture, not as an immutable version list. The comments show the action versions checked on this article's revision date, while each `uses:` line pins the exact commit that was verified; GitHub's [secure-use guidance](https://docs.github.com/en/actions/reference/security/secure-use) identifies a full commit SHA as the immutable reference. Let Dependabot or a deliberate maintenance pass propose reviewed SHA updates rather than silently following a moving tag. Keep the Ruby version in `.ruby-version` or set it explicitly in the workflow; the maintained [`ruby/setup-ruby` action](https://github.com/ruby/setup-ruby) reads the project version and can run `bundle install` from `Gemfile.lock` through `bundler-cache`. The build job has read-only repository and Pages access; the deployment job alone receives write and identity-token permissions, runs only for `main`, and serializes production deployments. `configure-pages` supplies the project-site base path to Jekyll. Add the project's own test commands between build and upload, and let pull requests execute the build without deploying. Protect the `github-pages` environment as a second branch guard. A different generator can replace the Ruby and build steps while preserving the artifact and deploy stages.
 
-### RubyGems
+### Decide by ownership, not fashion
 
-[RubyGems](https://rubygems.org/) is a package manager for Ruby. It provides a standard format for distributing Ruby programs and libraries, as well as a tool for managing package installation. A package for Ruby is called a 'gem'.
+| Question | Branch publishing | Custom Actions |
+| --- | --- | --- |
+| Who defines the build environment? | GitHub's built-in Pages/Jekyll environment | The repository workflow and lockfiles |
+| Can arbitrary pre-build checks run? | Limited | Yes |
+| Is generated output kept in the source branch? | Sometimes | Not required; upload an artifact |
+| Best fit | Small static or conventional Jekyll site | Tested, customized, or multi-step site |
 
-Jekyll is a Ruby gem.
+Avoid maintaining two deployment paths at once. Local scripts and CI should produce the same output model, and only one path should be authorized to publish it.
 
-### Buddle
+## Make Jekyll builds reproducible
 
-[Buddle](https://bundler.io/) (or Bundler) provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed.
+### Know what each Ruby tool does
 
-In our procedure, sometimes `buddle exec` is needed.
+Jekyll is a Ruby gem. RubyGems distributes gems. A `Gemfile` declares the direct gems a project needs. Bundler resolves that graph, installs it, and records exact resolved versions in `Gemfile.lock`. `bundle exec` then runs a command inside that selected dependency environment instead of silently picking a different system-wide executable.
 
-### Jekyll Theme
+The official [Jekyll introduction](https://jekyllrb.com/docs/) and [Bundler guide](https://bundler.io/guides/getting_started.html) describe this relationship. The command is `bundle`, never `buddle`; the normal local entry point is `bundle exec jekyll serve`.
 
-[Jekyll Theme](https://jekyllrb.com/docs/themes/) specify plugins and package up assets, layouts, includes, and stylesheets in a way that can be overridden by your site’s content. A Jekyll Theme is a Gem. Specifically, those resources are included:
+A minimal dependency file for a custom Actions build can begin like this:
 
-- assets
+```ruby
+source "https://rubygems.org"
 
-- _layouts
+gem "jekyll"
 
-- _includes
+group :jekyll_plugins do
+  gem "jekyll-feed"
+end
+```
 
-- _sass
+Run `bundle install` to resolve and install dependencies. For an application such as a website, commit both `Gemfile` and `Gemfile.lock`; Bundler's [lockfile documentation](https://bundler.io/man/bundle-install.1.html) explains why later installations then use the same dependency snapshot. Update dependencies intentionally with `bundle update <gem>` or an equivalent reviewed dependency-update process, rebuild, and commit the resulting lockfile change.
 
-Above is what I found online. At a guess, its potentiality is more than these, but I haven't found out the mechanism yet.
+Branch publishing is a special case: GitHub's built-in Jekyll environment, supported plugins, and `github-pages` gem govern production compatibility. Follow GitHub's current [Pages and Jekyll documentation](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll) rather than assuming the newest local Jekyll and every third-party plugin are supported there.
 
-## My Practice
+### Establish one local command path
 
-With the information above, in fact we have multiple choices to build a GitHub Page:
+From a fresh checkout, the basic loop should be short enough that every contributor actually uses it:
 
-1. Build with Jekyll, with theme & site separated
-2. Build with Jekyll, with theme & site integrated
-3. Build locally, just upload site files
+```console
+bundle install
+bundle exec jekyll serve --livereload
+```
 
-Up to now my blog matches Option 2, and Option 1 is a final goal.
+Before pushing, run the production build and the project's checks rather than relying only on the development server:
 
-### Theme
+```console
+bundle exec jekyll build --trace
+bundle exec jekyll doctor
+```
 
- [Chirpy](https://github.com/cotes2020/jekyll-theme-chirpy) is the theme I currently use, it's so close to the perfection in my mind. We have three ways to apply a theme:
+GitHub also maintains a [local Jekyll testing guide](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll). A real repository should document its required Ruby version and wrap any additional link, HTML, accessibility, or browser checks in one validation command. CI must call that same entry point instead of reimplementing a weaker approximation.
 
-1. Remote import in '_config.yml': `remote_theme: cotes2020/jekyll-theme-chirpy`
-2. Fork the project, then remote import the copy in '_config.yml'
-3. Copy all, with theme & site integrated, and disable external theme in '_config.yml'
+For stronger reproducibility, periodically test a clean checkout with an empty dependency cache. A warm local machine can hide an undeclared gem, an ignored generated file, or a platform-specific dependency that a fresh Linux runner will expose.
 
-I chose Option 3, as there was code incompatibility between Chirpy & Github-Pages Gem, so it'll be unstable with external theme.
+### Test the artifact, not only the source
 
-Chirpy also provides a [tutorial](https://github.com/cotes2020/jekyll-theme-chirpy#readme).
+A successful `jekyll build` proves that generation completed; it does not prove that the site works. At minimum, CI should verify:
 
-### Debug
+- the expected entry file exists in `_site`;
+- internal links and referenced local assets resolve;
+- project-site URLs honor `baseurl`;
+- pages that require JavaScript still have meaningful static HTML;
+- no secret, draft, cache, or source-only file entered the artifact;
+- a browser can load representative desktop and mobile pages without console errors;
+- deployment runs only after the exact artifact under test succeeds.
 
-As long as a BUG occurs during GitHub Page building, you will receive an e-mail.
+Store a preview artifact for pull requests when visual review matters. This turns review into an inspection of the candidate output rather than a guess based on Markdown alone.
 
-#### Common Build Failure
+## Configure a custom domain safely
 
-> The page build failed for the `master` branch with the following error:
->
-> Page build failed. For more information, see https://docs.github.com/github/working-with-github-pages/troubleshooting-jekyll-build-errors-for-github-pages-sites#troubleshooting-build-errors.
->
-> For information on troubleshooting Jekyll see:
->
->  https://docs.github.com/articles/troubleshooting-jekyll-builds
->
-> If you have any questions you can submit a request at https://support.github.com/contact?tags=dotcom-pages&repo_id=406411513&page_build_id=279574162
+Domain setup spans two control planes: GitHub Pages must know which domain belongs to the site, and the DNS provider must route that domain to Pages. Configure the custom domain in Pages settings before publishing DNS records; GitHub recommends verifying the domain to reduce takeover risk.
 
-This message does not feedback the exact problems to us. To deal with this, we should rely on local environment, where bug feedbacks can be found in the console.
+For a subdomain such as `www.example.com`, the usual record is a `CNAME` pointing directly to `<owner>.github.io`, without a repository path. Apex domains use provider-supported `ALIAS` or `ANAME` records, or the current Pages `A` and optional `AAAA` records. Do not copy IP addresses from an old article: read the current [custom-domain instructions](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site) when changing DNS. Avoid wildcard records unless you have a separately justified and secured design.
 
-But notice that GitHub Page building relies on a specific set of Gems. The list is shown on <https://pages.github.com/versions.json>. While testing locally, the difference of Gem version may leads to different result. To sync, just import Gem in 'Gemfile': `gem 'github-pages'`, and exec `buddle exec jekyll serve` in console.
+Check public DNS rather than trusting only a provider dashboard:
 
-#### _config.yml Failure
+```console
+dig example.com A
+dig www.example.com CNAME
+```
 
-> The page build failed for the `master` branch with the following error:
->
-> You have an error on line 2 of your `_config.yml` file. For more information, see https://docs.github.com/github/working-with-github-pages/troubleshooting-jekyll-build-errors-for-github-pages-sites#config-file-error.
->
-> For information on troubleshooting Jekyll see:
->
->  https://docs.github.com/articles/troubleshooting-jekyll-builds
->
-> If you have any questions you can submit a request at https://support.github.com/contact?tags=dotcom-pages&repo_id=406061228&page_build_id=279331936
+On PowerShell, `Resolve-DnsName example.com` provides the same kind of external check. DNS propagation and certificate issuance are asynchronous, so distinguish “the record is not visible yet” from “the record points to the wrong target.”
 
-This kind of messages indicate where the bug exists. For more information, just test it locally.
+After DNS is correct, enable **Enforce HTTPS**. GitHub's [HTTPS guide](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https) covers certificate provisioning and mixed-content failures. Load every stylesheet, script, image, and font over HTTPS or from the same origin; otherwise a valid page certificate does not prevent the browser from blocking insecure assets.
 
-## Result
+With branch publishing, setting a custom domain may create a `CNAME` file in the source. With a custom Actions workflow, the Pages setting or API is authoritative and an existing repository `CNAME` is not what activates the domain. Recheck the current documentation whenever switching publication modes.
 
-And [this website](https://yiyuiii.github.io/) is the outcome.
+## Troubleshoot by locating the failed stage
 
-## Reference
+Start with the most specific evidence: the failed workflow job, its first meaningful error, the generated artifact, and the Pages settings. Email notifications and browser symptoms are secondary clues.
 
-[chirpy-homepage]: https://github.com/cotes2020/jekyll-theme-chirpy/
+| Symptom | Inspect first | Likely correction |
+| --- | --- | --- |
+| Build fails locally | The first error from `bundle exec jekyll build --trace` | Fix front matter, configuration, dependency, plugin, or source syntax before deployment |
+| Local build passes but CI fails | Ruby/platform assumptions, ignored files, filename case, lockfile, production environment | Reproduce from a clean checkout using CI's inputs |
+| Workflow succeeds but the site is old | The deployed run, artifact identity, deploy-job condition, Pages source | Confirm the expected commit actually produced and deployed the artifact |
+| Root URL returns 404 | Pages source, repository naming, entry file at artifact root | Put the entry file in the configured source or artifact root |
+| HTML loads but CSS or images return 404 | Generated URLs, `url`, `baseurl`, absolute versus relative paths | Generate URLs for the user-site or project-site path actually being deployed |
+| Custom domain or certificate fails | Public DNS records, extra conflicting records, Pages domain setting | Correct DNS, wait for propagation, then restart certificate provisioning if needed |
+| HTTPS page reports insecure content | Browser network panel and generated asset URLs | Replace `http://` asset references and rebuild |
+
+For built-in Jekyll failures, use GitHub's current [build-error guide](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-jekyll-build-errors-for-github-pages-sites). For a custom workflow, make the build run on `pull_request` so errors appear before merge, and inspect the Actions log rather than trying to infer the cause from the public 404 page.
+
+If the configuration appears correct but the public site still fails, check GitHub Status and the repository's Pages deployment history before changing DNS or code. Multiple speculative fixes at once destroy the evidence needed to identify the failed stage.
+
+## Keep changing facts out of the architecture
+
+Some facts in this area are intentionally time-sensitive: plan eligibility, quotas, build timeouts, supported gems and plugins, runner images, action major versions, DNS addresses, billing, and the exact settings interface. Check them when they affect a decision.
+
+For example, GitHub maintains a dedicated [Pages limits page](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits). Linking to that live contract is more reliable than copying today's bandwidth or build-rate values into a tutorial and presenting them as permanent constraints.
+
+Before a new deployment or a major maintenance pass, verify this short list:
+
+1. Pages supports the repository visibility and intended use under the current plan.
+2. The selected branch or workflow is still the configured publishing source.
+3. Ruby, Jekyll, plugins, Actions, and lockfiles describe one compatible build.
+4. A clean local or CI build produces the artifact that was actually tested.
+5. DNS values and HTTPS status match GitHub's current domain documentation.
+6. Current limits fit the site's generated size, build duration, and expected traffic.
+
+That checklist survives product redesigns because it asks where authority resides. The exact answer may change; the method for obtaining and validating it does not.
+
+## Official references
+
+- [What is GitHub Pages?](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)
+- [Creating a GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
+- [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+- [Using custom workflows with GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+- [Set up Ruby in GitHub Actions](https://github.com/ruby/setup-ruby)
+- [Jekyll documentation](https://jekyllrb.com/docs/)
+- [Using Jekyll with Bundler](https://jekyllrb.com/tutorials/using-jekyll-with-bundler/)
+- [Bundler getting started](https://bundler.io/guides/getting_started.html)
+- [Testing a Pages site locally with Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll)
+- [Managing a custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
+- [Securing a Pages site with HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https)
+- [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)

@@ -2,12 +2,21 @@ from pathlib import Path
 
 import yaml
 
+from scss_source import aggregate_scss_source
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def text(path):
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def main_scss():
+    return aggregate_scss_source(
+        ROOT / "assets" / "css" / "main.scss",
+        load_paths=(ROOT / "_sass",),
+    )
 
 
 def test_theme_copy_is_parallel_and_describes_next_action_and_status():
@@ -82,7 +91,7 @@ def test_custom_theme_owns_dynamic_compatibility_without_enabling_upstream_toggl
 
 
 def test_dark_palette_changes_color_scheme_and_keeps_search_input_readable():
-    css = text("assets/css/main.scss")
+    css = main_scss()
     dark = css[css.index('html[data-theme="dark"]') : css.index("*,")]
     search = css[css.index("#site-search-input {") : css.index(".search-status")]
 

@@ -2,12 +2,21 @@ from pathlib import Path
 
 import yaml
 
+from scss_source import aggregate_scss_source
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def text(path):
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def main_scss():
+    return aggregate_scss_source(
+        ROOT / "assets" / "css" / "main.scss",
+        load_paths=(ROOT / "_sass",),
+    )
 
 
 def frontmatter(path):
@@ -87,7 +96,7 @@ def test_project_and_paper_indexes_have_bilingual_routes():
 def test_project_and_publication_indexes_share_writing_metadata_primitives():
     project = text("_includes/project-list.liquid")
     publication = text("_includes/publication-list.liquid")
-    css = text("assets/css/main.scss")
+    css = main_scss()
 
     for include in (project, publication):
         assert 'class="entry-meta index-meta"' in include

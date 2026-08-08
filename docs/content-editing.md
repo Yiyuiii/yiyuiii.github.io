@@ -142,7 +142,7 @@ ID 只能使用小写英文、数字和单个下划线，不得有连字符、�
       inline_markdown: Write the corresponding concise English paragraph here.
 ```
 
-如果需要现有五种类型之外的全新视觉结构，才需要修改 `_includes/about-profile.liquid` 与 `assets/css/main.scss`。
+如果需要现有五种类型之外的全新视觉结构，才需要修改 `_includes/about-profile.liquid` 与 `_sass/site` 中对应模块；`assets/css/main.scss` 只作为有序模块入口维护。
 
 ### 修改链接
 
@@ -203,7 +203,7 @@ python scripts/translation_guard.py --check --production
 git diff --check
 ```
 
-本机没有 Ruby 时，Jekyll 预览由 GitHub Actions 的 `site-preview` artifact 提供。下载并在端口 62091 启动后，按本文末尾的浏览器命令检查 1280、641、640、390 与 320 像素宽度。
+本机满足 README 所列环境时，运行 `python scripts/validate.py --browser`，对本次源码执行 production Jekyll 构建和浏览器回归。人工页面审阅不再使用本机服务；候选提交应推到固定 `preview/replit` 分支，等待 GitHub Actions 成功后同步并重新发布 Replit 测试页面。完整流程见 `docs/replit-preview-workflow.md`。`site-preview` artifact 仍作为 CI 证据和 Replit 故障时的诊断回退，不作为常规人工审阅入口。
 
 ## 导航和短界面文字
 
@@ -285,7 +285,7 @@ node --test tests/toy_challenges.logic.test.mjs tests/toy_challenge_history.logi
 
 不要在正文重复文章标题，不要从二级标题直接跳到四级标题，也不要用加粗段落代替标题。新增、翻译或重排章节时，应同时检查宽屏侧边目录与较窄视口中的正文内折叠目录；标题文字会参与生成公开片段锚点，已发布标题不要只为视觉效果改名。
 
-所有随笔共用 `assets/css/main.scss` 中唯一一套 `.post-content` 排版。文章不得添加仅供自己使用的 CSS class、ID 或样式文件来调整字号、字距、列表、代码块和图片。中英文可以通过页面 `lang` 使用同一系统内的语言级规则，但不得按文章分叉。
+所有随笔共用 `_sass/site/_article.scss` 中唯一一套 `.post-content` 排版，并由 `assets/css/main.scss` 统一导入。文章不得添加仅供自己使用的 CSS class、ID 或样式文件来调整字号、字距、列表、代码块和图片。中英文可以通过页面 `lang` 使用同一系统内的语言级规则，但不得按文章分叉。
 
 含公式的中英文文章必须同时声明 `math: true`。行内公式使用 `$...$`，独立公式使用 `$$...$$` 或项目既有等价写法；变量下标与单位使用标准 TeX，例如 `\rho_{\mathrm{water}}`、`985\,\mathrm{kg/m^3}`，不要把中文字符直接写成未分组下标，也不要在数学式中混用程序语言的 `*`。MathJax 3.2.2 运行时和 CHTML 字体固定在 `assets/vendor/mathjax/3.2.2/`，路径与完整性值集中在 `_config.yml`，加载器位于 `assets/js/mathjax-loader.js`；修改公式、加载器或本地化资产后应运行 `tests/browser/math-rendering-round3.spec.mjs`，它会在阻断站外请求的条件下覆盖全部 16 个现有中英文公式页。
 
@@ -513,9 +513,9 @@ node --check assets/js/sunlight.js
 git diff --check
 ```
 
-真实 Jekyll 构建由 GitHub Actions 完成。PR 的 `site-preview` artifact 是浏览器验收的唯一构建来源；不要用手写静态页面替代它。
+正式候选既可由本机统一入口执行 production Jekyll 构建，也可由 GitHub Actions 对同一提交构建；PR 或 `preview/replit` 的 `site-preview` artifact 是独立 CI 证据，不是人工审阅页面。两条路径都必须使用仓库锁定依赖和同一验证入口；不要用手写静态页面替代真实产物。
 
-下载并在 `http://localhost:62091` 提供该 artifact 后，可复跑真实浏览器检查：
+只有在 Replit 故障诊断或复现 CI 产物时，才下载 artifact 并在隔离的本机端口提供，然后复跑真实浏览器检查：
 
 ```powershell
 npm ci

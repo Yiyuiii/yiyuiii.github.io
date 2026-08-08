@@ -9,241 +9,174 @@ translation_key: post-202307232000
 translation_url: /posts/了解游泳/
 translation_source: _posts/2023-07-23-了解游泳.md
 translation_status: current
-source_hash: e5b38d63bd188a42b1356892248d702e29bfe8dda112fa53a2d7287ffa8e2962
-aliases: []
+source_hash: e66e785a5f6c53d83de064229e1a898cf4b2efb99e51d7eb5a6485f6f11fb7d8
 categories:
 - Swimming
 tags:
 - Swimming
-from: null
 math: true
-mermaid: true
 thumbnail: /assets/posts/202307232000/cover-breaststroke-square.webp
 article_cover:
   alt: Breaststroke practice in a regular swimming pool
-  caption: 'Cover: [Swimming.breaststroke.arp.750pix](https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg), photograph by Adrian Pingstone, Public domain; cropped to a square for this site.'
-excerpt: After several months of teaching myself to swim, I progressed from fearing the water and struggling to float or breathe to swimming 50 metres of breaststroke with reasonable speed. This essay gathers the lessons, mistakes, instructional resources, and practical impressions from that process into a beginner's route into swimming.
-description: A step-by-step route from fear of water to a 50-metre breaststroke, covering safety, equipment, buoyancy, breathing, and drills in an order that is easier to revisit than scattered videos.
+  caption: 'Cover: [Swimming.breaststroke.arp.750pix](https://commons.wikimedia.org/wiki/File:Swimming.breaststroke.arp.750pix.jpg), photograph by Adrian Pingstone; license: Public domain; cropped to a square for this site.'
+revisions:
+- date: '2023-07-23'
+  note: Initial draft
+- date: '2026-08-08'
+  note: Researched and rewritten by GPT-5.6 Sol; replaced incorrect claims about buoyancy, health, and emergencies with an authoritative pool-safety, physics, and step-by-step 50-metre breaststroke guide
+excerpt: This article began as a record of learning to go from fearing the water to swimming 50 metres of breaststroke. The 2026 rewrite keeps that goal, removes unverified inferences, and replaces them with a verifiable route through water safety, buoyancy, and progressive practice.
+description: A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 metres, with reliable boundaries for buoyancy, drag, and emergencies.
 ---
 
-## 0 Preface
+## Scope and Safety Boundaries
 
-When I wrote this article, I had been teaching myself to swim for several months.
+This is a route for adult beginners in a **lifeguarded pool**. It starts with safe entry, recovery to standing, and floating, then progresses toward 50 continuous metres of breaststroke. It does not replace an in-person instructor, rescue training, or medical advice, and swimming 50 metres is not proof that someone is ready to swim alone in open water.
 
-I went from being afraid of water, to being unable to float, swim fast, or breathe properly, and finally to swimming 50 metres relatively quickly with a flat breaststroke technique. That was when I felt I had at last got started. Along the way, I gathered scattered instructional texts and videos, experienced how difficult self-teaching can be, made some mistakes, and formed a few impressions. I wanted to record as complete a beginner's path into swimming as I could for anyone who might need it.
+The [American Red Cross definition of water competency](https://www.redcross.org/get-help/how-to-prepare-for-emergencies/types-of-emergencies/water-safety.html) combines hazard awareness, entering the water and getting a breath, staying afloat, changing position, swimming a distance, getting out safely, and helping others. Knowing one stroke covers only part of that set.
 
-## 1 Swimming Theory
+### Before Practising
 
-### 1.1 What Is Swimming?
+- Choose a well-maintained pool with clear boundaries and a lifeguard. As a beginner, stay where you can stand and have an instructor or reliable buddy watching from close range.
+- Locate the ladder, wall, depth transition, and lifeguard before starting. Follow the facility's rules on lanes, diving, swim caps, and health conditions.
+- Never swim alone or after drinking alcohol or taking medication that impairs judgement or balance. If a condition can affect consciousness, breathing, the heart, or motor control, first ask a clinician and instructor what conditions are appropriate.
+- Do not hold breath contests underwater or hyperventilate to extend a dive. The US CDC's [drowning-prevention guidance](https://www.cdc.gov/drowning/prevention/) warns that hyperventilation and prolonged breath-holding can cause unconsciousness and drowning.
 
-Swimming is the skill of moving through water; see [Swimming — Baidu Baike](https://baike.baidu.com/item/%E6%B8%B8%E6%B3%B3).
+### Stop When These Signs Appear
 
-Compared with moving on land (in air)—walking, running, crawling, and other skills that most people already know well—the defining feature of swimming is that a person is in water. Its different postures, movements, and principles all follow from that fact.
+New chest pain or pressure, marked shortness of breath, near-fainting, confusion, or sudden loss of motor control are not signals to “push through until you adapt.” Call for help immediately, have the lifeguard intervene, and activate the local emergency system; do not swim away alone or wait to see whether the symptoms persist. Chest discomfort and shortness of breath are warning signs that require immediate action; see the [American Heart Association's symptom guidance](https://www.heart.org/en/health-topics/heart-attack/warning-signs-of-a-heart-attack). Other events, such as ordinary fatigue or a mild sputter, still call for leaving the water first and then following the symptom boundaries below.
 
-We therefore begin with the properties of water and the patterns governing a person in water ([Water familiarity — Baidu Baike](https://baike.baidu.com/item/%E6%B0%B4%E6%80%A7)).
+## Three Durable Principles of Moving in Water
 
-### 1.2 Is Water Safe?
+### Pressure Increases; Buoyancy Does Not Simply Grow with Depth
 
-After reading this subsection, I hope readers will know enough to immerse their whole bodies in water safely and become close friends with it.
+Hydrostatic pressure increases with depth:
 
-Readers who have never entered the water may be afraid and unwilling to get in. However:
+$$
+p=p_0+\rho gh.
+$$
 
-- The chemical formula of [water](https://baike.baidu.com/item/%E6%B0%B4) is $H_2O$. It is one of the most common substances on Earth—we drink water every day, there is water in our bodies, and there is water in the air.
-- At room temperature, water is a colourless, tasteless, and odourless liquid. If a reader encounters water that is not like this, other substances have been mixed into it.
-- Anyone who drinks water every day should agree that water is non-toxic and drinkable.
+Here $p$ is pressure, measured in pascals, not force. Net buoyancy is the combined effect of pressure over an object's surfaces. Under [Archimedes' principle](https://openstax.org/books/university-physics-volume-1/pages/14-4-archimedes-principle-and-buoyancy), its magnitude equals the weight of the displaced fluid:
 
-Judging from these three properties, **water itself should not be frightening.** Discomfort instead occurs when water enters the nasal cavity, eyes, ear canals, or windpipe. If possible, readers might find a shallow area and play in the water with everything below the neck immersed, gradually building familiarity with it.
+$$
+F_{\mathrm{B}}=\rho_{\mathrm{water}}gV_{\mathrm{displaced}}.
+$$
 
-Of course, keeping water out of these places takes some experience and technique. We first need two pieces of scientific knowledge:
+In an ordinary pool, if water density and displaced body volume remain approximately unchanged, the net buoyant force on a fully submerged body does not keep increasing merely because the body moves deeper. Ignoring drag, active motion, and contact with the pool for the moment, the static difference between buoyancy and weight is:
 
-- The density of water, $\rho_{\mathrm{water}}$, is about $10^3\,\mathrm{kg/m^3}$, while the density of the air in the nasal cavity and ear canals, $\rho_{\mathrm{air}}$, is about $1.29\,\mathrm{kg/m^3}$. Air is far less dense than water, so buoyancy, $(\rho_{\mathrm{water}}-\rho_{\mathrm{air}})gh$, makes air rise rapidly against gravity in water; similarly, gravity makes water descend through air. Therefore, **as long as the space above the air does not come into contact with water, the air will not escape naturally and water will not flow into that air pocket.** One application in swimming is that when a person immerses their head with the nostrils pointing down, the air inside the nasal cavity tends to float upward in the water but is blocked above by the cavity and has nowhere to go. As long as the person does not breathe, water will not enter the nose. If the person tilts their head back underwater, water will enter the nasal cavity. The same principle applies to the ear canals. If water easily enters a reader's ears while learning freestyle, pulling the swimming cap farther over the ears can retain more air.
-- **At an approximately vertical air–water boundary, if one side is entirely air and the other entirely water, water has difficulty entering the air; if one side contains both air and water, water can enter the air more easily.** This principle relates to pressure. Underwater, the water outside an air–water interface applies pressure to the air inside; underwater pressure is p = density ρ \* gravitational acceleration g \* depth h. If the pressure difference across every point of the interface is approximately equal, the two sides are in equilibrium and water cannot break through at any point. If water leaks through somewhere, it begins to press diagonally inward in that direction. The unbalanced force squeezes the air diagonally outward, and water then gets everywhere. In swimming, this often happens when someone looks forward with their head raised underwater and no water enters the nose, but water enters as they maintain the same posture while surfacing. Readers should remember that, at the instant the head comes out of the water, it is best for the nostrils to face downward.
+$$
+\Delta F_{\mathrm{B-W}}=F_{\mathrm{B}}-mg.
+$$
 
-If water accidentally enters an ear canal and is difficult to remove, more water can be allowed into the ear and then poured out together. Water has noticeable surface tension: a small amount gathers and adheres in one place, while a larger amount can carry it away (although a little water may still remain).
+The total force during ascent, descent, or swimming also includes fluid drag and active propulsion. Body composition, lung volume, and posture vary. Some people float easily while others sink slowly; neither result is a test of willpower or talent. Inhaling increases chest volume and changes average density and trim, while exhaling does the reverse, but a full exhalation does not create “unlimited downward acceleration.” At greater depth, pressure can also compress gas in the lungs or equipment and change displaced volume and buoyancy, so “approximately independent of depth” applies only under the stated conditions. Beginners should not test whether they can reach the bottom by emptying their lungs underwater.
 
-For the eyes, we generally use goggles to keep the water out. Readers who refuse to let water enter their nasal cavities or ear canals can use swimming nose clips and earplugs, although they are uncomfortable and most people do not use them.
+### Breathing Affects Both Gas Exchange and Trim
 
-As for the windpipe, please do not inhale underwater. If water accidentally enters while breathing, readers should stop inhaling immediately and close off the airway (they may swallow some water, but that is better than choking). This response can be developed through focused practice.
+The lungs sit in the upper body, so the chest is usually more buoyant than the legs. Lifting the head too high, flexing at the hips, or recovering the knees too early also increases frontal area and encourages the legs to drop. The answer is to relax the neck, look down, regain a streamlined shape during the glide, and obtain each breath through timing rather than forcing the body perfectly horizontal.
 
-### 1.3 The Human Body Floating in Water
+Exhale steadily and controllably underwater, then inhale quickly through the mouth when the face clears the surface. If water often enters the nose, practise “face in—slow exhale through the nose or nose and mouth—raise the face or stand” at the wall. A nose clip can be a temporary aid while an instructor observes. Do not rely on the assumption that trapped nasal air guarantees water cannot enter.
 
-When swimming, a person needs to breathe about once every three seconds. Breathing requires contact with air above the surface, and human buoyancy in water provides much of the help needed to get there.
+### Drag Ultimately Limits Propulsion
 
-According to a [Zhihu answer](https://zhuanlan.zhihu.com/p/82630779), the density of the human body, $\rho_{\mathrm{body}}$, is about $985\,\mathrm{kg/m^3}$, slightly less than the density of water. People with a higher proportion of muscle are slightly denser, while people with a higher proportion of fat are slightly less dense.
+As swimming speed rises, drag usually grows rapidly. A useful approximation is:
 
-When human density $\rho_{\mathrm{body}}$ is lower than water density $\rho_{\mathrm{water}}$, buoyancy in water, $(\rho_{\mathrm{water}}-\rho_{\mathrm{body}})gh$, is positive and the person rises; otherwise, the person sinks.
+$$
+F_{\mathrm{D}}\approx \frac{1}{2}\rho C_{\mathrm{D}}Av^2.
+$$
 
-When human density $\rho_{\mathrm{body}}$ is lower than water density $\rho_{\mathrm{water}}$, the percentage $a$ of the body above the surface at buoyant equilibrium satisfies $a\rho_{\mathrm{body}}=(1-a)(\rho_{\mathrm{water}}-\rho_{\mathrm{body}})$ (ignoring air density). Solving gives $a=1-\rho_{\mathrm{body}}/\rho_{\mathrm{water}}$; with $\rho_{\mathrm{body}}=985\,\mathrm{kg/m^3}$, 1.5% of the body can remain above the surface. Although an average person cannot keep much of the body above water, they do not sink very far either. Because depth h appears in the buoyancy formula, **the buoyant equilibrium position is near the surface, and the deeper a person descends, the greater the buoyancy (and water pressure) they experience.** People often say that touching the bottom of a pool is difficult; this phenomenon is related to buoyancy.
+$A$ is frontal area, while $C_{\mathrm{D}}$ summarises shape and related effects. Pulling and kicking create propulsion, while the body and recovery motions also create drag. Near a steady speed, the two are roughly balanced; buoyancy or one kick cannot produce endless acceleration. A beginner's highest-value improvements are usually reducing unnecessary frontal area, directing propulsion behind the body, and returning to a streamline after each action.
 
-I am relatively dense and cannot remain stably above the surface, although I often saw people on Bilibili describe sleeping in the water\~ Perhaps that is simply talent.
+## Equipment and Location
 
-People can also control their buoyancy. Because air is far less dense than water, **the amount of air a person inhales greatly affects their buoyancy in water.** In general, after filling the lungs with air, a person can rise rapidly from underwater; after exhaling all of it, the person loses buoyancy and begins to sink. I therefore remind readers that exhaling all air underwater is dangerous: the person can no longer obtain upward buoyancy, continues to accelerate downward, and must resist that downward buoyancy and swim back to the surface before breathing.
+### Basic Equipment
 
-Because inhaled air is stored in the lungs, the upper body readily rises under strong buoyancy while the lower body does not receive that same direct lift. The resulting angular acceleration “rotates” the body: the upper body turns upward and the lower body turns downward. This commonly appears as the torso floating while the legs keep dropping during swimming. Freestyle and butterfly generally rely on kicking to generate lift for the lower body and counteract that angular acceleration (with good kicking, the whole body also floats higher).
+- A well-fitting swimsuit, goggles, towel, and drinking water; add a swim cap when the facility requires one.
+- Goggles should seal without excessive strap tension. Clean them or use a compatible anti-fog method according to their instructions rather than treating saliva as a public-hygiene solution.
+- Kickboards, noodles, fins, and snorkels are teaching aids to use for a purpose explained by an instructor. They change body position and do not prove that the swimmer will remain safe without them.
 
-One further principle: $F=ma$ tells us that buoyancy acts as acceleration, so if buoyancy accumulates over a long distance, upward speed keeps increasing. A swimmer inevitably rises and falls periodically because there is a substantial distance between the body's zero-velocity position and its buoyant equilibrium position; the body then oscillates up and down like a spring.
+### What Is Not a Rescue Guarantee
 
-Once readers can bob up and down in the water after this subsection, I think it is time to encounter moving water.
+Swim rings, water wings, and ordinary inflatables can slip off or create false confidence; they are not drowning-prevention equipment. The CDC's [pool and open-water safety guidance](https://www.cdc.gov/drowning/prevention/summer-swim-safety.html) recommends a properly sized, fully fastened, approved life jacket for applicable water activities. Open water also adds temperature, current, waves, visibility, weather, and boat traffic. The pool progression in this article does not replace an open-water risk assessment.
 
-### 1.4 Water Viscosity and Drag
+## From Zero to 50 Metres of Breaststroke
 
-Water has [viscosity](https://baike.baidu.com/item/%E7%B2%98%E6%BB%9E%E5%8A%9B), which is also the source of the resistance a person encounters when moving through it. For detailed theory, see [Fluid mechanics — Baidu Baike](https://baike.baidu.com/item/%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6/620604); here we only use its properties to motivate conclusions.
+The [Swim England Adult Learn to Swim Framework](https://www.swimming.org/learntoswim/swim-england-adult-learn-to-swim-awards/) treats entry, exit, flotation, treading water, rotation, streamlining, breathing, travel, and water safety as shared foundations. The table below is this article's narrower practice route toward 50 metres of breaststroke, not that organisation's adult water-competency certification. It advances by demonstrated skills rather than lessons attended.
 
-If readers sweep a hand sideways through water close to the surface, they will see a distinct wave move with the hand just ahead of it, and the faster the sweep, the larger the wave. This occurs because, when a portion of water pushed directly by the hand accelerates under force, viscosity causes adjacent water parallel to the direction of motion to accelerate as well; the greater the speed, the wider the affected region.
+| Stage | Readiness Signal | If It Is Not Stable Yet |
+| --- | --- | --- |
+| 1. Entry, exhale, stand | Enter while holding the wall, exhale continuously with the face in, then stand calmly | Stay at standing depth with instructor support and do not enter deep water |
+| 2. Float and rotate | Recover from a front float to standing, then try a back float or roll to a breathing position | Use the wall, a noodle, or instructor support and shorten each float |
+| 3. Push and glide | Arms squeeze near the ears, body lengthens, and the swimmer glides before choosing to stand | Fix head, hip, and arm position before adding propulsion |
+| 4. Breaststroke kick | Repeated kicks propel the swimmer 5–10 metres without knee or hip pain | Break the action into heel recovery, foot turn, backward sweep, and closure at the wall |
+| 5. Arms and breathing | One arm cycle produces a calm breath and a return to extension | Make the pull smaller and practise the rhythm standing or during a short glide |
+| 6. Full coordination | “Pull—breathe—kick—glide” covers 10 metres without panic | Change one element at a time and return to 3–5 metre repetitions |
+| 7. Distance progression | Technique remains recognisable through 25 metres, then through 50 metres | Rest fully and replace deteriorating long swims with high-quality short ones |
 
-At the same time, because forces act mutually, **pushing more water produces a greater reaction force on the swimmer.** This affects swimming in two ways: sweeping the arms and legs through water can generate propulsion, while body parts that passively push water as they move encounter drag that impedes motion. Over the same sweep distance (distance of work), a fast stroke with a large surface area can produce more kinetic energy and is suitable for propulsion; a slow stroke with a small surface area reduces resistance.
+### 1. Entry, Exhalation, and Recovery to Standing
 
-The shape of the object pushing water also affects the reaction force. Compared with a flat surface, a triangular shape sends the water diagonally, reducing the force on the water in the oblique direction. Therefore:
+Enter by ladder or from a safe seated position and always know where the nearest support is. First exhale with the lips touching the water, then submerge the face. Make bubbles while the face is down and continue exhaling until raising the face; inhale only after standing or clearing the surface. The goal is not a longer breath hold but confidence that every repetition can be ended deliberately.
 
-- the flow is relatively slow, so viscosity carries along relatively little water;
-- reducing the force on the water also reduces friction between the object and the water;
-- if gaps in the object's shape create vortices, they also produce substantial drag;
+To recover to standing, tuck the chin, bend the knees toward the body, press the hands down through the water, and place the feet on the floor. Practise only in standing depth with supervision. If the feet do not find the floor, take the wall or instructor's support rather than fighting through panic.
 
-This makes the <・)))><< shape of a fish and the [streamlined](https://baike.baidu.com/item/%E6%B5%81%E7%BA%BF%E5%9E%8B/7204478) shape of a car entirely understandable.
+### 2. Floating, Rotation, and Streamlining
 
-Readers now understand water and can prepare to go swimming!
+For a front float, take a normal breath, place the face in, relax the neck, and let the limbs open naturally. After a few seconds, recover to standing in the sequence above. For a back float, place the ears in the water, look upward, and relax the abdomen while an instructor can support the shoulders and back. A swimmer does not need to remain motionless at the surface indefinitely; being able to rotate to a breathing position or stand is more important.
 
-## 2 Entering the Pool
+For a push and glide, overlap the hands, squeeze the arms near the ears, look down, and lengthen the body from fingertips to toes. Push gently from the wall and do nothing at first, noticing how drag gradually removes speed. Add the breaststroke kick only after the glide and recovery to standing are controlled.
 
-### 2.1 Places to Swim
+### 3. Breaststroke Kick
 
-I divide swimming locations into three types:
+Begin with the legs extended and together. Draw the heels toward the seat while keeping the knees behind the body and avoiding excessive width. Turn the soles outward and backward, sweep backward, outward, and then inward with the feet and inner lower legs, and finish with the legs together and long. The water should be driven mostly behind the swimmer rather than by pulling the knees hard toward the chest.
 
-- **Private swimming pools:** generally found in luxury hotels and private villas. With no outsiders to affect you, these are the freest places to swim.
-- **Public swimming pools:** generally found in schools, public swimming centres, holiday resorts, and five-star hotels. These are the most common places to swim.
-- **Open water:** any sufficiently deep body of water can be swum in. Because of water depth, water quality, currents, aquatic plants and animals, and other characteristics, these are the most dangerous places to swim.
+Have an instructor check ankle orientation at the wall, then use a kickboard for short 5–10 metre repeats. Stop for sharp knee or hip pain rather than forcing a larger range. Breaststroke kick is technically demanding; immediate observation is more useful than rehearsing the wrong pattern many times.
 
-Before entering any pool, beginners are advised to remember this chapter well or go with a friend who knows how to swim.
+### 4. Arms, Breathing, and Full Timing
 
-### 2.2 Swimming Gear
+From streamline, pitch the hands slightly outward and downward, then sweep them inward toward the chest. Inhale through the mouth as the shoulders and upper body rise naturally, shoot the hands forward, and return the head to neutral. The pull need not continue to the hips, and the breath should not be created by throwing the neck backward. [Swim England's breaststroke guidance](https://www.swimming.org/masters/improving-your-breaststroke-technique/) likewise emphasises streamlining during the glide, relaxed neck and shoulders, and coordinated actions.
 
-Readers can ask or search on Zhihu, Baidu, ChatGPT, and elsewhere when choosing swimming gear. In my experience, gear that fits and gear that does not fit can feel very different.
+Use this sequence for the complete stroke:
 
-Because chlorinated pool water accelerates ageing, ordinary swimming gear generally has a short service life—roughly ten to several dozen swimming sessions. For a first purchase, it may therefore make sense to try relatively cost-effective gear.
+1. **Pull**: sweep the arms out and in as the body begins to rise;
+2. **Breathe**: inhale when the mouth clears the water;
+3. **Kick**: recover and kick the legs as the arms extend forward;
+4. **Glide**: extend and close the arms and legs while exhaling steadily underwater.
 
-To **protect yourself**, you can prepare:
+Start with three to five cycles and add distance only while standing or taking the wall remains calm. Speed is not the goal of this stage. If speed makes the swimmer lift the head, kick randomly, skip the exhale, or lose direction, return to short repeats.
 
-- Goggles: allow a swimmer to open their eyes underwater (anti-fog goggles generally need anti-fog spray).
-- Swimming cap: protects the head; stops hair from floating loose; prevents hair from being completely immersed in chlorinated pool water and damaged;.
-- Towel: used to dry yourself after swimming, helping avoid getting chilled and catching a cold, and avoiding getting everything else wet.
-- Nose clip: forcibly prevents breathing through the nose. (Generally not used.)
-- Earplugs (for swimming): prevent water from entering the ear canals. (Generally not used.)
+### 5. Extending 10 Metres to 50 Metres
 
-To **assist practice**, you can prepare:
+Increase one variable at a time: distance, repetition count, or speed. Build several stable 10-metre repeats before trying 15–25 metres. Once the swimmer can maintain rhythm to the end of 25 metres, touch the wall, communicate clearly, and breathe normally, attempt 50 metres after full rest. Technique breaking down under fatigue is a stop signal, not a barrier that must be forced through.
 
-- Kickboard: highly buoyant and useful for practising kicks (resting the upper body's weight on the board), arm strokes (holding the board between the legs in place of kicking), resting (pressing the board under the chest or armpit), and so on.
-- Snorkel: allows a swimmer to breathe in shallow water without worrying about breathing technique.
-- Swim ring or life jacket: extremely buoyant, but not good for swimming. (Generally not used; children can use them.)
-- Hand paddles and fins: strengthen stroke propulsion and can help a swimmer feel how force is applied. (Generally not used.)
+A 50-metre attempt can use four completion criteria: no prolonged breath-holding, a reasonably controlled line, “pull—breathe—kick—glide” still present at the end, and an independent wall hold and safe exit afterward. Ideally, have an instructor watch or record one length and choose only the single issue with the greatest safety or efficiency impact for the next practice.
 
-To enter **public waters**, you need:
+## Common Sticking Points
 
-- Swimming cap: most swimming venues require one to prevent shed hair and keep the pool hygienic.
-- Swimsuit: women's swimwear must cover at least three points; men must at minimum wear swimming trunks. Flashers will be arrested\~
-- Swimming-gear bag: gear is wet when it comes out of the water and needs to be carried separately.
+- **Panic as soon as the face enters**: reduce the task to one exhale and one recovery to standing before asking for flotation or travel. Extend submersion only after repeated calm successes.
+- **Water enters the nose**: keep a small nasal exhale underwater and never inhale during a head turn or lift. Rehearse the exact path repeatedly at the wall.
+- **The legs keep sinking**: check for a lifted head, flexed hips, and excessive tension during exhalation before blaming the kick. Do not mask poor trim with frantic kicking.
+- **The kick creates no travel**: common causes include permanently pointed feet, force directed sideways, excessive knee recovery, or failure to close the legs. Ask an instructor to view the soles from behind.
+- **Breathlessness after a few cycles**: confirm that air is actually leaving underwater, shorten each repeat, and rest longer at the wall. Do not hyperventilate beforehand to “store oxygen.”
+- **Inhaling water**: stop moving, stand, take the wall, or ask for help; do not turn sputtering into another drill that day. A mild cough that resolves quickly and completely, with normal breathing and behaviour restored, can be watched by an alert companion. Persistent or severe coughing calls for prompt medical assessment, while laboured breathing, sleepiness, confusion, or abnormal behaviour calls for activating emergency care immediately. The American Red Cross [post-submersion symptom guidance](https://www.redcross.org/take-a-class/resources/articles/dry-or-delayed-secondary-drowning) also explains that “dry drowning” and “delayed drowning” are not accepted medical diagnoses.
 
-To enter a **public swimming venue**, you need:
+## Emergencies, Helping Others, and Pool Hygiene
 
-- Slippers: changing rooms need to prevent dirty outdoor shoes from leaving black marks everywhere once wet, although walking barefoot inside is also possible.
+### When You Are in Distress
 
-To enter **open water**, you need:
+Ask for help early. If possible, roll onto the back to keep the airway at the surface, hold the wall or a flotation aid, and wave and call to the lifeguard. Do not wait until all strength is gone. Do not grab an unprepared ordinary swimmer; panicked contact can cost both people their breathing position.
 
-- Tow float (“tow-along”): a conspicuous orange air bag. Because drowning in open water is essentially equivalent to death, a tow float follows behind a swimmer with almost no effect on swimming. It can alert boats, be held for rest, and support calling for and giving mutual aid. It is essential gear for open-water swimming.
+### When Someone Else Is in Distress
 
-The following gear affects **swimming efficiency**:
+Shout for help and alert the lifeguard, while directing a specific person to call local emergency services and bring an AED. Without water-rescue training, do not enter for direct contact. The American Red Cross rule is [“reach or throw, don't go”](https://www.redcross.org/take-a-class/teach-water-safety/whale-tales/lesson-8): extend a long object from a stable position or throw something buoyant for the person to hold.
 
-- Swimsuit and swimming cap: can reduce water resistance.
-- Hand paddles and fins: strengthen stroke propulsion. (Generally not used.)
+If the person is unresponsive and not breathing normally after removal, follow the emergency dispatcher's instructions, start CPR immediately, and use an AED as soon as possible. When the rescuer can give breaths, drowning resuscitation should combine breaths with chest compressions; see the [2025 American Heart Association drowning-resuscitation guidance](https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-and-pediatric-special-circumstances-of-resuscitation). Do not delay CPR while an AED is fetched or prepared. Keep the person out of standing water; while compressions continue, dry the bare chest quickly and attach the pads, pausing contact only when the device instructs rescuers to analyse or shock. Formal training substantially improves readiness, but lack of a certificate should not become a reason to wait. An AED analyses the rhythm and gives spoken instructions, and the [American Red Cross explains](https://www.redcross.org/take-a-class/resources/articles/what-to-know-about-aeds-skills-facts) that an untrained person may use one in an emergency. Follow the dispatcher, device, and on-scene professionals; an article cannot replace a course.
 
-Overall, if readers **have no special requirements**, a swimming cap, swimsuit, goggles, towel, and swimming-gear bag are enough.
+### Shared Pool Hygiene
 
-### 2.3 Physical Requirements for Swimming
+Do not swallow pool water, stay out when ill with diarrhoea, shower before entering, and dry the ears and wash the body and equipment afterward. Chlorine and filtration do not eliminate every pathogen instantly, and even a small amount of contaminated water can cause illness; see the CDC's [healthy-pool guidance](https://www.cdc.gov/healthy-swimming/safety/what-you-can-do-to-stay-healthy-in-swimming-pools.html). Follow a clinician's advice and the facility's rules for wounds, skin conditions, or other health questions rather than diagnosing swimming fitness from an online checklist.
 
-**Swimming is a high-intensity, high-risk sport that places substantial demands on physical fitness.**
+## Continuing Practice
 
-**Swimming is not recommended in the following situations:**
+Give each session one main objective, such as “recover to standing consistently,” “turn the soles correctly,” or “keep exhaling for 25 metres.” Begin by reviewing safe entry, exhalation, and recovery. Use the middle of the session for short component drills and full coordination, then finish at low intensity while direction and breathing remain controlled. Record **the conditions under which a skill is repeatable**, not just accumulated metres.
 
-- Fatigue or insufficient strength, such as immediately after running 1,000 metres: intense exercise makes cramps and choking on water more likely.
-- An empty stomach: blood sugar is low while fasting, and intense exercise can cause hypoglycaemia and dizziness (nor will it produce weight loss).
-- Illness or recent recovery from a serious illness: resistance is weak, and cold-water stimulation can readily cause a cold. Swimming also consumes considerable energy while the body needs additional recovery, so it can aggravate the illness.
+This route is complete when you can enter and exit safely in a supervised pool, regain the breathing position, float or roll onto the back, swim 50 continuous metres of breaststroke, and call for help appropriately. Formal lessons should then add treading water, other strokes, deep-water adaptation, and rescue knowledge. Open water is a new risk environment that requires a new assessment rather than a direct extrapolation from pool distance.
 
-**The following conditions are unsuitable for swimming:**
-
-- A bleeding wound on the body's surface: chlorinated pool water can irritate the wound and may cause infection, interfering with recovery. An actively bleeding wound would also contaminate the pool, although I believe few people would swim like that.
-- Heart or respiratory disease, high blood pressure, or cerebrovascular problems: swimming places considerable strain on the heart and lungs, may trigger symptoms, and an episode may prevent adequate breathing or lead to drowning.
-- Bronchial asthma, otitis media, a perforated eardrum, and similar conditions: contact with water can aggravate inflammation.
-- Menstruation: swimming during menstruation makes infection very likely.
-
-**The following conditions are unsuitable for swimming in public waters:**
-
-- Certain infectious diseases: with infectious hepatitis, infectious skin disease, pink eye, severe trachoma, severe athlete's foot, vaginal trichomoniasis, bacillary dysentery, and similar conditions, entering the water is detrimental to recovery and can readily transmit the disease to others.
-
-### 2.4 Pool Overview
-
-Public-pool entrances generally have changing rooms and showers outside them for changing into swimwear and rinsing the body.
-
-[Swimming pools](https://baike.baidu.com/item/%E6%B8%B8%E6%B3%B3%E6%B1%A0/24221) take several forms. An official competition pool is 50 metres long, 21 metres wide, and at least 1.8 metres deep. Ordinary pools may be 50 or 25 metres long. A pool used jointly for swimming, diving, and water polo is 1.3–3.5 metres deep; a pool with a 10-metre diving platform is 5 metres deep.
-
-An ordinary pool's depth generally changes linearly. One end along its length is the shallow end, about 1.3 metres deep, where a standing person's head easily remains above water; the other is the deep end, about 1.8 metres deep, where a standing person's head can barely remain above water. The far end of the deep area generally has a place where a swimmer can stand and rest.
-**Beginners should enter deep water cautiously** because it can be very difficult to climb out.
-
-Some pools have lanes separated by floats. Lanes are intended for long-distance swimming; do not loiter in an occupied lane.
-
-Pool water is generally kept at 26–28°C, slightly below the human body's 37°C. Intense exercise produces a great deal of heat, and hotter water would prevent that heat from leaving the body promptly. However, it is also true that **swimming can easily lead to catching a cold**.
-
-Pools generally have filtration and disinfection equipment, with water circulating continuously to keep it clean. Pool water contains chlorine for disinfection and can cause some damage to skin, hair, and swimming gear, which is why one must shower after leaving the water. Drinking chlorinated water generally has no effect on health, but please drink as little of it as possible.
-
-Spittoons are generally placed at intervals along the poolside, allowing people to hygienically spit out dirty water produced while swimming.
-
-Public pools generally have lifeguards around them who lend a hand when someone is drowning.
-
-### 2.5 Pool Etiquette
-
-At a public pool, people should do what they can to maintain public order and collectively create a safe, clean, and comfortable place for activity. Someone who acts against the public interest may at best be despised and at worst be dragged out of the pool, so everyone needs to pay attention.
-
-- Read the pool's rules carefully and do nothing that violates them.
-- Keep yourself clean and do not contaminate the floor or pool.
-- Keep swimming in the middle of a lane; do not loiter there and prevent others from using it.
-- Do not make noise, including shouting or playing music aloud.
-- Do not chase or roughhouse, dive sparingly, and avoid movements that interfere with other swimmers.
-
-### 2.6 Before Swimming
-
-Before entering the pool:
-
-- First remove your clothes in the changing room and take your swimming gear, taking care of personal belongings.
-- It is advisable to rinse in the shower, washing dirt from the body and allowing it to adapt to the pool's temperature (use water a little cooler than usual but a little warmer than the pool). If the gear is dirty, it can also be rinsed.
-- Then arrange all gear that needs to be worn. Find tutorials for putting on the swimming cap, swimsuit, goggles, and so on. Goggles can be worn over the eyes immediately or rested on the forehead.
-- It is advisable to warm up the whole body at the poolside before entering, to avoid cramping in the water and needing rescue.
-- (Optional) Let the body adapt to the water temperature. If the body is not accustomed to cold water, the risk of cramps and catching a cold increases. A swimmer can first put their legs in at the poolside and gradually lower the rest of the body after adapting.
-- At last, you can enter the water! Find the ladder at the poolside and step down into the pool. Entering in a manner similar to diving risks hitting someone and splashes water, so it is not recommended in crowded places.
-
-### 2.7 Is This Normal?
-
-- **Feeling chest tightness in the pool:** besides respiratory or cardiovascular problems, low lung capacity and underdeveloped respiratory muscles may also cause chest tightness. This is common among beginners who exercise infrequently. None of the above is easy to relieve in the pool, so it is advisable to leave if it feels unmanageable. Normal swimming, however, can help relieve chest tightness: when a person stands in water, the lungs (chest cavity) are relatively low and experience greater water pressure; when swimming, the person is horizontal and the lungs remain near the surface most of the time, experiencing less pressure.
-- **Water entering the ear canals, nasal cavity, or mouth:** water generally enters an ear canal when tilting the head sideways lets the air escape. This is basically harmless but irritates the skin it contacts (and is detrimental to ear inflammation). Water generally enters the nose when raising the head lets the air escape. It is quite uncomfortable and irritates the skin it contacts (and is detrimental to rhinitis). The mouth is the main breathing route; water generally enters it when the swimmer inhales water, potentially causing choking (which affects breathing) or swallowing water (which has little effect).
-- **Wrinkled fingertips:** wrinkling of fingertip skin after soaking is a normal biological phenomenon and needs no special treatment. Seek medical attention promptly if it causes discomfort or occurs with other symptoms.
-
-### 2.8 Emergency Response
-
-When choking on water: stop swimming and inhaling as soon as possible and expel the water; stand up or swim upward to bring the head above the surface, then breathe and rest.
-
-If you unfortunately cramp, begin drowning, or encounter another situation that prevents a safe return to shore: attract the attention of a lifeguard or nearby person as early as possible. The cost of asking for help too late may be a lifetime of happiness.
-
-- To signal a lifeguard: raise one hand high and keep waving toward the lifeguard; if necessary and the head is above water, call out.
-- To ask a nearby person for help: lightly tap or hold onto them to attract attention; if necessary and the head is above water, call out, because ordinary movements will not generally make someone realise that you need help.
-
-### 2.9 After Swimming
-
-When finishing a swim and leaving the pool:
-
-- You can climb out using the ladder or brace against the poolside and jump up (because apparent gravity is very low in water), although this can easily lead to bumping yourself.
-- It is advisable to shower immediately after leaving the water, washing chlorinated water from the body and gear to prevent it from causing further damage.
-- Dry yourself with a towel and take care not to become chilled and catch a cold.
-
-## 3 Practising Technique
-
-I developed most of my technique by watching all kinds of videos on Bilibili and practising repeatedly. There were so many details that I became too lazy to write some of the originally planned sections (and what I wrote might not have been as comprehensive as the experts' explanations anyway), so I will simply link a few good video sources here.
-
-- Bilibili creator [梦觉教游泳](https://space.bilibili.com/7283282): has made numerous collections of swimming instruction videos, with extremely high teaching quality.
-- Bilibili creator [Aimee游泳学堂](https://space.bilibili.com/7283282): a national first-class swimmer and a beautiful instructor who has made several collections of swimming instruction videos; the teaching quality is also very good.
+The institutional guidance and links in this article were last reviewed on 2026-08-08. Safety rules, course standards, and local facility requirements change; follow the lifeguard, instructor, medical professional, and latest official guidance at the time of practice.

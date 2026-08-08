@@ -1,0 +1,10 @@
+entrypoint = "README.md"
+run = ["bash", "scripts/replit_preview.sh", "serve"]
+hidden = [".bundle", ".jekyll-cache", "_site", "vendor", "node_modules", "test-results"]
+
+[gitHubImport]
+requiredFiles = ["Gemfile", "Gemfile.lock", ".replit", "scripts/replit_preview.sh"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80

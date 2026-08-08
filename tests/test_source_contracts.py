@@ -1,8 +1,10 @@
 import json
 from pathlib import Path
+import tomllib
 
 import yaml
 
+from scss_source import aggregate_scss_source
 from scripts.translation_guard import validate_site_text
 
 
@@ -11,6 +13,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def text(path):
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def main_scss():
+    return aggregate_scss_source(
+        ROOT / "assets" / "css" / "main.scss",
+        load_paths=(ROOT / "_sass",),
+    )
 
 
 def frontmatter(path):
@@ -126,7 +135,7 @@ def test_content_security_policy_names_only_active_runtime_origins():
 
 def test_toy_styles_are_page_scoped_instead_of_part_of_the_global_bundle():
     head = text("_includes/head.liquid")
-    main_css = text("assets/css/main.scss")
+    main_css = main_scss()
     toy_css = text("assets/css/toys.scss")
 
     assert "{% if page.nav_key == 'toys' %}" in head
@@ -408,10 +417,32 @@ def test_workflow_builds_pr_artifact_and_only_deploys_master():
     assert "python scripts/validate.py --browser" in workflow
     assert "name: browser-failure-artifacts" in workflow
     assert "name: site-preview" in workflow
+    assert "push:\n    branches: [master, preview/replit]" in workflow
     assert "github.event_name != 'pull_request'" in workflow
     assert "github.ref == 'refs/heads/master'" in workflow
 
     assert workflow.index("npm ci") < workflow.index("python scripts/validate.py --browser")
+
+
+def test_replit_preview_is_a_read_only_test_branch_mirror():
+    config = tomllib.loads(text(".replit"))
+    script = text("scripts/replit_preview.sh")
+    guide = text("docs/replit-preview-workflow.md")
+
+    assert config["run"] == ["bash", "scripts/replit_preview.sh", "serve"]
+    assert config["ports"] == [{"localPort": 3000, "externalPort": 80}]
+    assert config["gitHubImport"]["requiredFiles"] == [
+        "Gemfile",
+        "Gemfile.lock",
+        ".replit",
+        "scripts/replit_preview.sh",
+    ]
+    assert "JEKYLL_ENV=production" in script
+    assert "--host 0.0.0.0" in script
+    assert "--port 3000" in script
+    assert "preview/replit" in guide
+    assert "git pull --ff-only origin preview/replit" in guide
+    assert "不在其中直接编辑、提交或推回 GitHub" in guide
 
 
 def test_javascript_logic_tests_have_a_portable_package_entrypoint():

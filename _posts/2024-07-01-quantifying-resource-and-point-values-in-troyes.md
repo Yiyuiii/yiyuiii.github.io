@@ -9,7 +9,7 @@ translation_key: post-202407012233
 translation_url: /posts/特鲁瓦-资源-分值量化分析攻略/
 translation_source: _posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md
 translation_status: current
-source_hash: 44137a752561ffaeee85924ffffd194341e161feff51c491cb6219f6f55cc8f3
+source_hash: f5ed80dc7a43c93d23eb662f21157bc812d23063954236b419e4eadbc6b438b7
 aliases: []
 categories:
 - Board Games
@@ -18,7 +18,6 @@ tags:
 - Board Games
 from: null
 math: true
-mermaid: true
 thumbnail: /assets/posts/202407012233/cover-bgg-1091724-square.webp
 article_cover:
   alt: A four-player game of Troyes

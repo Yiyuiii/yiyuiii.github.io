@@ -2,12 +2,21 @@ from pathlib import Path
 
 import yaml
 
+from scss_source import aggregate_scss_source
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def text(path):
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def main_scss():
+    return aggregate_scss_source(
+        ROOT / "assets" / "css" / "main.scss",
+        load_paths=(ROOT / "_sass",),
+    )
 
 
 def test_ambient_copy_is_parallel_and_names_sunlight_and_moonlight():
@@ -94,7 +103,7 @@ def test_ambient_script_uses_only_its_own_strict_preference_and_progressive_swap
 
 
 def test_ambient_visuals_are_aligned_animated_and_theme_specific():
-    css = text("assets/css/main.scss")
+    css = main_scss()
     celestial = css[css.index("body::before") : css.index("a {")]
     dark = css[css.index('html[data-theme="dark"]') : css.index("*,")]
 
@@ -122,7 +131,7 @@ def test_ambient_visuals_are_aligned_animated_and_theme_specific():
 
 
 def test_reduced_motion_stops_rotation_but_keeps_static_ambient_layers():
-    css = text("assets/css/main.scss")
+    css = main_scss()
     reduced = css[css.index("@media (prefers-reduced-motion: reduce)") :]
 
     assert "body::after" in reduced

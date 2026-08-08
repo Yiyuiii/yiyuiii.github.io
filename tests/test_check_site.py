@@ -1,8 +1,15 @@
+import ssl
+import urllib.error
 from pathlib import Path
 
 import pytest
 
-from scripts.check_site import SiteCheckError, check_site, route_path
+from scripts.check_site import (
+    SiteCheckError,
+    _check_external_links,
+    check_site,
+    route_path,
+)
 
 
 def write(path, content):
@@ -853,3 +860,103 @@ def test_built_images_must_reserve_their_intrinsic_aspect_ratio(tmp_path):
 
     with pytest.raises(SiteCheckError, match="missing positive width and height"):
         check_site(tmp_path)
+
+
+class ExternalResponse:
+    def __init__(self, status=200):
+        self.status = status
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        return False
+
+
+def test_external_link_check_falls_back_to_get_when_head_is_rejected(
+    tmp_path, monkeypatch
+):
+    write(
+        tmp_path / "index.html",
+        '<a href="https://example.com/reference">Reference</a>',
+    )
+    methods = []
+
+    def fake_urlopen(request, timeout):
+        methods.append((request.get_method(), timeout))
+        if request.get_method() == "HEAD":
+            raise urllib.error.HTTPError(
+                request.full_url, 405, "Method Not Allowed", None, None
+            )
+        return ExternalResponse()
+
+    monkeypatch.setattr("scripts.check_site.urllib.request.urlopen", fake_urlopen)
+
+    _check_external_links(tmp_path)
+
+    assert [method for method, _ in methods] == ["HEAD", "GET"]
+
+
+def test_external_link_check_retries_transient_os_error(tmp_path, monkeypatch):
+    write(
+        tmp_path / "index.html",
+        '<a href="https://example.com/reference">Reference</a>',
+    )
+    attempts = 0
+
+    def fake_urlopen(request, timeout):
+        nonlocal attempts
+        attempts += 1
+        if attempts == 1:
+            raise OSError("temporary connection failure")
+        return ExternalResponse()
+
+    monkeypatch.setattr("scripts.check_site.urllib.request.urlopen", fake_urlopen)
+
+    _check_external_links(tmp_path)
+
+    assert attempts == 2
+
+
+def test_external_link_check_contains_ssl_errors_and_lists_all_sources(
+    tmp_path, monkeypatch
+):
+    url = "https://example.com/reference"
+    write(tmp_path / "index.html", f'<a href="{url}">Home reference</a>')
+    write(
+        tmp_path / "notes" / "index.html",
+        f'<a href="{url}">Notes reference</a>',
+    )
+
+    def fake_urlopen(request, timeout):
+        raise ssl.SSLError("bad record mac")
+
+    monkeypatch.setattr("scripts.check_site.urllib.request.urlopen", fake_urlopen)
+
+    with pytest.raises(SiteCheckError) as captured:
+        _check_external_links(tmp_path)
+
+    message = str(captured.value)
+    assert url in message
+    assert "SSLError" in message
+    assert "linked from /, /notes/" in message
+
+
+def test_external_link_check_reports_http_failure_without_get_fallback(
+    tmp_path, monkeypatch
+):
+    url = "https://example.com/missing"
+    write(tmp_path / "index.html", f'<a href="{url}">Missing</a>')
+    methods = []
+
+    def fake_urlopen(request, timeout):
+        methods.append(request.get_method())
+        raise urllib.error.HTTPError(request.full_url, 404, "Not Found", None, None)
+
+    monkeypatch.setattr("scripts.check_site.urllib.request.urlopen", fake_urlopen)
+
+    with pytest.raises(SiteCheckError, match="HTTP 404") as captured:
+        _check_external_links(tmp_path)
+
+    assert "linked from /" in str(captured.value)
+    assert methods == ["HEAD"]

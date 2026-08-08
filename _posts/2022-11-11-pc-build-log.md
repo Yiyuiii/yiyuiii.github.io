@@ -9,7 +9,7 @@ translation_key: post-202211110000
 translation_url: /posts/装机记录/
 translation_source: _posts/2022-11-11-装机记录.md
 translation_status: current
-source_hash: c4abfcdb06cf8555162520aed4424ee04c04d7b0907734db36d5f5bcab10381d
+source_hash: 49fad9805bfd9182adf9f5cb3870f9be2968f3f507c69c714f4fd0e37ae2ddcc
 thumbnail: /assets/posts/202211110000/cover-generated-2026-07-29.webp
 article_cover:
   alt: A desktop PC being assembled on a workbench
@@ -20,7 +20,6 @@ categories:
 tags:
 - PC Building
 from: null
-math: true
 excerpt: Around Singles' Day 2022, my laptop began blue-screening frequently, and its GTX 1060 Ti was also struggling with my new monitor. I decided to build an R5 5600 + RX 6600 XT desktop during the sale and record the component choices, budget, and lessons from the process.
 description: A complete R5 5600 + RX 6600 XT build record that keeps requirements, component trade-offs, prices, and assembly problems together, showing how a budget became a balanced machine.
 revisions:

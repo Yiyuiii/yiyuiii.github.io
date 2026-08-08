@@ -3,6 +3,7 @@
 !.git*
 !.editorconfig
 !.nojekyll
+!.replit
 !.travis.yml
 
 # bundler cache

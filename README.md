@@ -7,8 +7,8 @@ Yiyu Chen 的双语个人站点，发布随笔、公开项目与合作论文。�
 - `_posts`：当前正式文章。
 - `_pages`、`_layouts`、`_includes`、`_plugins`：页面、布局、组件与本站插件。
 - `_data`：欢迎页、小玩意、关于页、项目、论文、界面文字与旧 URL 契约。
-- `assets`：当前生产样式、脚本、favicon 和文章媒体。
-- `scripts`：统一验证、项目同步、翻译检查、资源处理、构建产物检查与本地预览。
+- `assets`：生产样式入口、脚本、favicon 和文章媒体；全站自定义 SCSS 模块位于 `_sass/site`。
+- `scripts`：统一验证、项目同步、翻译检查、资源处理、构建产物检查与 Replit 预览入口。
 - `tests`：源码、数据、构建结果与浏览器回归。
 - `docs/content-editing.md`：内容维护流程。
 - `docs/asset-provenance.yml`：当前文章封面的来源、许可与哈希。
@@ -72,6 +72,12 @@ python scripts/validate.py --browser -- tests/browser/site.spec.mjs
 
 Ruby 依赖由已提交的 `Gemfile.lock` 固定；依赖有意变更时才更新锁文件。精确 CI 流程见 `.github/workflows/deploy.yml`。
 
+### 人工页面审阅
+
+人工页面审阅使用固定的 GitHub `preview/replit` 测试分支和 Replit 测试页面，不再向审阅者提供本机 `localhost`。本机 loopback 仍由 `scripts/validate.py --browser` 在进程内部用于自动化回归；它不是人工审阅入口。
+
+候选提交推到 `preview/replit` 后，GitHub Actions 会运行与正式发布相同的完整门禁，但不会部署 GitHub Pages。CI 成功后，Replit App 还需要显式拉取该分支并重新发布，因为 GitHub 导入和 Replit 发布都不会随远端 push 自动更新。首次建立、每轮同步、失败边界和正式合并流程见 `docs/replit-preview-workflow.md`。
+
 ### 依赖维护
 
 Dependabot 每月检查一次 Bundler、npm 与 Python 依赖，并按生态分组提出版本更新；每类最多同时保留 3 个更新 PR。仓库同时启用 Dependabot 漏洞告警，但不自动合并或自动修改生产分支。所有依赖更新仍须通过统一发布门禁后再人工合并。
@@ -92,11 +98,11 @@ node tests/tools/audit-acg-relation-quiz-live.mjs --run-live
 python scripts/check_site.py --site _site --external-links
 ```
 
-外部站点可能限流、拒绝 `HEAD` 或临时不可用，因此该结果用于维护排查，不得替代统一发布门禁，也不应直接加入普通 CI。
+外部站点可能限流、拒绝 `HEAD` 或临时不可用，因此该结果用于维护排查，不得替代统一发布门禁，也不应直接加入普通 CI。检查器先用 `HEAD`，遇到明确拒绝 `HEAD` 的状态再回退到 `GET`，对瞬时网络／TLS 异常做有限重试，并在错误中列出引用该 URL 的构建页面，避免单个异常直接中断检查器。
 
 ## 部署
 
-Pull request 只执行验证并上传 `site-preview`。master 的 push，或在 master 上通过 `workflow_dispatch` 手动触发工作流时，build 成功后才会部署 `_site`；不要直接把生成目录提交到 master。
+Pull request 与 `preview/replit` push 只执行验证并上传 `site-preview`。master 的 push，或在 master 上通过 `workflow_dispatch` 手动触发工作流时，build 成功后才会部署 `_site`；不要直接把生成目录提交到 master。
 
 ## 许可
 

@@ -9,7 +9,7 @@ translation_key: post-202404232233
 translation_url: /posts/盖亚计划-资源-分值量化计算思路/
 translation_source: _posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md
 translation_status: current
-source_hash: c9500c7a03c435614956f65cb6e6521cb26bf8b389edaa0661eeed6cc0b07548
+source_hash: 8d66ef81970353532bffcea7cbbb83fddf9ebe1d50929ac56649b7c29293f2c6
 aliases: []
 categories:
 - Board Games
@@ -18,7 +18,6 @@ tags:
 - Board Games
 from: null
 math: true
-mermaid: true
 thumbnail: /assets/posts/202404232233/cover-bgg-5194524-square.webp
 article_cover:
   alt: An endgame Gaia Project map and scoring board

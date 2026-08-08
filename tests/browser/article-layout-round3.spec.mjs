@@ -106,7 +106,7 @@ test("quotes, evidence, and code follow their intended prose or wide canvas", as
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
 
-  await page.goto("/en/posts/build-a-personal-github-page/", {
+  await page.goto("/en/posts/learning-seti-board-game/", {
     waitUntil: "domcontentloaded",
   });
   const ordinaryQuote = await page.evaluate(() => {

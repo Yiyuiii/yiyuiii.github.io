@@ -1,8 +1,13 @@
 from pathlib import Path
 
+from scss_source import aggregate_scss_source
+
 
 ROOT = Path(__file__).resolve().parents[1]
-CSS = (ROOT / "assets" / "css" / "main.scss").read_text(encoding="utf-8")
+CSS = aggregate_scss_source(
+    ROOT / "assets" / "css" / "main.scss",
+    load_paths=(ROOT / "_sass",),
+)
 
 
 def test_approved_pearl_amethyst_jade_palette_is_present():
