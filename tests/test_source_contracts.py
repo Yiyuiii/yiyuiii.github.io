@@ -435,8 +435,13 @@ def test_replit_preview_is_a_read_only_test_branch_mirror():
         "Gemfile",
         "Gemfile.lock",
         ".replit",
+        "replit.nix",
         "scripts/replit_preview.sh",
     ]
+    nix = text("replit.nix")
+    assert "pkgs.ruby_3_3" in nix
+    assert "gem install --user-install bundler" in script
+    assert "config set --local path vendor/bundle" in script
     assert "JEKYLL_ENV=production" in script
     assert "--host 0.0.0.0" in script
     assert "--port 3000" in script

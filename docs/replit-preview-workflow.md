@@ -31,14 +31,15 @@ Replit 的 GitHub 导入、Git 同步和发布是三个独立动作：GitHub 推
 
 1. 从公开仓库 `https://github.com/Yiyuiii/yiyuiii.github.io` 导入 Replit App。
 2. 在 Replit 的 Git 工具中切换到 `preview/replit`。Replit App 只作为远端分支镜像，不在其中直接编辑、提交或推回 GitHub。
-3. 点击 Run。仓库根目录的 `.replit` 会运行 `bash scripts/replit_preview.sh serve`，以 production 配置构建并在 `0.0.0.0:3000` 提供 Preview。
-4. Preview 正常后建立 Static 发布：
+3. 等待 Replit 应用仓库根目录的 `replit.nix`，载入 Ruby 3.3 和原生扩展构建工具；首次载入或该文件更新后若 Ruby 仍不可用，先 Reload Shell／重新打开 App，不要让 Agent 直接改写仓库配置。
+4. 点击 Run。仓库根目录的 `.replit` 会运行 `bash scripts/replit_preview.sh serve`，在用户可写目录安装锁定的 Bundler 与 gems，以 production 配置构建并在 `0.0.0.0:3000` 提供 Preview。
+5. Preview 正常后建立 Static 发布：
 
    - Build command：`bash scripts/replit_preview.sh build`
    - Public directory：`_site`
    - Visibility：优先选择仅本人可见的私有测试页
 
-5. 记录 Replit App、固定测试 URL、当前提交 SHA 和首次验证结果。测试页不绑定正式域名。
+6. 记录 Replit App、固定测试 URL、当前提交 SHA 和首次验证结果。测试页不绑定正式域名。
 
 ## 每轮同步与发布
 

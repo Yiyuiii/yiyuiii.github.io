@@ -78,6 +78,8 @@ Ruby 依赖由已提交的 `Gemfile.lock` 固定；依赖有意变更时才更�
 
 候选提交推到 `preview/replit` 后，GitHub Actions 会运行与正式发布相同的完整门禁，但不会部署 GitHub Pages。CI 成功后，Replit App 还需要显式拉取该分支并重新发布，因为 GitHub 导入和 Replit 发布都不会随远端 push 自动更新。首次建立、每轮同步、失败边界和正式合并流程见 `docs/replit-preview-workflow.md`。
 
+Replit 的 Ruby 3.3 与原生扩展构建工具由仓库根目录的 `replit.nix` 声明；`.replit` 的 Run 命令只负责调用锁定 Bundler 的 Jekyll 构建脚本。更新 `replit.nix` 后需要让 Replit 重新载入 Shell 环境。
+
 ### 依赖维护
 
 Dependabot 每月检查一次 Bundler、npm 与 Python 依赖，并按生态分组提出版本更新；每类最多同时保留 3 个更新 PR。仓库同时启用 Dependabot 漏洞告警，但不自动合并或自动修改生产分支。所有依赖更新仍须通过统一发布门禁后再人工合并。
