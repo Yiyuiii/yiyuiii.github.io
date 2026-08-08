@@ -80,7 +80,7 @@
 - 加入 GitHub 测试分支与 Replit 配置后，`python scripts/validate.py --browser` 对合并快照再次通过全部 10 阶段：392 项 Python、77 项 JavaScript、6 个公开仓库同步、16 组双语内容、16 张源题图与 32 张索引派生图、production Jekyll 构建、站点契约、70 条旧 URL 和 169 项浏览器回归。
 - 浏览器逐页复核四组新文的 8 个中英文 URL：题图全部加载，标题层级对应，页面无横向溢出；强化学习融合稿保留 13 个正常渲染公式和 12 个一级章节。
 - 本地整体预览停在 `/writing/`，截图保存在仓库外的 `D:\Codes\yiyuiii.github.io\review-artifacts`，不进入提交。
-- 仓库现已加入 `.replit`、`scripts/replit_preview.sh`、固定 `preview/replit` 分支触发和 `docs/replit-preview-workflow.md`。人工审阅将迁移到 Replit 固定测试 URL；本机 loopback 只保留为自动浏览器回归的内部实现，GitHub Actions 与锁定依赖仍是发布门禁。
+- 仓库现已加入固定 `preview/replit` 源码分支触发、成功后生成 `preview/replit-site` 静态快照的 GitHub Actions 任务、Replit 静态运行模板和 `docs/replit-preview-workflow.md`。人工审阅迁移到 Replit 固定测试 URL；本机 loopback 只保留为自动浏览器回归的内部实现，真实 Jekyll 构建、锁定依赖与完整门禁全部留在 GitHub Actions，Replit 不再承担 Ruby 构建。
 
 ## Replit 能力复核
 

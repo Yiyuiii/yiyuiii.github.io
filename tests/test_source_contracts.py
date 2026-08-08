@@ -403,7 +403,7 @@ def test_only_welcome_page_owns_the_root_permalink():
 def test_workflow_builds_pr_artifact_and_only_deploys_master():
     workflow = text(".github/workflows/deploy.yml")
 
-    assert workflow.count("actions/checkout@v6") == 2
+    assert workflow.count("actions/checkout@v6") == 3
     assert "actions/setup-python@v6" in workflow
     assert "actions/upload-artifact@v7" in workflow
     assert "actions/download-artifact@v8" in workflow
@@ -425,29 +425,37 @@ def test_workflow_builds_pr_artifact_and_only_deploys_master():
 
 
 def test_replit_preview_is_a_read_only_test_branch_mirror():
-    config = tomllib.loads(text(".replit"))
-    script = text("scripts/replit_preview.sh")
+    workflow = text(".github/workflows/deploy.yml")
+    config = tomllib.loads(text("scripts/replit_static_preview.replit"))
+    nix = text("scripts/replit_static_preview.nix")
     guide = text("docs/replit-preview-workflow.md")
 
-    assert config["run"] == ["bash", "scripts/replit_preview.sh", "serve"]
+    assert config["run"] == [
+        "python3",
+        "-m",
+        "http.server",
+        "3000",
+        "--directory",
+        "_site",
+    ]
     assert config["ports"] == [{"localPort": 3000, "externalPort": 80}]
     assert config["gitHubImport"]["requiredFiles"] == [
-        "Gemfile",
-        "Gemfile.lock",
+        "_site/index.html",
+        "_site/preview-source-sha.txt",
         ".replit",
         "replit.nix",
-        "scripts/replit_preview.sh",
     ]
-    nix = text("replit.nix")
-    assert "pkgs.ruby_3_3" in nix
-    assert "gem install --user-install bundler" in script
-    assert "config set --local path vendor/bundle" in script
-    assert "JEKYLL_ENV=production" in script
-    assert "--host 0.0.0.0" in script
-    assert "--port 3000" in script
+    assert "pkgs.python39" in nix
+    assert "sync_replit_preview:" in workflow
+    assert "github.ref == 'refs/heads/preview/replit'" in workflow
+    assert "branch: preview/replit-site" in workflow
+    assert "path: replit-export/_site" in workflow
+    assert "preview-source-sha.txt" in workflow
+    assert "force: false" in workflow
     assert "preview/replit" in guide
-    assert "git pull --ff-only origin preview/replit" in guide
-    assert "不在其中直接编辑、提交或推回 GitHub" in guide
+    assert "preview/replit-site" in guide
+    assert "git pull --ff-only origin preview/replit-site" in guide
+    assert "不在 Replit 中直接编辑、提交或推回 GitHub" in guide
 
 
 def test_javascript_logic_tests_have_a_portable_package_entrypoint():

@@ -1,0 +1,10 @@
+entrypoint = "_site/index.html"
+run = ["python3", "-m", "http.server", "3000", "--directory", "_site"]
+hidden = [".git"]
+
+[gitHubImport]
+requiredFiles = ["_site/index.html", "_site/preview-source-sha.txt", ".replit", "replit.nix"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80

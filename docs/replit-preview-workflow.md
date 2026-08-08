@@ -4,7 +4,7 @@
 
 人工页面审阅统一使用 Replit 测试页面，不再把本机 `localhost` 地址交给审阅者。本机和 GitHub Actions 仍执行自动化测试；这两类检查用于发现确定性回归，不等于人工视觉审阅。
 
-固定远端测试分支为 `preview/replit`。它是待审阅提交的集成镜像，不是生产分支，也不直接部署 GitHub Pages。正式站点仍只从 `master` 发布。
+固定源码测试分支为 `preview/replit`。它是待审阅提交的集成镜像，不是生产分支，也不直接部署 GitHub Pages。完整门禁成功后，GitHub Actions 才把已验证的 `_site` 写入只含静态快照的生成分支 `preview/replit-site`；Replit App 只跟踪后者。正式站点仍只从 `master` 发布。
 
 Replit 的 GitHub 导入、Git 同步和发布是三个独立动作：GitHub 推送不会让已导入的 Replit App 自动拉取，Replit 的已发布页面也是文件快照。因此每轮审阅都必须显式完成“拉取 + 重新发布”，不能只看分支已推送就声称测试页已更新。
 
@@ -24,36 +24,36 @@ Replit 的 GitHub 导入、Git 同步和发布是三个独立动作：GitHub 推
    git push origin HEAD:preview/replit
    ```
 
-4. 等待 GitHub Actions 的 `Build and deploy site` 工作流成功。`preview/replit` 只运行 `build`，上传 `site-preview` 作为可追溯产物；`deploy` 的条件仍只允许 `master`。
-5. 在 GitHub Actions 成功后再同步 Replit。若 CI 失败，先在原工作分支修复并重新推送，不发布失败提交。
+4. 等待 GitHub Actions 的 `Build and deploy site` 工作流成功。`preview/replit` 会运行 `build`，上传 `site-preview`，并在成功后运行 `sync_replit_preview` 更新 `preview/replit-site`；正式 `deploy` 的条件仍只允许 `master`。
+5. 只有 `build` 与 `sync_replit_preview` 都成功后才同步 Replit。若任一任务失败，先在原工作分支修复并重新推送，不发布失败提交。
 
 ## Replit 首次建立
 
 1. 从公开仓库 `https://github.com/Yiyuiii/yiyuiii.github.io` 导入 Replit App。
-2. 在 Replit 的 Git 工具中切换到 `preview/replit`。Replit App 只作为远端分支镜像，不在其中直接编辑、提交或推回 GitHub。
-3. 等待 Replit 应用仓库根目录的 `replit.nix`，载入 Ruby 3.3 和原生扩展构建工具；首次载入或该文件更新后若 Ruby 仍不可用，先 Reload Shell／重新打开 App，不要让 Agent 直接改写仓库配置。
-4. 点击 Run。仓库根目录的 `.replit` 会运行 `bash scripts/replit_preview.sh serve`，在用户可写目录安装锁定的 Bundler 与 gems，以 production 配置构建并在 `0.0.0.0:3000` 提供 Preview。
+2. 等待首轮 GitHub Actions 已生成 `preview/replit-site`，再在 Replit Shell 切换到该分支。Replit App 只作为生成分支镜像，不在 Replit 中直接编辑、提交或推回 GitHub。
+3. 重新打开 App，使生成分支中的 `.replit` 与 `replit.nix` 生效；这里只载入 Python 静态服务器，不在 Replit 安装 Ruby 或重新构建 Jekyll。
+4. 点击 Run。`.replit` 会用 Python 在 `0.0.0.0:3000` 提供已验证的 `_site` Preview。
 5. Preview 正常后建立 Static 发布：
 
-   - Build command：`bash scripts/replit_preview.sh build`
+   - Build command：不需要构建；若界面要求填写，使用 `true`
    - Public directory：`_site`
-   - Visibility：优先选择仅本人可见的私有测试页
+   - Starter：首个发布 App 免费、带 Replit 标记且 30 天后下线，可重新发布；不要为本流程自动升级套餐
 
 6. 记录 Replit App、固定测试 URL、当前提交 SHA 和首次验证结果。测试页不绑定正式域名。
 
 ## 每轮同步与发布
 
-Replit 工作树必须保持干净。确认无本地改动后，在 Git 工具选择 Pull，或在 Replit Shell 执行等价的快进更新：
+Replit 工作树必须保持干净。未连接 GitHub provider 时，Git 面板会禁用 Pull；公开仓库仍可在 Replit Shell 执行快进更新：
 
 ```bash
-git fetch origin preview/replit
-git checkout preview/replit
-git pull --ff-only origin preview/replit
+git fetch origin preview/replit-site
+git checkout preview/replit-site
+git pull --ff-only origin preview/replit-site
 ```
 
 然后依次执行：
 
-1. 点击 Run，确认 Replit Preview 能完成真实 Jekyll 构建并打开首页、随笔索引和本轮重点页面。
+1. 点击 Run，确认 Replit Preview 能打开首页、随笔索引和本轮重点页面；访问 `_site/preview-source-sha.txt` 对应的公开路径，核对内容等于本轮 `preview/replit` 提交 SHA。
 2. 点击 Republish，用原有设置覆盖同一个测试 URL。
 3. 在发布状态成功后打开测试 URL，核对页面展示的候选与 `preview/replit` 最新提交一致。
 4. 把测试 URL、提交 SHA、GitHub Actions 运行链接、需要人工判断的问题一起交给审阅者。
@@ -64,4 +64,4 @@ git pull --ff-only origin preview/replit
 
 人工审阅只针对已通过 GitHub Actions 且已同步到 Replit 固定 URL 的提交。用户确认后，才把该提交按当次批准的方式合入 `master`。`master` push 会重新运行同一完整门禁，成功后才部署 GitHub Pages。
 
-`preview/replit` 保留为长期测试入口，可以在下一轮被新的已提交候选快进更新。测试分支和 Replit 页面都不构成正式发布记录；正式状态仍以 GitHub `master` 和 GitHub Pages 为准。
+`preview/replit` 保留为长期源码测试入口，`preview/replit-site` 只由成功的 GitHub Actions 更新，不接受人工提交。两条测试分支和 Replit 页面都不构成正式发布记录；正式状态仍以 GitHub `master` 和 GitHub Pages 为准。

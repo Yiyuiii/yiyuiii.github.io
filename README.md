@@ -76,9 +76,7 @@ Ruby 依赖由已提交的 `Gemfile.lock` 固定；依赖有意变更时才更�
 
 人工页面审阅使用固定的 GitHub `preview/replit` 测试分支和 Replit 测试页面，不再向审阅者提供本机 `localhost`。本机 loopback 仍由 `scripts/validate.py --browser` 在进程内部用于自动化回归；它不是人工审阅入口。
 
-候选提交推到 `preview/replit` 后，GitHub Actions 会运行与正式发布相同的完整门禁，但不会部署 GitHub Pages。CI 成功后，Replit App 还需要显式拉取该分支并重新发布，因为 GitHub 导入和 Replit 发布都不会随远端 push 自动更新。首次建立、每轮同步、失败边界和正式合并流程见 `docs/replit-preview-workflow.md`。
-
-Replit 的 Ruby 3.3 与原生扩展构建工具由仓库根目录的 `replit.nix` 声明；`.replit` 的 Run 命令只负责调用锁定 Bundler 的 Jekyll 构建脚本。更新 `replit.nix` 后需要让 Replit 重新载入 Shell 环境。
+候选提交推到 `preview/replit` 后，GitHub Actions 会运行与正式发布相同的完整门禁，但不会部署 GitHub Pages。门禁成功后，工作流把已验证的 `_site` 自动更新到生成分支 `preview/replit-site`；Replit 只拉取并托管这个静态快照，不承担 Ruby/Jekyll 构建。Replit App 仍需显式拉取生成分支并重新发布，因为 GitHub 推送和 Replit 发布都不会自动更新已有 App。首次建立、每轮同步、Starter 限制、失败边界和正式合并流程见 `docs/replit-preview-workflow.md`。
 
 ### 依赖维护
 

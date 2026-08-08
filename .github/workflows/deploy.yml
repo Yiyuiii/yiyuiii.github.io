@@ -92,3 +92,35 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: _site
+
+  sync_replit_preview:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/preview/replit'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout preview configuration
+        uses: actions/checkout@v6
+
+      - name: Download verified site
+        uses: actions/download-artifact@v8
+        with:
+          name: site-preview
+          path: replit-export/_site
+
+      - name: Prepare Replit static snapshot
+        run: |
+          cp scripts/replit_static_preview.replit replit-export/.replit
+          cp scripts/replit_static_preview.nix replit-export/replit.nix
+          printf '%s\n' "$GITHUB_SHA" > replit-export/_site/preview-source-sha.txt
+
+      - name: Update Replit snapshot branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: preview/replit-site
+          folder: replit-export
+          clean: true
+          force: false
+          single-commit: false
+          commit-message: Publish Replit preview for ${{ github.sha }}
