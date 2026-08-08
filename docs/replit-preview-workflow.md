@@ -39,17 +39,18 @@ Replit 的 GitHub 导入、Git 同步和发布是三个独立动作：GitHub 推
 ## Replit 首次建立
 
 1. 从公开仓库 `https://github.com/Yiyuiii/yiyuiii.github.io` 导入 Replit App。
-2. 等待首轮 GitHub Actions 已生成 `preview/replit-site`，再在 Replit Shell 读取远端生成分支并以 detached HEAD 打开精确快照：
+2. 等待首轮 GitHub Actions 已生成 `preview/replit-site`，再在 Replit Shell 读取远端生成分支。先以 detached HEAD 打开精确快照，再为本次发布创建一个只留在 Replit 的新分支；分支名中的源码短哈希和序号按本次候选替换：
 
    ```bash
    git fetch origin refs/heads/preview/replit-site:refs/remotes/origin/preview/replit-site
    git switch --detach origin/preview/replit-site
+   git switch -c replit-publish-300c6ce-a
    ```
 
-   Replit App 只作为生成分支镜像，不在 Replit 中直接编辑、提交或推回 GitHub。Static 发布可能在 Replit 工作区留下 `Published your App` 本地提交；detached 模式会保留这些 Replit 本地记录而不让它们占据或分叉 CI 生成分支。
+   Replit App 只作为生成分支镜像，不在 Replit 中直接编辑、提交或推回 GitHub。Static 发布可能在当前分支留下 `Published your App` 本地提交；每次从远端快照创建新的 `replit-publish-<源码短哈希>-<序号>` 分支，可让平台记录留在 Replit，同时不占据、分叉或污染 CI 生成分支。若同名分支已经存在，增加序号，不删除或改写旧分支。
 3. 重新打开 App，使生成分支中的 `.replit` 与 `replit.nix` 生效；这里只载入 Python 静态服务器，不在 Replit 安装 Ruby 或重新构建 Jekyll。若 Console 仍显示导入时缓存的旧命令，用 `Ctrl+K` 打开命令面板并执行 `Restart compute`，再核对 Run 命令已变为 `python3 -m http.server 3000 --directory _site`。
 4. 点击 Run。`.replit` 会用 Python 在 `0.0.0.0:3000` 提供已验证的 `_site` Preview；Console 必须保持运行，Preview 应能打开首页。
-5. Preview 正常后建立 Static 发布：
+5. Preview 正常后建立 Static 发布。不要只依据 Overview 中显示的 `Type: Static` 判断目录配置仍然有效；进入发布设置并逐项核对：
 
    - Build command：不需要构建；若界面要求填写，使用 `true`
    - Public directory：`_site`
@@ -64,19 +65,31 @@ Replit 工作树必须保持干净。未连接 GitHub provider 时，Git 面板�
 ```bash
 git fetch origin refs/heads/preview/replit-site:refs/remotes/origin/preview/replit-site
 git switch --detach origin/preview/replit-site
+git switch -c replit-publish-300c6ce-a
 git status --short --branch
 ```
 
-`git status` 除 detached HEAD 提示外不得列出文件变化。Replit 的发布记录或本地备份分支可以留在工作区，但不参与同步；不要 merge、rebase、reset、删除或推送这些平台生成的本地提交。
+把示例中的源码短哈希和序号替换为本轮候选；若同名分支已存在，增加序号。`git status` 应显示本轮 Replit 本地发布分支，且不得列出文件变化。Replit 的发布记录或本地备份分支可以留在工作区，但不参与同步；不要 merge、rebase、reset、删除或推送这些平台生成的本地提交。
 
 然后依次执行：
 
 1. 点击 Run，确认 Replit Preview 能打开首页、随笔索引和本轮重点页面；访问 `_site/preview-source-sha.txt` 对应的公开路径，核对内容等于本轮 `preview/replit` 提交 SHA。
-2. 点击 Republish，用原有设置覆盖同一个测试 URL。
+2. 点击 `Adjust settings`，确认类型仍为 Static pages，并显式核对 `Public directory` 是 `_site`；再点击 `Publish` 覆盖同一个测试 URL。不要假设上次设置一定被保留。
 3. 在发布状态成功后打开测试 URL，核对页面展示的候选与 `preview/replit` 最新提交一致。
 4. 把测试 URL、提交 SHA、GitHub Actions 运行链接、需要人工判断的问题一起交给审阅者。
 
 若 Replit 工作树出现本地修改或依赖安装导致的受跟踪文件变化，应停止同步并查明原因；不要 merge、rebase、force push、hard reset、删除 Replit 本地记录或把 Replit 产生的改动推回仓库。
+
+### `Could not find public directory`
+
+2026-08-08 实测发现：已有 Static 发布的 Overview 仍可能显示 `Type: Static`，但 `Adjust settings` 中的 `publicDir` 已变为空字符串；此时 Preview 仍能读取 `_site`，而 Republish 会在构建前失败并显示 `Could not find public directory`，失败条目也不会产生可用的部署日志。
+
+处理顺序如下：
+
+1. 先确认 Replit Git 面板显示本轮 `replit-publish-<源码短哈希>-<序号>` 分支，HEAD 是最新 `preview/replit-site` 快照且工作树干净。
+2. 确认 Run Preview 能访问 `_site/preview-source-sha.txt`；这证明目录和文件确实存在。
+3. 打开 Publishing → `Adjust settings`，选择 Static pages，把 `Public directory` 重新填写为 `_site`，再从该设置页点击 `Publish`。
+4. 等待状态变为成功，并从固定公开 URL 再次读取 `/preview-source-sha.txt`。不能用开发 Preview 成功或发布请求已排队代替这一步。
 
 ## 验收与正式发布
 

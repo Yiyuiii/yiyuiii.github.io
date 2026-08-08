@@ -460,10 +460,14 @@ def test_replit_preview_is_a_read_only_test_branch_mirror():
         in guide
     )
     assert "git switch --detach origin/preview/replit-site" in guide
+    assert "git switch -c replit-publish-" in guide
     assert "Published your App" in guide
     assert "不要 merge、rebase、reset" in guide
     assert "https://yiyuiiigithubio--yiyuiii.replit.app" in guide
     assert "Restart compute" in guide
+    assert "Could not find public directory" in guide
+    assert "Adjust settings" in guide
+    assert "Public directory" in guide
     assert "不在 Replit 中直接编辑、提交或推回 GitHub" in guide
 
 
