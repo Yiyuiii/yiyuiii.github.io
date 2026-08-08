@@ -8,6 +8,15 @@
 
 Replit 的 GitHub 导入、Git 同步和发布是三个独立动作：GitHub 推送不会让已导入的 Replit App 自动拉取，Replit 的已发布页面也是文件快照。因此每轮审阅都必须显式完成“拉取 + 重新发布”，不能只看分支已推送就声称测试页已更新。
 
+## 当前测试入口
+
+- Replit App：<https://replit.com/@yiyuiii/yiyuiiigithubio>
+- 固定人工审阅 URL：<https://yiyuiiigithubio--yiyuiii.replit.app>
+- 源码追溯：<https://yiyuiiigithubio--yiyuiii.replit.app/preview-source-sha.txt>
+- Replit App ID：`bf6868bf-44c5-4b08-a15f-0b95406a27b7`（只用于自动化定位，不是凭据）
+
+2026-08-08 首次实测为 Public Static 发布，Public directory 是 `_site`，Replit 页面显示到期日为 2026-09-07。Starter 发布会显示 “Made with Replit” 标记并按平台规则到期；到期前后的实际状态仍以 Replit Publishing 页面为准，不为维持测试页自动升级套餐。
+
 ## 仓库侧流程
 
 1. 在仓库外 worktree 或功能分支完成改动。不要直接修改正式 `master` clone。
@@ -30,9 +39,16 @@ Replit 的 GitHub 导入、Git 同步和发布是三个独立动作：GitHub 推
 ## Replit 首次建立
 
 1. 从公开仓库 `https://github.com/Yiyuiii/yiyuiii.github.io` 导入 Replit App。
-2. 等待首轮 GitHub Actions 已生成 `preview/replit-site`，再在 Replit Shell 切换到该分支。Replit App 只作为生成分支镜像，不在 Replit 中直接编辑、提交或推回 GitHub。
-3. 重新打开 App，使生成分支中的 `.replit` 与 `replit.nix` 生效；这里只载入 Python 静态服务器，不在 Replit 安装 Ruby 或重新构建 Jekyll。
-4. 点击 Run。`.replit` 会用 Python 在 `0.0.0.0:3000` 提供已验证的 `_site` Preview。
+2. 等待首轮 GitHub Actions 已生成 `preview/replit-site`，再在 Replit Shell 首次建立本地跟踪分支：
+
+   ```bash
+   git fetch origin refs/heads/preview/replit-site:refs/remotes/origin/preview/replit-site
+   git switch --track -c preview/replit-site origin/preview/replit-site
+   ```
+
+   Replit App 只作为生成分支镜像，不在 Replit 中直接编辑、提交或推回 GitHub。
+3. 重新打开 App，使生成分支中的 `.replit` 与 `replit.nix` 生效；这里只载入 Python 静态服务器，不在 Replit 安装 Ruby 或重新构建 Jekyll。若 Console 仍显示导入时缓存的旧命令，用 `Ctrl+K` 打开命令面板并执行 `Restart compute`，再核对 Run 命令已变为 `python3 -m http.server 3000 --directory _site`。
+4. 点击 Run。`.replit` 会用 Python 在 `0.0.0.0:3000` 提供已验证的 `_site` Preview；Console 必须保持运行，Preview 应能打开首页。
 5. Preview 正常后建立 Static 发布：
 
    - Build command：不需要构建；若界面要求填写，使用 `true`
@@ -46,9 +62,10 @@ Replit 的 GitHub 导入、Git 同步和发布是三个独立动作：GitHub 推
 Replit 工作树必须保持干净。未连接 GitHub provider 时，Git 面板会禁用 Pull；公开仓库仍可在 Replit Shell 执行快进更新：
 
 ```bash
-git fetch origin preview/replit-site
-git checkout preview/replit-site
-git pull --ff-only origin preview/replit-site
+git fetch origin refs/heads/preview/replit-site:refs/remotes/origin/preview/replit-site
+git switch preview/replit-site
+git merge --ff-only origin/preview/replit-site
+git status --short --branch
 ```
 
 然后依次执行：

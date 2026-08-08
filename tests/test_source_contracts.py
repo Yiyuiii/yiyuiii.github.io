@@ -454,7 +454,14 @@ def test_replit_preview_is_a_read_only_test_branch_mirror():
     assert "force: false" in workflow
     assert "preview/replit" in guide
     assert "preview/replit-site" in guide
-    assert "git pull --ff-only origin preview/replit-site" in guide
+    assert (
+        "git fetch origin "
+        "refs/heads/preview/replit-site:refs/remotes/origin/preview/replit-site"
+        in guide
+    )
+    assert "git merge --ff-only origin/preview/replit-site" in guide
+    assert "https://yiyuiiigithubio--yiyuiii.replit.app" in guide
+    assert "Restart compute" in guide
     assert "不在 Replit 中直接编辑、提交或推回 GitHub" in guide
 
 
