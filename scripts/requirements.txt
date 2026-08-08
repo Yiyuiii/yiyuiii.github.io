@@ -1,5 +1,5 @@
-beautifulsoup4>=4.12,<5
-markdown-it-py>=3,<5
+beautifulsoup4>=4.15.0,<5
+markdown-it-py>=4.2.0,<5
 Pillow==12.3.0
-pytest>=8,<9
-PyYAML>=6,<7
+pytest>=9.1.1,<10
+PyYAML>=6.0.3,<7
