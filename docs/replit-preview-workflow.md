@@ -39,14 +39,14 @@ Replit 的 GitHub 导入、Git 同步和发布是三个独立动作：GitHub 推
 ## Replit 首次建立
 
 1. 从公开仓库 `https://github.com/Yiyuiii/yiyuiii.github.io` 导入 Replit App。
-2. 等待首轮 GitHub Actions 已生成 `preview/replit-site`，再在 Replit Shell 首次建立本地跟踪分支：
+2. 等待首轮 GitHub Actions 已生成 `preview/replit-site`，再在 Replit Shell 读取远端生成分支并以 detached HEAD 打开精确快照：
 
    ```bash
    git fetch origin refs/heads/preview/replit-site:refs/remotes/origin/preview/replit-site
-   git switch --track -c preview/replit-site origin/preview/replit-site
+   git switch --detach origin/preview/replit-site
    ```
 
-   Replit App 只作为生成分支镜像，不在 Replit 中直接编辑、提交或推回 GitHub。
+   Replit App 只作为生成分支镜像，不在 Replit 中直接编辑、提交或推回 GitHub。Static 发布可能在 Replit 工作区留下 `Published your App` 本地提交；detached 模式会保留这些 Replit 本地记录而不让它们占据或分叉 CI 生成分支。
 3. 重新打开 App，使生成分支中的 `.replit` 与 `replit.nix` 生效；这里只载入 Python 静态服务器，不在 Replit 安装 Ruby 或重新构建 Jekyll。若 Console 仍显示导入时缓存的旧命令，用 `Ctrl+K` 打开命令面板并执行 `Restart compute`，再核对 Run 命令已变为 `python3 -m http.server 3000 --directory _site`。
 4. 点击 Run。`.replit` 会用 Python 在 `0.0.0.0:3000` 提供已验证的 `_site` Preview；Console 必须保持运行，Preview 应能打开首页。
 5. Preview 正常后建立 Static 发布：
@@ -63,10 +63,11 @@ Replit 工作树必须保持干净。未连接 GitHub provider 时，Git 面板�
 
 ```bash
 git fetch origin refs/heads/preview/replit-site:refs/remotes/origin/preview/replit-site
-git switch preview/replit-site
-git merge --ff-only origin/preview/replit-site
+git switch --detach origin/preview/replit-site
 git status --short --branch
 ```
+
+`git status` 除 detached HEAD 提示外不得列出文件变化。Replit 的发布记录或本地备份分支可以留在工作区，但不参与同步；不要 merge、rebase、reset、删除或推送这些平台生成的本地提交。
 
 然后依次执行：
 
@@ -75,7 +76,7 @@ git status --short --branch
 3. 在发布状态成功后打开测试 URL，核对页面展示的候选与 `preview/replit` 最新提交一致。
 4. 把测试 URL、提交 SHA、GitHub Actions 运行链接、需要人工判断的问题一起交给审阅者。
 
-若 Replit 工作树出现本地修改、非快进历史或依赖安装导致的受跟踪文件变化，应停止同步并查明原因；不要 merge、force push、hard reset 或把 Replit 产生的改动推回仓库。
+若 Replit 工作树出现本地修改或依赖安装导致的受跟踪文件变化，应停止同步并查明原因；不要 merge、rebase、force push、hard reset、删除 Replit 本地记录或把 Replit 产生的改动推回仓库。
 
 ## 验收与正式发布
 

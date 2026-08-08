@@ -459,7 +459,9 @@ def test_replit_preview_is_a_read_only_test_branch_mirror():
         "refs/heads/preview/replit-site:refs/remotes/origin/preview/replit-site"
         in guide
     )
-    assert "git merge --ff-only origin/preview/replit-site" in guide
+    assert "git switch --detach origin/preview/replit-site" in guide
+    assert "Published your App" in guide
+    assert "不要 merge、rebase、reset" in guide
     assert "https://yiyuiiigithubio--yiyuiii.replit.app" in guide
     assert "Restart compute" in guide
     assert "不在 Replit 中直接编辑、提交或推回 GitHub" in guide

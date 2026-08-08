@@ -81,7 +81,7 @@
 - 浏览器逐页复核四组新文的 8 个中英文 URL：题图全部加载，标题层级对应，页面无横向溢出；强化学习融合稿保留 13 个正常渲染公式和 12 个一级章节。
 - 本地整体预览停在 `/writing/`，截图保存在仓库外的 `D:\Codes\yiyuiii.github.io\review-artifacts`，不进入提交。
 - 仓库现已加入固定 `preview/replit` 源码分支触发、成功后生成 `preview/replit-site` 静态快照的 GitHub Actions 任务、Replit 静态运行模板和 `docs/replit-preview-workflow.md`。人工审阅迁移到 Replit 固定测试 URL；本机 loopback 只保留为自动浏览器回归的内部实现，真实 Jekyll 构建、锁定依赖与完整门禁全部留在 GitHub Actions，Replit 不再承担 Ruby 构建。
-- 2026-08-08 首次端到端实测已完成：`preview/replit` 的完整 GitHub Actions 门禁成功后生成 `preview/replit-site`；Replit 在重启开发环境后用 Python 静态命令正常运行 Preview，并以 Static、Public directory=`_site` 发布到 <https://yiyuiiigithubio--yiyuiii.replit.app>。公开哈希端点与测试提交一致，首页、随笔索引及 GitHub Pages、强化学习、云服务器、游泳四篇重点中文文章均返回 HTTP 200 且包含预期正文契约。
+- 2026-08-08 首次端到端实测已完成：`preview/replit` 的完整 GitHub Actions 门禁成功后生成 `preview/replit-site`；Replit 在重启开发环境后用 Python 静态命令正常运行 Preview，并以 Static、Public directory=`_site` 发布到 <https://yiyuiiigithubio--yiyuiii.replit.app>。公开哈希端点与测试提交一致，首页、随笔索引及 GitHub Pages、强化学习、云服务器、游泳四篇重点中文文章均返回 HTTP 200 且包含预期正文契约。实测还确认 Static 发布会留下 Replit 本地 `Published your App` 提交，因此同步改为显式 fetch 后 detached 到 `origin/preview/replit-site`；平台本地记录保留但不 merge、改写或推回 GitHub。
 
 ## Replit 能力复核
 
