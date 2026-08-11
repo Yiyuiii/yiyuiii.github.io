@@ -25,6 +25,7 @@ updates:
     directory: "/scripts"
     schedule:
       interval: "monthly"
+    versioning-strategy: "increase-if-necessary"
     open-pull-requests-limit: 3
     groups:
       python-dependencies:

@@ -27,10 +27,14 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: scripts/requirements.txt
+          cache-dependency-path: |
+            scripts/requirements.in
+            scripts/requirements.txt
 
       - name: Install Python checks
-        run: pip install -r scripts/requirements.txt
+        run: |
+          python -m pip install --require-hashes -r scripts/requirements.txt
+          python -m pip check
 
       - name: Setup Node
         uses: actions/setup-node@v6

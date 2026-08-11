@@ -23,13 +23,15 @@
 ## 依赖与安全
 
 - 已启用 GitHub Dependabot 漏洞告警；没有启用自动修复、CodeQL、自动合并或其它额外自动化。
-- `.github/dependabot.yml` 每月检查 Bundler、npm 与 `scripts/requirements.txt` 中的 Python 依赖；每个生态按组提 PR，最多同时保留 3 个。
+- `.github/dependabot.yml` 每月检查 Bundler、npm 与 `scripts/requirements.in`／`scripts/requirements.txt` 中的 Python 依赖；每个生态按组提 PR，最多同时保留 3 个。Python 清单于 2026-08-11 改为输入约束与带哈希锁文件，精确边界见 `docs/dependency-security-baseline-2026-08-11.md`。
 - 首次默认分支扫描产生 20 条告警，实际只有两个根因：Pillow 12.0.0 对应 19 条历史公告，`css_parser` 1.22.0 对应 1 条公告。
 - Pillow 已升级到 12.3.0。由于编码器版本属于图片确定性契约，索引题图升级为 `index-v2`，正文派生图策略升级为版本 3 / `content-v2`，并重新生成和核对尺寸、SHA-256 与中英文正文哈希。
 - `css_parser` 的修复版为 3.0.0，但唯一引入者 `jekyll-3rd-party-libraries` 0.0.1 在已发布 gem 和上游 `main` 都限制 `< 2.0`。本站固定 `download: false`，实际只需要 URL 中的 `{{version}}` 展开，因此用 `_plugins/third_party_library_urls.rb` 的最小本地钩子替代，并在误开下载时阻断构建；`Gemfile.lock` 不再包含这两个 gem。
 - `@playwright/test` 从 1.62.0 精确升级到 1.62.1；`npm audit` 为 0 个漏洞。
 
 默认分支上的 Dependabot 告警要在本分支合并并由 GitHub 重新扫描后才会关闭，PR 阶段仍显示旧 `master` 的告警不代表修复未进入候选提交。
+
+2026-08-11 复核发现 GitHub Dependency Graph 仍把 Pillow 识别为 12.0.0，因此此前 19 条 Pillow 告警没有自动关闭；正式清单和最新 CI 均已安装 12.3.0。新的开发依赖清单路径会触发重新解析，验收以 Dependabot、Dependency Graph 与 SBOM 的当前结果为准。
 
 ## 验证证据
 
