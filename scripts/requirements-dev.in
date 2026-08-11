@@ -1,0 +1,8 @@
+# Direct dependencies for local checks, asset maintenance, and CI.
+# Compile with Python 3.12 and pip-tools 7.5.3; see README.md.
+beautifulsoup4>=4.12,<5
+markdown-it-py>=3,<5
+Pillow==12.3.0
+pytest>=8,<9
+PyYAML>=6,<7
+tzdata>=2026.3; sys_platform == "win32"

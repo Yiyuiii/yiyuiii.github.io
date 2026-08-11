@@ -34,7 +34,8 @@ git ls-files docs/content-revisions docs/content-covers
 首次准备：
 
 ```powershell
-python -m pip install -r scripts/requirements.txt
+python -m pip install --require-hashes -r scripts/requirements-dev.txt
+python -m pip check
 bundle install
 npm ci
 npx playwright install --no-shell chromium
@@ -70,7 +71,17 @@ python scripts/run_browser_tests.py --site _site -- tests/browser/site.spec.mjs
 python scripts/validate.py --browser -- tests/browser/site.spec.mjs
 ```
 
-Ruby 依赖由已提交的 `Gemfile.lock` 固定；依赖有意变更时才更新锁文件。精确 CI 流程见 `.github/workflows/deploy.yml`。
+Python 直接依赖维护在 `scripts/requirements-dev.in`，完整版本与分发包哈希由 `scripts/requirements-dev.txt` 固定。更新时使用 Python 3.12 与 `pip-tools==7.5.3`：
+
+```powershell
+python -m pip install "pip-tools==7.5.3"
+$env:CUSTOM_COMPILE_COMMAND = "python -m piptools compile --strip-extras --generate-hashes --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements-dev.txt scripts/requirements-dev.in"
+python -m piptools compile --strip-extras --generate-hashes --index-url=https://pypi.org/simple --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements-dev.txt scripts/requirements-dev.in
+python -m pip install --require-hashes -r scripts/requirements-dev.txt
+python -m pip check
+```
+
+生成命令显式使用公开 PyPI 解析版本和哈希，锁文件不会保存本机镜像地址。Ruby 依赖由已提交的 `Gemfile.lock` 固定；依赖有意变更时才更新锁文件。精确 CI 流程见 `.github/workflows/deploy.yml`。
 
 ### 人工页面审阅
 
