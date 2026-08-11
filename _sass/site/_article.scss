@@ -579,14 +579,33 @@ html[data-theme="dark"] .highlight .gu {
 }
 
 .post-content
-  > :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote, details, hr, .footnotes) {
+  > :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    ul,
+    ol,
+    dl,
+    blockquote,
+    details,
+    hr,
+    .footnotes,
+    pre,
+    .highlight,
+    .highlighter-rouge,
+    figure.highlight
+  ) {
   width: min(100%, var(--article-prose-width));
   max-width: 100%;
   margin-inline: auto;
 }
 
 .post-content
-  > :where(pre, .highlight, .highlighter-rouge, figure, .mermaid, .article-wide) {
+  > :where(figure:not(.highlight), .mermaid, .article-wide) {
   width: min(100%, var(--article-wide-width));
   max-width: 100%;
   margin-inline: auto;
