@@ -53,7 +53,7 @@
 | A | 202208171838 | 制作一张匹配形状的字符画 | 中文 | 图像处理与字符画 | 完成 |
 | A | 202211110000 | 装机记录 | 中文 | PC 硬件与装机 | 完成 |
 | A | 202307232000 | 了解游泳 | 中文 | 游泳教学与安全 | 完成 |
-| A | 202608081000 | Minecraft 服务器的最小运维闭环 | 中文 | 游戏服务器运维 | 完成 |
+| A | 202608081000 | 状态型服务的运维方法：以 Minecraft Java 服务器为例 | 中文 | 游戏服务器运维 | 完成 |
 | B | 202301162233 | 四季物语量化分析攻略 | 中文 | 桌游策略与量化 | 完成 |
 | B | 202302032000 | 逻辑对决桌游攻略 | 中文 | 桌游逻辑推理 | 完成 |
 | B | 202404232233 | 《盖亚计划》资源—分值量化计算思路 | 中文 | 桌游资源量化 | 完成 |
@@ -76,7 +76,7 @@
 | 202208171838 | 图像块、字形模板、均方误差（MSE）、直方图均衡 | image block, glyph template, mean squared error (MSE), histogram equalization | 字符块／小图块／模板图混用、把直方图均衡写成亮度加权 |
 | 202211110000 | 台式机、显示器、显卡（GPU）、处理器（CPU）、固态硬盘（SSD）、压力测试、结温 | desktop, monitor, graphics processing unit (GPU), central processing unit (CPU), solid-state drive (SSD), stress test, junction temperature | 电脑／主机／机器无边界切换、无法核实的旧显卡型号后缀 |
 | 202307232000 | 浮力、阻力、推进、训练辅助器材、救生设备 | buoyancy, drag, propulsion, training aids, lifesaving equipment | 浮具／救生器材混称、动作感觉与物理机制混述 |
-| 202608081000 | 兼容性清单、系统账户、服务管理器、虚拟专用网络（VPN）、服务端口、冒烟测试、系统信号、玩家数据路径、最近备份时间 | compatibility manifest, system account, service manager, virtual private network (VPN), service port, smoke test, system signal, player-data path, last backup time | 把公网地址归为访问控制、把开发环境要求当作服务器运行要求 |
+| 202608081000 | 单写者、兼容性清单、信任边界、恢复点目标（RPO）、恢复时间目标（RTO）、每 tick 毫秒数（MSPT）、玩家路径、故障域、恢复演练 | single writer, compatibility manifest, trust boundary, recovery point objective (RPO), recovery time objective (RTO), milliseconds per tick (MSPT), player path, failure domain, restore drill | 把任务退出成功等同于可恢复、把旧 JAR 等同于回滚、把 `-Xmx` 等同于进程总内存、把开发环境要求当作运行要求 |
 | 202301162233 | 能量、召唤等级（对应 Summoning gauge）、打出卡牌、晶化、水晶、声望点、季节指示物、游戏速度、反制牌、第一手候选 | Energy token, Summoning gauge, Summon, Transmute, Crystal, Prestige point, Season token, game speed, counter card, first-pick candidate | 时间流速、时间指示物、召唤上限／召唤槽漂移，血赚／强牌／万能牌等无条件评价 |
 | 202302032000 | 密码牌、密码、个人密码、候选集、答案分支、实体发牌、比特（信息熵单位）；颜色记号 W／B／G | Cipher tile, code, private code, candidate set, answer branch, physical deal, bit; color notation W/B/G | 数字牌／密码数字混用、把中文颜色字当作公式变量、未定义的信息量单位 |
 | 202404232233 | 建筑记号 M／TS／RL／AC／PI、资源记号 C／O／K／Q、魔力、魔力标记、科技轨道、通用资源点、资源增长倍率、从无建筑状态起算的资源回报率、胜利点（VP） | building symbols M/TS/RL/AC/PI, resource symbols C/O/K/Q, Power, Power token, tech track, general resource point, resource-growth multiplier, resource return rate from no building, victory point (VP) | 资源价值、增长倍率、回报和胜利点之间的主称呼漂移，“空地”误指累计建造路线的起点 |
@@ -97,6 +97,7 @@
 ## 完成记录
 
 - 2026-08-10，16 组、32 篇随笔均完成题目、简介、题图说明、正文、表格、资料块和修订记录整理。
+- 2026-08-11，《状态型服务的运维方法：以 Minecraft Java 服务器为例》完成重新调研与双语重写：用状态型服务模型统一版本、权限、容量、恢复、升级和排障，并把关键判断落实为可执行的验收与恢复演练；论断边界与来源矩阵见 `docs/minecraft-server-operations-research-2026-08-11.md`。
 - 《四季物语》保留 94 张牌、原有估值、公式和案例；牌名、组件名与评价条件已统一。《大创造时代》保留 14 个公式代码块及其双语结构。
 - GitHub Pages 工作流示例使用原样输出边界，避免 Jekyll 把 Actions 表达式解析为 Liquid。
 - 双语翻译哈希、标题层级、表格、公式、代码、图片与链接由生产翻译守卫复核；正式发布前仍按 `docs/preview-workflow.md` 核对固定测试分支及产物源码标记。
