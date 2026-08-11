@@ -8,6 +8,7 @@
 - 当时的 GitHub Dependency Graph 与 SBOM 仍把该清单解析为 Pillow 12.0.0。
 - 正式 `master` 已从 2026-08-08 起固定 `Pillow==12.3.0`；2026-08-11 的正式 GitHub Actions 运行也明确安装 Pillow 12.3.0。
 - 19 条公告给出的最高修复门槛为 12.3.0。当前构建环境已经覆盖这些修复，待 GitHub 重新解析清单后关闭旧告警。
+- 分支依赖对比同时发现 pytest 8.4.2 受 [GHSA-6w46-j5rx-g56g](https://github.com/advisories/GHSA-6w46-j5rx-g56g) 影响，首个修复版本为 9.0.3。输入约束以 9.0.3 作为安全下限。
 - Pillow 只用于本地与 CI 的图片读取、验证和派生资源生成。正式站点为静态文件，不向访问者提供 Python 图片处理入口。
 
 ## 清单结构
@@ -37,7 +38,7 @@ python -m pip check
 - `.github/dependabot.yml` 继续按月检查 `/scripts`，并使用 `increase-if-necessary`，只在当前约束无法容纳目标版本时提高约束。
 - 清单变更进入默认分支后，GitHub 应重新解析依赖图。验收时检查 Dependabot 告警、Dependency Graph 和 SBOM 三处的 Pillow 版本。
 - 旧告警在依赖图刷新前保持开放，不逐条手动忽略。
-- Python 大版本升级和 pytest 等测试框架的主要版本升级使用独立 PR，避免与普通补丁更新混合。
+- 后续 Python 大版本升级和测试框架的主要版本升级使用独立 PR。本基线将 pytest 安全下限提升至 9.0.3，当前锁定 9.1.1，并保留完整回归证据。
 
 ## 验收
 

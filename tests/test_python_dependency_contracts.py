@@ -41,7 +41,7 @@ def test_python_checks_use_an_input_and_hashed_lock():
         "beautifulsoup4>=4.12,<5",
         "markdown-it-py>=3,<5",
         "Pillow==12.3.0",
-        "pytest>=8,<9",
+        "pytest>=9.0.3,<10",
         "PyYAML>=6,<7",
         'tzdata>=2026.3; sys_platform == "win32"',
     ]
@@ -64,7 +64,7 @@ def test_python_checks_use_an_input_and_hashed_lock():
         "pillow": "12.3.0",
         "pluggy": "1.6.0",
         "pygments": "2.20.0",
-        "pytest": "8.4.2",
+        "pytest": "9.1.1",
         "pyyaml": "6.0.3",
         "soupsieve": "2.9.2",
         "typing-extensions": "4.16.0",
