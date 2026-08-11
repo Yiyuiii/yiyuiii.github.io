@@ -1,0 +1,119 @@
+.page-comments {
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--divider) 62%, transparent);
+}
+
+.page-comments h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.25rem, 2.6vw, 1.55rem);
+  line-height: 1.3;
+}
+
+.page-comments__introduction,
+.page-comments__noscript {
+  max-width: 46rem;
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.page-comments__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.7rem 1rem;
+  margin-top: 0.9rem;
+}
+
+[data-comments-load] {
+  min-height: 44px;
+  padding: 0.62rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--amethyst) 55%, var(--divider));
+  border-radius: 0.35rem;
+  color: var(--surface);
+  background: var(--amethyst);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+[data-comments-load]:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--amethyst) 84%, var(--jade));
+}
+
+[data-comments-load]:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--focus) 72%, white);
+  outline-offset: 3px;
+}
+
+[data-comments-load]:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.page-comments__auto-load {
+  display: inline-flex;
+  flex: 1 1 19rem;
+  align-items: center;
+  gap: 0.52rem;
+  max-width: 34rem;
+  padding-top: 0.28rem;
+  color: var(--muted);
+}
+
+.page-comments__auto-load[hidden] {
+  display: none;
+}
+
+.page-comments__auto-load input {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--amethyst);
+  cursor: pointer;
+}
+
+.page-comments__auto-load input:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--focus) 72%, white);
+  outline-offset: 3px;
+}
+
+.page-comments__auto-load-label {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 400;
+  line-height: 1.55;
+  cursor: pointer;
+}
+
+[data-comments-direct] {
+  color: var(--amethyst);
+  font-weight: 650;
+}
+
+.page-comments__status {
+  min-height: 1.5em;
+  margin: 0.55rem 0 0;
+  color: var(--meta);
+  font-size: 0.8rem;
+}
+
+.page-comments__thread {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.page-comments__thread .giscus,
+.page-comments__thread .giscus-frame {
+  width: 100%;
+}
+
+.page-comments__thread .giscus-frame {
+  display: block;
+  border: 0;
+}

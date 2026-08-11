@@ -193,3 +193,144 @@ covers:
     sha256: "ce94c7e409f683649540e842eb06bb76e022625246dacf2ffb2dc611cb82d47f"
     dimensions: [1024, 1024]
     attribution: "© Czech Games Edition"
+
+  - asset: "assets/posts/202608081000/cover-minecraft-operations-generated-square.webp"
+    posts:
+      - "_posts/2026-08-08-Minecraft服务器的最小运维闭环.md"
+      - "_posts/2026-08-08-a-minimal-operations-loop-for-a-minecraft-server.md"
+    origin_type: "generated"
+    source_url: null
+    author: "Generated under Yiyu Chen's direction"
+    license: "project-use-rights"
+    license_url: null
+    generator: "OpenAI image_gen via Codex"
+    generated_at: "2026-08-08"
+    source_description: "AI-original text-only generation; no Obsidian screenshot, private server data, game character, logo, or third-party reference image was used."
+    reference_inputs:
+      - "No reference image input; the text-only prompt was derived from the article's abstract operations loop."
+    purpose: "Square writing-index and article cover; a conceptual illustration, not an actual console, network topology, or operating record."
+    approval: "Generated within the user-authorized Obsidian-to-blog conversion; retained locally for review and not published by this task."
+    prompt: |-
+      Use case: stylized-concept
+      Asset type: square editorial cover for a bilingual personal essay about maintaining a Minecraft Java server
+      Primary request: create a polished conceptual illustration of a small voxel-world server becoming a maintainable service
+      Scene/backdrop: calm dark navy technical workspace, with a compact server rack connected to a small generic voxel landscape
+      Subject: one clear operational loop suggested visually through four recognizable elements—monitoring pulse, locked firewall shield, backup archive box, and circular restart/restore arrow—integrated naturally rather than as a labeled infographic
+      Style/medium: clean modern editorial 3D illustration, subtle voxel geometry, precise but friendly, suitable for a personal technical blog
+      Composition/framing: centered square 1:1 composition, generous safe margins, readable at thumbnail size, no crop-sensitive details
+      Lighting/mood: soft cool studio light with warm status accents; calm, reliable, maintainable
+      Color palette: navy, muted teal, warm amber, restrained green
+      Constraints: no text, no letters, no numbers, no logos, no game characters, no recognizable copyrighted interface, no IP address, no terminal commands, no watermark; conceptual illustration, not a screenshot or factual server record
+    transform: "Generated as an original 1254 × 1254 square illustration, converted to RGB, resized to 1024 × 1024 with Lanczos, stripped of metadata, and exported as WebP quality 82 with Pillow 12.3.0 method 6."
+    sha256: "0f4b924c74d0042c4c7af5b726bb7dd1dd0f37f0e53d2ff7c038536709937ebe"
+    dimensions: [1024, 1024]
+    attribution: "AI-generated conceptual server-operations illustration; not a factual record."
+
+  - asset: "assets/posts/202608081030/cover-small-kitchen-system-generated-square.webp"
+    posts:
+      - "_posts/2026-08-08-小厨房的最小系统.md"
+      - "_posts/2026-08-08-a-minimal-system-for-a-small-kitchen.md"
+    origin_type: "generated"
+    source_url: null
+    author: "Generated under Yiyu Chen's direction"
+    license: "project-use-rights"
+    license_url: null
+    generator: "OpenAI image_gen via Codex"
+    generated_at: "2026-08-08"
+    source_description: "AI-original text-only generation; no personal kitchen photograph, product image, brand asset, or third-party reference image was used."
+    reference_inputs:
+      - "No reference image input; the text-only prompt was derived from the article's preparation-to-reset workflow."
+    purpose: "Square writing-index and article cover; a workflow metaphor, not nutrition, portion, recipe, or food-safety evidence."
+    approval: "Generated within the user-authorized Obsidian-to-blog conversion; retained locally for review and not published by this task."
+    prompt: |-
+      Use case: stylized-concept
+      Asset type: square editorial cover for a bilingual personal essay about building a low-friction small-kitchen system
+      Primary request: create a polished top-down illustration of a compact home kitchen organized as one calm workflow
+      Scene/backdrop: a small warm countertop divided naturally into preparation, cooking, serving, and cleaning/reset zones
+      Subject: a cutting board and knife, one pot and one pan, a rice bowl and fresh vegetables, a neatly folded cloth and drying rack; a subtle continuous path links the zones without labels
+      Style/medium: modern editorial illustration with softly dimensional objects, tactile materials, restrained detail, no photorealistic food advertising
+      Composition/framing: centered square 1:1 composition with generous safe margins, clear silhouette at thumbnail size, no clutter
+      Lighting/mood: soft morning window light, practical, welcoming, attainable
+      Color palette: warm cream, terracotta, muted sage, natural wood, charcoal accents
+      Constraints: no text, no letters, no numbers, no brand marks, no packaged products, no people, no unsafe knife placement, no watermark; conceptual illustration, not a nutritional or food-safety diagram
+    transform: "Generated as an original 1254 × 1254 square illustration, converted to RGB, resized to 1024 × 1024 with Lanczos, stripped of metadata, and exported as WebP quality 82 with Pillow 12.3.0 method 6."
+    sha256: "a7feb3b8b9660b5b501cc8698ea795c2d85d75479d796a9a08de5538968015bc"
+    dimensions: [1024, 1024]
+    attribution: "AI-generated small-kitchen workflow illustration; not a safety or nutrition example."
+
+  - asset: "assets/posts/202608081100/cover-four-color-outerwear-generated-square.webp"
+    posts:
+      - "_posts/2026-08-08-四种颜色的外套系统.md"
+      - "_posts/2026-08-08-a-four-color-outerwear-system.md"
+    origin_type: "generated"
+    source_url: null
+    author: "Generated under Yiyu Chen's direction"
+    license: "project-use-rights"
+    license_url: null
+    generator: "OpenAI image_gen via Codex"
+    generated_at: "2026-08-08"
+    source_description: "AI-original text-only generation; no Obsidian product image, catalogue photograph, brand asset, or third-party reference image was used."
+    reference_inputs:
+      - "No reference image input; the text-only prompt used the four colour roles extracted from the article."
+    purpose: "Square writing-index and article cover; a colour-role concept, not a product endorsement or exact physical colour sample."
+    approval: "Generated within the user-authorized Obsidian-to-blog conversion; retained locally for review and not published by this task."
+    prompt: |-
+      Use case: stylized-concept
+      Asset type: square editorial cover for a bilingual personal essay about choosing an easy-to-use outerwear color system
+      Primary request: create a refined fashion-editorial illustration of four distinct everyday jackets arranged on one simple wooden rail
+      Scene/backdrop: quiet neutral studio with a soft plaster wall and minimal floor shadow
+      Subject: exactly four unbranded outerwear pieces, visually distinct but equally practical—brick red short jacket, warm beige field jacket, muted olive utility jacket, charcoal wool coat; no duplicate garments and no extra clothing
+      Style/medium: elegant contemporary editorial illustration with realistic fabric texture and simplified clean forms, not a commercial catalog photograph
+      Composition/framing: square 1:1, four garments evenly spaced and fully visible, strong color-block rhythm, generous margins, readable at thumbnail size
+      Lighting/mood: soft diffused daylight, thoughtful and understated
+      Color palette: brick red, warm beige, muted olive green, charcoal grey against a light neutral background
+      Constraints: no people, no mannequins, no text, no letters, no numbers, no logos, no labels, no brand-specific design, no accessories, no watermark; conceptual color framework, not a product endorsement
+    transform: "Generated as an original 1254 × 1254 square illustration, converted to RGB, resized to 1024 × 1024 with Lanczos, stripped of metadata, and exported as WebP quality 82 with Pillow 12.3.0 method 6."
+    sha256: "bc04968538a1da22f453e3390f0cecf8e7ad9018aa0c7b07f42f04ca0d51ca51"
+    dimensions: [1024, 1024]
+    attribution: "AI-generated four-colour outerwear concept; not a product photograph."
+
+  - asset: "assets/posts/202608081130/cover-zebra-finch-trust-generated-square.webp"
+    posts:
+      - "_posts/2026-08-08-与珍珠鸟建立信任.md"
+      - "_posts/2026-08-08-building-trust-with-zebra-finches.md"
+    origin_type: "generated"
+    source_url: null
+    author: "Generated under Yiyu Chen's direction"
+    license: "project-use-rights"
+    license_url: null
+    generator: "OpenAI image_gen via Codex"
+    generated_at: "2026-08-08"
+    source_description: "AI-original text-only generation; no personal bird photograph, veterinary image, or third-party reference image was used."
+    reference_inputs:
+      - "No reference image input; the text-only prompt was derived from the article's voluntary target and carrier-training ladder."
+    purpose: "Square writing-index and article cover; an illustrative trust metaphor, not a photograph, medical demonstration, or species-care standard."
+    approval: "Generated within the user-authorized Obsidian-to-blog conversion; retained locally for review and not published by this task."
+    prompt: |-
+      Use case: illustration-story
+      Asset type: square editorial cover for a bilingual personal essay about building trust with zebra finches through safe care and positive reinforcement
+      Primary request: create a gentle, accurate illustration of two small zebra finches choosing to approach a calm training setup
+      Scene/backdrop: bright quiet indoor bird-care space with a natural perch, an open carrier entrance in the background, a simple target stick, and a tiny millet reward dish
+      Subject: exactly two healthy zebra finches (Taeniopygia guttata), one perched and one taking a voluntary step toward the target; relaxed posture, feet supported, no human hands touching them
+      Style/medium: refined natural-history editorial illustration, anatomically plausible, softly textured feathers, clearly an illustration rather than a photograph
+      Composition/framing: square 1:1, birds are the focal point, generous safe margins, uncluttered, readable at thumbnail size
+      Lighting/mood: soft daylight, quiet patience, trust, choice, safety
+      Color palette: warm ivory, natural wood, soft green, zebra-finch grey and chestnut accents
+      Constraints: no cage bars dominating the image, no restraint, no forced handling, no starvation cues, no clipped wings, no medical procedure, no text, no letters, no numbers, no logos, no watermark; conceptual illustration, not veterinary evidence or a factual photograph
+    transform: "Generated as an original 1254 × 1254 square illustration, converted to RGB, resized to 1024 × 1024 with Lanczos, stripped of metadata, and exported as WebP quality 82 with Pillow 12.3.0 method 6."
+    sha256: "18fbf13f940dc89b789e289e2536330eaf2bf3e1601fe64cfd94d2449a523097"
+    dimensions: [1024, 1024]
+    attribution: "AI-generated positive-training illustration; not a photograph or veterinary evidence."
+  - asset: "assets/posts/202608102107/cover-brass-pittsburgh-official-square.webp"
+    posts:
+      - "_posts/2026-08-10-《工业革命：匹兹堡》规则教学：从摆桌到第一次时代结算.md"
+      - "_posts/2026-08-10-learning-brass-pittsburgh-board-game.md"
+    origin_type: "external"
+    source_url: "https://roxley.com/products/brass-pittsburgh"
+    author: "Roxley Games"
+    license: "Roxley retailer/content-creator media use"
+    license_url: "https://roxley.com/pages/media-assets"
+    transform: "Converted the official 1000 × 1000 product PNG unchanged to WebP quality 82 with metadata removed."
+    sha256: "654cdc0a95a26ed730dd7f608a06cdf180d1e46b0666bc927925a657ac7dd368"
+    dimensions: [1000, 1000]
+    attribution: "© Roxley Games"

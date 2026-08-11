@@ -9,7 +9,7 @@ translation_key: post-202407012233
 translation_url: /posts/特鲁瓦-资源-分值量化分析攻略/
 translation_source: _posts/2024-07-01-《特鲁瓦》资源-分值量化分析攻略.md
 translation_status: current
-source_hash: 44137a752561ffaeee85924ffffd194341e161feff51c491cb6219f6f55cc8f3
+source_hash: 9456658c92fb78843d49c198815f04112af68f0f4273b7b4863a9211500b8e78
 aliases: []
 categories:
 - Board Games
@@ -18,101 +18,93 @@ tags:
 - Board Games
 from: null
 math: true
-mermaid: true
 thumbnail: /assets/posts/202407012233/cover-bgg-1091724-square.webp
 article_cover:
   alt: A four-player game of Troyes
   caption: 'Cover image: [Overview of the board. 4 player game.](https://boardgamegeek.com/image/1091724/troyes), photographed by BoardGameGeek user verminose, [CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/); square crop by this site.'
-excerpt: In Troyes, players' actions depend on random die values. The mechanism for buying other players' dice turns what would have been highly random individual output into a shared public supply, balancing randomness and strategy in a novel way.
+excerpt: In Troyes, actions depend on random die values. Buying other players’ dice turns each round’s dice pool into a shared market and gives every random result an actionable price.
 description: A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply.
+revisions:
+- date: '2024-07-01'
+  note: First published
+- date: '2026-08-10'
+  note: Standardized official component and action terms, separated the valuation steps, and removed repetitive judgments while preserving the original two-game experience, formulas, and strategy conclusions
 ---
 
 ## Preface
 
-In Troyes, players' actions depend on random die values. The mechanism for buying other players' dice turns what would have been highly random individual output into a shared public supply, balancing randomness and strategy in a novel way.
+Actions in *Troyes* depend on die values. Because players may buy one another’s dice, the dice rolled each round form a shared market. Pricing brings each random result into every player’s decision space.
 
-After playing two games of Troyes, I had an intuition that its scoring returns could be approximated with a simple quantitative model. This article records that process.
+After two games, I tried to work backward from victory points (VP) and estimate the value of resources and actions. This article preserves that valuation process. The numbers compare choices within a game; they are neither official prices nor a stable optimal strategy.
 
-Because this is a point-scoring game, we can work backward from victory points to estimate the returns on each resource.
+I use the rulebook’s terms throughout: die values are measured in pips, the currency is deniers, the city cards are Activity cards, and the wooden figures are citizens.
+
+> **Source note | Rules terminology**
+>
+> The [official Pearl Games page](https://pearlgames.be/boardgame/troyes/) provides the base-game rulebook. Influence, Activity cards, Events, citizens, the Cathedral, and deniers below refer to rulebook components or actions. Every conversion and strategy judgment belongs to the author’s model.
+{: .article-evidence}
 
 ## Influence
 
-Spending 1 Influence to reroll a die gives an expected result of 3.5 pips. Rerolling a 1 is optimal, so the expected gain is 2.5 pips.
+Spending 1 Influence rerolls one die. The new result has an expected value of 3.5. Rerolling a 1 therefore adds 2.5 pips in expectation.
 
-Spending 4 Influence reliably lets you flip up to 3 dice. Flipping each die from 1 to 6 is optimal, for an expected gain of 15 pips, or 3.75 pips per Influence on average.
+Spending 4 Influence flips up to 3 of your dice. Flipping three 1s to 6s adds 15 pips, or 3.75 pips per Influence.
 
-Because both accumulating 4 Influence and maximizing its return are difficult, I provisionally value 1 Influence at 3 pips.
+Accumulating 4 Influence while retaining three low dice is restrictive. I therefore use the midpoint estimate of 1 Influence to 3 pips.
 
-Note that making full use of Influence requires keeping a corresponding number of your own dice available.
+Flipping applies only to your own dice, so plans that rely on it must retain enough personal dice.
 
-## Resolving Events
+<span id="resolving-events"></span>
 
-Event cards provide the most direct conversion from pips to victory points.
+## Events
 
-Each cube costs 2–4 pips of dice and grants 1 Influence. An event card that requires 2 pips per cube therefore cannot lose value.
+Combating Events directly converts pips into VP and Influence. Placing one cube usually costs 2–4 pips and immediately gains 1 Influence. Under this model, the Influence alone covers the cost of a 2-pip cube.
 
 ### Returns from Event Cards
 
-Suppose you spend the minimum needed to secure first place:
+For the minimum investment that secures first place, the original estimates are:
 
-$4 \times 2=8$ pips securely yields $2+1=3$ points plus 4 Influence, so 8 pips = 3 points + 12 pips;
+- $4 \times 2=8$ pips gains $2+1=3$ VP and 4 Influence, so 8 pips = 3 VP + 12 pips;
+- $2 \times 4=8$ or $3 \times 3=9$ pips gains $3+1=4$ VP and 2–3 Influence, approximated as 9 pips = 4 VP + 9 pips;
+- $3 \times 4=12$ pips gains $4+1=5$ VP and 3 Influence, so 12 pips = 5 VP + 9 pips.
 
-$2 \times 4=8$ or $3 \times 3=9$ pips securely yields $3+1=4$ points plus 2 or 3 Influence, so 9 pips = 4 points + 9 pips;
+Events with a lower pip cost per cube usually allow more cubes for the same input and therefore return more Influence.
 
-$3 \times 4=12$ pips securely yields $4+1=5$ points plus 3 Influence, so 12 pips = 5 points + 9 pips.
+For completing an Event alone:
 
-We can see that event cards with smaller denominators grant more Influence and therefore offer higher returns.
+- $7 \times 2=14$ pips gains $2+1=3$ VP and 7 Influence, so 14 pips = 3 VP + 21 pips;
+- $4 \times 4=16$ or $5 \times 3=15$ pips gains $3+1=4$ VP and 4–5 Influence, approximated as 15 pips = 4 VP + 12–15 pips.
 
-If instead you pay the full cost to complete an event card:
+Second place usually costs 2–4 pips and gains 1–2 VP plus 1 Influence. The Influence roughly repays the pip cost, leaving about 1–2 VP of net value.
 
-$7 \times 2=14$ pips yields $2+1=3$ points plus 7 Influence, so 14 pips = 3 points + 21 pips;
-
-$4 \times 4=16$ or $5 \times 3=15$ pips yields $3+1=4$ points plus 4–5 Influence, so 15 pips = 4 points + 12–15 pips.
-
-Taking second place costs 2–4 pips and yields 1–2 points plus 1 Influence, which is roughly equivalent to getting 1–2 points for free.
-
-These returns show that paying the full cost to finish an event card gives a return similar to taking second place. When enough event cards are available, the optimal choice is therefore to avoid helping another player secure first place at minimum cost and instead clear an event card alone.
-
-My suggested strategy is to prepare to clear event cards by yourself and simply ensure that every event card you have already invested in can be completed.
-
-In addition, because actions on event cards fully repay their cost, their return depends on the maximum number of red pips a player can obtain.
+Under these estimates, completing an Event alone and taking second place offer similar marginal returns. With several Events available, prioritize finishing those in which you have already invested and limit opportunities for another player to secure first place cheaply. Available red pips cap the total return of this plan.
 
 ## Using Dice
 
-Buying dice: using cost-effective combinations as the reference, paying 2–4 coins for 4–6 pips is always worth doing. After you pay someone to buy a die, other players may later pay you to buy yours, so there is no need to be overly concerned about the money.
+- **Buying dice:** common efficient purchases spend 2–4 deniers for 4–6 pips. Other players may later buy your dice and return part of that money. Keep enough deniers for the rest of the round.
+- **Combating black dice:** with 1 Influence valued at about 3 pips, eliminating a black die of value 3 or less has a positive modeled return. A higher die needs another reward to justify its cost.
+- **Building the Cathedral:** 1–3 pips gains 1 Influence and 1 VP; 4–6 pips gains 2 Influence and 1 VP. The first placement on each level gains another 2 VP, for 3 VP in total; later placements gain 1 VP.
+- **Placing citizens:** spending 2 Influence adds a citizen to your personal supply. Its die can replace a purchase costing 2–4 deniers every round. Low dice are useful for repositioning a citizen in a principal building, expelling an opponent’s citizen, or preparing a citizen for a future Activity card.
+- **Agriculture:** the standard action converts 2 yellow pips into 1 denier. This rate is well below the common alternatives, so it does not establish the model’s baseline.
 
-Dealing with black dice: based on the value of Influence above, fighting a black die worth 3 pips or less is profitable; otherwise it loses value.
-
-Cathedral: 1–3 pips = 1 Influence + 1 point, while 4–6 pips = 2 Influence + 1 point. The first placement in each row grants another 2 points, so that first placement is worth 3 points and later placements are worth 1 point.
-
-Citizens: if obtaining a citizen costs 2 Influence, the die produced by that citizen is equivalent to a per-round return of 2–4 coins. I therefore suggest using low-value dice to adjust your citizens' positions, displace another player's citizen, or acquire a citizen for an Activity-card space you plan to use later.
-
-Converting to money: the standard action converts 2 yellow pips into 1 coin. It is a very poor action and should not be used as a basis for valuation.
+<span id="功能牌"></span>
 
 ## Activity Cards
 
-Activity cards provide many high-value actions and strongly affect the conversion between resources and value over the course of a game. A space on an Activity card returns 2 Influence plus 2–6 coins, equivalent to 1–3 points; it is roughly value-neutral, so I do not repeat it in every calculation below.
+Activity cards change the conversion among pips, deniers, and VP. Placing a citizen on a card usually gains 2 Influence and 2–6 deniers. The original model values this one-time return at 1–3 VP and omits it from the card calculations below.
 
-(White 1) Monk: 3 white pips = 3a yellow pips − a white pips. The return is 2a−3 pips, although producing yellow pips requires a yellow card to make use of them.
+- **(White 1) Monk:** 3 white pips = 3a yellow pips − a white pips, a net gain of 2a−3 pips. The additional yellow pips need another yellow Activity card as an outlet.
+- **(White 2) Templar:** 3 white pips = 2a red pips − a white pips, a net gain of a−3 pips. Its main value is concentrating as many as 12 red pips for first place on an Event.
+- **(White 3) Procession:** 4 white pips = 2 VP. It converts otherwise unused endgame dice directly into points.
+- **(Red 1) Archer:** 2 red pips have a $\frac{2}{3}$ chance to place 1 cube, approximated here as 4 pips. On an Event that costs at least 3 pips per cube, its rate approaches twice the basic placement rate.
+- **(Red 2) Mercenary:** 2 red pips = 3 deniers, below the model’s common conversion baseline.
+- **(Red 3) Captain:** 4 red pips = x VP. A 3-VP result is acceptable, and exclusive access to many red dice raises its ceiling.
+- **(Yellow 1) Miller:** 4 yellow pips = at least 4 deniers. Six deniers is acceptable, provided the money still has a useful outlet.
+- **(Yellow 2) Goldsmith:** 3 yellow pips = 5 additional red pips, a high conversion rate.
+- **(Yellow 3) Artisan:** 4 yellow pips + 3 deniers = 2 VP. It can clear resources that have no further endgame use.
 
-(White 2) Templar: 3 white pips = 2a red pips − a white pips. The return is a−3 pips. This card does not generate much value, but its strength is that it can use as many as 12 red pips to secure first place on an event card.
+<span id="money"></span>
 
-(White 3) Procession: 4 white pips = 2 points. This is a low-efficiency finishing action for the end of the game.
+## Deniers
 
-(Red 1) Archer: 2 red pips = a $\frac{2}{3}$ chance of placing a cube, approximately 4 pips. On event cards with a denominator of 3 or more, this produces nearly twice the normal return.
-
-(Red 2) Mercenary: 2 red pips = 3 coins, a severe loss.
-
-(Red 3) Captain: 4 red pips = x points. A return of 3 points is relatively acceptable, and the card is very strong when you are the only player using red dice.
-
-(Yellow 1) Miller: 4 yellow pips = 4 or more coins. Six coins is relatively acceptable, but repeatedly generating money has limited use, and it does not help if the money is only going toward buying dice.
-
-(Yellow 2) Goldsmith: 3 yellow pips = +5 red pips, an exceptionally efficient conversion.
-
-(Yellow 3) Artisan: 4 yellow pips + 3 coins = 2 points, an extremely inefficient finishing action for the end of the game.
-
-## Money
-
-Money is mainly used to take spaces on Activity cards, buy dice, convert points through advanced yellow cards, and score Character cards.
-
-Taking Activity-card spaces has mediocre conversion efficiency; buying dice and scoring Character cards are necessary actions; and converting money into points through advanced yellow cards is a severe loss. Money therefore functions more as a constraint on which actions are available than as a primary way to generate points.
+Deniers place citizens on Activity cards, buy dice, and satisfy Activity-card and Character-card scoring conditions. Activity-card placement has limited immediate efficiency, while dice purchases and Character scoring require cash reserves. The model therefore treats deniers as an action threshold and spends them where they can still produce pips or VP.

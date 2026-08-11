@@ -9,7 +9,7 @@ translation_key: post-202404232233
 translation_url: /posts/盖亚计划-资源-分值量化计算思路/
 translation_source: _posts/2024-04-23-《盖亚计划》资源-分值量化计算思路.md
 translation_status: current
-source_hash: c9500c7a03c435614956f65cb6e6521cb26bf8b389edaa0661eeed6cc0b07548
+source_hash: ebb5ac6ad65549d5aa18976a2b65e8b8987c7bb780829ee9620ba216f9931726
 aliases: []
 categories:
 - Board Games
@@ -18,314 +18,327 @@ tags:
 - Board Games
 from: null
 math: true
-mermaid: true
 thumbnail: /assets/posts/202404232233/cover-bgg-5194524-square.webp
 article_cover:
   alt: An endgame Gaia Project map and scoring board
   caption: 'Cover image: [Game board Geodens vs Automa Firaks](https://boardgamegeek.com/image/5194524/gaia-project), image by BoardGameGeek user magic_erwt, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); square crop by this site.'
 excerpt: This article develops an approximate way to quantify the different resources in Gaia Project as value, providing a basic macroscopic reference for planning a player's development.
-description: An approximate common scale for credits, ore, knowledge, QIC, buildings, and endgame points, then checked against faction exceptions to give experience-based planning a reproducible baseline.
+description: An approximate common scale for Credits, Ore, Knowledge, Q.I.C., buildings, and victory points, then checked against faction exceptions to give experience-based planning a reproducible baseline.
+revisions:
+- date: '2024-04-23'
+  note: Initial publication
+- date: '2026-08-10'
+  note: Standardized official building, resource, and technology-track terminology; separated rules concepts from the author's valuation model; and edited dense passages (with Codex assistance)
 ---
 
 ## Preface
 
-This article develops an approximate way to quantify the different resources in the board game Gaia Project as value, providing a basic macroscopic reference for planning a player's development.
+This article develops an approximate common scale for resources and victory points in Gaia Project. It is intended as a baseline for comparing development choices across rounds.
 
-Players begin Gaia Project with a certain amount of resources and construct buildings. Those buildings produce more resources each round, and the resources are ultimately converted into victory points in various ways. Resource value is therefore generated through an iterative process across rounds. Because that process is affected by stepwise returns and interaction among players, it cannot be quantified uniformly; this article uses approximate calculations to derive a number of conclusions.
+Players begin with resources, use them to build buildings, receive further income, and eventually convert development into victory points. Track thresholds, map conditions, round scoring, and player interaction all change the realized return. The calculations below are therefore the author's valuation model. They do not alter the official rules and should be recalculated when the game state departs from the stated assumptions.
 
-### Terms
+The terminology follows the [official Capstone Games rulebook](https://capstone-games.com/wp-content/uploads/2020/09/Gaia-Project-Rules-CG.0609sm2.pdf).
 
-Buildings: M = Mine, TC = Trading Station, RL = Research Lab, AC = Academy, and SH = Planetary Institute.
+### Terms and Model Symbols
 
-Resources: C = Credits, O = Ore, Q = Q.I.C., and K = Knowledge.
+- **Buildings**: `M` = Mine, `TS` = Trading Station, `RL` = Research Lab, `AC` = Academy, and `PI` = Planetary Institute.
+- **Resources**: `C` = Credits, `O` = Ore, `K` = Knowledge, and `Q` = Q.I.C.
+- **Power and Power tokens**: Power is the amount spent on actions and conversions. Power tokens move among the three bowls or the Gaia area. “Charge” means moving Power tokens according to the official Power cycle.
+- **Victory points**: “points” in calculation results means victory points unless stated otherwise.
+- **Rounds**: `R1` through `R6` are the six rounds; `R0` denotes the model's initial-state reference value.
+- **General resource point**: a custom unit used only in this article to compare unlike resources, with baselines of `1C = 1`, `1O = 3`, and `1Q = 4`; the value of `1K` is estimated later. It is not a component or official score.
+- **Resource growth factor**: the multiplier used to estimate how resources carried forward generate more resources in later rounds.
+- **Resource return rate**: output divided by the resources committed to a building or action under the model's assumptions.
+- **Technology tracks**: Terraforming, Navigation, Artificial Intelligence, Gaia Project, Economy, and Science follow the official names.
 
-TN: T1 means round 1, T6 means round 6, and so on.
-
-QIC: the shared actions costing 2, 3, or 4 Q.
-
-The following sections calculate, in turn, how efficiently resources convert into points.
+The following sections use these symbols consistently. `Q.I.C.` actions refer to shared actions whose official costs are paid in Q.I.C.
 
 ## General Relationship Between Resources and Points
 
-Following the Power-action exchange ratios, count each c as 1 point of general-purpose resources, each o as 3 points, each q as 4 points, and—based on the later calculations—each k as 2 points. This provides the basis for calculating the relationship between endgame resources and points.
+Following the Power-action exchange ratios, use `1C = 1`, `1O = 3`, and `1Q = 4` general resource points. The later Knowledge calculation assigns `1K` a provisional value. This common unit supports the comparisons below.
 
-### Resource Conversion Rate per Round
+### Resource Growth Factor
 
-Because resources placed on the board can generate more resources, first calculate the conversion rate between rounds. It is the foundation for the later calculations.
+Buildings and technology-track advances turn current resources into later income. The model first estimates a round-to-round growth factor and then uses it in the later calculations.
 
-Starting resources are 4m, 15c, 8o, 4k, and 1q. The 4m are equivalent to 32 resources, giving a total of $32+15+8 \times 3+4 \times 2+1 \times 4=83$ resources.
+Starting assets are 4M, 15C, 8O, 4K, and 1Q. The 4M are valued at 32 general resource points, giving $32+15+8 \times 3+4 \times 2+1 \times 4=83$ in total.
 
-Approximate the endgame board as 2ac, 2rl, 3tc, and 8m, plus 12 technology-track spaces = 48k. These require $6 \times 5+3 \times 14+2 \times 28+2 \times 52+48 \times 2=328$ resources. A qualifying endgame score is approximately 180 points.
+Approximate the endgame board as `2AC + 2RL + 3TS + 8M`, plus 12 technology-track spaces valued as `48K`. These require $6 \times 5+3 \times 14+2 \times 28+2 \times 52+48 \times 2=328$ general resource points. A representative qualifying score is approximately 180 victory points.
 
-In other words, the initial 83 resources become 328 resources plus 180 points through five rounds of conversion. If the 8 points for 2q are treated as 1 resource per point, 83 resources become 508 resources, producing a per-round resource conversion rate of $\sqrt[5]{508/83}=1.4$.
+Across five growth intervals, the model combines 328 points of developed resources with 180 victory points, for a total comparable value of 508. The implied resource growth factor is $\sqrt[5]{508/83}=1.4$ per round.
 
-This calculation contains many approximations, but the result is intuitively reasonable. The upper bound for the resource conversion rate is building an m: 5 points are exchanged for 3 points of production, so TN's 5 becomes 8 in TN+1 because the 5 points on the board continue to produce income as an m. The upper bound is therefore about 1.6.
+This calculation is deliberately coarse. Building an `M` gives a useful upper reference: 5 general resource points create 3 points of income. Assets worth 5 in `Rn` are therefore worth 8 in `R(n+1)`, giving an upper reference near 1.6.
 
-### Endgame Resource-to-Point Conversion Ratio
+### Endgame Resource Scoring Rate
 
-Not every resource is converted directly into points. Under the previous assumptions, 508 endgame resources produce 180 points, giving an endgame resource-to-point conversion ratio of $180/508=0.35$.
+Under the preceding assumptions, 508 points of total comparable value correspond to 180 victory points. The endgame resource scoring rate is therefore $180/508=0.35$.
 
 ### Point Value of Resources
 
-With the per-round resource conversion rate set to 1.4, 1 resource in T1 can become $1.4^5=5.4$ resources by the end of T6.
+With the resource growth factor set to 1.4, 1 general resource point in `R1` can become $1.4^5=5.4$ by the end of `R6`.
 
-Converted into points, each resource in T1 scores 1.9 points on average by the end of the game, a substantial return.
+After applying the endgame scoring rate, each general resource point held in `R1` is worth about 1.9 victory points by the end of the game.
 
-| Round | T0 | T1 | T2 | T3 | T4 | T5 | T6 |
+| Round | R0 | R1 | R2 | R3 | R4 | R5 | R6 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Resources | 7.6 | 5.4 | 3.8 | 2.7 | 2.0 | 1.4 | 1 |
-| Points | 2.63 | 1.88 | 1.34 | 0.96 | 0.69 | 0.49 | 0.35 |
+| Victory-point estimate | 2.63 | 1.88 | 1.34 | 0.96 | 0.69 | 0.49 | 0.35 |
 | Charge 1 |  | 0.94 | 0.67 | 0.48 | 0.35 | 0.25 | 0.18 |
 | Charge 2 |  | 0.88 | 0.34 | **-0.04** | **-0.31** | **-0.51** | **-0.65** |
 | Charge 3 |  | 0.82 | 0.00 | -0.56 | -0.66 | -1.26 | -1.47 |
 | Charge 4 |  | 0.76 | **-0.32** |  |  |  |  |
 
-This gives a **general rule for charging Power**: early in the game, upgrade high-value buildings among clusters of other players whenever possible; after T3, using m to pick up small Power charges is one path to higher resource returns.
+This table gives a practical charging rule. Early in the game, upgrading high-value buildings near several opponents can justify larger charges. From `R3` onward, accept only small charges to control the victory-point cost.
 
 ## Value of Q.I.C. Cubes: Q
 
-Q derives most of its value from Q.I.C. actions. At the end of the game, it can be approximated as 1Q = 4 points.
+Q derives most of its value from Q.I.C. actions. Near the end of the game, the model uses `1Q = 4` victory points.
 
-In addition, because early resources have extremely high conversion value, the 3 resource points represented by 1O are worth more than 4 points in both T1 and T2. The early-game value of Q can therefore be estimated as roughly equal to the value of O.
+In addition, because early resources have extremely high conversion value, the 3 resource points represented by `1O = 3` are worth more than 4 points in both `R1` and `R2`. The early-game value of Q can therefore be estimated as roughly equal to the value of O.
 
-Strategically, I recommend using Q for expansion early in the game and waiting until after T3 to spend it on Q.I.C. point-scoring actions.
+The model therefore favors using Q to extend expansion range early, then shifting toward scoring Q.I.C. actions after `R3`.
 
 ## Value of Knowledge: K
 
-The returns from Knowledge are stepwise overall. Knowledge is used only to advance on technology tracks, so its return is expressed entirely through track rewards. Each track space corresponds to 4k.
+Knowledge produces threshold-based returns because it advances technology tracks in `4K` steps. Its value comes from the rewards, access, and scoring enabled by each advance.
 
-In addition, advancing 4 spaces awards 8 points, while 5 spaces awards 12 points plus roughly 12 points from the top-space reward. Because not every route reaches the top, approximate each 1k as carrying an additional 0.5–1 point.
+Advancing four spaces awards 8 victory points. Advancing five spaces awards 12 victory points plus roughly 12 more from the top-space reward. Since many routes stop short of the top, the model assigns each 1K an additional 0.5–1 victory point.
 
 **Economy track**: 2.5, 3.5, 1.5, 4.5
 
-The Economy track suggests that 4k can produce an income of 3 resources, giving each 1k a resource conversion ratio of 0.75. With an average resource conversion efficiency of 0.4, 1k is equivalent to approximately 1.9 resources.
+The Economy track suggests that 4K can produce 3 points of income, so each 1K has a resource return rate of 0.75. At an average conversion efficiency of 0.4, 1K is equivalent to approximately 1.9 general resource points.
 
-**Q.I.C. track**: 1Q, 1Q, 2Q, 2Q
+**Artificial Intelligence track**: 1Q, 1Q, 2Q, 2Q
 
-The Q.I.C. track suggests that 4k can bring 1Q of immediate resources early, or an average of 1.5Q later. Completing the track yields about 6 resource points, so 1k is worth approximately 1.5 resources.
+The Artificial Intelligence track gives 1Q immediately for an early 4K advance, or an average of 1.5Q for later advances. Completing the track yields about 6 general resource points per 4K step, so 1K is worth approximately 1.5 general resource points.
 
-Advancing on the Q.I.C. track early is therefore inferior to the Economy track unless it serves a strategic purpose.
+On raw income, an early Artificial Intelligence advance returns less than an Economy advance. Range, Q.I.C. actions, and advanced technology may still justify it.
 
 **Terraforming track**: 2O, blank, blank, blank, 2O
 
-This is essentially a one-time conversion of 4k into 2O of immediate resources, making each 1k worth 1.5 resources. On this basis, advancing one space on the Terraforming track early is better than completing the Q.I.C. track.
+This is approximately a one-time conversion of `4K → 2O`, so each 1K is worth 1.5 general resource points. Under the same assumptions, the first Terraforming advance gives a higher immediate return than completing the Artificial Intelligence track.
 
 The top of the Terraforming track is also highly valuable, so completing it early can be considered.
 
-**Research track**: 1K
+**Science track**: 1K
 
-This is a closed loop in which 4k produces k. Because the Economy and Research tracks generally cannot be advanced side by side, and 1k is worth approximately 1.5–2 resources, the Research track's production is comprehensively weaker than the Economy track.
+This is a loop in which `4K` produces K. Economy and Science often compete for the same advances, and the model values `1K ≈ 1.5–2` general resource points. Economy therefore gives the stronger direct income return.
 
 **Navigation track**: 1Q, Navigation 2, 1Q, Navigation 3
 
-The 2 Navigation for 8k or 3 Navigation for 16k saves the Q that would otherwise have to be spent to extend expansion range.
+Reaching Navigation 2 for 8K or Navigation 3 for 16K saves Q that would otherwise be spent to extend expansion range.
 
-Compared with the Q.I.C. track: if the game ends at Navigation 2, 8k and 1Q leaves a shortfall of 1Q, so Navigation 2 is profitable if it saves more than 1Q. If the game ends at Navigation 3, 16k and 2Q leaves a shortfall of 4Q, so Navigation 3 is profitable if it saves more than 4Q. In general, Navigation tends to be more profitable.
+Compared with the Artificial Intelligence track:
 
-Overall, 1k converts to approximately 1.9 resources on the Economy track and approximately 1.5 resources on the other tracks. The additional value of 0.5–1 point can be converted using the preceding table: it can be ignored in T1 and T2, while after T3 it is worth approximately 1 resource.
+- Ending at Navigation 2 costs `8K + 1Q`. It pays off when the extra range saves more than `1Q`.
+- Ending at Navigation 3 costs `16K + 2Q`. It pays off when the extra range saves more than `4Q`.
 
-When Knowledge is available to spare, high-return actions include reaching the second or fourth space of the Economy track early, advancing one space on the Terraforming track early, and advancing the Research track after T3. The specific track order should, of course, be driven more by expansion and advanced-tech planning.
+Navigation usually produces the higher practical return when range directly opens expansion.
 
-## Comparing Returns from Buildings
+Overall, the model converts `1K ≈ 1.9` general resource points on the Economy track and approximately 1.5 on the other tracks. The extra 0.5–1 victory point per K can be ignored for `R1`–`R2` planning and counted as roughly 1 general resource point after `R3`.
 
-With the unified resource conversions above, the per-round resource conversion rates of each building can be compared to obtain a priority order.
+When Knowledge is available, high-return options include reaching the second or fourth Economy space early, taking the first Terraforming advance early, and advancing Science after `R3`. Expansion access and advanced-technology plans still determine the final order.
 
-| Base building | M | TC | RL | AC | SH |
+## Comparing Building Returns
+
+The common resource unit allows the model to compare the resource return rate of each building.
+
+| Base building | M | TS | RL | AC | PI |
 | --- | --- | --- | --- | --- | --- |
 | Base cost | 2C1O | 3C2O | 5C3O | 6C6O | 6C4O |
 | Equivalent cost | 5 | 9 | 14 | 24 | 18 |
-| Resource output | 1O | 3~5C | 1K+~7 | 2K+~7 | 1 token+4 Power (2)+ability (6) |
+| Resource output | 1O | 3~5C | 1K+~7 | 2K+~7 | 1 Power token + 4 Power (2) + ability (6) |
 | Equivalent output | 3 | 4 | 9 | 18 | 8 |
-| Conversion rate from empty space | **0.60** | 0.29 | 0.32 | 0.35 | 0.25 |
-| Conversion rate from m |  | 0.11 | 0.26 | **0.32** | 0.19 |
-| Conversion rate from tc |  |  | **0.36** | **0.37** | 0.22 |
-| Conversion rate from rl |  |  |  | **0.38** |  |
+| Resource return rate from no building | **0.60** | 0.29 | 0.32 | 0.35 | 0.25 |
+| Resource return rate from M |  | 0.11 | 0.26 | **0.32** | 0.19 |
+| Resource return rate from TS |  |  | **0.36** | **0.37** | 0.22 |
+| Resource return rate from RL |  |  |  | **0.38** |  |
 
-The table indicates that M is generally the best option, with value far above that of the other buildings. AC comes next, slightly ahead of RL. TC itself provides no additional resource production and therefore receives the lowest priority.
+Under the model, M gives the highest direct return. AC follows slightly ahead of RL, while TS has the lowest standalone return because its value depends heavily on later upgrades, discounts, and positioning.
 
-### Returns from Building M
+### Returns from M
 
-Although m has the highest building return in the table above, it often carries additional construction costs, so expansion is not always profitable.
+M has the highest direct return in the table, but Terraforming and range costs can reduce the value of expansion.
 
 | Terraforming cost | 1O | 2O | 3O |
 | --- | --- | --- | --- |
 | Incremental resources | 3 | 6 | 9 |
-| Resource conversion rate | 0.38 | 0.27 | 0.21 |
+| Resource return rate | 0.38 | 0.27 | 0.21 |
 
-Once the Terraforming cost exceeds 1o, the resource conversion rate is already lower than building an ac from an m.
+Once the Terraforming cost exceeds `1O`, the resource return rate falls below upgrading an M to an AC.
 
-In addition, the third m on the faction board produces no resources. The third and fourth m can be considered together as having a conversion rate below 0.3. At that point, building an m is not necessarily more profitable than other buildings unless it immediately enables more m placements.
+The third M on the faction board also produces no income. Treating the third and fourth M together gives a resource return rate below 0.3. Their value then depends on whether they unlock further placements, scoring, range, or federation geometry.
 
 ## Faction Advantages and Strategies
 
-Each faction begins with different production and has a different Planetary Institute advantage. The resource analysis above can nevertheless be used as a common framework, producing several broad strategic deductions for reference.
+Each faction has a different starting economy and Planetary Institute ability. The common scale above provides a baseline, while the calculations below retain the author's assumptions and estimates.
 
 ### Terrans
 
-**Talent**: approximately 26.5 points in total.
+**Faction ability**: approximately 26.5 points in total.
 
-1\) Begin one space up the Gaia Project track; the 4k in T1 is valued at approximately 15 points.
+1\) Begin one space up the Gaia Project track; the `R1` value of `4K` is approximately 15 points.
 
-2\) Power tokens used for Gaiaforming return to bowl II. Assuming that one Gaiaformer sends 6 tokens to the Gaia area per round, the talent produces 3 resources of income each round. Terrans generally Gaiaform at least one planet per round, giving 3 resources in each round from T2 through T6, worth $3 \times (1.34+0.96+0.69+0.49+0.35)=11.49$ points in total.
+2\) Power tokens used for Gaiaforming return to bowl II. If one Gaiaformer sends 6 tokens to the Gaia area each round, this ability produces 3 general resource points of income. Assuming at least one Gaia Project per round, the `R2`–`R6` value is $3 \times (1.34+0.96+0.69+0.49+0.35)=11.49$ victory points.
 
-**Planetary Institute**: each Power token used for Gaiaforming produces 1 resource. With one Gaiaformer sending 6 tokens per round, the institute produces 6 resources per round. It would need to produce 8 resources per round to match an RL's resource conversion rate, so it is a slightly unprofitable building.
+**Planetary Institute**: each Power token used for Gaiaforming converts into 1 general resource point. Six tokens per round yield 6 points of income. Matching the modeled resource return rate of an RL would require 8, so the PI has a slightly lower direct return under these assumptions.
 
-**Recommendation**: prioritize expansion and building an AC. Under resource pressure, a Planetary Institute opening is an option, followed by taking both the Navigation and Gaia Project tracks to the top.
+**Recommendation**: prioritize expansion and an AC. A PI opening can stabilize a resource-constrained position, followed by completing Navigation and Gaia Project when the map supports that route.
 
 ### Lantids
 
-**Talent**: −2C, worth approximately −4 points. They may build an m on another player's building.
+**Faction ability**: the faction starts with `2C` less than the baseline, worth approximately −4 points, and may build an M on another player's building.
 
-The talent provides no obvious resource advantage, but it makes it easy for Lantids to obtain inexpensive expansion routes and positions for charging Power, allowing many m to be placed early.
+The ability opens inexpensive expansion routes and charging positions, allowing several M to be placed early. Its value depends on other players' placement.
 
-**Planetary Institute**: gain 2k when building an m on another player's building. It breaks even if two m are built in the same round or three in the following round, and is generally very profitable.
+**Planetary Institute**: gain `2K` when building an M on another player's building. The model reaches break-even with two such placements in the same round or three in the following round.
 
-The Lantids' ability is a major advantage, and they are also the faction whose starting resources were reduced most heavily by the designers. A Planetary Institute plus m expansion is generally recommended as the opening. To make full use of the k it produces, advance the Economy track while protecting expansion. Lantid expansion routes are still heavily constrained by technology, however, so the faction is not strong in every game.
+The model favors an early PI followed by M expansion. Advancing Economy helps convert the additional K into resources while expansion remains available. Map geometry and technology still constrain the route, so its return varies sharply by game.
 
 ### Ambas
 
-**Talent**: begin one space up the Navigation track, worth approximately 15 points.
+**Faction ability**: begin one space up the Navigation track, worth approximately 15 points.
 
-**Planetary Institute**: swap the positions of an m and the SH. Building it in T3–T4 can enable 1–2 additional federations, worth approximately 20 points. Forming a federation early can also be understood as the institute producing the resources on the federation token. The more successive federations are created with the institute, the higher its equivalent return; forming three federations in consecutive rounds is approximately the point at which it becomes more profitable than other buildings.
+**Planetary Institute**: swap the positions of an M and the PI. Building it in `R3–R4` can enable one or two additional federations, valued at approximately 20 points. An early federation also realizes the immediate resources on its federation token. The modeled return rises with consecutive federation actions; three federations in successive rounds is roughly the threshold at which the PI outperforms the other buildings.
 
-To make full use of both talent and institute, Ambas should expand rapidly before T3, then build the institute in T3–T4 and use the expansion footprint to form federations quickly. Their ideal track order is therefore Navigation 2 followed by high Terraforming, leaving little room to advance the Economy track early.
+To use both advantages, Ambas can expand before `R3`, build the PI in `R3–R4`, and turn that footprint into federations. Navigation 2 followed by higher Terraforming supports this sequence, with limited early room for Economy.
 
 ### Taklons
 
-**Talent**: the Brainstone charges as 1 Power and is spent as 3 Power. Its value depends on the number of charges and varies greatly among games. Counting each charge as double resources gives approximately 20 resource points, or 20 points on average.
+**Faction ability**: the Brainstone charges as 1 Power and is spent as 3 Power. Its value depends on the number of charging opportunities. Counting each charge as double resources gives approximately 20 general resource points, or about 20 victory points on average.
 
-**Planetary Institute**: charging Power produces Power tokens. It has no explicit resource return, but can replenish satellites used for federations or help contest the satellite endgame scoring.
+**Planetary Institute**: charging Power produces Power tokens. The new tokens can replace federation satellites or contribute to the satellite endgame scoring.
 
-Overall, charging Power is reliably profitable for Taklons before T5. Their objective is to charge as much Power as possible, use those resources to generate output, and snowball. Expansion, the Economy track, and building RL or AC are all viable options.
+The model treats charging before `R5` as a positive return. Taklons can turn those resources into expansion, Economy advances, an RL, or an AC, depending on the available conversions.
 
 ### Firaks
 
-**Talent**: begin with 1k income, worth approximately 12 points.
+**Faction ability**: begin with 1K income, worth approximately 12 points.
 
-**Planetary Institute**: downgrade an RL to a TC and advance one technology track. The action can be understood simply as spending 14 resources for 8k plus one tile, a net gain of 8 or more resources.
+**Planetary Institute**: downgrade an RL to a TS and advance one technology track. The model treats the action as spending 14 general resource points for `8K + 1` technology tile, giving a net gain above 8 points.
 
-Firaks lose value on the faction board, so their strength lies in the institute ability. The best development route is therefore to build the institute early and ensure that the ability triggers once each round. Keeping a TC or an RL on the board makes little difference; the main issue is whether all resources can be used efficiently.
+The PI action provides the main modeled advantage. Building the PI early and triggering it once per round captures that value. Whether a TS or RL remains on the board matters less than whether the resulting resources can be spent efficiently.
 
-To use the k produced by the institute ability efficiently while ensuring enough resources to activate it, Firaks should first advance the Economy track for the highest k conversion rate and additional resources, then advance an expansion track for further resource conversion and a way to turn resources into points. Advancing the Research track early is not recommended because it can lower the conversion rate from Knowledge into resources and points.
+Economy gives the highest modeled return on the K produced by the PI action and supplies resources to repeat it. An expansion track can follow. Early Science reduces the efficiency with which this model converts Knowledge into resources and victory points.
 
 ### Bescods
 
-**Talent**: produce 1k less, but advance one space for free each round on a track tied for the lowest position. With good operation, this is approximately equivalent to 4k of production. The 3k production from T1 through T6 is worth $6 \times (1.88+1.34+0.96+0.69+0.49+0.35)=34.26$ points.
+**Faction ability**: produce 1K less each round, then advance one space for free on a technology track tied for the lowest position. With effective development, this is approximately equivalent to 4K of production. The 3K production from R1 through R6 is worth $6 \times (1.88+1.34+0.96+0.69+0.49+0.35)=34.26$ points.
 
-**Planetary Institute**: buildings on the home planet gain +1 power value. If that enables one additional federation, it can be counted simply as 12 points.
+**Planetary Institute**: buildings on home-type planets gain 1 federation power value. If that enables one additional federation, the model assigns it 12 points.
 
-**Faction board**: the AC and SH routes are swapped, as are the incomes of TC and RL. Recalculate the building return table:
+**Faction board**: the AC and PI upgrade paths are swapped, and the TS and RL incomes exchange positions. Applying the article's model gives this table:
 
-| Base building | M | TC | RL | SH | AC |
+| Base building | M | TS | RL | PI | AC |
 | --- | --- | --- | --- | --- | --- |
 | Base cost | 2C1O | 3C2O | 5C3O | 6C4O | 6C6O |
 | Equivalent cost | 5 | 9 | 14 | 18 | 24 |
-| Resource output | 1O | 1K | 3~5C+~7 | 2 tokens+4 Power (2)+ability (12 points) | 2K+~7 |
+| Resource output | 1O | 1K | 3~5C+~7 | 2 Power tokens + 4 Power (2) + ability (12 points) | 2K+~7 |
 | Equivalent output | 3 | 2 | 11 | 18 | 11 |
-| Conversion rate from empty space | **0.60** | 0.14 | **0.39** | **0.39** | 0.29 |
-| Conversion rate from m |  | -0.11 | **0.35** | **0.37** | 0.24 |
+| Resource return rate from no building | **0.60** | 0.14 | **0.39** | **0.39** | 0.29 |
+| Resource return rate from M |  | -0.11 | **0.35** | **0.37** | 0.24 |
 
-The conclusion from the table is that Bescods should never leave a TC on the board, while RL decisively outperforms AC. An expansion-focused Bescods strategy with 3 RL therefore produces the most resources.
+Under these assumptions, keeping a TS has a low resource return, while an RL returns more than an AC. An expansion route supported by three RLs therefore has a high resource ceiling. Round scoring, technology tiles, and available actions can change the choice.
 
-The institute has a high conversion rate, but is profitable only if a federation can be formed immediately and the ability leads to one additional federation. The resources from forming a federation in that round can be treated as substantial output and must be calculated carefully.
+The PI's return depends on its federation power value. The benefit is realized when it enables an immediate federation and ultimately produces one additional federation token. The immediate resources on that token also belong in the calculation.
 
-**T1 opening**: income returns satisfy AC+2m ≥ RL+2m = 2RL. If resources allow, RL+4/5m is the opening with the highest ceiling.
+**R1 opening**: modeled income returns satisfy `AC + 2M ≥ RL + 2M = 2RL`. If resources allow, `RL + 4/5M` has the highest ceiling.
 
-- With an **RL opening**, upgrading from m to AC is too expensive for Bescods. They generally cannot upgrade to AC early, leading to slow k income and very few track advances, so development is limited to expansion or a one-Gaiaformer route. With an **RL opening**, avoid building a third RL before T4 whenever possible: c will overflow, while resource or action tempo may fall behind in the competition for advanced-tech tiles.
-- A **Knowledge AC opening** reaches 4k of income and can freely choose expansion, Gaia Project, or Economy as the development route. Its starting resource conversion rate is nevertheless inferior to those of other factions, so its ceiling is not high. Compared with the two completed tracks typical of an RL opening, every additional completed track from a **Knowledge AC** opening is equivalent to the faction talent producing 4 points. A Research-track route therefore carries roughly 10 points of faction compensation.
+- **RL opening**: upgrading from an M through to an AC is expensive, so early K income and technology-track advances develop slowly. Expansion or one Gaia Project advance usually carries the route. Building a third RL before R4 can overflow C and weaken the resources or action tempo needed to contest advanced technology tiles.
+- **Knowledge AC opening**: 4K of income supports expansion, Gaia Project, or Economy routes. Its early resource return is lower and its ceiling remains limited. Compared with an RL opening that completes two tracks, each additional completed track from a Knowledge AC opening makes the faction ability worth about 4 more points. A Science route therefore carries roughly 10 points of faction compensation.
 
 ### Xenos
 
-**Talent**:
+**Faction ability**:
 
-1\) Begin one space up the Q.I.C. track, worth approximately 15 points.
+1\) Begin one space up the Artificial Intelligence track, worth approximately 15 points.
 
-2\) Begin with one additional M. Including the extra cost of expansion, it is worth approximately $5 \times 2.63+?=15$ points.
+2\) Begin with one additional M. Including expansion's additional costs, the estimate is $5 \times 2.63+?=15$ points; the question mark records map-dependent value outside the fixed calculation.
 
-**Planetary Institute**: 4 Power + 1Q = 6 points of production; spending 6 Power to form federations counts as half an additional federation, approximately 6 points. It is a building that sacrifices economy for points and is suitable for the late game.
+**Planetary Institute**: 4 Power + 1Q equals about 6 points of production. Forming federations with 6 Power is approximated as half an additional federation, worth about 6 points. The building converts economy into victory points and usually fits the late game.
 
 ### Gleens
 
-**Talent**:
+**Faction ability**:
 
 1\) Begin one space up the Navigation track, worth approximately 15 points.
 
 2\) Score +2 points for colonizing green planets, worth approximately 6–16 points.
 
-**Planetary Institute**: 4 Power + 1O = 5 points of production. Its federation token is worth 7 points of immediate resources, and its extra ability to advance an advanced-technology track is valued at approximately 10 points. Spending $(18-7)=11$ resources for $(5-3)=2$ production has a very low conversion rate, so this remains a late-game building focused more on points.
+**Planetary Institute**: 4 Power + 1O equals about 5 points of production. Its federation token is valued at 7 points of immediate resources, and access to an additional advanced technology tile is valued at approximately 10 points. Spending $(18-7)=11$ resources for $(5-3)=2$ production gives a low resource return rate, so the PI usually serves as a late-game scoring building.
 
-Although the Gleens' talent scores highly, their inability to spend q to extend range makes their expansion easy to constrain. If Navigation 2 limits expansion, consider the Gaia Project track to score 10 more talent points, or additionally build the right AC and trade a small amount of production value for expansion capacity.
+Gleens can score strongly from their faction ability, while their inability to spend Q to extend range constrains expansion. If Navigation 2 is insufficient, the Gaia Project track can trigger about 10 more points from the ability. The right AC can also exchange a small amount of production for expansion capacity, and the two routes can be combined.
 
-When the right AC is built early, Gleens produce very little k and often lack the capacity to advance the Economy or high Terraforming tracks later. I therefore recommend pairing the right AC with one space on the Gaia Project track and expanding when the opportunity arises.
+An early right AC reduces K income and makes it difficult to support both Economy and higher Terraforming. Pairing it with one Gaia Project advance creates an additional expansion route.
 
 ### Ivits
 
-**Talent**:
+**Faction ability**:
 
-1\) Begin with SH. The production changes from 2O to 4 Power + 1Q; output is unchanged, but the building has +1 power value and can form federations earlier.
+1\) Begin with the PI. The income changes from 2O to 4 Power + 1Q. Total modeled output is similar, while federation power value increases by 1 and enables earlier federations.
 
-2\) Each round, a Space Station adds +1 building power. Across the game this gives +7 building power, enabling one additional federation, worth approximately 18 points when valued as the 7 points and 6c of T1 resources.
+2\) Each round, a Space Station adds 1 federation power value. Across the game this can add 7 power and enable one more federation, valued at approximately 18 points from the R1 reward of 7 points plus 6C.
 
-Ivits naturally form more federations and can form one in T1 to use its resources fully. Compared with other factions, they also keep two more m in reserve for efficient resource conversion. This is the core of their strength.
+Ivits can form more federations and use an R1 federation reward immediately. Two additional M in reserve also support efficient resource conversion. These advantages drive their early strength.
 
 ### Hadsch Hallas
 
-**Talent**: approximately 32 points in total. Begin one space up the Economy track, worth approximately 15 points; begin with 3c income, worth approximately 17 points.
+**Faction ability**: approximately 32 points in total. The initial Economy advance is worth about 15 points, and the additional 3C income is worth about 17.
 
-**Planetary Institute**: spend c as Power points for resource conversions. Early in the game, it can balance resources and increase utilization; later, it can convert c into q, which is easier to turn into points and therefore improves scoring efficiency. Overall, however, it does not increase the total amount of resources.
+**Planetary Institute**: spend C as Power for resource conversions. Early use balances the resource mix; later use converts C into Q that can score efficiently. The model treats this as improved resource composition and assigns no additional resource creation.
 
-Hadsch Hallas are a faction with a strong talent, and I do not recommend building their institute. Their high c income balances the shortage of c created by expanding with a lot of o. If they can place four m in the first two rounds, they have essentially secured first or second place.
+Hadsch Hallas already have a strong starting economy, so the PI usually receives low priority. Their high C income balances the C shortage created by O-heavy expansion. Placing four M in the first two rounds generally creates a leading economy.
 
 ### Geodens
 
-**Talent**: begin one space up the Terraforming track, worth approximately 15 points.
+**Faction ability**: begin one space up the Terraforming track, worth approximately 15 points.
 
-**Planetary Institute**: gain 3k for every new planet type colonized.
+**Planetary Institute**: gain 3K for every new planet type colonized.
 
-The institute ability looks like an immediate return but is more appropriately treated as round income. It breaks even if two m are built in the same round or three in the following round.
+The model treats the PI ability as round income. Colonizing two new planet types in the construction round, or three by the following round, usually covers the upgrade cost.
 
-Geodens depend heavily on terrain. If the institute is built first, a chain of adjacent terrain must be terraformable to obtain its return; otherwise, building it first is not recommended because expansion will stall.
+The return depends on the map's distribution of planet types. An early PI needs successive colonies of different types; without suitable targets, expansion stalls.
 
-If the institute is built later and produces less k, its round income—and therefore its resource conversion rate—may nevertheless be the same. On that basis, a later institute is entirely acceptable, although the faction has already lost some points through its talent.
+A later PI produces K for fewer rounds, but it may also trigger fewer times, leaving the resource return rate similar. The construction round should therefore be chosen from the remaining colonizable planet types.
 
 ### Bal T'aks
 
-**Talent**: begin one space up the Gaia Project track, worth approximately 15 points. Gaiaformers can be converted into q.
+**Faction ability**: begin one space up the Gaia Project track, worth approximately 15 points. Gaiaformers can be converted into Q.
 
-**Planetary Institute**: Navigation can now be upgraded.
+**Planetary Institute**: unlock the Navigation track so it can be advanced.
 
-The talent turns the Gaia Project track into a production track of 1Q, blank, 1Q, 1Q. Completing it yields 12, the same as the Economy track. Early Q is often worth the same as O, however, and 3Q still creates a shortage of C, so the Gaia Project track is inferior to the Economy track as a source of production.
+The faction ability turns the Gaia Project track into an income sequence of `1Q / — / 1Q / 1Q`. Completing it yields 12 points of modeled output, equal to Economy. Early Q often has a value close to O, and gaining 3Q can still leave a C shortage, so Economy usually provides the stronger direct income.
 
-Priority among the three production tracks: Economy > Gaia Project > Research.
+Under this model, the usual priority among the three income tracks is Economy > Gaia Project > Science.
 
-The advantage of completing the Gaia Project track second is that it maintains production while allowing Gaiaforming to obtain expansion terrain. It is difficult for opponents to disrupt and provides a very stable expansion route.
+Completing Gaia Project as the second track maintains income while opening Gaia Planet expansion. Opponents have fewer ways to block this route.
 
-Bal T'aks should not upgrade to SH. In most situations, the Gaia Project and Q.I.C. tracks can completely replace the Navigation track.
+Bal T'aks usually place the PI at low priority. In many positions, Gaia Project and Artificial Intelligence together can supply the needed range without Navigation.
 
 ### Itars
 
-**Talent**: +1O, 1 power-token income, and spent Power tokens enter the Gaia area. With 1 token estimated at 3 resources, the talent is worth $3 \times 1.88 + 5 \times 2.63=18.79$ points.
+**Faction ability**: begin with +1O and receive 1 Power token each round; sacrificed Power tokens enter the Gaia area. With one token valued at 3 general resource points, the estimate is $3 \times 1.88 + 5 \times 2.63=18.79$ points.
 
-**Planetary Institute**: during the Gaia phase, exchange four Power tokens in the Gaia area for one 4q action, repeatable multiple times. Early in the game, one such action is approximately 7 production delayed by one round, so four Power tokens convert to 12.5 resources using the 1.4 per-round conversion rate. Upgrading from m to sh costs 27 resources, while using the SH action with eight tokens in T1 converts to 25 resources. Replenishing Power tokens later through various channels—generally 1 Power token = 2 resources—also gives a high return, so I estimate the SH resource conversion rate to be far above 1.4.
+**Planetary Institute**: during the Gaia phase, exchange four Power tokens in the Gaia area for one Q.I.C. action costing 4Q; the exchange may be repeated. The model values one early action at about 7 production delayed by one round. With a resource growth factor of 1.4, four tokens are worth about 12.5 general resource points. Upgrading from M through to PI costs 27 points, while processing eight tokens in R1 converts to about 25. Later token sources commonly cost about 2 points per token, so the model estimates a PI growth factor well above 1.4.
 
-**Faction board**: the Knowledge AC produces 1 additional k.
+**Faction board**: the Knowledge AC produces 1 additional K.
 
-SH is the Itars' building with the highest resource conversion rate. They generally upgrade to the institute in T1, move eight or twelve tokens into Gaia, then expand or build the Knowledge AC. If the Knowledge AC is built, constructing RL afterward is not recommended because there may not be enough tech tiles available.
+The PI has the highest resource return rate in this model. Itars often upgrade it in R1, move eight or twelve tokens into the Gaia area, then expand or build the Knowledge AC. Before adding an RL after the Knowledge AC, confirm that a suitable technology tile remains available.
 
 ### Nevlas
 
-**Talent**: 15 points.
+**Faction ability**: 15 points.
 
-1\) Begin one space up the Research track, worth approximately 15 points.
+1\) Begin one space up the Science track, worth approximately 15 points.
 
-2\) Move one Power token from bowl III to the Gaia area to gain 1 Knowledge, converting 2 Power into 1k.
+2\) Move one Power token from bowl III to the Gaia area to gain 1K, converting 2 Power into 1K.
 
 **Planetary Institute**: Power tokens count as 2 Power when spent.
 
-**Faction board**: rl produces 2 Power.
+**Faction board**: RL produces 2 Power.
 
-Nevlas have two routes and are, overall, a balanced faction.
+Nevlas can develop around the PI or around their faction ability, and their resource structure is broadly balanced.
 
-When building SH, they become a smaller version of the Taklons. Although charging Power can provide approximately 20 points, the institute gives up some resources for nothing, and its ability conflicts with the faction talent. The route is playable, but inferior to Taklons.
+With the PI, charging can provide about 20 points of modeled value. Some of the PI's resources replace existing benefits, and both abilities use the same Power tokens, so their values cannot simply be added.
 
-Without SH, Nevlas rely on converting 2 Power into 1k for their faction advantage. In T1, for example, Power can provide roughly 4k, about 8 points of additional return. In that case, I still recommend advancing the Economy track early to convert k production into resources efficiently.
+Without the PI, Nevlas can repeatedly convert 2 Power into 1K. Gaining about 4K from Power in R1 is roughly 8 points of additional return. An early Economy advance converts that K into resources efficiently.

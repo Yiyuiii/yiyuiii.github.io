@@ -3,6 +3,7 @@ from pathlib import Path
 
 import yaml
 
+from scss_source import aggregate_scss_source
 from scripts.translation_guard import validate_site_text
 
 
@@ -11,6 +12,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def text(path):
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def main_scss():
+    return aggregate_scss_source(
+        ROOT / "assets" / "css" / "main.scss",
+        load_paths=(ROOT / "_sass",),
+    )
 
 
 def frontmatter(path):
@@ -126,7 +134,7 @@ def test_content_security_policy_names_only_active_runtime_origins():
 
 def test_toy_styles_are_page_scoped_instead_of_part_of_the_global_bundle():
     head = text("_includes/head.liquid")
-    main_css = text("assets/css/main.scss")
+    main_css = main_scss()
     toy_css = text("assets/css/toys.scss")
 
     assert "{% if page.nav_key == 'toys' %}" in head
@@ -408,10 +416,42 @@ def test_workflow_builds_pr_artifact_and_only_deploys_master():
     assert "python scripts/validate.py --browser" in workflow
     assert "name: browser-failure-artifacts" in workflow
     assert "name: site-preview" in workflow
+    assert "push:\n    branches: [master, preview/review]" in workflow
     assert "github.event_name != 'pull_request'" in workflow
     assert "github.ref == 'refs/heads/master'" in workflow
 
     assert workflow.index("npm ci") < workflow.index("python scripts/validate.py --browser")
+
+
+def test_review_branch_produces_a_traceable_artifact_without_deploying():
+    workflow = text(".github/workflows/deploy.yml")
+    guide = text("docs/preview-workflow.md")
+    helper = text("scripts/github_preview.py")
+
+    assert "github.ref == 'refs/heads/preview/review'" in workflow
+    assert "preview-source-sha.txt" in workflow
+    assert "sync_replit_preview:" not in workflow
+    assert "preview/replit" not in workflow
+    assert "replit-export" not in workflow
+    assert workflow.count("permissions:\n      contents: write") == 1
+    assert not (ROOT / "scripts" / "replit_static_preview.replit").exists()
+    assert not (ROOT / "scripts" / "replit_static_preview.nix").exists()
+    assert not (ROOT / "docs" / "replit-preview-workflow.md").exists()
+
+    assert "preview/review" in guide
+    assert "python scripts/github_preview.py" in guide
+    assert "site-preview" in guide
+    assert "127.0.0.1" in guide
+    assert "不会部署 GitHub Pages" in guide
+    assert "同一仓库只有一个 Pages 站点" in guide
+
+    assert 'PREVIEW_BRANCH = "preview/review"' in helper
+    assert 'ARTIFACT = "site-preview"' in helper
+    assert '"git",\n            "ls-remote"' in helper
+    assert '"gh",\n            "run",\n            "list"' in helper
+    assert '"gh",\n                    "run",\n                    "download"' in helper
+    assert "preview-source-sha.txt" in helper
+    assert "SERVE_SCRIPT" in helper
 
 
 def test_javascript_logic_tests_have_a_portable_package_entrypoint():

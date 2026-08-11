@@ -1037,14 +1037,14 @@ test("article desktop left rail stays sticky through comments without crossing p
   const history = page.locator(".article-history");
   await expect(history).not.toHaveAttribute("open", "");
   await expect(history.locator("summary")).toContainText("初稿 2022.11.11");
-  await expect(history.locator("summary")).toContainText("最近修订 2026.07.30");
+  await expect(history.locator("summary")).toContainText("最近修订 2026.08.10");
   await expect(history.locator("summary")).toContainText("修订历史");
   await expect(history.locator("summary")).not.toContainText("2 条");
   await history.locator("summary").click();
   await expect(history).toHaveAttribute("open", "");
-  await expect(history.locator("li")).toHaveCount(3);
+  await expect(history.locator("li")).toHaveCount(4);
   await expect(history.locator("li").last()).toContainText(
-    "校正刷新率收益与烤机结温两处表述",
+    "统一台式机、显示器、显卡和固态硬盘术语",
   );
 
   const evidenceVisual = await page.locator(".article-evidence").first().evaluate(

@@ -9,19 +9,18 @@ translation_key: post-202211110000
 translation_url: /posts/装机记录/
 translation_source: _posts/2022-11-11-装机记录.md
 translation_status: current
-source_hash: c4abfcdb06cf8555162520aed4424ee04c04d7b0907734db36d5f5bcab10381d
+source_hash: abc04dfbe47549107a50227d64899805c923ca592e20f3cfbbc54f7106352b26
 thumbnail: /assets/posts/202211110000/cover-generated-2026-07-29.webp
 article_cover:
   alt: A desktop PC being assembled on a workbench
-  caption: 'Cover: AI-generated writing-index illustration; not a photograph or factual record of the 2022 PC build.'
+  caption: 'Cover: AI-generated illustration, not a photograph or factual record of the 2022 build.'
 aliases: []
 categories:
 - PC Building
 tags:
 - PC Building
 from: null
-math: true
-excerpt: Around Singles' Day 2022, my laptop began blue-screening frequently, and its GTX 1060 Ti was also struggling with my new monitor. I decided to build an R5 5600 + RX 6600 XT desktop during the sale and record the component choices, budget, and lessons from the process.
+excerpt: Around Singles' Day 2022, my laptop began blue-screening frequently, and its discrete GPU was struggling with my new monitor. I decided to build an R5 5600 + RX 6600 XT desktop and record the component choices, budget, and assembly problems.
 description: A complete R5 5600 + RX 6600 XT build record that keeps requirements, component trade-offs, prices, and assembly problems together, showing how a budget became a balanced machine.
 revisions:
 - date: '2022-11-11'
@@ -30,11 +29,13 @@ revisions:
   note: Added sources; corrected hardware models, costs, and some technical descriptions; retained the 2022 perspective (with ChatGPT assistance)
 - date: '2026-07-30'
   note: Corrected two descriptions concerning refresh-rate gains and stress-test junction temperature (with Kimi assistance)
+- date: '2026-08-10'
+  note: Standardized desktop, monitor, graphics-card, and solid-state-drive terminology; removed an old laptop-GPU suffix that the surviving records cannot verify; and defined stress-test terminology
 ---
 
-## Why I Wanted to Build a New PC
+## Why I Wanted to Build a Desktop PC
 
-My frequently used MECHREVO laptop had been in service for more than two years. It had recently started blue-screening from time to time, and its GTX 1060 Ti graphics card was also beginning to feel underpowered for the current era.
+My frequently used MECHREVO laptop had been in service for more than two years. It had recently started blue-screening from time to time, and its discrete GPU was struggling with the games I played then. The old draft called it a “GTX 1060 Ti.” The surviving records do not establish the exact model, so this revision drops that suffix.
 
 At the same time, staring at the laptop's small screen for long periods had begun to make my eyes uncomfortable, and neither videos nor games felt as enjoyable on it. I am not nearsighted, and I have always felt, subjectively, that I am more sensitive to discomfort from small screens. Singles' Day was a good opportunity to replace it with a larger, higher-refresh-rate display. Higher resolutions and refresh rates, however, both place greater demands on a graphics card. Once I connected the new monitor, the laptop GPU indeed struggled to maintain the gaming experience I wanted under those display conditions.
 
@@ -45,19 +46,19 @@ At the same time, staring at the laptop's small screen for long periods had begu
 
 Another factor was that, over the previous two months, I had seen large numbers of mining cards enter the secondhand market. Prices had been pushed very low, and it was relatively easy to find inexpensive used cards from individual sellers.
 
-Together, these three reasons led me to spend a few thousand yuan on a desktop and comprehensively upgrade my everyday experience.
+Together, these three reasons led me to spend a few thousand yuan on a desktop PC and improve my everyday experience.
 
 ## Selecting and Buying the Components
 
-Choosing a hardware configuration is full of logic. I first needed to organize what I expected from the new machine.
+I listed the requirements first, then selected the monitor, graphics card, processor, and remaining components in dependency order.
 
-### A High-Refresh-Rate Monitor
+### High-Refresh-Rate Monitor
 
 **First, determine the refresh rate.**
 
 Common refresh rates include 60 Hz, 120 Hz, 144 Hz, 180 Hz, and 240 Hz. The higher the refresh rate, the shorter the wait between image updates: 60 Hz, 120 Hz, 144 Hz, and 240 Hz correspond to refresh intervals of about 16.7 ms, 8.3 ms, 6.9 ms, and 4.2 ms. In other words, the reduction is most obvious when the refresh rate first doubles: going from 60 Hz to 120 Hz cuts about 8.3 ms, while going from 120 Hz to 240 Hz cuts only another 4.2 ms. At higher frequencies, the absolute return from the same proportional increase becomes smaller.
 
-I had used the 120 Hz display on a Redmi K40 for a year, and returning to a 60 Hz screen made it feel unbearably choppy. I therefore wanted at least 144 Hz, and the higher the better.
+After using the 120 Hz display on a Redmi K40 for a year, I found 60 Hz visibly choppy. I therefore set the monitor target at 144 Hz or above.
 
 > **Additional basis | Refresh rate**
 >
@@ -66,11 +67,11 @@ I had used the 120 Hz display on a Redmi K40 for a year, and returning to a 60 H
 
 **Then, consider the resolution.**
 
-The rough impression I had formed at the time from discussions on Zhihu and elsewhere was that high-refresh-rate gaming at 2K resolution required at least an RTX 3080-class graphics card. I rarely play AAA titles at maximum quality and cared more about achieving a high refresh rate on a limited budget, so I ultimately targeted 1080p.
+The rough impression I formed at the time from discussions on Zhihu and elsewhere was that high-refresh-rate gaming at 2560×1440 required an RTX 3080-class graphics card. I rarely play AAA titles at maximum quality and cared more about high refresh rates on a limited budget, so I targeted 1920×1080.
 
 > **Additional note | Resolution and performance**
 >
-> Common resolutions include 1920×1080, 2560×1440, and 3840×2160. For the same image, a 2560×1440 frame contains about 1.78 times as many pixels to process as a 1920×1080 frame; actual frame rate is also affected by the specific game, quality settings, drivers, and rendering technologies. Therefore, “2K high-refresh gaming requires at least an RTX 3080” should be understood only as my rough component-selection impression at the time, not as a universal hardware threshold.
+> Common resolutions include 1920×1080, 2560×1440, and 3840×2160. For the same image, a 2560×1440 frame contains about 1.78 times as many pixels to process as a 1920×1080 frame; actual frame rate is also affected by the specific game, quality settings, drivers, and rendering technologies. Therefore, “2560×1440 high-refresh gaming requires an RTX 3080” records only my rough component-selection impression at the time and does not establish a universal hardware threshold.
 {: .article-evidence}
 
 **Finally, consider the screen size.**
@@ -87,10 +88,10 @@ It is a 24.5-inch, 1920×1080 IPS monitor with a native refresh rate of 240 Hz, 
 
 > **Product specifications | Y25-30**
 >
-> The dimensions, resolution, panel type, refresh rate, and synchronization technology above come from Lenovo's [official PSREF specifications](https://psref.lenovo.com/syspool/Sys/PDF/datasheet/Legion_Y25-30_datasheet_EN.pdf). The 280 Hz mode is an overclock from 240 Hz, and Lenovo also warns that overclocking may cause display abnormalities; it is not an unconditional guaranteed value.
+> The dimensions, resolution, panel type, refresh rate, and synchronization technology above come from Lenovo's [official PSREF specifications](https://psref.lenovo.com/syspool/Sys/PDF/datasheet/Legion_Y25-30_datasheet_EN.pdf). The 280 Hz mode is an overclock from 240 Hz, and Lenovo also warns that overclocking may cause display abnormalities; the stable refresh rate therefore requires validation on the specific monitor.
 {: .article-evidence}
 
-### An Economical, Muscular Graphics Card
+### Graphics Card
 
 The monitor resolution and target frame rate directly affect GPU selection. I first consulted graphics-card performance rankings and roughly limited the range to NVIDIA's 20 series and AMD RX 6500 or above. Such rankings are useful for quickly comparing broad performance tiers, but whether a card can take advantage of a high refresh rate at 1080p still depends on the game and quality settings.
 
@@ -105,20 +106,20 @@ At the time, large numbers of secondhand mining cards were entering the market. 
 
 > **Historical context | Secondhand mining cards**
 >
-> Ethereum completed [The Merge on September 15, 2022](https://ethereum.org/roadmap/merge/), moving its mainnet from proof of work to proof of stake, after which GPU mining was no longer a way to produce valid blocks. The timing is consistent with the “previous two months” described in this article, but it cannot by itself establish the relative supply in the secondhand market. The RX 6600 XT launched in August 2021, and a particular card's production date limits only its physical age; it does not prove whether the card was used for mining or for how long.
+> Ethereum completed [The Merge on September 15, 2022](https://ethereum.org/roadmap/merge/), moving its mainnet from proof of work to proof of stake, after which GPU mining no longer produced valid blocks. This timing provides context for the “previous two months” described in the article; estimating relative supply in the secondhand market still requires market data. The RX 6600 XT launched in August 2021, and a particular card's production date limits only its physical age; its usage history requires other evidence.
 {: .article-evidence}
 
-I then found an **XFX RX 6600 XT Overseas Edition V2 mining card listed at RMB 1,150** on Xianyu. It was not the very lowest price, but the listing was detailed: the card had been produced in early 2022 and came with the seller's own test and benchmark records. The production date could not establish its actual usage history, but based on the description, test information, and communication with the seller, I thought it was worth trying and ultimately bought it for RMB 1,120.
+I then found an **XFX RX 6600 XT Overseas Edition V2 mining card listed at RMB 1,150** on Xianyu. The detailed listing made the offer attractive: the card had been produced in early 2022 and came with the seller's own test and benchmark records. The production date could not establish its actual usage history. Based on the description, test information, and communication with the seller, I thought it was worth trying and ultimately bought it for RMB 1,120.
 
-By the time this article was completed, I had had the graphics card for two weeks. During that time, the seller remained very enthusiastic about discussing how to use the card and how it was performing. Overall, the purchase was successful.
+By the time this article was completed, I had used the graphics card for two weeks. During that time, the seller continued to discuss usage and the card's condition with me. The purchase met my expectations.
 
 I mounted the graphics card horizontally. To reduce the long-term risk of sagging under its own weight, I supported it with two GPU braces costing RMB 37.8 in total.
 
-### A CPU Suited to the Graphics Card
+### Processor (CPU)
 
-At this point, Intel's 13th-generation desktop processors had just launched, with the initial lineup consisting mainly of unlocked K-series models. The problem was not that “too few motherboards supported them”; more precisely, I could not find a combination in the launch platform that suited my budget at the time.
+At this point, Intel's 13th-generation desktop processors had just launched, with the initial lineup consisting mainly of unlocked K-series models. I could not find a combination in the launch platform that suited my budget at the time.
 
-After looking through contemporary performance rankings and build configurations, my rough impression was that an AMD setup offered better value at the same price. Since I had already chosen an AMD graphics card, I decided to choose an AMD CPU as well. This was only a simplified judgment based on my budget at the time, not a rigorous platform-wide performance conclusion about AMD versus Intel.
+After reviewing contemporary performance rankings and build configurations, I preferred the value of the AMD options in my price range. The graphics-card brand did not constrain the processor brand; I chose an AMD processor from this budget comparison, so the conclusion applies only to this build.
 
 Choice: **AMD Ryzen 5 5600**
 
@@ -143,11 +144,11 @@ Considering room for later modifications and my storage requirements, I ultimate
 > [Intel's official 13th-generation launch material](https://newsroom.intel.com/press-kit/13th-gen-core) shows that the September 2022 initial release consisted of six unlocked desktop processors. [AMD's R5 5600 specifications](https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-5000-series/amd-ryzen-5-5600.html) explicitly list support for the B550 chipset, a default TDP of 65 W, and PCIe 4.0. [ASUS's official specifications](https://www.asus.com/motherboards-components/motherboards/tuf-gaming/tuf-gaming-b550m-plus/techspec/) confirm that the TUF GAMING B550M-PLUS supports Ryzen 5000-series processors, dual-channel DDR4, and two M.2 slots. These points document release timing and compatibility, not any cross-brand performance ranking.
 {: .article-evidence}
 
-The boxed R5 5600 includes a Wraith Stealth cooler, but I was already planning to buy a different cooler. The price saved by this tray-CPU bundle was more valuable to me, so I did not choose the boxed version; that does not mean the boxed version is poor value for everyone.
+The boxed R5 5600 includes a Wraith Stealth cooler. I was already planning to buy a different cooler, so the price saved by this tray-CPU bundle was more valuable to me. I chose the tray CPU.
 
 ### Memory
 
-The R5 5600 has two memory channels and officially supports up to DDR4-3200; this ASUS motherboard also uses a dual-channel memory architecture. I selected two modules from the same kit to enable dual-channel operation and reduce the compatibility risks of mixing different models. Dual-channel operation increases available memory bandwidth, but it does not mean that every application's performance will double, and using the same model cannot guarantee absolute stability.
+The R5 5600 has two memory channels and officially supports up to DDR4-3200; this ASUS motherboard also uses a dual-channel memory architecture. I selected two modules from the same kit to enable dual-channel operation and reduce the compatibility risks of mixing different models. Dual-channel operation increases available memory bandwidth. The performance gain depends on the workload, and a same-kit configuration still requires stability testing.
 
 For capacity, I chose 8 GB×2 for better value. Anyone who frequently runs more memory-intensive applications would have more headroom with 16 GB×2.
 
@@ -155,23 +156,23 @@ Final choice:
 
 - **Crucial 8 GB×2 DDR4-3200 kit, Singles' Day price: RMB 338**
 
-### Storage
+### Solid-State Drive (SSD)
 
-My storage requirements are modest. A 1 TB solid-state drive is enough for the operating system, commonly used applications, and games. Samsung products of the same capacity were more expensive in my comparison at the time, so I ultimately chose a Western Digital Blue drive:
+My storage requirements were modest. A 1 TB solid-state drive was enough for the operating system, commonly used applications, and games. Samsung products of the same capacity were more expensive in my comparison at the time, so I chose a Western Digital Blue drive:
 
 - **Western Digital Blue 1 TB M.2 SSD, Singles' Day price: RMB 579**
 
 ### Case
 
-After a long search for a case for the B550M motherboard, following the trail from the Jonsbo D30 led me to the newly released Jonsbo D31. Its industrial, functional look was extremely appealing.
+After selecting the B550M motherboard, I found the newly released Jonsbo D31 through the earlier D30. Its industrial design matched my preference.
 
 - **Jonsbo D31 without the display panel, Singles' Day price: RMB 249**
 
-After a week of actual use, however, I suspected that the graphics-card fans were too close to the bottom panel and that their intake space was somewhat restricted. With the bottom of the case directly against the desk, a stress test produced a GPU core temperature of about 64°C, while the junction temperature was about 20°C higher—approximately 84°C. One measurement is not enough to characterize every D31 build, but it at least showed that my placement and airflow still had room for adjustment.
+After a week of use, I suspected that the graphics-card fans were too close to the bottom panel, restricting intake. With the bottom of the case directly against the desk, a synthetic load test—commonly called a stress test—produced a GPU core temperature of about 64°C and a junction temperature of about 84°C. This single measurement showed that this PC's placement and airflow still had room for adjustment.
 
 ### Power Supply
 
-AMD recommends a minimum system power supply of 500 W for the RX 6600 XT; the card itself has a typical board power of 160 W. My 550 W power supply exceeds that recommendation.
+AMD recommends a minimum system power supply of 500 W for the RX 6600 XT; the card itself has a typical board power of 160 W. My 550 W power supply exceeds the capacity recommendation.
 
 For the brand, I mainly compared Super Flower and Seasonic at the time. I ultimately chose:
 
@@ -217,11 +218,11 @@ Case → power supply → motherboard (CPU + cooler + memory + storage) → cabl
 
 The internal cable-routing space in the Jonsbo D31 is very tight, making it difficult to fit the large bundle of cables from the Super Flower Bronze King power supply.
 
-For the operating system, I chose Windows 10. At the time, I believed its game compatibility was more reliable, so I did not switch to Windows 11. That was my reason for the choice then, not a universal conclusion about every game and hardware configuration. The CPU, graphics card, and motherboard in this build all explicitly support Windows 10.
+For the operating system, I chose Windows 10 because I trusted its game compatibility more at the time. This records a personal decision from 2022; the processor, graphics card, and motherboard in this build all explicitly supported Windows 10 then.
 
 > **Installation basis | M.2 system drive**
 >
-> An M.2 system drive does not always require BIOS compatibility mode. [Microsoft's Windows installation documentation](https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-setup-installing-using-the-mbr-or-gpt-partition-style) recommends booting installation media in UEFI mode and using a GPT system drive on modern computers. If the installer or boot menu cannot find the system, first check whether the UEFI / Legacy boot mode matches the GPT / MBR partition style; Legacy / CSM is a compatibility path for older devices and partitioning methods.
+> [Microsoft's Windows installation documentation](https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-setup-installing-using-the-mbr-or-gpt-partition-style) recommends booting installation media in UEFI mode and using a GPT system drive on modern computers. If the installer or boot menu cannot find the system, first check whether the UEFI / Legacy boot mode matches the GPT / MBR partition style; Legacy / CSM is a compatibility path for older devices and partitioning methods.
 {: .article-evidence}
 
 The biggest lesson from this build was still case space. Next time I will buy a larger case so that both cooling and cable routing are easier to manage.

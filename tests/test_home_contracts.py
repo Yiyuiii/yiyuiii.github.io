@@ -4,12 +4,21 @@ from pathlib import Path
 
 import yaml
 
+from scss_source import aggregate_scss_source
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def text(path):
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def main_scss():
+    return aggregate_scss_source(
+        ROOT / "assets" / "css" / "main.scss",
+        load_paths=(ROOT / "_sass",),
+    )
 
 
 def frontmatter(path):
@@ -50,11 +59,10 @@ def test_home_copy_is_bilingual_structured_and_not_hardcoded_in_runtime_files():
     assert "rotation_note" not in home["en"]["sections"]
 
     runtime = "\n".join(
-        text(path)
-        for path in (
-            "_includes/home-feed.liquid",
-            "assets/js/home-feed.js",
-            "assets/css/main.scss",
+        (
+            text("_includes/home-feed.liquid"),
+            text("assets/js/home-feed.js"),
+            main_scss(),
         )
     )
     for phrase in (
@@ -85,7 +93,7 @@ def test_home_feed_manifest_is_complete_stable_and_has_no_duplicated_dates():
     items = manifest["items"]
 
     assert manifest["date_semantics"].strip()
-    assert len(items) == 26
+    assert len(items) == 31
     assert len({item["id"] for item in items}) == len(items)
     assert "type-defined marker date" in manifest["date_semantics"]
     assert all(set(item) == {"id", "kind", "ref"} for item in items)
@@ -166,6 +174,11 @@ def test_all_marker_dates_have_explicit_sources_and_expected_values():
         "writing:202407012233": "2024-07-01",
         "writing:202510112233": "2025-10-11",
         "writing:202608021600": "2026-08-02",
+        "writing:202608081000": "2026-08-08",
+        "writing:202608081030": "2026-08-08",
+        "writing:202608081100": "2026-08-08",
+        "writing:202608081130": "2026-08-08",
+        "writing:202608102107": "2026-08-10",
         "project:Yiyuiii/codex-cc-tools": "2026-05-22",
         "project:Yiyuiii/HDBO-B": "2023-05-30",
         "project:Yiyuiii/nonebot-plugin-moegoe": "2022-08-20",
@@ -185,14 +198,14 @@ def test_all_marker_dates_have_explicit_sources_and_expected_values():
 
     ordered = sorted(actual, key=lambda item_id: (-date.fromisoformat(actual[item_id]).toordinal(), item_id))
     assert ordered[:8] == [
+        "writing:202608102107",
+        "writing:202608081000",
+        "writing:202608081030",
+        "writing:202608081100",
+        "writing:202608081130",
         "writing:202608021600",
         "project:Yiyuiii/codex-cc-tools",
         "project:Yiyuiii/taco",
-        "writing:202510112233",
-        "publication:trust-region-newton-ecai-2025",
-        "publication:hdbo-b-ijcnn-2025",
-        "project:Yiyuiii/simple_asr_llm_tts",
-        "publication:hdbo-survey-2025",
     ]
 
 

@@ -11,6 +11,10 @@
 - 用户于 2026-08-07 更新此前的“小玩意”扩充要求：现有十一项完成 M2 审计并验收后停止继续新增；“接通电路”因玩法传统、没有额外逻辑新意而取消，M4 随之取消。不得自动改做“漫水”“节奏复现”或其它传统候选；未来只有在候选能证明新的逻辑体验与明确站点价值、且用户重新授权时，才重启扩充评估。
 - 小玩意的外部数据项目不得要求站点、维护者或读者提供 API 密钥，也不得在静态前端嵌入密钥或为此新增代签后端；不得批量下载、提交或向读者下发外部题库和媒体索引。只有在读者明确开始一局后，才可调用生成本局内容直接必需的官方无密钥公开接口或媒体地址；响应只留在当前页面内存，不持久化、不静默续页或预取下一局。
 - 每篇随笔最终必须有完整中英文版本，并保持图片、公式、代码、标题结构、锚点与修订日期对应。
+- 用户于 2026-08-08 明确更新随笔维护偏好：市场价格、产品生态、软件接口、平台政策等强时效内容一旦失效，应重新调研并整体改写，不能靠局部补丁继续作为当前指导；网络架构、产品类型、理论模型、因果机制与验证方法等持久内容应成为正文主干。重大改写可完全替换旧稿并转为由 GPT 调研撰写的教程，但必须保留原始发布日期与 URL，在修订历史中标明重新调研日期、模型和替换范围。
+- 用户于 2026-08-09 要求《与珍珠鸟建立信任》先系统梳理物种底层特点，再以连续的因果与证据链推导训练方法；不得继续用散点技巧堆叠或把未经检验的直觉写成物种规律。
+- 用户于 2026-08-09 确认 Replit 免费版不适合本站且已经卸载；活动流程必须移除 Replit 依赖，优先由 GitHub 固定测试分支完成构建与验证，GitHub 不能安全提供独立测试站时改用本机预览。当前流程不使用 Browser／Computer Use 控制审阅页面。
+- 用户于 2026-08-10 要求整理当前全部 16 组中英文随笔：术语优先采用目标领域内已有共识、读者常用且定义稳定的称呼，同一概念保持同一主称呼，首次出现时说明必要的英文原名、缩写或别名；删除装饰性同义替换、重复标签、无信息量修饰语和可省略的抽象名词；复杂内容按因果、时间、步骤或层级拆开，降低术语切换、指代追踪和句法解析负担。全站范围、分批清单与验收方法见 `docs/all-posts-reader-language-2026-08-10.md`。
 - 《SETI》教学随笔应按实际开局与游玩顺序组织，文字简洁、条目清楚，避免无助于理解规则的比喻、长句和“不是……而是……”句式；“扩展理解”应优先解释不同来源的行动、组件和结算时点怎样组成规则链，外部知识只保留能直接帮助记忆或决策的浅层联系并控制字数，同时明确区分真实知识与游戏抽象；完整基础游戏应包括五种基础外星生物和单人模式，之后另行覆盖《Space Agencies》、三种新增外星生物和官方促销内容，并只使用可核验来源的原装配图。教程还需集中讲清通用图标、版图标记状态和每种外星生物的专属图标，不应让初学者自行在主规则书、玩家辅助页与物种辅助页之间拼接。中文标签使用中文，游戏或扩展专名可保留原文；源文件名与 canonical URL 应和标题语义一致；修订历史标明本文由 GPT5.6 Sol 撰写。
 - 主导航顺序为“欢迎｜随笔｜GitHub｜论文｜小玩意｜关于yiyuiii”，英文保持同样的六项结构；导航目的页必须正确标记当前项，移动端不得横向溢出。
 
@@ -18,7 +22,7 @@
 
 - 站点使用 Jekyll 4.4.1、Ruby 3.3.5、Python 3.12 与 Node 24/Playwright；2026-08-07 仓库加固已合并并部署到正式 master（合并点 `eee7b95`）。`Gemfile.lock` 同时锁定 Windows 与 Linux 平台，Gemfile 在 Windows 平台显式启用 `tzinfo-data`，保证配置时区的本地生产构建不依赖系统 zoneinfo 目录。只保留代码实际使用的 Jekyll/al-folio 插件；`al_charts` 负责 Mermaid 转换与条件加载。第三方资源固定为 `download: false`，由 `_plugins/third_party_library_urls.rb` 只展开配置中的版本模板，并在误开下载时阻断构建；原 `jekyll-3rd-party-libraries` 因其未使用的下载路径把有漏洞且无法升级的 `css_parser <2.0` 带入构建链，已用该本地最小实现替换。ImageMagick、Notebook、分页、Twitter 与已关闭的主题扩展不再进入构建链。
 - 仅声明 `math: true` 的普通页面加载 MathJax；固定 3.2.2 的 CHTML 运行时、23 个 WOFF 字体和 Apache-2.0 许可保存在 `assets/vendor/mathjax/3.2.2/`，`assets/js/mathjax-loader.js` 只从同源版本路径加载。所有含公式的中英文随笔由 `tests/browser/math-rendering-round3.spec.mjs` 在阻断站外 HTTP(S) 的条件下检查公式数量、可见性、MathJax 错误、残留分隔符和实际字体请求；来源、哈希和升级边界见 `docs/mathjax-localization.md`。公式变量名应使用规范 TeX（如 `\rho_{\mathrm{water}}`），不要依赖 `\rho_水` 一类未知 Unicode 字形回退。
-- GitHub Actions 工作流为 .github/workflows/deploy.yml；PR 只验证和上传 site-preview，master push 或在 master 上 `workflow_dispatch` 手动触发时，build 成功后 deploy。本地与 CI 的完整门禁统一由 `scripts/validate.py` 编排；CI 使用 `--browser`，在新 production 构建和静态检查后通过 `scripts/run_browser_tests.py` 启动随机 loopback 预览，以 Playwright 管理的 Chromium 和 4 worker 完成全套回归。预览服务器队列为 128，浏览器失败时保留 `browser-failure-artifacts`，不得绕过该门禁发布。
+- GitHub Actions 工作流为 `.github/workflows/deploy.yml`：PR 与固定 `preview/review` 分支的 push 运行同一完整门禁并上传 `site-preview`；测试分支产物额外写入 `preview-source-sha.txt`，只有 `master` push 或在 `master` 上手动触发时才执行正式 deploy。本地与 CI 的完整门禁统一由 `scripts/validate.py` 编排，CI 使用 `--browser`，以 Playwright 管理的 Chromium 和 4 worker 完成回归；浏览器失败时保留 `browser-failure-artifacts`。同一仓库只有一个 GitHub Pages 站点，官方 pull request preview 仍未公开可用，因此测试分支不得接管正式 Pages。人工审阅优先运行 `scripts/github_preview.py`：它用 GitHub CLI 等待当前 `origin/preview/review` 的 run，核对远端 SHA、run SHA 和 artifact 内标记后，把 `site-preview` 下载到临时目录，并调用 `scripts/serve_site.py` 只绑定 `127.0.0.1`；它不自动打开或控制浏览器。GitHub 暂不可用或检查未提交修改时，先运行 `scripts/validate.py --browser`，再用 `scripts/serve_site.py --site _site --port 9241`。Replit 同步 job、配置模板和活动说明已移除；旧远端 `preview/replit` 与 `preview/replit-site` 已在新流程首次远端验证成功后于 2026-08-09 删除。精确流程见 `docs/preview-workflow.md`，不得绕过门禁或用旧 artifact 冒充当前候选。
 - _posts 保存当前文章；每篇文章用共享 `thumbnail` 与本地化 `article_cover.alt/caption` 声明显式阅读页题图，布局通过 `_includes/article-cover.liquid` 在正文前渲染。题图与普通正文图片样式相互独立，维护契约见 docs/article-cover-component.md。阅读页正文使用 `50rem` 可读宽度，独立图片、表格、代码与题图最多使用 `72rem`；顶层叙述段统一首行缩进 `2em`，图片段、图题、显示公式、列表、引用、代码和表格不继承该缩进；中文题图和正文图题使用直立字形、小于正文的字号与次级颜色，英文图题可保留英文斜体，依据与边界见 docs/chinese-typography.md；需要与正文栏对齐的紧凑代码/换算块使用 `article-prose`，其中资源换算式另用 `article-conversion` 保持紧凑宽度与等号对齐。小于 `1536px` 使用正文内原生折叠目录，从 `1536px` 起使用 `13rem` 左侧粘性目录；目录的布局边界同时包含正文和评论区，因此能随评论继续滚动，但会在页眉之后开始并在页脚之前结束，不得遮挡环境光入口或版权信息。`_plugins/post-image-loading.rb` 从真实本地文件补齐题图和正文图片的固有宽高，正文图片另加 `loading="lazy"`、`decoding="async"`，并只按 `_data/article_image_derivatives.yml` 输出受检 `srcset`；题图保持 eager/high priority。正文响应式派生图由 `scripts/generate_article_images.py` 预生成并提交；清单版本 3 保存源图与派生图的 SHA-256、真实尺寸和固定编码策略，`--check` 只验证已提交清单与文件，不跨平台重新编码，旧 PNG/JPG URL 保留。docs/asset-provenance.yml 按唯一正式封面关联中英文文章，并保存来源、许可、处理、SHA-256 与 160/320 px 索引派生规则；索引派生资产由 scripts/generate_post_thumbnails.py 预生成并提交。素材较多的文章可在 docs/article-assets/<uid>.yml 另存正文图片的逐项来源与哈希，当前实例为 202608021600。
 - _data/legacy_urls.yml、scripts/check_legacy_urls.py 与浏览器测试共同保护旧 URL。
 - `/` 与 `/en/` 是欢迎页，人工文案集中在 `_data/home.yml`；`/writing/` 与 `/en/writing/` 是随笔索引。`_data/home_feed.yml` 只维护三类内容的稳定引用，运行时按分类型标志日期排序：随笔取初稿日，项目取经 CI 对照的 GitHub `created_at` 香港自然日（只表示仓库创建，不声称创建时已公开），论文取带权威来源的最早公开记录；后续修订、本站整理、push、Star/Fork 不刷新日期，也不使用热度或类型配额排序。“随机发现”（英文 “Random discovery”）在每次载入、刷新或从 BFCache 恢复欢迎页时，从中英文共同存在且位于最近 8 项之外的候选中独立均匀抽取一项；中英文不承诺相同结果。抽样使用 `crypto.getRandomValues()` 和拒绝采样，不使用 `Math.random`、日期、访问历史、Cookie、存储或网络；无 JavaScript 或随机源不可用时保留预渲染的固定“浏览起点”。
@@ -28,7 +32,7 @@
 - 2026-08-07 维护收口已启用 Dependabot 漏洞告警与 Bundler/npm/Python 月度分组更新；没有启用自动修复、CodeQL 或自动合并。首次 20 条告警归并为 Pillow 与 css_parser 两个根因：Pillow 已升至 12.3.0 并完成 `index-v2`、正文策略版本 3 / `content-v2` 的确定性资产迁移；无法升级 css_parser 的旧下载插件已由 `_plugins/third_party_library_urls.rb` 最小本地实现替换。工作树清理、保留边界与完整验证见 `docs/maintenance-closeout-2026-08-07.md`。
 - 2026-08-06 当前萌娘百科事实：首项可见名称为“萌娘百科猜猜 / Moegirlpedia quiz”，稳定 ID 仍为 `moegirl-quiz`，唯一来源为中文萌娘百科；中英文页面都请求中文题料且英文说明须明确这一点。每次明确点击最多一个官方 Action API GET，无来源选择、预取、续页、图片、凭据或题目持久化；不接入 Wikipedia，也不做代理、镜像、自动回退或重试。当前只保留自然的“匿名化导言 → 条目”题型，不为单一选项显示题型面板；“条目 → 四段导言”因长文本、干扰项署名和低可成题率不采用。精确事实见 `docs/moegirl-quiz-component.md`。
 - 2026-08-06 外部开放数据补充：`art-glimpse` 的可见名称为“名画猜猜（克利夫兰艺术博物馆）／Artwork quiz (Cleveland Museum of Art)”，使用一次 CMA CC0 馆藏元数据 GET；玩家可多选“看名片找画”和“看画找名片”，前者加载四张本局官方 JPEG，后者只加载一张线索图，均不使用局部裁切或 `canvas`。题名、作者、年代可独立开关且至少保留一项，默认题名与作者；两个方向都只显示当前启用字段，候选四项的可见字段组合必须互不重复，揭晓再恢复完整资料。图片按 API 报告的单图 1.2 MB／整局 4 MB 声明预算筛选，实际传输由馆方决定；开放馆藏可能包含宗教、神话或非色情人体形象，界面须在开始前披露。`anilist-role-quiz` 可见名称为“动画主角猜猜（AniList）／Anime protagonist quiz (AniList)”，一次 AniList GraphQL POST（浏览器通常另有 CORS 预检）读取六部动画的文字角色关系；玩家可多选动画找主角、主角找动画、同作主角配对三种无歧义四选一，即时反馈直接陈述角色与作品关系，精确 `MAIN` 语义留在说明与署名。“主角之一”对应 AniList `MAIN`，可能有多位，不代表本站按戏份另行判断。两款游戏应用设置时清空当前局但不联网，设置只留在页面内存。AniList 题不取封面或简介，中文作品名保留原文／罗马字，角色有原文时显示“原文名（拉丁字母名）”，成人过滤不宣传为完整分级。Wikidata、MusicBrainz、AIC、Bangumi 与 Commons 均已按稳定性、浏览器标识、媒体可达性或隐私闸门停止，不得把未过闸门原型接入生产索引；证据见对应 2026-08-05 文档。
-- 全站基础样式位于 `assets/css/main.scss`；只服务 `/toys/` 与 `/en/toys/` 的样式位于 `assets/css/toys.scss`，由 `nav_key: toys` 条件加载。页面运行时只保留当前实际使用的 D3、Mermaid 与本地 MathJax 配置；新增第三方资源时必须同时更新 CSP、构建契约与浏览器回归。
+- 全站基础样式以 `assets/css/main.scss` 为入口，本站自定义规则按环境光、页眉、首页、评论、索引、文章、次级页面和响应式边界拆分在 `_sass/site`；源码级样式契约通过 `tests/scss_source.py` 按本地 `@use` 语义聚合后检查。只服务 `/toys/` 与 `/en/toys/` 的样式位于 `assets/css/toys.scss`，由 `nav_key: toys` 条件加载。页面运行时只保留当前实际使用的 D3、Mermaid 与本地 MathJax 配置；新增第三方资源时必须同时更新 CSP、构建契约与浏览器回归。
 - CSP 不再使用泛化的 `https:` 来源：脚本仅允许同源、必要内联、jsDelivr 与 Giscus；图片额外允许 CMA 官方图片 CDN；frame 仅允许 Giscus；connect 仅允许 Giscus、AniList、CMA API 与萌娘百科 API。外部服务维护探针都是显式 opt-in，不进入普通 CI；AniList 单请求入口为 `tests/tools/audit-acg-relation-quiz-live.mjs --run-live`，构建后外链维护入口为 `scripts/check_site.py --site _site --external-links`。
 - 默认布局的正式页面在正文后只提供评论区：评论使用仓库已启用的 GitHub Discussions、`Announcements` 公告分类与 Giscus，按严格 `pathname` 分离每个页面及中英文 URL。“评论公开保存在 GitHub Discussions”中的 Discussions 名称直接链接到评论分类。默认页面只渲染本地说明、手动显示按钮和默认关闭的“在本站自动加载评论”单行选项，不再另设重复的加粗标题或说明；普通显示只加载当前页且不持久化，只有读者明确勾选自动加载后才保存 `localStorage` 键 `yiyuiii.comments.v1=auto`、立即加载并在今后正式页面自动请求 `giscus.app` / GitHub，取消时删除该键但不卸载当前评论。该键不得保存路径、时间、身份或其它访问数据；无效值和存储失败按关闭处理且不得自动联网，不得增加 Cookie、`sessionStorage` 或其它评论存储。说明与按钮披露当前空评论区首次加载约 `0.13 MB`，并注明实际用量随评论内容变化；加载失败可重试，无 JavaScript 时自动加载选项隐藏、内嵌 Discussions 链接仍可用。评论语言和明暗主题跟随当前页面，使用 Giscus 官方 `light` / `dark` 主题并保留原生署名位置，不依赖、隐藏或重排 iframe 内部结构；`giscus.json` 只允许正式域名与 loopback 本地预览嵌入。重定向兼容页与双语 404 排除评论和反馈。此前的全站 Issue／邮件反馈组件及站内文案已于 2026-08-04 移除；`.github/ISSUE_TEMPLATE/page-feedback.yml` 作为仓库原生 Issue Form 保留，但站内不再渲染或链接它。用户已完成 Giscus GitHub App 的仓库级授权，Giscus 官方分类接口已返回仓库及 `Announcements` Node ID，CI artifact 上的中英文真实 iframe、登录入口与明暗主题同步均已验证。
 - `/about/` 与 `/en/about/` 的个人文案、栏目和链接集中在 `_data/about.yml`；捐助与联系说明位于 `links.intro`，渲染在“我的链接”标题之后、链接列表之前；`education` 数据保留但由共享 `display.hidden_blocks` 暂时隐藏。问候、正文、栏目分隔线、详情列表、捐助说明和链接共同占满页面现有的 `52rem` 版心，详情列表与分隔线保持原有宽度，正文不再单独使用 `ch` 宽度；窄屏随可用宽度收缩。中英文树的 ID、层级和顺序必须对应；所有 About ID 只允许小写字母、数字和单个下划线，允许 `3d_printing` 一类数字开头，不允许连字符、波浪号、首尾或连续下划线。完整编辑与双语哈希流程见 `docs/content-editing.md`。
@@ -36,7 +40,12 @@
 - 色差挑战的三种题型分别使用独立的 25 级 `ΔE_OK` 曲线；所有题最终 8-bit RGB 回算后的两色 OKLab 亮度中点固定在 `0.52..0.68`，并复核目标变化方向、色相范围与实际色差。明暗保持 `a/b`、鲜淡保持 `L/h`、色相保持 `L/C`；普通级目标方向占比至少 `72%`，量化边缘级至少 `58%`。精确生成、回退、设置和固定难度语义见 `docs/toy-challenges.md`。
 - docs 已由 _config.yml 排除，不会生成公开页面。
 - 11 篇迁移前旧文已获得稳定 `uid`、`translation_key` 和显式 permalink；2 篇英文源位于 `/en/posts/`，原 URL 通过 legacy 重定向兼容。
-- 11 篇旧文已全部完成双语配对；新增的《SETI》随笔也已提供中英文版本，因此当前共有 12 组、24 篇随笔。`_data/translation_exemptions.yml` 现为保留架构的空闭集。新文章必须双语发布，不得新增豁免。
+- 11 篇旧文已全部完成双语配对；《SETI》、2026-08-08 从 Obsidian 外化的四组随笔，以及《工业革命：匹兹堡》规则教学也均有完整中英文版本，因此当前共有 17 组、34 篇随笔。`_data/translation_exemptions.yml` 现为保留架构的空闭集。新文章必须双语发布，不得新增豁免。
+- 2026-08-10，当前 16 组、32 篇随笔已按领域共识术语和阅读负担原则完成全量整理；主称呼、首次定义、双语语义、修订记录及结构契约见 `docs/all-posts-reader-language-2026-08-10.md`。SETI 资源量化研究底稿继续暂缓，不属于公开随笔候选。
+- 2026-08-11，《大创造时代》中英文随笔各自的 14 个换算式代码框均使用 `article-prose article-conversion` 语义标记，与正文栏左边界对齐并保持紧凑宽度；`tests/browser/article-layout-round3.spec.mjs` 同时检查两种语言的完整数量、逐框对齐、等号对齐和页面横向溢出。
+- 2026-08-11，《工业革命：匹兹堡》双语规则教学已纳入候选；文章按摆桌、回合结构、资源运输、六种行动、完整首轮与时代结算的顺序组织，以当前公开多人规则稿为版本边界，配图来源和规则审计分别记录在 `docs/article-assets/202608102107.yml` 与 `docs/brass-pittsburgh-rules-audit-2026-08-10.md`。
+- 《与珍珠鸟建立信任》于 2026-08-09 二次重构为《与珍珠鸟建立信任：从行为机制到可检验训练》：以社会性、情境应激、个体差异和联结学习的原始研究为起点，明确实验到家庭的外推边界，再用健康／刺激负荷／退出能力／社会情境／学习历史／动机六变量模型推导基线指标、五阶段协议、故障诊断和停止条件；中英文保留原 `uid`、日期、URL 与题图。
+- 2026-08-08 已在 `content/evergreen-article-rewrite-20260808` 外部工作树完成 GitHub Pages、强化学习、云服务器和游泳四组中英文随笔重构，并同步完成无效资源声明清理、外链检查器加固、SCSS 八模块拆分与维护文档修正；随后将 `codex/obsidian-export-20260808` 工作树中的四组新随笔、12 项题图及索引派生资产、来源登记和首页条目合并进来，强化学习文章保留原常青教程并融合开放任务分布、元强化学习混淆、长时程和视觉预训练内容。2026-08-08 首轮候选曾通过 Replit 完成端到端审阅，这只属于历史实验；2026-08-09 珍珠鸟二次重构又通过 392 项 Python、77 项 JavaScript、production Jekyll 构建、70 条旧 URL 和 169 项浏览器回归，同日开始把审阅流程迁移到 `preview/review` 的 GitHub artifact 与本机 loopback。截至 2026-08-09，该候选尚未合入正式 `master`。2026-08-11 已继续整合《工业革命：匹兹堡》双语教程，并完成 403 项 Python、77 项 JavaScript 和 169 项浏览器回归；用户随后授权正式发布。每次判断发布状态时，应复核当前 Git refs、GitHub run SHA、artifact 内 `preview-source-sha.txt` 和正式 Pages 运行结果。范围、来源、交叉审阅修正和验证证据记录在 `docs/evergreen-article-rewrite-2026-08-08.md`；合并、继续修改或放弃工作树时必须同步更新。
 - `scripts/translation_guard.py` 同时保护翻译 source hash、成对 URL、结构签名、修订日期与题图元数据；题图 alt/图注可本地化，但共享 thumbnail、图注 Markdown 结构和链接目标／顺序受保护。普通代码围栏逐字保护，Mermaid 仅允许独立 `ID(可见标签)` 节点的标签本地化，图类型、节点 ID、形状和边仍必须一致。
 - 2026-08-07 本轮复核时，Ark Coding Plan 返回月度额度耗尽，本地 Kimi 在 4 分钟内无输出，DeepSeek API 仍不可用；这些是动态状态，未来每次使用前必须重新复核，不得把本次结果当作永久不可用。
 
@@ -55,6 +64,9 @@ python scripts/validate.py --browser
 
 - 2026-08-07 维护收口：docs/maintenance-closeout-2026-08-07.md
 - 内容维护：docs/content-editing.md
+- GitHub 测试分支与本地审阅流程：docs/preview-workflow.md
+- 2026-08-08 持久型随笔重构：docs/evergreen-article-rewrite-2026-08-08.md
+- 2026-08-10 全站随笔术语与阅读负担整理：docs/all-posts-reader-language-2026-08-10.md
 - 双语随笔基础：docs/superpowers/specs/2026-08-01-bilingual-post-foundation.md
 - 生产封面来源：docs/asset-provenance.yml
 - 随笔题图组件：docs/article-cover-component.md
@@ -67,6 +79,8 @@ python scripts/validate.py --browser
 - 首页标志日期证据：docs/home-feed-date-sources.md
 - 《SETI》正文图片来源：docs/article-assets/202608021600.yml
 - 《SETI》规则覆盖审计：docs/seti-rules-audit-2026-08-04.md
+- 《工业革命：匹兹堡》正文图片来源：docs/article-assets/202608102107.yml
+- 《工业革命：匹兹堡》规则与版本审计：docs/brass-pittsburgh-rules-audit-2026-08-10.md
 - 萌娘百科猜猜组件：docs/moegirl-quiz-component.md
 - 动画主角猜猜（AniList）：docs/acg-relation-quiz-component.md
 - ACG／听声候选闸门：docs/acg-sound-candidate-gates-2026-08-05.md

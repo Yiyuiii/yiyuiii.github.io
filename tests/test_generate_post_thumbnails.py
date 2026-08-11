@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "generate_post_thumbnails.py"
 PROVENANCE = ROOT / "docs" / "asset-provenance.yml"
 EXPECTED_SIZES = (160, 320)
+MAX_BYTES_PER_COVER = {160: 6_250, 320: 15_625}
 
 
 def variant_path(asset: Path, size: int) -> Path:
@@ -110,8 +111,9 @@ def test_committed_derivatives_match_sources_and_have_no_orphans():
         for path in (ROOT / "assets" / "posts").rglob("*-index-v*-*.webp")
     }
     assert actual == expected
-    assert derivative_bytes[160] < 100_000
-    assert derivative_bytes[320] < 250_000
+    cover_count = len(document["covers"])
+    for size in EXPECTED_SIZES:
+        assert derivative_bytes[size] < MAX_BYTES_PER_COVER[size] * cover_count
     assert derivative_bytes[320] < original_bytes * 0.20
 
     result = subprocess.run(

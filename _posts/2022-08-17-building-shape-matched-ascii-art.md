@@ -9,7 +9,7 @@ translation_key: post-202208171838
 translation_url: /posts/制作一张匹配形状的字符画/
 translation_source: _posts/2022-08-17-制作一张匹配形状的字符画.md
 translation_status: current
-source_hash: b02c1644f8c67b199f08355f9381d1cb1210d9e69c6c7c1cca3ae0f5e3d91bb7
+source_hash: ffe5e2b777acb93b22adde65559a33d793dff5f226b2a1a4c9a29621ce150ccb
 aliases: []
 categories:
 - NoneBot
@@ -23,31 +23,36 @@ thumbnail: /assets/posts/202208171838/cover-site-avatar-ascii-square.webp
 article_cover:
   alt: ASCII-art result generated from this site's avatar
   caption: 'Cover image: this site''s avatar regenerated as ASCII art with the shape-matching approach described here; both the avatar and the result are owned by this site.'
-excerpt: I recently started experimenting with ASCII art. Looking through the mainstream generation algorithms, I found that most of them map each image region to a single character using average grayscale as the metric.
+excerpt: Common ASCII-art algorithms select a character for each image block by average grayscale; this article also compares glyph templates with source contours.
 description: A shape-aware ASCII-art method using glyph templates, comparison, histogram equalization, and grayscale consistency to make outlines follow source images more closely than average-brightness mapping.
+revisions:
+- date: '2022-08-17'
+  note: Initial draft
+- date: '2026-08-10'
+  note: Standardized ASCII-art, glyph-template, image-block, and loss-function terminology; aligned the equations with the implementation and shortened repeated explanations
 ---
 
-I recently started experimenting with ASCII art. Looking through the mainstream generation algorithms, I found that most of them map each image region to a single character using **average grayscale** as the metric.
+I recently started experimenting with ASCII art. A common algorithm divides the source into fixed-size **image blocks**, then selects one character for each block by average grayscale.
 
-More specifically, they build a lookup table from grayscale levels to characters, something like `[0~255]->[0-9a-zA-Z!@#$%^&*()]`, and then apply extra operations such as positional alignment and histogram equalization to make the result more attractive.
+The implementation usually builds a lookup table from grayscale to characters, such as `[0~255] -> [0-9a-zA-Z!@#$%^&*()]`, then applies alignment or histogram equalization.
 
 For a concrete implementation of this approach, see [Zhihu: ASCII Art—from Getting Started to Looking Down on It](https://zhuanlan.zhihu.com/p/48941293).
 
-The implementation is intuitive and concise, but **average grayscale** is not a perfect metric. Consider the following images:
+Average-grayscale matching is intuitive and concise, but it does not compare stroke position. Consider the following images:
 
 ![Original image of a green-haired anime character beside the words “Looks strange—take another look”](/assets/posts/202208171838/QQ图片20220817193513.jpg)
 
 ![Average-grayscale ASCII rendering with broken text strokes and character outlines](/assets/posts/202208171838/QQ图片20220817193517.jpg)
 
-The upper edge of the Chinese character “好” contains a separate row of apostrophes, while the upper edge of “一” has turned into a left parenthesis that extends vertically as the horizontal stroke breaks apart. Errors like these make the ASCII art less pleasing to look at.
+The upper edge of the Chinese character “好” contains a separate row of apostrophes (`'`), while the upper edge of “一” becomes a vertical left parenthesis (`(`) with a broken horizontal stroke. Characters with similar average grayscale can still have completely different stroke directions.
 
-In fact, generating ASCII art from **average grayscale** is closer to an image-processing operation that performs **downsampling and adds noise**: the algorithm converts grayscale to characters region by region, and the mismatch between character shapes amounts to introducing structured random noise.
+From an image-processing perspective, the method downsamples by character size and replaces each image block with a glyph of similar average grayscale. A mismatch between the glyph and source contour creates structured error.
 
-This algorithm is imperfect, so is there a perfect one? That is what this article explores.
+This article compares image blocks directly with glyph templates so that character strokes follow source contours more closely.
 
-## Principle of Image–Character Shape Matching
+## Principle of Glyph Matching
 
-In an ASCII-art generation algorithm, application constraints generally require us to choose the available characters, their style, and their size in advance. We then stack those characters together in the hope of reproducing the original image as closely as possible. For example, an image of the Chinese character “工” that occupies a 3×3-character area can be assembled from the character set {1-+} as follows:
+Before generation, fix the candidate characters, font, and size, then render every character as an equal-sized grayscale **glyph template**. For example, a “工” pattern spanning 3×3 character positions can be assembled from `{1-+}`:
 
 ```
 -+-
@@ -55,35 +60,35 @@ In an ASCII-art generation algorithm, application constraints generally require 
 -+-
 ```
 
-At the image-pixel level, each character position generally occupies a fixed region in the ASCII-art image, and that region contains several pixels.
+Each character position corresponds to a fixed-size image block. The algorithm compares that block with every glyph template pixel by pixel and selects the template with the lowest loss.
 
-To reproduce the original image as closely as possible within such a region, we should therefore **make every pixel agree with the original wherever possible**.
+Let $I$ be the image block and $\hat I$ a candidate glyph template, with height $h$ and width $w$. The first metric is mean squared error (MSE):
 
-Of course, if every pixel at every position agreed perfectly, the ASCII art would be identical to the original image—but that rarely happens. One hundred characters can correspond to only one hundred regional patterns, whereas an 8×16-pixel region alone has $256^{8*16}$ possible configurations.
+$$
+J_{\mathrm{pixel}}=\frac{1}{hw}\sum_i\sum_j(I_{ij}-\hat I_{ij})^2.
+$$
 
-We therefore need a **loss function** to guide character matching. It must measure how closely each character agrees with the original, allowing the character selected for each region to represent that part of the image as well as possible.
+A candidate set is far smaller than the number of possible image blocks. For example, an 8×16 block of 8-bit pixels has $256^{8\times16}$ possible values, while 100 characters provide only 100 glyph templates. The algorithm therefore finds the minimum loss within the candidate set; the result remains constrained by the characters, font, size, and block dimensions.
 
-Concepts such as agreement and expressive capacity are fairly complicated for me, so for now I use the common **pixel mean squared error** to measure character agreement: $J=\Sigma_i\Sigma_j{(I_{ij}-\hat{I}_{ij})^2}$
+Repeating the match for all blocks produces the complete ASCII-art image.
 
-With such a loss function, we can select the optimal character for each region and then assemble the complete ASCII-art image.
+## Implementing Glyph Matching
 
-## Implementing Image–Character Shape Matching
+The implementation has two steps: pre-generating glyph templates and matching image blocks.
 
-The implementation has two main parts:
+### Pre-generating Glyph Templates
 
-### Pre-generating Character Images
+Once the candidate characters and font are fixed, the grayscale glyph templates can be rendered and stored in advance.
 
-The number of characters is **small, and their images are fixed**. Recomputing those images every time ASCII art is generated would create substantial redundant work, so their grayscale images can be generated and stored in advance.
+The templates and source image become NumPy arrays for batched calculations. The result is converted back to `PIL.Image` at the end.
 
-To calculate the loss function, I convert the images into arrays stored by the scientific-computing library NumPy. Intermediate operations are performed with NumPy to accelerate the calculation; the array is converted back to PIL.Image only before the final image is generated.
+All templates must have the same dimensions. Even with a monospaced font, rendered bounds may differ by one pixel; this implementation crops larger templates to the smallest width and height. A more complete implementation should also align baselines and glyph bounds to avoid removing useful strokes.
 
-For tidy layout and convenient computation, the character images need to be **cropped to the same width**. Some monospaced fonts are available, but commonly used fonts are not always strictly monospaced. Here I simply crop the larger character images to the dimensions of the smallest one—the original widths differ by only one pixel.
+Finally, `np.stack` combines the templates into an array of shape `(num_chars, h, w)` for batched loss calculations.
 
-Finally, the character-image arrays are stacked into an array with dimensions (num, h, w), making **batch computation** convenient.
+### Matching Image Blocks
 
-### Generating the ASCII Art
-
-For each character-sized region of the original image, calculate the loss function and paste in the image of the optimal character.
+The source image is padded and divided according to the template dimensions. For each block, the code subtracts all glyph templates at once, computes the loss, and selects the character returned by `argmin`.
 
 The result is shown below:
 
@@ -93,36 +98,40 @@ The result is shown below:
 
 ![ASCII rendering of the black cat and hand optimized for glyph outlines](/assets/posts/202208171838/QQ图片20220817225742.gif)
 
-The outlines of the generated ASCII art are already very good: the contour of the hand and the tufts of the cat's fur are reproduced faithfully. The black cat's face is too blurry, though...
+The hand contour and fur directions are more continuous than in the average-grayscale result, but the low-contrast detail on the cat's face remains blurry.
 
 ## Additional Improvements
 
 ### Histogram Equalization
 
-I think characters have less expressive capacity than a black-and-white image, so the original needs some additional artistic processing, such as **histogram equalization**.
+The candidate glyphs provide a limited range of grayscale values. Histogram equalization redistributes source intensity so that some low-contrast detail enters the available range.
 
 The improved result is shown below:
 
-![Black-cat ASCII rendering after increasing the brightness weight, with clearer eyes and bow](/assets/posts/202208171838/QQ图片20220817234811.gif)
+![Black-cat ASCII rendering after histogram equalization, with clearer eyes and bow](/assets/posts/202208171838/QQ图片20220817234811.gif)
 
-The black cat's eyes and bow are now brighter, while the contour of the hand is less distinct than before.
+The cat's eyes and bow are brighter, while the hand contour is weaker.
 
-Histogram equalization **is not a consistently reliable improvement**; it introduces several additional problems:
+Per-frame histogram equalization introduces two problems:
 
-1. The same object may be mapped to different grayscale values in different frames, making an animation less pleasant to watch. One possible approach is to select a keyframe and use it to construct a global grayscale mapping;
-2. ASCII art tends to be bright overall and can show more detail in lighter regions, whereas the image as a whole becomes somewhat darker after histogram equalization. I plan to match directly against a brighter grayscale histogram, but have not implemented this yet.
+1. Independent mappings can make the same object change intensity between frames. A keyframe or the complete animation can supply one global mapping;
+2. Equalization can move overall brightness outside the effective intensity range of the glyph templates. Matching a target histogram may help, but this article does not implement it.
 
-More improvements will have to wait for a later update.
+### Comparing Both Glyph Shape and Average Grayscale
 
-### Evaluating Agreement in Both Shape and Grayscale
+Pixel MSE responds to both stroke position and intensity. With black-and-white glyph templates and mid-gray image blocks, however, stroke error can dominate the difference in block-average grayscale.
 
-After experimenting for a while, I found that the pixel mean squared error loss function **cannot characterize agreement in grayscale**.
+I therefore add an average-grayscale loss:
 
-Most pixels in a character image are either pure black or pure white, so every pixel remains far from an intermediate grayscale value. Different pixels within a region can counterbalance one another in average grayscale, but summing pixel-level absolute differences cannot reflect that complementary relationship.
+$$
+J_{\mathrm{gray}}=\left(\frac{1}{hw}\sum_i\sum_j(I_{ij}-\hat I_{ij})\right)^2.
+$$
 
-I therefore added a second metric: a **grayscale-distance loss function**, defined as $J=(\Sigma_i\Sigma_j{I_{ij}-\hat{I}_{ij}})^2$.
+The total loss is a weighted sum:
 
-The total loss function is then a weighted sum of the pixel mean squared error loss and the grayscale-distance loss.
+$$
+J=\lambda_{\mathrm{pixel}}J_{\mathrm{pixel}}+\lambda_{\mathrm{gray}}J_{\mathrm{gray}}.
+$$
 
 The improvement is shown below. Original:
 
@@ -136,19 +145,19 @@ After the improvement:
 
 ![Black cat and hand rendered with both shape and grayscale losses](/assets/posts/202208171838/QQ图片20220820130948.gif)
 
-The image now contains both more shape detail and some grayscale regions, achieving an initial balance between the two. Adjusting the weights of the two losses provides a simple way to tune the ASCII art toward either shape or grayscale.
+The result retains more contours and some grayscale regions. The two weights control the relative influence of glyph shape and average grayscale.
 
-One important point is that the two loss functions **must be brought to the same scale**. If the squaring operation $square$ is replaced with absolute value $abs$, the effects of the two loss functions on different pixels become difficult to align, and adjusting the weights is less effective. The result with the initial weights is shown below:
+Before combining the losses, inspect their numerical ranges. If one is several orders of magnitude larger, the weights become hard to interpret and the match remains biased toward that term. The result with the initial weights is shown below:
 
 ![Gray-haired character biased toward grayscale because the loss scales are misaligned](/assets/posts/202208171838/QQ图片20220820122607.jpg)
 
 ![Black cat and hand biased toward grayscale because the loss scales are misaligned](/assets/posts/202208171838/QQ图片20220820124447.gif)
 
-The generated ASCII art is visibly biased toward grayscale; in practice, this formulation makes it difficult to find a balance by adjusting the weights.
+This result is visibly biased toward average grayscale, showing that the initial weights do not balance the two losses. A later implementation could estimate both loss distributions on representative samples before choosing normalization or weights.
 
 ## NoneBot2 Source Code
 
-I implemented the approach above in Python within the NoneBot2 framework for QQ bots.
+I implemented the method in Python within the NoneBot2 framework for QQ bots. In the historical code below, `grayscaleloss` corresponds to $J_{\mathrm{gray}}$ and `l2loss` to $J_{\mathrm{pixel}}$.
 
 ```python
 import numpy as np
@@ -181,7 +190,8 @@ def _init_charpic():
     for char in charpic_char_map:
         img = np.asarray(make(char).convert("L").image)
         charpic_char_img.append(img)
-    char_h, char_w = charpic_char_img[0].shape
+    char_h = min(img.shape[0] for img in charpic_char_img)
+    char_w = min(img.shape[1] for img in charpic_char_img)
     for i in range(charpic_char_num):
         charpic_char_img[i] = charpic_char_img[i][:char_h, :char_w]
     charpic_char_img = np.stack(charpic_char_img, axis=0)  # (char_num, h, w)

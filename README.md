@@ -7,8 +7,8 @@ Yiyu Chen 的双语个人站点，发布随笔、公开项目与合作论文。�
 - `_posts`：当前正式文章。
 - `_pages`、`_layouts`、`_includes`、`_plugins`：页面、布局、组件与本站插件。
 - `_data`：欢迎页、小玩意、关于页、项目、论文、界面文字与旧 URL 契约。
-- `assets`：当前生产样式、脚本、favicon 和文章媒体。
-- `scripts`：统一验证、项目同步、翻译检查、资源处理、构建产物检查与本地预览。
+- `assets`：生产样式入口、脚本、favicon 和文章媒体；全站自定义 SCSS 模块位于 `_sass/site`。
+- `scripts`：统一验证、项目同步、翻译检查、资源处理、构建产物检查与 GitHub 产物预览入口。
 - `tests`：源码、数据、构建结果与浏览器回归。
 - `docs/content-editing.md`：内容维护流程。
 - `docs/asset-provenance.yml`：当前文章封面的来源、许可与哈希。
@@ -72,6 +72,12 @@ python scripts/validate.py --browser -- tests/browser/site.spec.mjs
 
 Ruby 依赖由已提交的 `Gemfile.lock` 固定；依赖有意变更时才更新锁文件。精确 CI 流程见 `.github/workflows/deploy.yml`。
 
+### 人工页面审阅
+
+人工页面审阅使用固定的 GitHub `preview/review` 测试分支。GitHub Actions 会运行与正式发布相同的完整门禁并上传 `site-preview`，但不会部署 GitHub Pages；正式站点仍只允许 `master` 更新。
+
+候选推送后运行 `python scripts/github_preview.py`：脚本等待当前提交的 GitHub 门禁成功，核对源码哈希，下载已验证产物，并只在 `127.0.0.1` 启动只读服务；它不会自动打开或控制浏览器。GitHub 暂时不可用时，可由 `python scripts/validate.py --browser` 生成 `_site`，再运行 `python scripts/serve_site.py --site _site --port 9241`。平台边界、命令和失败处理见 `docs/preview-workflow.md`。
+
 ### 依赖维护
 
 Dependabot 每月检查一次 Bundler、npm 与 Python 依赖，并按生态分组提出版本更新；每类最多同时保留 3 个更新 PR。仓库同时启用 Dependabot 漏洞告警，但不自动合并或自动修改生产分支。所有依赖更新仍须通过统一发布门禁后再人工合并。
@@ -92,11 +98,11 @@ node tests/tools/audit-acg-relation-quiz-live.mjs --run-live
 python scripts/check_site.py --site _site --external-links
 ```
 
-外部站点可能限流、拒绝 `HEAD` 或临时不可用，因此该结果用于维护排查，不得替代统一发布门禁，也不应直接加入普通 CI。
+外部站点可能限流、拒绝 `HEAD` 或临时不可用，因此该结果用于维护排查，不得替代统一发布门禁，也不应直接加入普通 CI。检查器先用 `HEAD`，遇到明确拒绝 `HEAD` 的状态再回退到 `GET`，对瞬时网络／TLS 异常做有限重试，并在错误中列出引用该 URL 的构建页面，避免单个异常直接中断检查器。
 
 ## 部署
 
-Pull request 只执行验证并上传 `site-preview`。master 的 push，或在 master 上通过 `workflow_dispatch` 手动触发工作流时，build 成功后才会部署 `_site`；不要直接把生成目录提交到 master。
+Pull request 与 `preview/review` push 只执行验证并上传 `site-preview`。master 的 push，或在 master 上通过 `workflow_dispatch` 手动触发工作流时，build 成功后才会部署 `_site`；不要直接把生成目录提交到 master。
 
 ## 许可
 

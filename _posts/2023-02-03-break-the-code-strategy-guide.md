@@ -9,7 +9,7 @@ translation_key: post-202302032000
 translation_url: /posts/逻辑对决桌游攻略/
 translation_source: _posts/2023-02-03-逻辑对决桌游攻略.md
 translation_status: current
-source_hash: 5c948b86b4e404d0d46da6fb214f3901dc62d836eb8d6dfcb7ad223a50b0353d
+source_hash: b0d7fd0b9d5cec71be9c863e3356203716d0b0189a0a168174f028b94ab2e7c2
 thumbnail: /assets/posts/202302032000/cover-bgg-7205453-square.webp
 article_cover:
   alt: Number tiles, screens, and deduction sheets from Break the Code
@@ -33,11 +33,13 @@ revisions:
   note: Corrected the spelling of Elo and removed an unused Mermaid load (with Kimi assistance)
 - date: '2026-07-31'
   note: Replaced the old cover whose licensing had not been resolved with a traceably licensed photograph of the actual game components, and tightened the square crop (with Codex assistance)
+- date: '2026-08-10'
+  note: Standardized Cipher tile, code, candidate set, and answer-branch terminology; edited dense sentences and repeated conclusions (with Codex assistance)
 ---
 
 **Break the Code** is a two-to-four-player logic-deduction board game with simple rules, an easy learning curve, and considerable depth. In a two-player game, each player tries to identify the opponent's five tiles; with three or four players, everyone tries to identify the unallocated code in the center. By asking about numbers, colors, positions, and adjacency relationships, players progressively eliminate impossible arrangements.
 
-By February 2023, I had played nearly 500 games on BGA, with an Elo rating of about 350, and had at one point ranked in the world's top 100. That was the personal status I recorded at the time. I have no publicly verifiable historical snapshot, and it does not represent my current ranking. After that many games, I felt that I had broadly grasped the game's lines of deduction, offense, and defense without losing my interest in starting another one, so I wrote this guide.
+By February 2023, I had played nearly 500 games on BGA, with an Elo rating of about 350, and had at one point ranked in the world's top 100. These figures come from my notes at the time and lack a publicly verifiable historical snapshot; they only describe the experience behind this guide. I then organized the deduction, offense, and defense methods I had developed through continued play.
 
 This article does not restate the rules from the beginning. It is better suited to readers who already know the game and want to improve their win rate. New players can first consult the [official English rulebook from IELLO](https://iellogames.com/wp-content/uploads/2019/08/Break-the-Code_Rulebook_EN_Light.pdf) or the [BGA game help](https://en.doc.boardgamearena.com/Gamehelpbreakthecode).
 
@@ -46,9 +48,17 @@ This article does not restate the rules from the beginning. It is better suited 
 > The physical game contains 20 tiles. Codes are ordered from the smallest number to the largest; when both a black and a white tile of the same number appear, the black tile is placed to the left of the white tile. In the BGA version, players may guess only during their own turn. An incorrect guess in a two-player game does not end the game for that player, whereas a player who guesses incorrectly with three or more players is eliminated. After someone guesses correctly, the remaining players in the same round still complete their turns, so joint winners are possible. All worked examples in this article use these rules.
 {: .article-evidence}
 
-The discussion below continues to treat winning as the objective and proceeds through three levels: numerical deduction, question selection, and endgame offense and defense. Unless otherwise specified, claims that something is “better” or “worse” are experiential judgments based on the games described above, not proven universal theorems.
+The discussion treats winning as the objective and proceeds through numerical deduction, question selection, and endgame offense and defense. “Better” and “worse” denote judgments from the play experience above; their scope depends on the current candidate set and turn order.
 
-To keep the candidate-code literals identical to the source article, the listings below retain the Chinese color labels 白, 黑, and 绿; they mean white, black, and green respectively.
+## Terms and Deduction Objects
+
+- **Cipher tile:** one of the 20 black, white, and green physical components.
+- **Code:** a set of unknown Cipher tiles in rules order. The target is the opponent's code in a two-player game and the center code with three or four players.
+- **Private code:** the Cipher tiles behind a player's Screen.
+- **Candidate code:** one code that satisfies every current rules constraint. All candidate codes form the **candidate set**.
+- **Answer branch:** the candidate subset associated with one possible answer to a question.
+- **Physical deal:** a deal that treats the two visually identical green 5s as separate components. Probability calculations weight physical deals.
+- **Example notation:** code literals use `W`, `B`, and `G` for white, black, and green; for example, `W0` means the white 0.
 
 ## I. Numerical Deduction: The Foundation for Winning
 
@@ -56,70 +66,70 @@ Numerical deduction is the basic skill required to identify a code first. If the
 
 ### 1.1 Deduction Process
 
-The most basic process begins with your own hand and the answers on the table, repeatedly turning known information into new constraints. Points that usually deserve particular attention include:
+The most basic process begins with your own private code and the answers on the table, repeatedly turning known information into new constraints. Points that usually deserve particular attention include:
 
 - the sum of the numbers in certain positions;
 - the number or color at a particular position;
 - the number of tiles of a color and the sum of their numbers;
 - structures such as adjacent tiles of the same color, consecutive adjacent numbers, and pairs;
-- elimination relationships created by the tiles in your own hand.
+- elimination relationships created by the tiles in your own private code.
 
-The common methods are not especially mysterious: combine related information, eliminate possibilities, introduce unknowns, and perform finite enumeration. When there is too much information, writing the constraints as candidate sets is often more reliable than repeatedly trying to retain everything in your head.
+Common methods include combining related information, eliminating possibilities, introducing unknowns, and finite enumeration. When information accumulates, writing the constraints as a candidate set reduces memory load.
 
 **Example 1.1: Three-player game**
 
-- Your hand: black 0, black 4, green 5, white 8, black 9;
+- Your private code: black 0, black 4, green 5, white 8, black 9;
 - Opponent 1's answers: consecutive numbers are `(a,b)(c,d)`; the sum of white numbers is 7; the sum of all numbers is 15; there is no 6; the sum of black numbers is 8;
 - Opponent 2's answers: the difference between the largest and smallest number is 7; the sum of white numbers is 18; there are 2 black tiles; there is no 6; `a=b=2`.
 
-First combine the relationships among the answers. Opponent 1's total of 15 can already be derived from the white sum of 7 and black sum of 8; what actually keeps narrowing the candidates is the consecutive-edge pattern and “no 6.” For Opponent 2, `a=b=2` fixes the opening pair of 2s, while the largest–smallest difference of 7 fixes the last tile at 9. Enumerating after adding the color sums, the number of black tiles, and the physical tiles removed by your own hand gives Opponent 1 a unique code:
+First combine the relationships among the answers. Opponent 1's total of 15 can already be derived from the white sum of 7 and black sum of 8; what actually keeps narrowing the candidates is the consecutive-edge pattern and “no 6.” For Opponent 2, `a=b=2` fixes the opening pair of 2s, while the largest–smallest difference of 7 fixes the last tile at 9. Enumerating after adding the color sums, the number of black tiles, and the physical tiles removed by your own private code gives Opponent 1 a unique code:
 
-`白0、黑1、白3、白4、黑7`
+`W0、B1、W3、W4、B7`
 
 Opponent 2 has two possibilities:
 
-- `黑2、白2、黑3、白7、白9`;
-- `黑2、白2、白7、黑8、白9`.
+- `B2、W2、B3、W7、W9`;
+- `B2、W2、W7、B8、W9`.
 
-The two opponents' candidates cannot be selected independently, because the same physical tile cannot appear in both hands. Solving them jointly leaves only two legal complete deals. Subtracting your own tiles and both opponents' tiles from the 20 physical tiles then leaves two possibilities for the center code:
+The two opponents' candidates cannot be selected independently, because the same physical tile cannot appear in both private codes. Solving them jointly leaves only two legal complete deals. Subtracting your own tiles and both opponents' tiles from the 20 physical tiles then leaves two possibilities for the center code:
 
-- `白1、黑3、绿5、黑6、白6`;
-- `白1、绿5、黑6、白6、黑8`.
+- `W1、B3、G5、B6、W6`;
+- `W1、G5、B6、W6、B8`.
 
 Tile order requires special attention here: a code must be written in ascending numerical order, with black to the left of white when the values are equal. Candidate records should always follow this rule; otherwise, the same set of tiles may be misread as different codes.
 
-### 1.2 Extreme-Hand Assumptions
+### 1.2 Extreme Answers and Boundary Codes
 
-When an answer falls near the extreme end of its possible range, first asking “what is the most extreme legal hand?” can often shrink the candidate set quickly.
+When an answer falls near the extreme end of its possible range, first asking “what is the most extreme legal private code?” can often shrink the candidate set quickly.
 
 **Example 1.2: Two-player game**
 
-- Your hand: green 5, white 6, white 7, black 8, white 9;
+- Your private code: green 5, white 6, white 7, black 8, white 9;
 - Opponent's number sum: 35.
 
 After removing your own tiles, the largest number combination available to the opponent is strongly constrained. Complete enumeration gives only one legal code:
 
-`绿5、黑6、黑7、白8、黑9`
+`G5、B6、B7、W8、B9`
 
 **Example 1.3: Two-player game**
 
-- Your hand is the same as above;
+- Your private code is the same as above;
 - Opponent's number sum: 34.
 
 Only two legal codes remain:
 
-- `黑4、黑6、黑7、白8、黑9`;
-- `白4、黑6、黑7、白8、黑9`.
+- `B4、B6、B7、W8、B9`;
+- `W4、B6、B7、W8、B9`.
 
 I also prioritize checking several kinds of extreme answers: a very small sum among the leftmost two or three tiles, a very large sum among the rightmost two or three, a color-number sum close to the edge of its range, or a largest–smallest difference near its limit. These are useful places to look for a breakthrough, but they are not guaranteed to work in every candidate set.
 
-### 1.3 Enumeration: A Heavy Sword Needs No Edge
+### 1.3 Enumeration: Filtering Legal Candidates
 
 Many deduction techniques that look different on the surface are, underneath, ways of eliminating candidates that violate constraints. The value of mental calculation is that structure and experience let you skip most impossible cases. Once only a few candidates remain, straightforward enumeration is often the most reliable method.
 
 **Example 1.4: Three-player game**
 
-- Your hand: black 0, white 0, black 1, white 2, black 4;
+- Your private code: black 0, white 0, black 1, white 2, black 4;
 - Opponent 1: no adjacent tiles share a color; consecutive numbers are `(b,c,d)`; the sum of the rightmost three tiles is 20; the sum of the leftmost three is 14;
 - Opponent 2: consecutive numbers are `(c,d)`; the sum of white numbers is 20; the sum of the leftmost three is 17; the number of pairs is 1.
 
@@ -145,9 +155,9 @@ Subtracting the two equations gives $e=a+4$. Together with the sorted order, $a\
 
 Opponent 1's numbers are therefore `3、5、6、7、7`. Combining this with the color constraints and Opponent 2's answers, complete enumeration produces one unique visible deal:
 
-- Opponent 1: `黑3、绿5、白6、黑7、白7`;
-- Opponent 2: `白3、黑6、白8、黑9、白9`;
-- Center code: `白1、黑2、白4、绿5、黑8`.
+- Opponent 1: `B3、G5、W6、B7、W7`;
+- Opponent 2: `W3、B6、W8、B9、W9`;
+- Center code: `W1、B2、W4、G5、B8`.
 
 Examples of this kind are well suited to using algebra to find the skeleton first and then finishing with the remaining tiles and color constraints. There is no need to force every step into a single mental calculation.
 
@@ -158,38 +168,38 @@ Beyond public answers, an opponent's choices and guesses may also provide inform
 For question selection, the observations I often used at the time were:
 
 - Early in a game, most players tend to select questions with generally high information value, so the choice itself offers little evidence;
-- When the candidate questions look similar, which one an opponent selects may reflect their private hand and the current gap in their deductions;
+- When the candidate questions look similar, which one an opponent selects may reflect their private code and the current gap in their deductions;
 - An opponent who voluntarily selects a question that appears weak may sometimes be avoiding revealing their own information, but they may also simply judge it differently or have failed to calculate it fully.
 
 For guessing behavior, rule facts must be separated from assumptions about whether the opponent is rational:
 
-- In a two-player game, an incorrect guess does not eliminate the player. The physical rules require the guesser to state all five tiles, but this article makes no untested claim about precisely how much the BGA interface reveals to the opponent;
+- In a two-player game, an incorrect guess does not eliminate the player. The physical rules require the guesser to state all five tiles. This article leaves the exact information shown by the BGA interface unquantified;
 - A correct guess means the opponent's private information was sufficient to support some answer, but it becomes an additional constraint only if one assumes that the opponent did not guess randomly;
 - An opponent who does not guess may still have several candidates, or may simply not have finished calculating. The absence of a guess should not normally be given too much meaning.
 
 **Example 1.5: Two-player game**
 
-- Your hand: black 0, black 1, black 3, white 3, black 7;
+- Your private code: black 0, black 1, black 3, white 3, black 7;
 - Opponent's answers: the sum of white numbers is 20; the sum of the middle three is 12; the sum of the rightmost three is 19; the sum of the leftmost three is 5;
-- Information the opponent knows about your hand: adjacent tiles of the same color are `(a,b,c)`; the sum of black numbers is 11; the sum of all numbers is 14;
+- Information the opponent knows about your private code: adjacent tiles of the same color are `(a,b,c)`; the sum of black numbers is 11; the sum of all numbers is 14;
 - The opponent, who acts earlier in turn order, has guessed correctly.
 
-Based only on the public answers, the opponent's hand still has two candidates:
+Based only on the public answers, the opponent's private code still has two candidates:
 
-- `白0、白1、白4、白7、白8`;
-- `白1、黑2、白2、白8、白9`.
+- `W0、W1、W4、W7、W8`;
+- `W1、B2、W2、W8、W9`.
 
-Now add one behavioral assumption: the opponent guessed only after reducing their own candidates to a unique solution, rather than taking a chance among several candidates. Under that assumption, the first hand cannot determine my code uniquely, while the second can. The hand can therefore be narrowed further to:
+Now add one behavioral assumption: the opponent guessed after reducing their candidate set to one solution. The first private code cannot determine my code uniquely, while the second can. The opponent's private code can therefore be narrowed to:
 
-`白1、黑2、白2、白8、白9`
+`W1、B2、W2、W8、W9`
 
-This is not an unconditional logical conclusion. It is an inference from “rules information + a model of opponent behavior.” The stronger the opponent, and the less often they make probabilistic guesses, the more credible this information usually becomes.
+This conclusion depends on rules information and a model of opponent behavior. It becomes more credible when the opponent rarely makes probabilistic guesses.
 
 ## II. Question Selection, Offense, and Defense
 
 My practical impression is that, with reasonable question selection and smooth basic deduction, a typical game requires roughly three to five questions to determine the code. Three high-value answers are sometimes sufficient; weaker answers may require more than five; and an extreme answer can occasionally reduce the candidates directly to one, as in Example 1.2.
 
-This range is only an observation from my games, not a number of rounds guaranteed by the rules.
+This range comes from my games; the rules do not guarantee a specific question count.
 
 ### 2.1 General Value of Questions
 
@@ -199,7 +209,7 @@ I usually begin by dividing questions roughly into color questions and number qu
 
 If you ask in succession for the total number sum and the sums of the leftmost and rightmost three tiles, the numbers may become clear while the colors remain ambiguous. Conversely, asking only about adjacent tiles of the same color, the number of white tiles, and the number of black tiles may reveal the color structure without determining the numbers.
 
-In my experience, numbers usually require more constraints, while colors can sometimes be recovered from your own hand and the remaining tiles. I therefore often allocated only one direct color question among three or four questions, although the exact proportion should depend on the hand and candidate set.
+In my experience, numbers usually require more constraints, while colors can sometimes be recovered from your own private code and the remaining tiles. I therefore often allocated only one direct color question among three or four questions, although the exact proportion should depend on the private code and candidate set.
 
 Among color-related questions:
 
@@ -227,7 +237,7 @@ $$
 
 Information entropy can also measure the answer distribution. Both are more reliable than merely counting answer categories, but they remain one-step metrics. They do not automatically incorporate color recovery, later questions, guessing order, or information leaked to opponents.
 
-To provide a common baseline for this kind of judgment, I enumerated every five-tile combination from the complete set. The 20 physical tiles form 15,504 five-tile combinations. Treating the two visually identical green 5s as one tile face gives 12,444 distinct visible codes. Before adding your own hand or any historical answers, the total number sum has 38 answer categories; the sums of the leftmost, middle, and rightmost three have 23, 24, and 23 respectively; the sums of black and white numbers each have 35; consecutive adjacency and same-color adjacency each have at most 16 edge patterns; the largest–smallest difference has 8 categories; a color count or parity count has 6; and the position of a fixed number has 3–10 depending on the number. More categories do not necessarily make a question better in actual play, because the groups are not equal in size.
+To provide a common baseline for this kind of judgment, I enumerated every five-tile combination from the complete set. The 20 physical tiles form 15,504 five-tile combinations. Treating the two visually identical green 5s as one tile face gives 12,444 distinct visible codes. Before adding your own private code or any historical answers, the total number sum has 38 answer categories; the sums of the leftmost, middle, and rightmost three have 23, 24, and 23 respectively; the sums of black and white numbers each have 35; consecutive adjacency and same-color adjacency each have at most 16 edge patterns; the largest–smallest difference has 8 categories; a color count or parity count has 6; and the position of a fixed number has 3–10 depending on the number. More categories do not necessarily make a question better in actual play, because the groups are not equal in size.
 
 From this perspective, the common questions can be understood approximately as follows:
 
@@ -242,7 +252,7 @@ From this perspective, the common questions can be understood approximately as f
 
 #### 2.1.3 Personal Experience Rating as of 2023
 
-The table below preserves the question-selection intuition I had developed after roughly 500 games. It is not an objective, universal ranking by information value: your own hand, answers already received, ability to recover colors, and the offensive or defensive relationship all change the practical value of a question.
+The table below preserves the question-selection intuition I had developed after roughly 500 games. Your private code, existing answers, ability to recover colors, and the offensive or defensive relationship all change question value, so the table only provides an initial inspection order.
 
 | Personal rating | Questions |
 | :--: | :-- |
@@ -253,33 +263,33 @@ The table below preserves the question-selection intuition I had developed after
 | T3 | Number position; number of white tiles; number of black tiles |
 | T4 | Number of odd tiles; number of even tiles; number of pairs; middle tile is 5 or more versus 4 or less |
 
-In the complete-set enumeration, the answer entropy for the total number sum is approximately 4.56 bits, while the black- or white-number sum is approximately 4.50 bits. This supports the claim that sum questions generally partition candidates finely, but does not by itself prove the practical order in the table. Once the game reaches an endgame, inspect the current candidate set directly instead of mechanically selecting from T0 downward.
+In the complete-set enumeration, answer entropy is about 4.56 bits—the unit used here for information entropy—for the total number sum and about 4.50 bits for either color-number sum. This supports the observation that sum questions usually create relatively fine partitions. The practical order still depends on the current candidate set; in an endgame, compare each question's partition directly.
 
 ### 2.2 Selecting a Question
 
-**High general information value does not guarantee a large contribution in the current position. Ultimately, the better question is the one that improves your expected game outcome.**
+**A question's value is the improvement it makes to the current expected result.** Global information value is an initial reference while the candidate set remains broad.
 
-In a completely rational simplified model, the results of a decision can be written as $p_\text{胜}$, $p_\text{平}$, and $p_\text{负}$—respectively the probabilities of a win, tie, and loss—whose sum is 1. Near the endgame, when candidate sets are smaller, enumerating whether each answer lets you identify the code is often more feasible than applying a global rating.
+In a completely rational simplified model, write the probabilities of a win, tie, and loss as $p_{\mathrm{win}}$, $p_{\mathrm{tie}}$, and $p_{\mathrm{loss}}$; their sum is 1. Near the endgame, when candidate sets are smaller, enumerating whether each answer lets you identify the code is often more feasible than applying a global rating.
 
-Probability calculations contain another easily missed detail: after shuffling, equal probability belongs to deals of physical tiles, not necessarily to the “visible codes” obtained after merging color and number. The two green 5s look identical but are distinct physical tiles. If both may remain in the unknown region, the same visible code can carry different weight.
+Probability calculations weight physical deals. The two green 5s look identical but remain separate components; when both may lie in the unknown region, one visible code can correspond to several physical deals and therefore carry more weight.
 
 **Example 2.1: Two-player game**
 
-- Your hand: green 5, black 8, white 8, black 9, white 9;
+- Your private code: green 5, black 8, white 8, black 9, white 9;
 - Information about the opponent: the total number sum is 10; the sum of white numbers is 5.
 
 Because you have already taken one green 5, only the other remains among the physical tiles. Each visible code below corresponds to exactly one physical deal. There are 10 opponent codes satisfying the conditions, and they happen to be equally weighted under the physical-deal prior:
 
-1. `黑0、黑1、白1、黑4、白4`
-2. `黑0、黑1、白2、白3、黑4`
-3. `黑0、黑2、白2、黑3、白3`
-4. `黑0、白0、白1、白4、绿5`
-5. `黑0、白0、白2、白3、绿5`
-6. `黑0、白1、黑2、黑3、白4`
-7. `白0、黑1、白1、黑4、白4`
-8. `白0、黑1、白2、白3、黑4`
-9. `白0、黑2、白2、黑3、白3`
-10. `白0、白1、黑2、黑3、白4`
+1. `B0、B1、W1、B4、W4`
+2. `B0、B1、W2、W3、B4`
+3. `B0、B2、W2、B3、W3`
+4. `B0、W0、W1、W4、G5`
+5. `B0、W0、W2、W3、G5`
+6. `B0、W1、B2、B3、W4`
+7. `W0、B1、W1、B4、W4`
+8. `W0、B1、W2、W3、B4`
+9. `W0、B2、W2、B3、W3`
+10. `W0、W1、B2、B3、W4`
 
 Compare three questions:
 
@@ -291,13 +301,13 @@ In this particular position, asking for the position of 1 is therefore better th
 
 ### 2.3 Offense and Defense in Question Selection
 
-Selecting only the question that is easiest for your own deduction is not necessarily the best strategy.
+Question selection should compare your return with the opponents' return.
 
-As an extreme example, a color-number-sum question may look very attractive to you, but leaving “sum of all numbers” to the opponent might let them immediately recognize that your hand is close to `7、8、8、9、9`. Proactively taking the total-sum question may then be more important than maximizing your own one-step information gain.
+As an extreme example, a color-number-sum question may look very attractive to you, but leaving “sum of all numbers” to the opponent might let them immediately recognize that your private code is close to `7、8、8、9、9`. Proactively taking the total-sum question may then be more important than maximizing your own one-step information gain.
 
 It is difficult to quantify every question in an actual game. At the time, I usually looked two or three steps ahead: what I wanted to learn, what the opponent most needed, and how much the current question would reveal. I then decided whether to attack or defend.
 
-This is especially important in a four-player game. Under the BGA rules, the player asking a question must answer it as well. Everyone hears the same set of public answers, but each player has a different private hand and candidate set, so the marginal information gained is not the same. The ideal question is not the one with the abstractly largest “total information,” but the one whose net return is more favorable to you relative to the target opponent. Asking for the position of 5 when you do not hold a 5 may indeed reduce your own exposure, for example, but whether it is worth doing still depends on the other players' candidate sets.
+This comparison matters especially in a four-player game. Under the BGA rules, the player asking a question must answer it as well. Everyone hears the same public answers, while different private codes and candidate sets produce different marginal information. Prefer the question with the most favorable net return relative to the target opponent. Asking for the position of 5 when you do not hold a 5 may reduce your exposure, for example; its final value still depends on the other candidate sets.
 
 ## III. Global Offense and Defense
 
@@ -321,23 +331,23 @@ An incorrect guess does not eliminate a player in a two-player game, so immediat
 
 The physical rules require the guesser to state the complete arrangement of colors and numbers. This article makes no unsupported inference about the precise BGA interface display for an incorrect guess.
 
-In a three- or four-player game, an incorrect guess immediately eliminates the player, so those acting later are often more inclined to ask a question and avoid directly losing their eligibility in the game. “Ask another question” does not mean “at least tie,” however: other players may already have enough information, and the question may happen to complete their answer.
+In a three- or four-player game, an incorrect guess immediately eliminates the player, so those acting later are often more inclined to ask a question. That question may still help a player who is already close to finishing the code.
 
 ### 3.2 First- and Later-Player Strategy
 
-My personal feeling is that acting later is often more comfortable. With the same number of questions answered, the later player can also observe whether the first player chooses to guess and whether that guess is correct, then adjust their own risk preference. Such behavioral information has value, but it is not a fixed win-rate advantage conferred by the rules.
+My personal feeling is that acting later is often more comfortable. With the same number of questions answered, the later player can observe whether the first player guesses and whether the guess is correct, then adjust risk. The benefit comes from behavioral information and varies by position.
 
 A later player also has a slightly wicked option: use the pace of their actions to make the first player think they already know a great deal, pressuring that player into an early probabilistic guess.
 
-The first player's most direct initiative is to take, from the opening, questions that better fit their own hand or that they are especially unwilling to leave to the opponent. The first player needs to compare both sides' information progress more actively and decide whether to accept guessing risk early when the later player appears close to completing the deduction.
+The first player's most direct initiative is to take, from the opening, questions that better fit their own private code or that they are especially unwilling to leave to the opponent. The first player needs to compare both sides' information progress more actively and decide whether to accept guessing risk early when the later player appears close to completing the deduction.
 
 ## IV. Limits of Psychological Tactics
 
 Which questions an opponent selects, when they guess, and how quickly they act may all reveal information they possess. The discussions in Example 1.5, endgame choices, and first- versus later-player strategy already cover the most common uses of these clues: first construct the candidate set under the rules, then use behavioral judgment to adjust candidate priority or the timing of your own guess.
 
-These clues depend on assumptions about an opponent's level, habits, and motives, so their evidential strength is lower than facts visible on the tiles. When candidate differences are clear, prefer verifiable constraints. Psychological judgment is suitable as secondary evidence only when multiple candidates explain all public information. An opponent may also create deliberate misdirection, so behavioral clues are better used to decide “which candidate to check first” or “when to take a risk” than to eliminate legal answers from nothing.
+These clues depend on assumptions about an opponent's level, habits, and motives, so their evidential strength is lower than facts visible on the tiles. When candidate differences are clear, prefer verifiable constraints. Psychological judgment is suitable as secondary evidence only when multiple candidates explain all public information. An opponent may also create deliberate misdirection. Behavioral clues therefore guide which candidate to check first and when to take a risk; public constraints still determine which answers remain legal.
 
-The whole article can be compressed into one sentence: maintain an accurate candidate set first, then choose the question that improves the game outcome, and finally use turn order and opponent behavior as corrections. Rules and enumeration define the boundary; personal experience helps rank the options. The two should not be conflated.
+The whole article can be compressed into one sentence: maintain an accurate candidate set first, then choose the question that improves the game outcome, and finally use turn order and opponent behavior as corrections. Rules and enumeration determine the legal candidates; personal experience only ranks them.
 
 ## Rules and Further Reading
 

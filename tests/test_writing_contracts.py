@@ -3,6 +3,8 @@ from pathlib import Path
 
 import yaml
 
+from scripts.translation_guard import post_structure_signature
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -47,6 +49,28 @@ def markdown_headings(path):
 def markdown_image_alts(path):
     body = path.read_text(encoding="utf-8").split("---", 2)[2]
     return re.findall(r"!\[([^\]]*)\]\([^\n)]+\)", body)
+
+
+def test_post_resource_flags_match_features_used_in_the_body():
+    for path in sorted((ROOT / "_posts").glob("*.md")):
+        data = frontmatter(path)
+        body = path.read_text(encoding="utf-8").split("---", 2)[2]
+        signature = post_structure_signature(body)
+        has_math = bool(signature["math"])
+        has_mermaid = any(
+            info.split(maxsplit=1)[0].casefold() == "mermaid"
+            for info, _ in signature["code_fences"]
+            if info.strip()
+        )
+
+        assert bool(data.get("math")) is has_math, (
+            f"{path.name} math flag does not match its body: "
+            f"flag={data.get('math')!r}, formulas={len(signature['math'])}"
+        )
+        assert bool(data.get("mermaid")) is has_mermaid, (
+            f"{path.name} mermaid flag does not match its fenced diagrams: "
+            f"flag={data.get('mermaid')!r}, diagram={has_mermaid}"
+        )
 
 
 def test_every_post_has_an_explicit_source_language():
@@ -344,6 +368,13 @@ def test_installation_post_uses_structured_revisions_and_optional_evidence_notes
             "date": "2026-07-30",
             "note": "校正刷新率收益与烤机结温两处表述（Kimi 协助）",
         },
+        {
+            "date": "2026-08-10",
+            "note": (
+                "统一台式机、显示器、显卡和固态硬盘术语，移除无法从现有记录核实的"
+                "旧笔记本显卡型号后缀，并补充压力测试术语"
+            ),
+        },
     ]
     assert "2022.11.11：初稿" not in body
     assert "2026.07.29：ChatGPT 修订" not in body
@@ -383,7 +414,7 @@ def test_every_post_now_has_a_local_thumbnail():
 def test_every_post_uses_one_explicit_cover_component_without_body_duplication():
     posts = sorted((ROOT / "_posts").glob("*.md"))
 
-    assert len(posts) == 24
+    assert len(posts) == 34
     for path in posts:
         data = frontmatter(path)
         cover = data.get("article_cover")
@@ -402,13 +433,13 @@ def assert_age_of_innovation_reviewed_conclusions(body):
     reviewed_conclusions = (
         r"y \approx 0.19",
         "1.65+0.81",
-        "T1 的 1c ≈ T6 的 2.72 分",
+        "T1 的 1c 约等于 T6 的 2.72 分",
         "59.47c + 29.18 分",
-        "1b1 魔产 ≥ 1o1k 产 ≥ 2c3 分产",
-        "`1o = 2 分`",
-        "`3c = 2 分`",
+        "1b + 1 魔力收入 ≥ 1o + 1k 收入 ≥ 2c + 3 分收入",
+        "1o = 2 分",
+        "3c = 2 分",
         "5 金币 = 1 分",
-        "这不是官方的终局兑换规则",
+        "该换算只表示本文模型中的局中边际价值",
     )
 
     for conclusion in reviewed_conclusions:

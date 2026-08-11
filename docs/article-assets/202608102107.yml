@@ -1,0 +1,82 @@
+version: 1
+article_uid: "202608102107"
+title: "Brass: Pittsburgh step-by-step rules guide"
+publisher: "Roxley Games"
+rights_basis:
+  media_assets: >-
+    The cover comes from Roxley's official product imagery. Roxley's Media
+    Assets page explicitly offers logos and game assets to retailers and
+    content creators. The image is used only as the attributed cover of an
+    instructional article and is not redistributed as an asset pack.
+  rulebook_excerpts: >-
+    Rulebook images are small, necessary excerpts used beside original
+    commentary and instruction. Each has a page citation; no complete page,
+    rulebook, deck, or printable component set is republished.
+source_urls:
+  product_page: "https://roxley.com/products/brass-pittsburgh"
+  media_assets: "https://roxley.com/pages/media-assets"
+  rulebook: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834"
+  rulebook_notice: "https://gamefound.com/en/projects/roxley/brass-pittsburgh/updates/28"
+assets:
+  - asset: "assets/posts/202608102107/cover-brass-pittsburgh-official-square.webp"
+    source: "Official product image: Brass_Pittsburgh_Website_ProductThumbnail-current.png"
+    source_url: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass_Pittsburgh_Website_ProductThumbnail-current.png?v=1755102739"
+    transform: "Converted the official 1000 × 1000 PNG unchanged to WebP quality 82 with metadata removed."
+    dimensions: [1000, 1000]
+    sha256: "654cdc0a95a26ed730dd7f608a06cdf180d1e46b0666bc927925a657ac7dd368"
+
+  - asset: "assets/posts/202608102107/board-setup.webp"
+    source: "Current public English rulebook, page 4"
+    source_url: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834"
+    transform: "Rendered at 220 dpi; cropped [730, 70, 2450, 2350] from the 2494 × 2495 page image; resized to 1132 × 1500 with Lanczos; WebP quality 84."
+    dimensions: [1132, 1500]
+    sha256: "b4b321afb3f85484624222ccc354d90d9c09d6721ebc1bcb5211d6e50d2f8871"
+
+  - asset: "assets/posts/202608102107/player-mat.webp"
+    source: "Current public English rulebook, page 5"
+    source_url: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834"
+    transform: "Rendered at 220 dpi; cropped [1180, 1080, 2410, 2180] from the 2495 × 2495 page image; preserved at 1230 × 1100; WebP quality 84."
+    dimensions: [1230, 1100]
+    sha256: "413f7d72b9d1c568a401a3b276ca92ec1dc7907abc8053daee3ed7e40cb34037"
+
+  - asset: "assets/posts/202608102107/turn-flow.webp"
+    source: "Current public English rulebook, page 6"
+    source_url: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834"
+    transform: "Rendered at 220 dpi; cropped [55, 310, 1840, 2200] from the 2494 × 2495 page image; resized to 1417 × 1500 with Lanczos; WebP quality 84."
+    dimensions: [1417, 1500]
+    sha256: "cbd2d495274f2b1201b9142a631f2edf977f26cdc148760772395f0538ee44fb"
+
+  - asset: "assets/posts/202608102107/resource-transport.webp"
+    source: "Current public English rulebook, page 7"
+    source_url: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834"
+    transform: "Rendered at 220 dpi; cropped [1220, 310, 2430, 2090] from the 2495 × 2495 page image; resized to 1020 × 1500 with Lanczos; WebP quality 84."
+    dimensions: [1020, 1500]
+    sha256: "620208f97a04c3db452b774bb362624a97013ec0f589a62e1565eb58e583b05f"
+
+  - asset: "assets/posts/202608102107/network-action.webp"
+    source: "Current public English rulebook, page 9"
+    source_url: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834"
+    transform: "Rendered at 220 dpi; cropped [50, 330, 1230, 2190] from the 2495 × 2495 page image; resized to 952 × 1500 with Lanczos; WebP quality 84."
+    dimensions: [952, 1500]
+    sha256: "5a5cf944a70818cf5d8e1979d67b240c41439c53b242c77187451df275fa0466"
+
+  - asset: "assets/posts/202608102107/sell-action.webp"
+    source: "Current public English rulebook, page 9"
+    source_url: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834"
+    transform: "Rendered at 220 dpi; cropped [1260, 330, 2430, 2190] from the 2495 × 2495 page image; resized to 944 × 1500 with Lanczos; WebP quality 84."
+    dimensions: [944, 1500]
+    sha256: "58759c73340be4261e5de5c791703de024babaa98654908dc12024d317a9d212"
+
+  - asset: "assets/posts/202608102107/special-industries.webp"
+    source: "Current public English rulebook, page 10"
+    source_url: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834"
+    transform: "Rendered at 220 dpi; cropped [1100, 330, 2430, 2180] from the 2494 × 2495 page image; resized to 1078 × 1500 with Lanczos; WebP quality 84."
+    dimensions: [1078, 1500]
+    sha256: "9b5d8ff3b6be9771e65aa3e86319407de9e866c0c18aedadbc2ddc7326eaa278"
+
+  - asset: "assets/posts/202608102107/era-scoring-example.webp"
+    source: "Current public English rulebook, page 11"
+    source_url: "https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834"
+    transform: "Rendered at 220 dpi; cropped [50, 320, 1300, 2200] from the 2495 × 2495 page image; resized to 997 × 1500 with Lanczos; WebP quality 84."
+    dimensions: [997, 1500]
+    sha256: "5203d64d7186b158a47c523079f2e3e94c67d6f0546441d0bde8742225368687"

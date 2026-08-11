@@ -9,7 +9,7 @@ translation_key: post-202510112233
 translation_url: /posts/大创造时代-资源-分值量化计算思路/
 translation_source: _posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md
 translation_status: current
-source_hash: 310082dcd71c2d8e33c685f728b6349568bd98628e19ba797feec8ad185fb81d
+source_hash: 9c48043b3f83d1799f753438cf20b1e88268cdeb5295a349c1df0d9e7adc4c3b
 aliases: []
 categories:
 - Board Games
@@ -23,23 +23,27 @@ article_cover:
   alt: The end of a five-player game of Age of Innovation
   caption: 'Cover image: [Five player game.](https://boardgamegeek.com/image/7712310/age-of-innovation), image by BoardGameGeek user Hipopotam, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/); square crop by this site, with the derivative cover distributed under the same license.'
 excerpt: This article attempts to convert the different resources in Age of Innovation onto a common scale and uses a cross-round iterative model to compare their practical value during a game.
-description: A cross-round valuation of coins, tools, books, scholars, science, navigation, and buildings, placing immediate exchanges and future production on one scale for medium- and long-term planning.
+description: A cross-round valuation of Coins, Tools, Books, Scholars, Discipline advancement, Shipping, and buildings, placing exchanges and future income on one scale for medium- and long-term planning.
 revisions:
 - date: '2025-10-11'
   note: Initial draft
 - date: '2026-07-30'
   note: Reorganized the original text and added the official game positioning and version note while preserving the original valuation and calculation conventions (revised with ChatGPT; notation corrected with Kimi)
+- date: '2026-08-10'
+  note: Standardized official terms for Discipline advancement, Competency tiles, and Round Score tiles; removed repetitive judgments and clarified the model's scope
+- date: '2026-08-11'
+  note: Aligned all 14 conversion code blocks with the prose column and applied the compact width consistently
 ---
 
 ## Preface
 
 *Age of Innovation: A Terra Mystica Game* is a standalone game set in the Terra Mystica world. In terms of mechanisms familiar to players, it can also be understood as a substantial reworking of Terra Mystica. Its development flow has much in common with Gaia Project, so the approach to quantifying resources can be carried across the two games.
 
-Resource values keep iterating from round to round while also being affected by staged rewards, action windows, and player interaction. They are difficult to describe precisely with a single formula. This article attempts to convert different resources onto an approximate common scale and then compare their practical value during a game. Unless a statement is explicitly identified as an official rule, terms such as “profitable,” “unprofitable,” and the relative rankings below refer to the results under this article's valuation framework, not fixed prices supplied by the game.
+Resources can produce further returns across rounds, while scoring windows, action order, and player interaction change those returns. This article converts different resources to an approximate common scale and compares their value within a game. Official rules are identified explicitly; all other return judgments and rankings come from this model.
 
 > **Source note | Positioning of the game**
 >
-> The [official Feuerland Spiele page](https://www.feuerland-spiele.de/spiele/age-of-innovation/) defines it as a standalone game in the Terra Mystica world. The [official Capstone Games rulebook](https://capstone-games.com/cdn/shop/files/AoI_rules_EN_V1-1_reduced.pdf?v=10451577216657094607) lists the buildings, resources, ability tiles, and Book actions discussed in this article.
+> The [official Feuerland Spiele page](https://www.feuerland-spiele.de/spiele/age-of-innovation/) defines it as a standalone game in the Terra Mystica world. The [official Capstone Games rulebook](https://capstone-games.com/cdn/shop/files/AoI_rules_EN_V1-1_reduced.pdf?v=10451577216657094607) lists the buildings, resources, Competency tiles, and Book actions discussed in this article.
 {: .article-evidence}
 
 ### Notation
@@ -47,16 +51,16 @@ Resource values keep iterating from round to round while also being affected by 
 This article retains the older abbreviations I used for Terra Mystica and Gaia Project. In this game, they correspond to:
 
 - Buildings: `M` = Workshop, `TC` = Guild, `RL` = School, `AC` = University, and `SH` = Palace.
-- Resources: `C` = Coins, `O` = Tools, `B` = Books, `P` = Scholars (the original draft also called them priests), and `K` = spaces on the Science display (called the cult track in the original draft).
+- Resource formulas: `c` = Coins, `o` = Tools, `b` = Books, `p` = Scholars, and `k` = one level of advancement in any Discipline on the Science display. The original draft called `p` priests and `k` the cult track; the rest of this article consistently uses Scholars and Discipline advancement.
 - Rounds: `T1` means round 1, `T6` means round 6, and so on.
 
-Because literal formulas must stay identical across the bilingual pair, their Chinese labels are retained: 资源 means resources, 分 means points, 魔 means Power, 产 means income, 铲 means Spades, 航 means Shipping, and 桥 means Bridges. Each formula's surrounding English text also states its interpretation.
+The code blocks retain compact bilingual notation. The labels 资源, 分, 魔力, 铲, 航, and 桥 mean resources, points, Power, Spades, Shipping, and Bridges.
 
 ## Converting Resources
 
-### Coins and Tools: C & O
+### Coins and Tools: c & o
 
-Using the exchange ratio of Power actions, this article counts each Coin as 1 point of general-purpose resources and each Tool as 3 points:
+Using the exchange ratio of Power actions establishes these baseline units:
 
 ```text
 1c = 1 点通用资源
@@ -64,77 +68,78 @@ Using the exchange ratio of Power actions, this article counts each Coin as 1 po
 ```
 {: .article-prose .article-conversion}
 
-This is only the baseline unit used for the comparisons that follow.
+These are only the baseline units used for the comparisons that follow.
 
-### Science Display: K
+<span id="science-display-k"></span>
 
-Returns from the Science display are relatively direct: 12k can bring 8 Power and 8 points; reaching 9k can produce 3c or 3 points; and each space on the display also brings a one-time return of roughly 1–1.5 resources in the corresponding round.
+### Discipline Advancement: k
 
-If reaching 9k in T4 and taking 3 points is used as the reference, the approximation can be written as:
+The Science display contains four Discipline tracks. This article uses `1k` for advancing one level in any Discipline. A total of 12k can bring 8 Power and 8 points; reaching 9k can produce 3c or 3 points; and each advance can also bring a one-time return of roughly 1–1.5 resources from its destination.
+
+Using a T4 arrival at 9k followed by the 3-point reward gives:
 
 ```text
 1k = 1.5 资源 + 1.4 分
 ```
+{: .article-prose .article-conversion}
 
-In English, the retained formula values 1k as 1.5 resources plus 1.4 points.
-
-### Books: B
+### Books: b
 
 Books derive their value mainly from two uses.
 
 #### Innovations
 
-Innovations—the original draft called them “advanced tiles”—are the main outlet for Books. Taking an Innovation worth roughly 18 points for 5, 6, or 7 Books gives the coarse estimate:
+Innovations—the original draft called them “advanced tiles”—are the main outlet for Books. Taking an Innovation worth roughly 18 points for 5, 6, or 7 Books gives:
 
 ```text
 1b = 3.6 分
 ```
-
-That is, one Book is approximated as 3.6 points.
+{: .article-prose .article-conversion}
 
 #### Book Actions
 
 Surplus Books can be spent on Book actions. The official rules provide the following actions; any Coins or points to the right of the equals signs are valuations from this article's model:
 
-- `1b = 5 魔 = 2.5c`
-- `1b = 2k = 3c + 2.8 分`
-- `2b = 6c`, so `1b = 3c`
-- `2b = 3c2o = 9c`, so `1b = 4.5c`
-- `2b = 2/4/6/8 分`, so `1b = 1–4 分`
-- `3b = 3 铲`; because the Spades are normally used early, this can be valued as `1b = 3o = 9c`
+- 1b = 5 Power = 2.5c;
+- 1b = 2k = 3c + 2.8 points;
+- 2b = 6c, so 1b = 3c;
+- 2b = 3c + 2o = 9c, so 1b = 4.5c;
+- 2b = 2/4/6/8 points, so 1b = 1–4 points;
+- 3b = 3 Spades; because the Spades are normally used early, this can be valued as 1b = 3o = 9c.
 
 The actions most likely to produce a positive return are:
 
-1. `3b = 3 铲`, so `1b = 9c`
-2. `1b = 2k`, so `1b = 3c + 2.8 分`
-3. `2b = 升级 TC`, so `1b = 4.5c`
+1. 3b = 3 Spades, so 1b = 9c;
+2. 1b = 2k, so 1b = 3c + 2.8 points;
+3. 2b = upgrade a TC, so 1b = 4.5c.
 
-Considering all these uses together, each Book can be valued at 5 points of general-purpose resources. This does not conflict with the valuations of particular Book actions above: `1b = 5 魔` is only the fallback exchange. When free Spades or progress on the Science display can be used fully, a Book's practical return can be much higher. In particular, `3b = 3 铲` has very high practical value when all the free Spades can be used.
+Considering all these uses, each Book can be valued at 5 points of general-purpose resources. Exchanging 1b for 5 Power provides the fallback. A Book returns more when its free Spades or Discipline advancement can be used fully; exchanging 3b for 3 Spades reaches its highest value when all three Spades can be used promptly.
 
-Late in the game, once the conditions for converting 6b into points are in place, breaking those 6b apart for ordinary Book actions is almost always a loss under this article's framework.
+Late in the game, once the conditions for scoring 6b are in place, splitting those 6b across ordinary Book actions usually falls below the model’s scoring baseline.
 
 > **Source note | Book actions**
 >
-> Page 23 of the official English rulebook lists six Book actions: exchange 1 Book for 5 Power; advance 2 spaces on the Science display for 1 Book; take 6 Coins for 2 Books; upgrade a Workshop to a Guild for free for 2 Books; score 2 points per Guild for 2 Books; and perform Terraform and Build with 3 free Spades for 3 Books.
+> Page 23 of the official English rulebook lists six Book actions: exchange 1 Book for 5 Power; advance 2 levels on the Science display for 1 Book; take 6 Coins for 2 Books; upgrade a Workshop to a Guild for free for 2 Books; score 2 points per Guild for 2 Books; and perform Terraform and Build with 3 free Spades for 3 Books.
 {: .article-evidence}
 
-### Scholars: P
+### Scholars: p
 
 Combining Power conversion with the types of buildings that produce them, each Scholar is valued roughly at 5 points of general-purpose resources.
 
 Scholars also have two broad uses.
 
-#### Science Display
+<span id="science-display"></span>
 
-Sending a Scholar can advance `3/2/1k`, corresponding to:
+#### Discipline Advancement
+
+Sending a Scholar can advance 3/2/1k. The three spaces are valued as:
 
 ```text
 p = 4.5/3/1.5 资源 + 4.2/2.8/1.4 分
 ```
+{: .article-prose .article-conversion}
 
-The three alternatives respectively provide 4.5, 3, or 1.5 resources plus 4.2, 2.8, or 1.4 points.
-
-Early in the game, Scholars can therefore be paired with round rewards to contest the 3k space, while the 2k space is better left for later. When the advance gained by sacrificing a Scholar is used as the valuation basis, each k can alternatively be counted as 2 resources.
+Early in the game, Scholars can pair with Round Score tiles to contest 3k; 2k is more suitable later. When spending a Scholar for Discipline advancement provides the valuation basis, each k can alternatively count as 2 resources.
 
 #### Upgrading Shipping and Terraforming
 
@@ -146,28 +151,28 @@ Shipping and Terraforming primarily act as functional hard thresholds that must 
 
 This article selects one concrete starting setup as its baseline:
 
-- Faction: using the Goblins, `12c + 1o + 2k = 19`
-- Terrain: using Wasteland, `15c + 4o + 2b = 37`
-- General starting resources: `2m + 2o + 4 魔力`, equivalent under this framework to `2×5 + 2×3 + 4×0.5 = 18` (each of the two starting Workshops is valued at 5 resources, and each Power at 0.5)
-- Per-round income: `1o + 特权片 6c = 9`
+- Faction: using the Goblins, 12c + 1o + 2k = 19;
+- Terrain: using Wasteland, 15c + 4o + 2b = 37;
+- General starting resources: 2M + 2o + 4 Power, equivalent under this framework to 2×5 + 2×3 + 4×0.5 = 18 (each starting Workshop is valued at 5 resources, and each Power at 0.5);
+- Per-round income: 1o plus 6c from a Competency tile, for a total of 9.
 
 The first three static components total 74. After including the 9 resources produced at the start of T1, the model uses 83 resources as the starting point of the first round's Action phase, followed by another 9 resources of income in each subsequent round.
 
 ### Endgame Resources
 
-The following endgame position serves as the valuation target:
+The valuation target is this endgame position:
 
 ```text
-9m 2tc 3rl sh ac 3航 3铲 4p 3桥 24k
+9M 2TC 3RL 1SH 1AC 3航 3铲 4p 3桥 24k
 ```
+{: .article-prose .article-conversion}
 
-In this retained notation, 航 means Shipping upgrades, 铲 means Spades, and 桥 means Bridges.
-
-Expanded on the common scale used here:
+On the common scale, it expands to:
 
 ```text
 9×5  2×14  3×28  32  23  3×9  3×13  4×5  3×3  24×2
 ```
+{: .article-prose .article-conversion}
 
 The total is 355 resources.
 
@@ -197,7 +202,7 @@ $$
 y \approx 0.19
 $$
 
-Each resource point therefore iterates approximately into `1.27 资源 + 0.19 分` per round. One resource in T1 can become 3.3 resources and 1.62 points by T6, making the cross-round value of early resources quite substantial.
+Each resource point therefore iterates into about 1.27 resources plus 0.19 points per round. One resource in T1 can become 3.3 resources and 1.62 points by T6, making the cross-round value of early resources quite substantial.
 
 | Round | T1 | T2 | T3 | T4 | T5 | T6 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -213,19 +218,18 @@ Under the same model, the endgame resources and net points from charging Power c
 | Charge 3 | 4.95+0.43 | 3.90-0.32 | **3.06-0.89** | **2.42-1.35** |  |  |
 | Charge 4 | 6.60+0.24 | 5.20-0.76 | **4.08-1.52** |  |  |  |
 
-The table uses the endgame fallback conversion of 5 general-purpose resources for 1 point. The official rule “5 Coins = 1 point” is likewise only a poor endgame conversion and does not represent a resource's practical value during the game. As long as buildings, ability tiles, Book actions, or round-scoring windows remain available, resources can usually achieve a higher conversion rate.
+The table uses an endgame fallback conversion of 5 general-purpose resources for 1 point. The official rules allow “5 Coins = 1 point” at game end. While buildings, Competency tiles, Book actions, or Round Score windows remain, resources usually have a higher conversion rate.
 
-To estimate the practical value of converting resources into points during the game, this article uses a T6 opportunity that can still convert `2o3c` into 3 points. With `1o = 3c`, this is equivalent to `3c = 1 分`, which gives:
+To estimate the practical value of converting resources into points during the game, this article uses a T6 opportunity that converts 2o + 3c into 3 points. With 1o = 3c, this is equivalent to 3c = 1 point. The result is:
 
 ```text
-T1 的 1c ≈ T6 的 2.72 分
+T1 的 1c 约等于 T6 的 2.72 分
 ```
+{: .article-prose .article-conversion}
 
-In English: one Coin in T1 is approximately equivalent to 2.72 points in T6.
+This conversion represents only the model’s marginal value for in-game comparisons.
 
-This is not an official endgame conversion rule. It is the marginal value used by this article to compare opportunities during the game.
-
-The resulting general rule for charging Power is to upgrade high-value buildings near other players whenever possible before T3, then take smaller Power charges after T3. This is one way to improve resource returns.
+The resulting rule is to upgrade high-value buildings near other players in T1–T2, then accept only small Power charges with a clear use in T4–T6. T3 is a transition round; judge it from the charge size, its immediate use, and the table’s net point value.
 
 ## Comparing Returns from Buildings
 
@@ -240,7 +244,7 @@ With a common resource scale and cross-round conversion relationship, the resour
 | Upgrade conversion rate | 0.60 | **-0.06** | 0.54 | 0.43 | 0.25 |
 | Conversion rate when upgrading from M | - | -0.06 | 0.30 | 0.37 | 0.15 |
 
-Under this valuation, building inexpensive M and RL early is profitable; AC can be built when an Innovation is needed. TC is a severe loss early in the game.
+Under this valuation, low-cost M and RL structures have positive early returns. AC supports taking an Innovation. TC’s immediate early conversion rate falls below the baseline.
 
 Large buildings are important to the endgame structure, so they should still be considered at an appropriate time even when their immediate conversion rates are not high.
 
@@ -255,115 +259,110 @@ Under this model, even expanding with an M that requires only 2o has a lower res
 
 ## Strength Analysis
 
-### Ability Tiles
+<span id="ability-tiles"></span>
+
+### Competency Tiles
 
 In general, choosing resource production in T1 and T2, then gradually shifting toward points from T3 onward, produces relatively high returns under this model. Actual expansion can be constrained by terrain, distance, and Action-phase timing, so resource balance and expansion planning must still be considered together.
 
-#### 2c and 3-Point Income
+#### 2c + 3-Point Income
 
-Use `2c + 3 分` as the baseline for comparisons among ability tiles.
+Use 2c + 3-point income as the baseline for comparing Competency tiles.
 
-#### 1o1k Income
-
-```text
-1o1k = 4.5c + 1.4 分
-```
-
-That is, the 1o1k income is valued as 4.5c plus 1.4 points.
-
-Compared with `2c3 分产`, the break-even round for `2.5c = 1.6 分` lies approximately in T3–T4. This gives:
+#### 1o + 1k Income
 
 ```text
-T1：1o1k 产 ≥ 2c3 分产
-T1 之后：2c3 分产 > 1o1k 产
+1o + 1k = 4.5c + 1.4 分
 ```
+{: .article-prose .article-conversion}
 
-In English: 1o1k income is at least as valuable as 2c plus 3-point income in T1; after T1, the 2c plus 3-point income is more valuable.
-
-#### 1b and 1-Power Income
+Compared with 2c + 3-point income, the break-even value of 2.5c = 1.6 points lies approximately in T3–T4:
 
 ```text
-1b1 魔 = 5.5c
+T1：1o + 1k 收入 ≥ 2c + 3 分收入
+T2–T6：2c + 3 分收入 > 1o + 1k 收入
 ```
+{: .article-prose .article-conversion}
 
-That is, the income of 1b plus 1 Power is valued as 5.5c.
-
-Compared with `1o1k 产`, the break-even round for `1c = 1.4 分` lies approximately in T3. This gives:
+#### 1b + 1-Power Income
 
 ```text
-T1：1b1 魔产 ≥ 1o1k 产
-T1 之后：1o1k 产 > 1b1 魔产
+1b + 1 魔力 = 5.5c
 ```
+{: .article-prose .article-conversion}
 
-In English: 1b plus 1-Power income is at least as valuable as 1o1k income in T1; after T1, 1o1k income is more valuable.
+Compared with 1o + 1k income, the break-even value of 1c = 1.4 points lies approximately in T3:
+
+```text
+T1：1b + 1 魔力收入 ≥ 1o + 1k 收入
+T2–T6：1o + 1k 收入 > 1b + 1 魔力收入
+```
+{: .article-prose .article-conversion}
 
 #### 4-Power Action
 
 ```text
-4 魔 = 2c，并附带当回合产出 2c
+4 魔力 = 2c；当轮再产出 2c
 ```
+{: .article-prose .article-conversion}
 
-The retained line says that 4 Power equals 2c and also produces another 2c in the same round.
-
-Under this article's framework, it is strictly weaker than `1o1k 产` and is suitable only when Power must be replenished or an additional synergy can be created.
+Under this article's framework, its return is lower than 1o + 1k income. It remains useful when Power must be replenished or another synergy applies.
 
 #### Double Spade
 
 ```text
-即时 6o = 18c，T1 终局价值 = 59.47c + 29.18 分
-即时 4o = 12c，T1 终局价值 = 39.65c + 19.60 分
-T1 1o1k 产的终局价值 = 38.40c + 18.19 分
-T1 1b1 魔产的终局价值 = 46.93c + 13.67 分
+即时 6o = 18c；T1 终局估值 = 59.47c + 29.18 分
+即时 4o = 12c；T1 终局估值 = 39.65c + 19.60 分
+T1 的 1o + 1k 收入终局估值 = 38.40c + 18.19 分
+T1 的 1b + 1 魔力收入终局估值 = 46.93c + 13.67 分
 ```
+{: .article-prose .article-conversion}
 
-In English, the four lines give the T1 endgame values of an immediate 6o as 59.47c plus 29.18 points, an immediate 4o as 39.65c plus 19.60 points, 1o1k income as 38.40c plus 18.19 points, and 1b plus 1-Power income as 46.93c plus 13.67 points.
-
-Double Spade theoretically gains a few more points, but using 4o to terraform two spaces in succession is not usually urgent early in the game. Its practical advantage over persistent-production tiles is therefore not as large as the numbers suggest.
+Double Spade gains a few more points in the model. Early play rarely needs two consecutive terrain transformations, so its practical advantage over persistent-income tiles is smaller than the numerical gap.
 
 #### Summary
 
-Among resource-producing ability tiles, the T1 ranking is:
+Among resource-income Competency tiles, the T1 model ranking is:
 
 ```text
-1b1 魔产 ≥ 1o1k 产 ≥ 2c3 分产
+1b + 1 魔力收入 ≥ 1o + 1k 收入 ≥ 2c + 3 分收入
 ```
+{: .article-prose .article-conversion}
 
-That is, in T1, 1b plus 1-Power income ranks at least as high as 1o1k income, which in turn ranks at least as high as 2c plus 3-point income.
+Double Spade is also viable. The T1 differences among these Competency tiles are small; after T1, prioritize 2c + 3-point income.
 
-Double Spade is also an option, and the differences among these ability tiles in T1 are small. After T1, only `2c3 分产` should normally receive priority.
+Tools, Discipline advancement, Books, and Power all have strongly stage-dependent values, so the final choice must still serve the development plan for the whole game.
 
-Tools, the Science display, Books, and Power all have strongly stage-dependent values, so the final choice must still serve the development plan for the whole game.
-
-> **Source note | Ability tiles and round scoring**
+> **Source note | Competency tiles and Round Score tiles**
 >
-> Page 24 of the official English rulebook lists the ability tiles and round-scoring tiles compared here. The rules specify only the resources and points they provide; their relative strength in different rounds is an analytical result of this article's model.
+> Page 24 of the official English rulebook lists the Competency tiles and Round Score tiles compared here. The rules specify only the resources and points they provide; their relative strength in different rounds is a result of this article's model.
 {: .article-evidence}
 
 ### Book Actions
 
 #### 1b = 5 Power
 
-`3 分 = 2.5c` can generally be exchanged in T1–T3 and becomes a slight loss after T4.
+3 points = 2.5c roughly meets the model’s baseline from T1 through T3 and falls below it in T4–T6.
 
 #### 1b = 2k
 
-`3 分 = 3c + 2.8 分`. As long as enough Books remain to acquire an Innovation, this is a good choice in any round.
+3 points = 3c + 2.8 points. As long as enough Books remain to acquire an Innovation, this is a good choice in any round.
 
 #### 2b = 6c
 
-`3 分 = 3c` can generally be exchanged in T1–T4 and becomes a slight loss after T5.
+3 points = 3c roughly meets the baseline from T1 through T4 and falls below it in T5–T6.
 
 #### 2b = Upgrade TC
 
-`3 分 = 4.5c` can generally be exchanged in T1–T4 and becomes a slight loss after T5.
+3 points = 4.5c roughly meets the baseline from T1 through T4 and falls below it in T5–T6.
 
 #### 2b = Points per TC
 
-`3 分 = 1–4 分`; consider it when there are at least three TCs.
+3 points = 1–4 points; consider it when there are at least three TCs.
 
 #### 3b = 3 Spades
 
-Early in the game, this can be valued as `1b = 3o = 9c` and is highly profitable. Late in the game, it can instead be approximated as `3 分 = 1o = 3c`, becoming a slight loss after T5.
+Early in the game, value this as 1b = 3o = 9c, well above the baseline. Late in the game, approximate it as 3 points = 1o = 3c; it falls below the baseline in T5–T6.
 
 ### Faction
 
@@ -371,11 +370,11 @@ Early in the game, this can be valued as `1b = 3o = 9c` and is highly profitable
 
 The analysis below preserves the Mole faction board and valuation framework used by the original draft:
 
-`1o = 2 分` can easily become a point-scoring trap. If only direct point conversion is considered, `3c = 2 分` does not become profitable until after T5.
+The 1o = 2-point exchange can consume resources needed for early development. Under direct point conversion alone, 3c = 2 points reaches this model’s baseline in T5–T6.
 
-The early-game Moles can therefore be treated essentially as having 1 Shipping. Their faction ability usually scores fewer than 10 points even late in the game, and its value is more functional than numerical.
+Early Moles primarily gain the function of 1 Shipping. Their faction ability usually scores fewer than 10 points late in the game, so crossing distance thresholds remains its main value.
 
-A more advantageous use is to concentrate a large wave of Workshops in a single round when an M round-scoring tile appears in T5 or T6, paired with the M-scoring ability tile. The early game can accordingly focus on compact expansion through RL while also maintaining Tool income.
+When an M Round Score tile appears in T5 or T6, pair it with the M-scoring Competency tile and build many Workshops in one round. Early development can focus on compact School construction while maintaining Tool income.
 
 > **Version note | Moles**
 >
@@ -384,6 +383,6 @@ A more advantageous use is to concentrate a large wave of Workshops in a single 
 
 ## Conclusion
 
-The purpose of this quantitative method is to place Coins, Tools, Books, Scholars, Science spaces, and action opportunities temporarily on one scale, making it easier to compare several candidate plans within a game. Its clearest implication is that resources obtained earlier, and put into development promptly, have more opportunities to keep appreciating over subsequent rounds.
+This quantitative method places Coins, Tools, Books, Scholars, Discipline advancement, and action opportunities on one temporary scale. Resources gained early and invested promptly have more opportunities to appreciate across later rounds.
 
-Actual games still include staged rewards, map position, player interaction, and functional thresholds, so decisions should not be made mechanically from the tables alone. The numbers here are better suited to checking whether a development plan is broadly reasonable than to prescribing a single building or ability-tile order across factions and maps.
+Actual games also depend on staged rewards, map position, player interaction, and functional thresholds. These numbers can check the resource scale and timing of a development plan; building and Competency-tile order still depend on the faction, map, and current action windows.

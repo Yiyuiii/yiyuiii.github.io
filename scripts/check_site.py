@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import argparse
 import re
+import ssl
 import urllib.error
 import urllib.request
+from collections import defaultdict
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
@@ -81,6 +83,9 @@ TOY_RUNTIME_PATHS = {
     "/assets/js/toy-random.js",
 }
 TOY_LOADER_PATH = "/assets/js/toy-loader.js"
+EXTERNAL_LINK_TIMEOUT_SECONDS = 15
+EXTERNAL_LINK_ATTEMPTS = 2
+HEAD_FALLBACK_STATUS_CODES = frozenset({400, 403, 405, 406, 501})
 
 
 def route_path(site: Path, route: str) -> Path:
@@ -794,28 +799,63 @@ def _check_writing_entries(
             )
 
 
-def _check_external_links(site: Path) -> None:
-    urls: set[str] = set()
-    for path in site.rglob("*.html"):
-        soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
-        urls.update(
-            link["href"]
-            for link in soup.find_all("a", href=True)
-            if link["href"].startswith("https://")
-        )
-    errors = []
-    for url in sorted(urls):
-        request = urllib.request.Request(
-            url,
-            method="HEAD",
-            headers={"User-Agent": "yiyuiii.github.io-site-check"},
-        )
+def _site_source_label(site: Path, path: Path) -> str:
+    relative = path.relative_to(site).as_posix()
+    if relative == "index.html":
+        return "/"
+    if relative.endswith("/index.html"):
+        return f"/{relative[:-len('index.html')]}"
+    return f"/{relative}"
+
+
+def _probe_external_url(url: str, method: str) -> tuple[bool, str | None]:
+    headers = {
+        "User-Agent": "yiyuiii.github.io-site-check",
+        "Accept": "text/html,application/xhtml+xml,application/pdf,*/*;q=0.1",
+    }
+    last_error: BaseException | None = None
+    for _ in range(EXTERNAL_LINK_ATTEMPTS):
+        request = urllib.request.Request(url, method=method, headers=headers)
         try:
-            with urllib.request.urlopen(request, timeout=15) as response:
-                if response.status >= 400:
-                    errors.append(f"{url}: HTTP {response.status}")
-        except (urllib.error.URLError, TimeoutError) as error:
-            errors.append(f"{url}: {error}")
+            with urllib.request.urlopen(
+                request, timeout=EXTERNAL_LINK_TIMEOUT_SECONDS
+            ) as response:
+                status = getattr(response, "status", 200)
+                if status >= 400:
+                    return False, f"HTTP {status}"
+                return True, None
+        except urllib.error.HTTPError as error:
+            return False, f"HTTP {error.code}"
+        except (
+            urllib.error.URLError,
+            TimeoutError,
+            ssl.SSLError,
+            OSError,
+        ) as error:
+            last_error = error
+    return False, f"{type(last_error).__name__}: {last_error}"
+
+
+def _check_external_links(site: Path) -> None:
+    sources_by_url: dict[str, set[str]] = defaultdict(set)
+    for path in sorted(site.rglob("*.html")):
+        soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
+        source = _site_source_label(site, path)
+        for link in soup.find_all("a", href=True):
+            url = link["href"]
+            if url.startswith("https://"):
+                sources_by_url[url].add(source)
+
+    errors = []
+    for url, sources in sorted(sources_by_url.items()):
+        ok, error = _probe_external_url(url, "HEAD")
+        if not ok and error in {
+            f"HTTP {status}" for status in HEAD_FALLBACK_STATUS_CODES
+        }:
+            ok, error = _probe_external_url(url, "GET")
+        if not ok:
+            source_list = ", ".join(sorted(sources))
+            errors.append(f"{url} (linked from {source_list}): {error}")
     if errors:
         raise SiteCheckError("\n".join(errors))
 

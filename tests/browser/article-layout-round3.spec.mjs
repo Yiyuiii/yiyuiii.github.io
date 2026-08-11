@@ -106,7 +106,7 @@ test("quotes, evidence, and code follow their intended prose or wide canvas", as
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
 
-  await page.goto("/en/posts/build-a-personal-github-page/", {
+  await page.goto("/en/posts/learning-seti-board-game/", {
     waitUntil: "domcontentloaded",
   });
   const ordinaryQuote = await page.evaluate(() => {
@@ -176,7 +176,7 @@ test("quotes, evidence, and code follow their intended prose or wide canvas", as
   expect(code.pageOverflows).toBe(false);
 });
 
-test("narrative paragraphs indent while the compact conversion block stays aligned", async ({
+test("narrative paragraphs indent while all compact conversion blocks stay aligned", async ({
   page,
 }) => {
   await page.route(/^https?:\/\//u, async (route) => {
@@ -188,58 +188,78 @@ test("narrative paragraphs indent while the compact conversion block stays align
     }
   });
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/posts/大创造时代-资源-分值量化计算思路/", {
-    waitUntil: "domcontentloaded",
-  });
-  await page.waitForFunction(
-    () => document.documentElement.dataset.mathRendering === "ready",
-  );
+  const layouts = [];
+  for (const route of [
+    "/posts/大创造时代-资源-分值量化计算思路/",
+    "/en/posts/age-of-innovation-resource-and-point-value-analysis/",
+  ]) {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(
+      () => document.documentElement.dataset.mathRendering === "ready",
+    );
 
-  const layout = await page.evaluate(() => {
-    const content = document.querySelector(".post-content");
-    const prose = content.querySelector(":scope > p:not(:has(img))");
-    const conversion = content.querySelector(":scope > .article-conversion");
-    const code = conversion.querySelector("code");
-    const displayMath = content.querySelector('mjx-container[display="true"]');
-    const displayMathParagraph = displayMath.closest("p");
+    layouts.push(
+      await page.evaluate(() => {
+        const content = document.querySelector(".post-content");
+        const prose = content.querySelector(":scope > p:not(:has(img))");
+        const conversions = Array.from(
+          content.querySelectorAll(":scope > .article-conversion"),
+        );
+        const code = conversions[0].querySelector("code");
+        const displayMath = content.querySelector('mjx-container[display="true"]');
+        const displayMathParagraph = displayMath.closest("p");
 
-    const equalsOffsets = [];
-    const text = code.firstChild;
-    for (
-      let index = text.data.indexOf("=");
-      index >= 0;
-      index = text.data.indexOf("=", index + 1)
-    ) {
-      const range = document.createRange();
-      range.setStart(text, index);
-      range.setEnd(text, index + 1);
-      equalsOffsets.push(range.getBoundingClientRect().left);
-    }
+        const equalsOffsets = [];
+        const text = code.firstChild;
+        for (
+          let index = text.data.indexOf("=");
+          index >= 0;
+          index = text.data.indexOf("=", index + 1)
+        ) {
+          const range = document.createRange();
+          range.setStart(text, index);
+          range.setEnd(text, index + 1);
+          equalsOffsets.push(range.getBoundingClientRect().left);
+        }
 
-    return {
-      proseIndent: parseFloat(getComputedStyle(prose).textIndent),
-      proseFontSize: parseFloat(getComputedStyle(prose).fontSize),
-      conversionLeft: conversion.getBoundingClientRect().left,
-      proseLeft: prose.getBoundingClientRect().left,
-      equalsOffsets,
-      displayMathIndent: displayMathParagraph
-        ? parseFloat(getComputedStyle(displayMathParagraph).textIndent)
-        : 0,
-      pageOverflows:
-        document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
-    };
-  });
+        return {
+          proseIndent: parseFloat(getComputedStyle(prose).textIndent),
+          proseFontSize: parseFloat(getComputedStyle(prose).fontSize),
+          proseLeft: prose.getBoundingClientRect().left,
+          conversionLefts: conversions.map(
+            (conversion) => conversion.getBoundingClientRect().left,
+          ),
+          preLefts: conversions.map(
+            (conversion) => conversion.querySelector("pre").getBoundingClientRect().left,
+          ),
+          equalsOffsets,
+          displayMathIndent: displayMathParagraph
+            ? parseFloat(getComputedStyle(displayMathParagraph).textIndent)
+            : 0,
+          pageOverflows:
+            document.documentElement.scrollWidth >
+            document.documentElement.clientWidth + 1,
+        };
+      }),
+    );
+  }
 
   await page.goto(richArticleRoute, { waitUntil: "domcontentloaded" });
   const imageIndent = await page
     .locator('.post-content p:has(> img[src$="/bigcards.jpg"]:only-child)')
     .evaluate((paragraph) => parseFloat(getComputedStyle(paragraph).textIndent));
 
-  expectClose(layout.proseIndent, layout.proseFontSize * 2, 0.5);
-  expectClose(layout.conversionLeft, layout.proseLeft);
-  expect(layout.equalsOffsets).toHaveLength(2);
-  expectClose(layout.equalsOffsets[0], layout.equalsOffsets[1], 0.5);
-  expect(layout.displayMathIndent).toBe(0);
+  for (const layout of layouts) {
+    expectClose(layout.proseIndent, layout.proseFontSize * 2, 0.5);
+    expect(layout.conversionLefts).toHaveLength(14);
+    expect(layout.preLefts).toHaveLength(14);
+    for (const left of [...layout.conversionLefts, ...layout.preLefts]) {
+      expectClose(left, layout.proseLeft);
+    }
+    expect(layout.equalsOffsets).toHaveLength(2);
+    expectClose(layout.equalsOffsets[0], layout.equalsOffsets[1], 0.5);
+    expect(layout.displayMathIndent).toBe(0);
+    expect(layout.pageOverflows).toBe(false);
+  }
   expect(imageIndent).toBe(0);
-  expect(layout.pageOverflows).toBe(false);
 });
