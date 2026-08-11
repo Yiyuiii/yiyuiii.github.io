@@ -11,7 +11,7 @@
       "name": "Yiyu Chen"
     },
     "datePublished": "2022-08-17T18:38:00+08:00",
-    "dateModified": "2022-08-17T18:38:00+08:00"
+    "dateModified": "2026-08-10T00:00:00+08:00"
     
   }
   </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
@@ -30,10 +30,10 @@
       document.documentElement.dataset.sunlight = sunlight;
       document.documentElement.dataset.theme = theme;
     })();
-  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="关闭日光背景" aria-pressed="true" data-enable-light-label="开启日光背景" data-disable-light-label="关闭日光背景" data-enable-dark-label="开启月光背景" data-disable-dark-label="关闭月光背景" data-status-light-on="日光背景已开启" data-status-light-off="日光背景已关闭" data-status-dark-on="月光背景已开启" data-status-dark-off="月光背景已关闭" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="主导航"> <a href="/">欢迎</a> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/toys/">小玩意</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到夜晚样式" aria-pressed="false" data-enable-light-label="切换到明亮样式" data-enable-dark-label="切换到夜晚样式" data-status-light="已切换到明亮样式" data-status-dark="已切换到夜晚样式" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/posts/building-shape-matched-ascii-art/" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>制作一张匹配形状的字符画</h1> <div class="article-meta"> <div class="article-tags"> <a href="/writing/?tag=NoneBot">NoneBot</a> <a href="/writing/?tag=Python">Python</a> <a href="/writing/?tag=%E5%AD%97%E7%AC%A6%E7%94%BB">字符画</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> 初稿 <time datetime="2022-08-17">2022.08.17</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">修订历史</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2022-08-17">2022.08.17</time> <span>初稿</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>章节</summary> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#%E5%9B%BE%E5%83%8F-%E5%AD%97%E7%AC%A6%E5%BD%A2%E7%8A%B6%E5%8C%B9%E9%85%8D%E5%8E%9F%E7%90%86">图像-字符形状匹配原理</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%9B%BE%E5%83%8F-%E5%AD%97%E7%AC%A6%E5%BD%A2%E7%8A%B6%E5%8C%B9%E9%85%8D%E5%AE%9E%E7%8E%B0">图像-字符形状匹配实现</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%AD%97%E7%AC%A6%E5%9B%BE%E5%83%8F%E9%A2%84%E7%94%9F%E6%88%90">字符图像预生成</a></li> <li class="toc-entry toc-h3"><a href="#%E5%AD%97%E7%AC%A6%E7%94%BB%E7%94%9F%E6%88%90">字符画生成</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E9%A2%9D%E5%A4%96%E6%94%B9%E8%BF%9B">额外改进</a> <ul> <li class="toc-entry toc-h3"><a href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1">直方图均衡</a></li> <li class="toc-entry toc-h3"><a href="#%E7%BB%93%E5%90%88%E5%BD%A2%E7%8A%B6%E5%92%8C%E7%81%B0%E5%BA%A6%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7%E8%AF%84%E4%BB%B7">结合形状和灰度的一致性评价</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#nonebot2-%E6%BA%90%E7%A0%81">Nonebot2 源码</a></li> </ul> </nav> </details> <figure class="article-cover"> <img height="640" width="640" class="article-cover__image" src="/assets/posts/202208171838/cover-site-avatar-ascii-square.webp" alt="本站头像的字符画结果" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>题图：使用本文的形状匹配思路将本站头像重新生成为字符画；头像与结果均为本站自有内容。</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <p>最近玩字符画，查了一下主流的字符画算法，基本采用<strong>平均灰度</strong>这一指标将图片区域映射到单个字符。</p> <p>他们的具体做法是，建立灰度级别到字符的查找表，类似<code class="language-plaintext highlighter-rouge">[0~255]-&gt;[0-9a-zA-Z!@#$%^&amp;*()]</code>，然后做一些位置对齐、直方图均衡等额外操作使得成图更加美观。</p> <p>以上实现具体可参考<a href="https://zhuanlan.zhihu.com/p/48941293" rel="external nofollow noopener" target="_blank">知乎：字符画——从入门到不屑</a></p> <p>这样的实现直观而简洁，但是<strong>平均灰度</strong>这一指标是不完美的。请见下图：</p> <p><img decoding="async" loading="lazy" height="408" width="960" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817193513.jpg" alt="绿色短发动漫角色与“好怪哦，再看一眼”文字的原图"></p> <p><img decoding="async" loading="lazy" height="492" width="1238" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817193517.jpg" alt="按平均灰度生成的字符画，文字笔画与人物轮廓出现断裂"></p> <p>图中“好”字的上沿出现了一行独立的单引号’，“一”字的上沿变成了纵向延伸而横线断裂的左括号(，这些类似的误差导致这张字符画的观感较差。</p> <p>事实上，基于<strong>平均灰度</strong>的字符画生成更像是一种<strong>降采样+添加噪声</strong>的图像处理：算法按像素区域将灰度转化为字符，而字符形状的不匹配相当于引入了一种结构化的随机噪声。</p> <p>这个算法是不完美的，那么有没有完美的算法呢？本文就来探究这件事。</p> <h2 id="图像-字符形状匹配原理">图像-字符形状匹配原理</h2> <p>在字符画生成算法中，受应用限制，我们一般预先设定好字符的种类、样式、大小，然后把字符堆起来，希望它尽可能地还原原画。例如一个3x3字符大小的“工”字图像，使用字符{1-+}可以拼成下面字符画：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-+-
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="关闭日光背景" aria-pressed="true" data-enable-light-label="开启日光背景" data-disable-light-label="关闭日光背景" data-enable-dark-label="开启月光背景" data-disable-dark-label="关闭月光背景" data-status-light-on="日光背景已开启" data-status-light-off="日光背景已关闭" data-status-dark-on="月光背景已开启" data-status-dark-off="月光背景已关闭" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="主导航"> <a href="/">欢迎</a> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/toys/">小玩意</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到夜晚样式" aria-pressed="false" data-enable-light-label="切换到明亮样式" data-enable-dark-label="切换到夜晚样式" data-status-light="已切换到明亮样式" data-status-dark="已切换到夜晚样式" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/posts/building-shape-matched-ascii-art/" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>制作一张匹配形状的字符画</h1> <div class="article-meta"> <div class="article-tags"> <a href="/writing/?tag=NoneBot">NoneBot</a> <a href="/writing/?tag=Python">Python</a> <a href="/writing/?tag=%E5%AD%97%E7%AC%A6%E7%94%BB">字符画</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> 初稿 <time datetime="2022-08-17">2022.08.17</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span> 最近修订 <time datetime="2026-08-10">2026.08.10</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">修订历史</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2022-08-17">2022.08.17</time> <span>初稿</span> </li> <li> <time datetime="2026-08-10">2026.08.10</time> <span>统一字符画、字形模板、图像块和损失函数术语；校正公式与实现的对应关系并精简重复说明</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>章节</summary> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#%E5%AD%97%E5%BD%A2%E5%8C%B9%E9%85%8D%E5%8E%9F%E7%90%86">字形匹配原理</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%AD%97%E5%BD%A2%E5%8C%B9%E9%85%8D%E5%AE%9E%E7%8E%B0">字形匹配实现</a> <ul> <li class="toc-entry toc-h3"><a href="#%E9%A2%84%E7%94%9F%E6%88%90%E5%AD%97%E5%BD%A2%E6%A8%A1%E6%9D%BF">预生成字形模板</a></li> <li class="toc-entry toc-h3"><a href="#%E5%8C%B9%E9%85%8D%E5%9B%BE%E5%83%8F%E5%9D%97">匹配图像块</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E9%A2%9D%E5%A4%96%E6%94%B9%E8%BF%9B">额外改进</a> <ul> <li class="toc-entry toc-h3"><a href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1">直方图均衡</a></li> <li class="toc-entry toc-h3"><a href="#%E5%90%8C%E6%97%B6%E6%AF%94%E8%BE%83%E5%AD%97%E5%BD%A2%E5%92%8C%E5%B9%B3%E5%9D%87%E7%81%B0%E5%BA%A6">同时比较字形和平均灰度</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#nonebot2-%E6%BA%90%E7%A0%81">NoneBot2 源码</a></li> </ul> </nav> </details> <figure class="article-cover"> <img height="640" width="640" class="article-cover__image" src="/assets/posts/202208171838/cover-site-avatar-ascii-square.webp" alt="本站头像的字符画结果" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>题图：使用本文的形状匹配思路将本站头像重新生成为字符画；头像与结果均为本站自有内容。</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <p>最近在研究字符画。常见算法会把原图切成固定大小的<strong>图像块</strong>，再按平均灰度为每块选择一个字符。</p> <p>具体实现通常先建立灰度到字符的查找表，例如 <code class="language-plaintext highlighter-rouge">[0~255] -&gt; [0-9a-zA-Z!@#$%^&amp;*()]</code>，再进行对齐或直方图均衡等处理。</p> <p>以上实现具体可参考<a href="https://zhuanlan.zhihu.com/p/48941293" rel="external nofollow noopener" target="_blank">知乎：字符画——从入门到不屑</a></p> <p>平均灰度匹配直观而简洁，但它没有比较字符的笔画位置。请见下图：</p> <p><img decoding="async" loading="lazy" height="408" width="960" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817193513.jpg" alt="绿色短发动漫角色与“好怪哦，再看一眼”文字的原图"></p> <p><img decoding="async" loading="lazy" height="492" width="1238" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817193517.jpg" alt="按平均灰度生成的字符画，文字笔画与人物轮廓出现断裂"></p> <p>图中“好”字上沿出现了一行独立的单引号 <code class="language-plaintext highlighter-rouge">'</code>，“一”字上沿则变成纵向延伸、横线断裂的左括号 <code class="language-plaintext highlighter-rouge">(</code>。平均灰度接近的字符仍可能具有完全不同的笔画方向。</p> <p>从图像处理角度看，这种方法先按字符尺寸降采样，再用平均灰度相近的字形替换每个图像块。字形与原轮廓不匹配时，会产生结构化误差。</p> <p>本文改用字形模板直接比较图像块，使字符笔画尽量贴近原图轮廓。</p> <h2 id="字形匹配原理">字形匹配原理</h2> <p>字符画生成前需要固定候选字符、字体和字号，并把每个字符渲染为同尺寸的灰度<strong>字形模板</strong>。例如，一个由 3×3 个字符组成的“工”字图案，可以用字符 <code class="language-plaintext highlighter-rouge">{1-+}</code> 拼成：</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-+-
  1
 -+-
-</code></pre></div></div> <p>从图像像素层面考虑，一般一个字符位在字符画图像中所占的区域是固定的，该区域包含若干个像素。</p> <p>那么对于这块区域来说，为达成尽可能还原原画的目标，就应当<strong>尽量让每个像素都与原图一致</strong>。</p> <p>当然，如果每个位置的像素都完全一致，那么字符画和原图就一模一样——但这件事很少发生。100个字符只能对应100个区域图形，而8x16的像素区域即有$256^{8*16}$种可能。</p> <p>因此我们需要一个<strong>损失函数</strong>来指导字符匹配。它需要衡量每个字符与原图的一致性，从而使得每个区域的字符能最佳表达原图区域。</p> <p>一致性和表现力这些概念对我来说比较复杂，这里暂时选用常用的<strong>像素均方误差</strong>来衡量字符一致性，即$J=\Sigma_i\Sigma_j{(I_{ij}-\hat{I}_{ij})^2}$</p> <p>有了这样一个损失函数以后，我们就可以为每块区域给出最优的字符，从而组成整幅字符画。</p> <h2 id="图像-字符形状匹配实现">图像-字符形状匹配实现</h2> <p>整个实现主要分为两个部分：</p> <h3 id="字符图像预生成">字符图像预生成</h3> <p>字符<strong>数量少而且图像是固定</strong>的，如果每次生成字符画都计算字符图像会带来较大的重复计算开销，所以可以预生成并存储字符的灰度图像。</p> <p>为计算损失函数，这里将图像转为科学计算库numpy存储。 中间操作采用numpy进行以加速计算，在最后生成图像前从numpy转换到PIL.Image。</p> <p>为了排版工整和计算方便，需要<strong>裁剪字符图片使它们等宽</strong>。 目前有一些等宽字体，但主流使用的字体并不严格等宽。 这里我简单地将较大的字符图片裁剪到最小字符的大小（本来宽度只差1个像素）。</p> <p>最后将字符图像数组stack为维度（num, h, w）的数组，便于<strong>批量计算</strong>。</p> <h3 id="字符画生成">字符画生成</h3> <p>按原图像字符区域计算损失函数，然后把最优字符的图像贴上去。</p> <p>实现效果如下：</p> <p><img decoding="async" loading="lazy" height="408" width="960" src="/assets/posts/202208171838/512620327-223109835-AFDBE437BEAB07B26AF22C68897F1524.jpg" alt="字形轮廓损失示例：字符组成的中文与人物轮廓"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817225913.gif" alt="戴蓝色蝴蝶结的黑猫与右侧手部原图"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817225742.gif" alt="按字形轮廓生成的黑猫与手部字符画"></p> <p>可以看到，生成字符画的字形轮廓已经非常好了，手的轮廓和猫的翘毛非常还原。不过黑猫的面部太模糊了…</p> <h2 id="额外改进">额外改进</h2> <h3 id="直方图均衡">直方图均衡</h3> <p>我认为字符的表达力比黑白画要弱，需要进一步对原图像额外做一些艺术性处理，比如<strong>直方图均衡</strong>。 改进效果如下：</p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817234811.gif" alt="提高亮度权重后的黑猫与手部字符画，眼睛和蝴蝶结更清晰"></p> <p>可以看到黑猫的眼睛和蝴蝶结亮了，而手的轮廓相对没有以前清楚了。</p> <p>直方图均衡<strong>不是一个稳定的改进方案</strong>，它会带来一些额外的问题：</p> <ol> <li>不同帧的同一物体可能被映射到不同灰度，导致动画观感下降。可以选取某一关键帧构建全局的灰度映射；</li> <li>字符画整体偏亮，在较亮的区域可以表现更多细节，而直方图均衡后的图整体会更暗一些。计划直接匹配一种较亮的灰度直方图，目前还没实现。</li> </ol> <p>等待后续补充完善。</p> <h3 id="结合形状和灰度的一致性评价">结合形状和灰度的一致性评价</h3> <p>经过一段时间的尝试后，我发现像素均方误差损失函数<strong>不能刻画灰度上的一致性</strong>。</p> <p>因为字符图片的像素大多为纯黑或纯白，各像素到某一中间灰度的距离始终是很远的。区域灰度存在不同像素的互补平衡，而像素级的绝对值距离叠加无法反映像素间互补关系。</p> <p>所以我加入了第二个评价指标：<strong>灰度距离损失函数</strong>，它的形式为$J=(\Sigma_i\Sigma_j{I_{ij}-\hat{I}_{ij}})^2$</p> <p>然后总损失函数由像素均方误差损失函数、灰度距离损失函数带权叠加。</p> <p>改进效果如下，原图：</p> <p><img decoding="async" loading="lazy" height="640" width="537" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820122630.jpg" alt="闭眼灰发动漫角色的原图"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817225913.gif" alt="戴蓝色蝴蝶结的黑猫与右侧手部原图，用于第二组对照"></p> <p>改进后：</p> <p><img decoding="async" loading="lazy" height="648" width="544" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820130125.jpg" alt="同时考虑形状与灰度后的灰发角色字符画"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820130948.gif" alt="同时考虑形状与灰度后的黑猫与手部字符画"></p> <p>可以看到图中既有较多的形状也有一些灰度色块，两者取得了初步的平衡。可以简单地设置两损失的权重来调节字符画的形状倾向和灰度倾向。</p> <p>需要注意的是，两个损失函数<strong>需要统一量级</strong>。如果将平方$square$改为绝对值$abs$的话，两损失函数对不同像素的作用很难对齐，并且权重调整的效果也不那么好。初始权重的效果如下：</p> <p><img decoding="async" loading="lazy" height="648" width="544" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820122607.jpg" alt="损失量级未对齐时偏向灰度的灰发角色字符画"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820124447.gif" alt="损失量级未对齐时偏向灰度的黑猫与手部字符画"></p> <p>看到生成的字符画比较偏向灰度；实际上这种方案很难通过调整权重找到两者的平衡。</p> <h2 id="nonebot2-源码">Nonebot2 源码</h2> <p>我在QQ机器人Nonebot2框架中完成了上述思路的Python实现。</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+</code></pre></div></div> <p>每个字符位置对应原图中的一个固定尺寸图像块。算法将该图像块与全部字形模板逐像素比较，再选择损失最小的字符。</p> <p>设图像块为 $I$，候选字形模板为 $\hat I$，高度和宽度分别为 $h$、$w$。本文先使用均方误差（mean squared error，MSE）：</p> \[J_{\mathrm{pixel}}=\frac{1}{hw}\sum_i\sum_j(I_{ij}-\hat I_{ij})^2.\] <p>候选字符数量远小于图像块的可能取值。例如，8×16 的 8 位灰度图像块共有 $256^{8\times16}$ 种可能，100 个字符只提供 100 个字形模板。因此算法求得的是候选字符集中的最小损失，结果仍受字符集、字体、字号和块尺寸限制。</p> <p>对所有图像块重复匹配，就能组成整幅字符画。</p> <h2 id="字形匹配实现">字形匹配实现</h2> <p>实现分为字形模板预生成和图像块匹配两步。</p> <h3 id="预生成字形模板">预生成字形模板</h3> <p>候选字符和字体固定后，字形模板可以预先渲染并保存，避免每次生成字符画时重复计算。</p> <p>模板和原图都转换为 NumPy 数组进行批量计算，生成结果时再转换为 <code class="language-plaintext highlighter-rouge">PIL.Image</code>。</p> <p>所有模板必须具有相同尺寸。即使选用等宽字体，实际渲染边界仍可能相差一个像素；这里把较大的模板裁剪到最小模板的宽高。更完整的实现还应统一基线和字形边界，避免裁剪掉有效笔画。</p> <p>最后用 <code class="language-plaintext highlighter-rouge">np.stack</code> 将模板组成形状为 <code class="language-plaintext highlighter-rouge">(num_chars, h, w)</code> 的数组，便于批量计算损失。</p> <h3 id="匹配图像块">匹配图像块</h3> <p>原图按模板宽高补齐并分块。每个图像块同时减去全部字形模板，计算损失后选择 <code class="language-plaintext highlighter-rouge">argmin</code> 对应的字符。</p> <p>实现效果如下：</p> <p><img decoding="async" loading="lazy" height="408" width="960" src="/assets/posts/202208171838/512620327-223109835-AFDBE437BEAB07B26AF22C68897F1524.jpg" alt="字形轮廓损失示例：字符组成的中文与人物轮廓"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817225913.gif" alt="戴蓝色蝴蝶结的黑猫与右侧手部原图"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817225742.gif" alt="按字形轮廓生成的黑猫与手部字符画"></p> <p>手部轮廓和猫毛方向比平均灰度结果更连贯，但黑猫面部的低对比细节仍然模糊。</p> <h2 id="额外改进">额外改进</h2> <h3 id="直方图均衡">直方图均衡</h3> <p>候选字形提供的灰度层次有限。直方图均衡可以重新分布输入灰度，使部分低对比细节更容易进入可用范围。 改进效果如下：</p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817234811.gif" alt="直方图均衡后的黑猫与手部字符画，眼睛和蝴蝶结更清晰"></p> <p>处理后黑猫的眼睛和蝴蝶结更亮，手部轮廓则有所减弱。</p> <p>逐帧直方图均衡会带来两个问题：</p> <ol> <li>各帧独立计算映射时，同一物体的灰度会跳变。可以从关键帧或整段动画估计一套全局映射；</li> <li>均衡后的整体亮度可能偏离字形模板的有效灰度范围。可以改用目标直方图匹配，但本文尚未实现。</li> </ol> <h3 id="同时比较字形和平均灰度">同时比较字形和平均灰度</h3> <p>像素 MSE 同时受笔画位置和灰度差影响，但在黑白字形模板与中间灰度图像块之间，笔画误差可能掩盖整块的平均灰度偏差。</p> <p>因此加入平均灰度损失：</p> \[J_{\mathrm{gray}}=\left(\frac{1}{hw}\sum_i\sum_j(I_{ij}-\hat I_{ij})\right)^2.\] <p>总损失是两项的加权和：</p> \[J=\lambda_{\mathrm{pixel}}J_{\mathrm{pixel}}+\lambda_{\mathrm{gray}}J_{\mathrm{gray}}.\] <p>改进效果如下，原图：</p> <p><img decoding="async" loading="lazy" height="640" width="537" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820122630.jpg" alt="闭眼灰发动漫角色的原图"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220817225913.gif" alt="戴蓝色蝴蝶结的黑猫与右侧手部原图，用于第二组对照"></p> <p>改进后：</p> <p><img decoding="async" loading="lazy" height="648" width="544" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820130125.jpg" alt="同时考虑形状与灰度后的灰发角色字符画"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820130948.gif" alt="同时考虑形状与灰度后的黑猫与手部字符画"></p> <p>结果同时保留了较多轮廓和部分灰度色块。两个权重控制字形轮廓与平均灰度的相对影响。</p> <p>组合损失前应检查两项的数值范围。若某一项大几个数量级，权重会难以解释，匹配结果也会长期偏向该项。初始权重的效果如下：</p> <p><img decoding="async" loading="lazy" height="648" width="544" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820122607.jpg" alt="损失量级未对齐时偏向灰度的灰发角色字符画"></p> <p><img decoding="async" loading="lazy" height="240" width="360" src="/assets/posts/202208171838/QQ%E5%9B%BE%E7%89%8720220820124447.gif" alt="损失量级未对齐时偏向灰度的黑猫与手部字符画"></p> <p>这组结果明显偏向平均灰度，说明初始权重没有平衡两项损失。后续可在代表性样本上统计两项分布，再设定归一化或权重。</p> <h2 id="nonebot2-源码">NoneBot2 源码</h2> <p>我在 QQ 机器人框架 NoneBot2 中实现了上述方法。下面保留当时的 Python 代码；其中 <code class="language-plaintext highlighter-rouge">grayscaleloss</code> 对应 $J_{\mathrm{gray}}$，<code class="language-plaintext highlighter-rouge">l2loss</code> 对应 $J_{\mathrm{pixel}}$。</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">from</span> <span class="n">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageFilter</span><span class="p">,</span> <span class="n">ImageDraw</span>
 <span class="kn">from</span> <span class="n">PIL.Image</span> <span class="kn">import</span> <span class="n">Image</span> <span class="k">as</span> <span class="n">IMG</span>
 <span class="kn">from</span> <span class="n">PIL.ImageOps</span> <span class="kn">import</span> <span class="n">equalize</span>
@@ -63,7 +63,8 @@
     <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">charpic_char_map</span><span class="p">:</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">asarray</span><span class="p">(</span><span class="nf">make</span><span class="p">(</span><span class="n">char</span><span class="p">).</span><span class="nf">convert</span><span class="p">(</span><span class="sh">"</span><span class="s">L</span><span class="sh">"</span><span class="p">).</span><span class="n">image</span><span class="p">)</span>
         <span class="n">charpic_char_img</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-    <span class="n">char_h</span><span class="p">,</span> <span class="n">char_w</span> <span class="o">=</span> <span class="n">charpic_char_img</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">shape</span>
+    <span class="n">char_h</span> <span class="o">=</span> <span class="nf">min</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">charpic_char_img</span><span class="p">)</span>
+    <span class="n">char_w</span> <span class="o">=</span> <span class="nf">min</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">charpic_char_img</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">charpic_char_num</span><span class="p">):</span>
         <span class="n">charpic_char_img</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">charpic_char_img</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="n">char_h</span><span class="p">,</span> <span class="p">:</span><span class="n">char_w</span><span class="p">]</span>
     <span class="n">charpic_char_img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">stack</span><span class="p">(</span><span class="n">charpic_char_img</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># (char_num, h, w)
@@ -101,15 +102,85 @@
         <span class="k">return</span> <span class="nc">BuildImage</span><span class="p">(</span><span class="n">img_</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="nf">make_jpg_or_gif</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">make</span><span class="p">)</span>
-</code></pre></div></div> </div> </article> <aside class="article-side-toc"> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#%E5%9B%BE%E5%83%8F-%E5%AD%97%E7%AC%A6%E5%BD%A2%E7%8A%B6%E5%8C%B9%E9%85%8D%E5%8E%9F%E7%90%86">图像-字符形状匹配原理</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%9B%BE%E5%83%8F-%E5%AD%97%E7%AC%A6%E5%BD%A2%E7%8A%B6%E5%8C%B9%E9%85%8D%E5%AE%9E%E7%8E%B0">图像-字符形状匹配实现</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%AD%97%E7%AC%A6%E5%9B%BE%E5%83%8F%E9%A2%84%E7%94%9F%E6%88%90">字符图像预生成</a></li> <li class="toc-entry toc-h3"><a href="#%E5%AD%97%E7%AC%A6%E7%94%BB%E7%94%9F%E6%88%90">字符画生成</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E9%A2%9D%E5%A4%96%E6%94%B9%E8%BF%9B">额外改进</a> <ul> <li class="toc-entry toc-h3"><a href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1">直方图均衡</a></li> <li class="toc-entry toc-h3"><a href="#%E7%BB%93%E5%90%88%E5%BD%A2%E7%8A%B6%E5%92%8C%E7%81%B0%E5%BA%A6%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7%E8%AF%84%E4%BB%B7">结合形状和灰度的一致性评价</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#nonebot2-%E6%BA%90%E7%A0%81">Nonebot2 源码</a></li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="zh-CN" data-loading-text="正在加载评论……" data-retry-text="重新加载" data-error-text="评论暂时无法加载；你可以重试，或使用上方 GitHub Discussions 链接。" data-auto-load-enabled-text="已开启自动加载评论。" data-auto-load-disabled-text="已关闭自动加载评论。" data-auto-load-unavailable-text="浏览器无法保存自动加载设置；你仍可手动显示评论。" aria-labelledby="page-comments-title-zh"> <h2 id="page-comments-title-zh">评论</h2> <p class="page-comments__introduction"> 评论公开保存在 <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>。只有在你手动显示评论或开启自动加载后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。 </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>显示评论（首次约 0.13 MB）</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-zh" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-zh" class="page-comments__auto-load-label">在本站自动加载评论</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">请启用 JavaScript 后选择上方按钮显示评论，或使用上方 GitHub Discussions 链接。</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目、论文或小玩意"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+</code></pre></div></div> </div> </article> <aside class="article-side-toc"> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#%E5%AD%97%E5%BD%A2%E5%8C%B9%E9%85%8D%E5%8E%9F%E7%90%86">字形匹配原理</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%AD%97%E5%BD%A2%E5%8C%B9%E9%85%8D%E5%AE%9E%E7%8E%B0">字形匹配实现</a> <ul> <li class="toc-entry toc-h3"><a href="#%E9%A2%84%E7%94%9F%E6%88%90%E5%AD%97%E5%BD%A2%E6%A8%A1%E6%9D%BF">预生成字形模板</a></li> <li class="toc-entry toc-h3"><a href="#%E5%8C%B9%E9%85%8D%E5%9B%BE%E5%83%8F%E5%9D%97">匹配图像块</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E9%A2%9D%E5%A4%96%E6%94%B9%E8%BF%9B">额外改进</a> <ul> <li class="toc-entry toc-h3"><a href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1">直方图均衡</a></li> <li class="toc-entry toc-h3"><a href="#%E5%90%8C%E6%97%B6%E6%AF%94%E8%BE%83%E5%AD%97%E5%BD%A2%E5%92%8C%E5%B9%B3%E5%9D%87%E7%81%B0%E5%BA%A6">同时比较字形和平均灰度</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#nonebot2-%E6%BA%90%E7%A0%81">NoneBot2 源码</a></li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="zh-CN" data-loading-text="正在加载评论……" data-retry-text="重新加载" data-error-text="评论暂时无法加载；你可以重试，或使用上方 GitHub Discussions 链接。" data-auto-load-enabled-text="已开启自动加载评论。" data-auto-load-disabled-text="已关闭自动加载评论。" data-auto-load-unavailable-text="浏览器无法保存自动加载设置；你仍可手动显示评论。" aria-labelledby="page-comments-title-zh"> <h2 id="page-comments-title-zh">评论</h2> <p class="page-comments__introduction"> 评论公开保存在 <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>。只有在你手动显示评论或开启自动加载后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。 </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>显示评论（首次约 0.13 MB）</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-zh" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-zh" class="page-comments__auto-load-label">在本站自动加载评论</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">请启用 JavaScript 后选择上方按钮显示评论，或使用上方 GitHub Discussions 链接。</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目、论文或小玩意"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
 [
   
   
     
       
       {
+        "title": "《工业革命：匹兹堡》规则教学：从摆桌到第一次时代结算",
+        "description": "按真实开局顺序讲清摆桌、资源运输、六种行动、特殊产业与时代结算，并标出当前公开规则稿仍未定稿的边界。",
+        "tags": ["桌游","规则教学","Brass: Pittsburgh"],
+        "url": "/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "与珍珠鸟建立信任：从行为研究推导可检验训练流程",
+        "description": "根据珍珠鸟的社会关系、应激反应、个体差异和联结学习研究，建立个体基线，并用主动接近与恢复时间检验训练效果。",
+        "tags": ["珍珠鸟","动物福利"],
+        "url": "/posts/%E4%B8%8E%E7%8F%8D%E7%8F%A0%E9%B8%9F%E5%BB%BA%E7%AB%8B%E4%BF%A1%E4%BB%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四种颜色的外套：按用途减少重复购买",
+        "description": "用砖红、米黄、橄榄绿和炭灰覆盖四种外套用途，再按穿着场景、版型、现有搭配和清洁收纳成本筛选款式。",
+        "tags": ["穿搭","色彩"],
+        "url": "/posts/%E5%9B%9B%E7%A7%8D%E9%A2%9C%E8%89%B2%E7%9A%84%E5%A4%96%E5%A5%97%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "小厨房的最小系统：用常做的饭确定工具、库存与清洁收尾",
+        "description": "从三顿常做的饭检查工具、库存和清洁收尾，用四个购买问题减少闲置物品，并说明食品安全信息的权威查询入口。",
+        "tags": ["厨房","个人系统"],
+        "url": "/posts/%E5%B0%8F%E5%8E%A8%E6%88%BF%E7%9A%84%E6%9C%80%E5%B0%8F%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从能运行到可维护：Minecraft 服务器的最小运维闭环",
+        "description": "把 Java 兼容性、专用账户、受控启动、最小暴露、备份恢复、升级演练和监控串成一条小型服务器运维闭环；示例不包含私人端口、账号或玩家标识。",
+        "tags": ["Minecraft","服务器运维"],
+        "url": "/posts/Minecraft%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%9C%80%E5%B0%8F%E8%BF%90%E7%BB%B4%E9%97%AD%E7%8E%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
         "title": "《SETI》桌游规则：从摆桌到完成第一局",
-        "description": "依照真实游玩顺序，用官方图片把摆桌、回合、行动、轮末与计分连成一局；比按组件查规则书或拖动教学视频更适合纯文字学习，末尾另收扩展与促销牌。",
+        "description": "依照实际游玩顺序，用官方图片串联摆桌、回合、行动、轮次结束与计分；适合边读边开局，末尾另收扩展与促销牌。",
         "tags": ["桌游","规则教学","SETI"],
         "url": "/posts/SETI%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E5%AE%8C%E6%88%90%E7%AC%AC%E4%B8%80%E5%B1%80/",
         "kind": "随笔"
@@ -123,7 +194,7 @@
       ,
       {
         "title": "《大创造时代》资源-分值量化计算思路",
-        "description": "用跨轮迭代估算金币、工具、书、学者、科学轨、航海和建筑收益，把当前兑换和未来产出放进同一尺度；比静态汇率更适合中长期规划。",
+        "description": "用跨轮迭代估算金币、工具、书、学者、学科进度、航海和建筑收益，把当前兑换和未来产出放进同一尺度；适合检查中长期规划。",
         "tags": ["大创造时代","桌游"],
         "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
         "kind": "随笔"
@@ -137,7 +208,7 @@
       ,
       {
         "title": "《特鲁瓦》资源-分值量化分析攻略",
-        "description": "把影响力、事件、骰子、功能牌和金钱放到同一价值框架，说明共享骰池怎样改变随机资源的价格；适合比较跨系统行动，补足单卡点评缺少的全局尺度。",
+        "description": "把影响力、事件、骰子、活动牌和金钱放到同一价值框架，说明共享骰池怎样改变随机资源的价格；适合比较跨系统行动，补足单卡点评缺少的全局尺度。",
         "tags": ["特鲁瓦","桌游"],
         "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
         "kind": "随笔"
@@ -151,7 +222,7 @@
       ,
       {
         "title": "《盖亚计划》资源-分值量化计算思路",
-        "description": "把钱、矿、知识、QIC、建筑收益和终局分数换到近似统一尺度，再逐种族检查例外，为经验打法提供一套可复算的宏观规划基准。",
+        "description": "把信用点、矿石、知识、Q.I.C.、建筑收益和胜利分换到近似统一尺度，再逐种族检查例外，为经验打法提供一套可复算的宏观规划基准。",
         "tags": ["盖亚计划","桌游"],
         "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
         "kind": "随笔"
@@ -165,7 +236,7 @@
       ,
       {
         "title": "了解游泳",
-        "description": "把怕水到能游 50 米蛙泳的自学过程整理为安全、装备、浮力、呼吸和分步练习路线；比零散视频更方便按顺序复习并定位卡点。",
+        "description": "从安全入水、漂浮与呼吸开始，按蛙泳腿、手、配合和距离进阶练到 50 米；同时解释浮力、阻力与遇险处置的可靠边界。",
         "tags": ["游泳"],
         "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
         "kind": "随笔"
@@ -193,7 +264,7 @@
       ,
       {
         "title": "四季物语量化分析攻略",
-        "description": "用统一分值估算元素、召唤等级、晶化、卡牌和骰子行动，再把资源约束、轮抽和对抗放回实战；比单张卡牌评级更适合回答“此刻哪种选择更值”。",
+        "description": "用统一分值估算能量、召唤等级、晶化、卡牌和骰子行动，再把资源约束、轮抽和对抗放回实战；比单张卡牌评级更适合回答“此刻哪种选择更值”。",
         "tags": ["四季物语","桌游"],
         "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
         "kind": "随笔"
@@ -234,8 +305,8 @@
     
       ,
       {
-        "title": "云服务器折腾随笔",
-        "description": "用一条真实部署链串起域名、DNS、云服务器、V2Ray、FRP、NoneBot2 和 Jekyll，集中说明各服务怎样连接及常见配置位于哪里。",
+        "title": "云服务器与部署架构：从域名到可靠运行",
+        "description": "用一条完整请求链解释 DNS、CDN、代理、云网络、计算与存储，再给出产品选型、安全部署、成本复核和故障定位清单。",
         "tags": ["云服务器"],
         "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
         "kind": "随笔"
@@ -248,9 +319,9 @@
     
       ,
       {
-        "title": "强化学习问题随笔",
-        "description": "用环境、状态、奖励、经验回放、自我博弈和无基线评估等问题搭出学习检查表，帮助初学者发现只会算法名时容易漏掉的设计与验证环节。",
-        "tags": ["强化学习"],
+        "title": "可靠强化学习实验与工程指南",
+        "description": "从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励设计、经验回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。",
+        "tags": ["强化学习","元强化学习","表征学习"],
         "url": "/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
         "kind": "随笔"
       }
@@ -262,8 +333,8 @@
     
       ,
       {
-        "title": "搭建个人 GitHub 主页",
-        "description": "把 GitHub Pages、Jekyll、Ruby、主题配置与常见构建失败串成一条可复现的建站路径，适合不想在零散教程间来回拼接的新手。",
+        "title": "GitHub Pages 建站：从静态托管到可复现部署",
+        "description": "从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。",
         "tags": ["GitHub"],
         "url": "/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
         "kind": "随笔"

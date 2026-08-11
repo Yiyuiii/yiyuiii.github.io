@@ -1,0 +1,559 @@
+<!DOCTYPE html> <html lang="zh"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> 《工业革命：匹兹堡》规则教学：从摆桌到第一次时代结算 | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="按真实开局顺序讲清摆桌、资源运输、六种行动、特殊产业与时代结算，并标出当前公开规则稿仍未定稿的边界。"> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/learning-brass-pittsburgh-board-game/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="《工业革命：匹兹堡》规则教学：从摆桌到第一次时代结算"> <meta property="og:url" content="https://yiyuiii.github.io/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/"> <meta property="og:description" content="按真实开局顺序讲清摆桌、资源运输、六种行动、特殊产业与时代结算，并标出当前公开规则稿仍未定稿的边界。"> <meta property="og:locale" content="zh_CN"> <meta property="og:locale:alternate" content="en_US"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202608102107/cover-brass-pittsburgh-official-square.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="《工业革命：匹兹堡》规则教学：从摆桌到第一次时代结算"> <meta name="twitter:description" content="按真实开局顺序讲清摆桌、资源运输、六种行动、特殊产业与时代结算，并标出当前公开规则稿仍未定稿的边界。"> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202608102107/cover-brass-pittsburgh-official-square.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/",
+    "headline": "《工业革命：匹兹堡》规则教学：从摆桌到第一次时代结算",
+    "description": "按真实开局顺序讲清摆桌、资源运输、六种行动、特殊产业与时代结算，并标出当前公开规则稿仍未定稿的边界。",
+    "inLanguage": "zh-CN",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2026-08-10T21:07:00+08:00",
+    "dateModified": "2026-08-10T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">跳到正文</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/" aria-label="返回中文欢迎页"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="关闭日光背景" aria-pressed="true" data-enable-light-label="开启日光背景" data-disable-light-label="关闭日光背景" data-enable-dark-label="开启月光背景" data-disable-dark-label="关闭月光背景" data-status-light-on="日光背景已开启" data-status-light-off="日光背景已关闭" data-status-dark-on="月光背景已开启" data-status-dark-off="月光背景已关闭" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="主导航"> <a href="/">欢迎</a> <a href="/writing/">随笔</a> <a href="/projects/">GitHub</a> <a href="/publications/">论文</a> <a href="/toys/">小玩意</a> <a href="/about/">关于yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到夜晚样式" aria-pressed="false" data-enable-light-label="切换到明亮样式" data-enable-dark-label="切换到夜晚样式" data-status-light="已切换到明亮样式" data-status-dark="已切换到夜晚样式" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/en/posts/learning-brass-pittsburgh-board-game/" aria-label="切换为英文"> EN </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>《工业革命：匹兹堡》规则教学：从摆桌到第一次时代结算</h1> <div class="article-meta"> <div class="article-tags"> <a href="/writing/?tag=%E6%A1%8C%E6%B8%B8">桌游</a> <a href="/writing/?tag=%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6">规则教学</a> <a href="/writing/?tag=Brass:+Pittsburgh">Brass: Pittsburgh</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> 初稿 <time datetime="2026-08-10">2026.08.10</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">修订历史</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2026-08-10">2026.08.10</time> <span>本文由 Codex 撰写；依据当前公开规则稿完成多人教学初版，并逐项登记官方配图来源</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>章节</summary> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#%E4%B8%80%E6%9C%AC%E6%96%87%E8%8C%83%E5%9B%B4%E4%B8%8E%E8%A7%84%E5%88%99%E7%89%88%E6%9C%AC">一、本文范围与规则版本</a></li> <li class="toc-entry toc-h2"> <a href="#%E4%BA%8C%E7%9B%AE%E6%A0%87%E4%B8%8E%E6%A1%8C%E9%9D%A2%E6%A6%82%E8%A7%88">二、目标与桌面概览</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%85%88%E8%AE%A4%E7%89%88%E5%9B%BE">先认版图</a></li> <li class="toc-entry toc-h3"><a href="#%E5%86%8D%E8%AF%BB%E7%8E%A9%E5%AE%B6%E6%9D%BF%E4%B8%8E%E4%BA%A7%E4%B8%9A%E6%9D%BF%E5%9D%97">再读玩家板与产业板块</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E4%B8%89%E4%B8%89%E4%BA%BA%E5%B1%80%E8%AE%BE%E7%BD%AE">三、三人局设置</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%85%AC%E5%85%B1%E5%8C%BA">公共区</a></li> <li class="toc-entry toc-h3"><a href="#%E7%8E%A9%E5%AE%B6%E5%8C%BA%E4%B8%8E%E9%A6%96%E8%BD%AE%E9%A1%BA%E5%BA%8F">玩家区与首轮顺序</a></li> <li class="toc-entry toc-h3"><a href="#%E5%85%B6%E4%BB%96%E4%BA%BA%E6%95%B0">其他人数</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%9B%9B%E6%97%B6%E4%BB%A3%E8%BD%AE%E6%AC%A1%E4%B8%8E%E7%8E%A9%E5%AE%B6%E5%9B%9E%E5%90%88">四、时代、轮次与玩家回合</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%B8%80%E4%B8%AA%E7%8E%A9%E5%AE%B6%E5%9B%9E%E5%90%88">一个玩家回合</a></li> <li class="toc-entry toc-h3"><a href="#%E4%B8%80%E8%BD%AE%E7%BB%93%E6%9D%9F">一轮结束</a></li> <li class="toc-entry toc-h3"><a href="#%E6%97%A0%E6%B3%95%E6%94%AF%E4%BB%98%E8%B4%9F%E6%94%B6%E5%85%A5">无法支付负收入</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E4%BA%94%E5%9C%B0%E5%9B%BE%E4%B8%8A%E7%9A%84%E4%B8%89%E7%A7%8D%E5%85%B3%E7%B3%BB">五、地图上的三种关系</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%BB%9C">个人网络</a></li> <li class="toc-entry toc-h3"><a href="#%E4%B8%A4%E4%B8%AA%E5%9C%B0%E7%82%B9%E8%BF%9E%E9%80%9A">两个地点连通</a></li> <li class="toc-entry toc-h3"><a href="#%E8%B5%84%E6%BA%90%E8%BF%90%E8%BE%93%E4%B8%8E%E6%9D%A5%E6%BA%90%E4%BC%98%E5%85%88%E7%BA%A7">资源运输与来源优先级</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%85%AD%E5%BB%BA%E9%80%A0%E8%A1%8C%E5%8A%A8">六、建造行动</a> <ul> <li class="toc-entry toc-h3"><a href="#%E9%80%89%E6%8B%A9%E5%BC%83%E7%89%8C%E4%B8%8E%E5%9C%B0%E7%82%B9">选择弃牌与地点</a></li> <li class="toc-entry toc-h3"><a href="#%E6%94%AF%E4%BB%98%E4%B8%8E%E5%8D%87%E7%BA%A7">支付与升级</a></li> <li class="toc-entry toc-h3"><a href="#%E6%94%BE%E7%BD%AE%E8%B5%84%E6%BA%90%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8D%96%E7%BB%99%E5%B8%82%E5%9C%BA">放置资源与自动卖给市场</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E4%B8%83%E7%BD%91%E7%BB%9C%E8%A1%8C%E5%8A%A8">七、网络行动</a> <ul> <li class="toc-entry toc-h3"><a href="#%E7%AE%A1%E7%BA%BF%E4%B8%8E%E6%B2%B9%E7%94%B0">管线与油田</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%85%AB%E5%8F%91%E5%B1%95%E8%B4%B7%E6%AC%BE%E4%B8%8E%E8%B7%B3%E8%BF%87">八、发展、贷款与跳过</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%8F%91%E5%B1%95">发展</a></li> <li class="toc-entry toc-h3"><a href="#%E8%B4%B7%E6%AC%BE">贷款</a></li> <li class="toc-entry toc-h3"><a href="#%E8%B7%B3%E8%BF%87%E4%B8%8E%E5%A8%81%E5%A3%AB%E5%BF%8C">跳过与威士忌</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E4%B9%9D%E5%87%BA%E5%94%AE%E8%A1%8C%E5%8A%A8">九、出售行动</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%8D%81%E7%89%B9%E6%AE%8A%E8%BF%9E%E6%8E%A5%E4%B8%8E%E7%9A%87%E5%86%A0%E6%98%8E%E7%8F%A0%E4%BA%A7%E4%B8%9A">十、特殊连接与皇冠明珠产业</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%9B%9B%E7%B1%BB%E9%87%8D%E5%9E%8B%E5%88%97%E8%BD%A6">四类重型列车</a></li> <li class="toc-entry toc-h3"><a href="#%E5%9B%9B%E7%B1%BB%E7%AE%A1%E7%BA%BF">四类管线</a></li> <li class="toc-entry toc-h3"><a href="#%E5%9B%9B%E5%BA%A7%E7%9A%87%E5%86%A0%E6%98%8E%E7%8F%A0%E4%BA%A7%E4%B8%9A">四座皇冠明珠产业</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E5%8D%81%E4%B8%80%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E4%B8%89%E4%BA%BA%E9%A6%96%E8%BD%AE">十一、一个完整的三人首轮</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%8D%81%E4%BA%8C%E6%97%B6%E4%BB%A3%E7%BB%93%E6%9D%9F%E4%B8%8E%E8%AE%A1%E5%88%86">十二、时代结束与计分</a> <ul> <li class="toc-entry toc-h3"><a href="#%E6%AF%8F%E4%B8%AA%E6%97%B6%E4%BB%A3%E9%83%BD%E6%89%A7%E8%A1%8C">每个时代都执行</a></li> <li class="toc-entry toc-h3"><a href="#%E7%AC%AC%E4%B8%80%E6%97%B6%E4%BB%A3%E9%A2%9D%E5%A4%96%E6%89%A7%E8%A1%8C">第一时代额外执行</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%8D%81%E4%B8%89%E9%A6%96%E5%B1%80%E9%80%9F%E6%9F%A5">十三、首局速查</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%9B%9E%E5%90%88%E6%A0%B8%E5%AF%B9">回合核对</a></li> <li class="toc-entry toc-h3"><a href="#%E8%A1%8C%E5%8A%A8%E6%A0%B8%E5%AF%B9">行动核对</a></li> <li class="toc-entry toc-h3"><a href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E8%AF%BB">常见误读</a></li> </ul> </li> </ul> </nav> </details> <figure class="article-cover"> <img height="1000" width="1000" class="article-cover__image" src="/assets/posts/202608102107/cover-brass-pittsburgh-official-square.webp" alt="《Brass: Pittsburgh》官方盒面，蒸汽机车穿过匹兹堡工业城市与河岸" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>题图：<a href="https://roxley.com/products/brass-pittsburgh" rel="external nofollow noopener" target="_blank">Roxley《Brass: Pittsburgh》官方产品图</a>，© Roxley Games；依据其<a href="https://roxley.com/pages/media-assets" rel="external nofollow noopener" target="_blank">零售商／内容创作者素材页</a>使用（Roxley retailer/content-creator media use），本站仅转为 WebP。</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <h2 id="一本文范围与规则版本">一、本文范围与规则版本</h2> <p>本文讲解《工业革命：匹兹堡》（<em>Brass: Pittsburgh</em>）当前公开的 <strong>2–4 人多人规则</strong>。第一次学习时，可以按顺序阅读并同步摆桌；熟悉 Brass 系列的读者，可以先看“地图上的三种关系”“特殊连接与皇冠明珠产业”和“首局速查”。</p> <p>游戏仍在制作阶段。Roxley 的下载页把当前文件列为 <strong>2026-06-01</strong>，PDF 页脚写作 <strong><code class="language-plaintext highlighter-rouge">Rulebook v2026.01</code></strong>。官方同时说明，这是一份接近完成的规则稿：粉色文字尚未定稿，单人模式仍在开发，正式翻译会在规则完全定稿后提供。规则稿第 3 页的人物介绍也仍有占位文字。本文只整理文件中已经写明的多人规则，不补写人物传记、单人规则或未公布裁定。</p> <blockquote> <p><strong>规则依据</strong></p> <ul> <li> <a href="https://roxley.com/products/brass-pittsburgh" rel="external nofollow noopener" target="_blank">Roxley 官方产品与下载页</a>；</li> <li> <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">当前公开英文规则书 PDF</a>；</li> <li> <a href="https://gamefound.com/en/projects/roxley/brass-pittsburgh/updates/28" rel="external nofollow noopener" target="_blank">规则书发布说明</a>，用于确认多人范围与未定稿状态。</li> </ul> </blockquote> <p class="article-evidence">后续版本若改动牌面、数值或时点，应以新版官方材料为准。</p> <h2 id="二目标与桌面概览">二、目标与桌面概览</h2> <p>游戏进行 <strong>2 个时代</strong>，每个时代 <strong>8 轮</strong>。第二时代结束后，胜利点最高者获胜；平手时先比较收入轨位置，再比较剩余金钱。</p> <p>主要得分来自：</p> <ul> <li>翻面产业在每个时代末的胜利点；</li> <li>铁路连接在相邻地点取得的连接点；</li> <li>建造资源产业时向市场出售方块；</li> <li>品质奖励与部分产业、管线和重型列车的即时效果。</li> </ul> <p><img decoding="async" loading="lazy" height="1500" width="1132" src="/assets/posts/202608102107/board-setup.webp" alt="三至四人版图上分布着城市产业格、铁路、管线路线、六处资源市场、油田与三块品质奖励"></p> <p><em>图：官方规则书第 4 页的版图设置示例；城市之间是铁路，黑色路线连接油田，内圈与外圈分布不同资源市场。<a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">当前公开规则书</a>，© Roxley Games；本站仅作教学所需裁切与压缩。</em></p> <h3 id="先认版图">先认版图</h3> <ul> <li> <strong>城市地点</strong>：产业格印有允许建造的产业图标；一个格只印一种图标时，该格具有放置优先权。</li> <li> <strong>商人地点</strong>：版图边缘的商人板块标出可出售的产业与一次性奖励。</li> <li> <strong>铁路</strong>：城市与商人之间的蓝灰色线路。轻型列车和重型列车都放在这里。</li> <li> <strong>管线路线</strong>：从油田通向城市的黑色线路。管线只负责让原油离开油田。</li> <li> <strong>资源市场</strong>：版图内部有 3 处煤炭／生铁市场，外沿有 3 处钢材／焦炭市场。</li> <li> <strong>范德比尔特</strong>：版图上的兜底供应商；没有合适的产业或不使用市场时，可以按印出的高价把资源送到任意地点。</li> <li> <strong>进度轨</strong>：同时记录胜利点与收入位置。收入位置下方的钱币数字才是当前收入等级。</li> </ul> <h3 id="再读玩家板与产业板块">再读玩家板与产业板块</h3> <p><img decoding="async" loading="lazy" height="1100" width="1230" src="/assets/posts/202608102107/player-mat.webp" alt="玩家板按煤油、煤炭、制造、焦炭、钢铁五条产业轨排列，并在部分产业之间锁着管线或重型列车"></p> <p><em>图：官方规则书第 5 页的玩家板示例；箭头给出可用产业板块的推进方向，管线与重型列车会随相邻产业解锁。<a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">当前公开规则书</a>，© Roxley Games；本站仅作教学所需裁切与压缩。</em></p> <p>玩家板有五条产业轨：煤油、煤炭、制造、焦炭、钢铁。钢铁轨会分支到摩天大楼，焦炭与制造轨也有捷径。可以建造或发展掉的板块称为<strong>可用板块</strong>：它是该轨最下方的板块，或沿箭头紧接已清空位置的下一块。</p> <p>产业板块有两种状态：</p> <ul> <li> <strong>未翻面</strong>：刚建成，仍有资源或尚未出售；</li> <li> <strong>已翻面</strong>：已经完成产出或销售，立即奖励已经领取，并在时代末按左下角计分。</li> </ul> <p>板块常见区域：</p> <ul> <li>左侧：建造费用，可能包括金钱、资源和收入调整；</li> <li>右上：出售时需要的原油；</li> <li>右侧星形：品质星；</li> <li>右下：翻面时的即时奖励；</li> <li>左下黑色六边形：时代末胜利点；</li> <li>顶部蓝色连接图标：相邻铁路结算时计算的连接点。</li> </ul> <blockquote> <p><strong>扩展理解｜翻面是产业链的完成时点</strong></p> <p>资源产业通常在最后一个方块被取走时翻面；煤油、制成品和汽车通过出售行动翻面；少数高阶产业建成时已经翻面。先判断它属于哪一类，再寻找翻面时点。</p> </blockquote> <h2 id="三三人局设置">三、三人局设置</h2> <h3 id="公共区">公共区</h3> <ol> <li>使用版图的 3–4 人面。洗牌前，只保留右下角含 3 人图标的地点牌与产业牌。</li> <li>随机将 1 块商人板块以金色面朝上放到每个商人地点。</li> <li>洗混当前人数使用的油田板块，背面朝上放到各油田格。</li> <li>洗混 6 块品质奖励，随机翻开 3 块放到版图左下；其余收回盒中。</li> <li>填满 3 处煤炭／生铁市场和 3 处钢材市场。每处焦炭市场只在最上方放 1 个焦炭。</li> <li>将金钱、威士忌、原油桶、煤炭、生铁、钢材和焦炭放在所有人可及处。公共供应视为无限；组件不足时可用其它物品代替。</li> </ol> <h3 id="玩家区与首轮顺序">玩家区与首轮顺序</h3> <p>每位玩家：</p> <ol> <li>选择人物板块的一面，取得对应颜色的玩家板与全部产业板块。</li> <li>将产业按玩家板的对应位置堆好，实色面朝上；没有实色面的板块直接放置。</li> <li>在玩家板印出的管线和重型列车位置放上对应连接板块；把剩余 2 块重型列车、2 块管线和 9 块轻型列车放在个人供应区。</li> <li>取得 <strong>30 美元</strong>，胜利点标记放在 0；收入标记放在进度轨第 10 格，对应收入等级 0。</li> <li>抽 8 张牌作为手牌。仅在第一时代设置时，再抽 1 张牌背面朝上放进自己的弃牌堆。</li> </ol> <p>所有人完成后，洗混人物板块并随机排到行动顺序轨。这个顺序用于第一轮。</p> <h3 id="其他人数">其他人数</h3> <table> <thead> <tr> <th>人数</th> <th>版图</th> <th>牌库筛选</th> <th>额外调整</th> </tr> </thead> <tbody> <tr> <td>2 人</td> <td>2 人面</td> <td>只保留含 2 人图标的牌</td> <td>移除“产 3 桶原油”的油田和“奖励 15 美元”的商人</td> </tr> <tr> <td>3 人</td> <td>3–4 人面</td> <td>只保留含 3 人图标的牌</td> <td>无</td> </tr> <tr> <td>4 人</td> <td>3–4 人面</td> <td>只保留含 4 人图标的牌</td> <td>无</td> </tr> </tbody> </table> <p>油田板块的适用人数也印在版图两面的底部，设置时按当前版图面取用。</p> <h2 id="四时代轮次与玩家回合">四、时代、轮次与玩家回合</h2> <p><img decoding="async" loading="lazy" height="1500" width="1417" src="/assets/posts/202608102107/turn-flow.webp" alt="官方流程页并列展示两时代八轮、玩家行动、轮末顺序调整、收入与破产处理"></p> <p><em>图：官方规则书第 6 页的流程摘要；花费较少者下一轮更早行动，收入按标记所在位置下方的钱币数字结算。<a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">当前公开规则书</a>，© Roxley Games；本站仅作教学所需裁切与压缩。</em></p> <h3 id="一个玩家回合">一个玩家回合</h3> <p>通常按以下顺序进行：</p> <ol> <li>选择并完成第 1 个行动，正面朝上弃 1 张牌。</li> <li>选择并完成第 2 个行动，再弃 1 张牌。两个行动可以相同。</li> <li>两个行动都完成后，从牌库补到 8 张；牌库耗尽后不再补牌，手牌会逐轮减少。</li> </ol> <p>唯一的轮次例外是<strong>第一时代第 1 轮</strong>：每位玩家只执行 1 个行动，然后补牌。</p> <p>六种行动是：</p> <table> <thead> <tr> <th>行动</th> <th>主要结果</th> <th>弃牌要求</th> </tr> </thead> <tbody> <tr> <td>建造</td> <td>从玩家板取 1 块产业放到版图</td> <td>地点牌、产业牌，或任意牌加 1 威士忌</td> </tr> <tr> <td>网络</td> <td>放置 1 块连接；可额外付 10 美元再放 1 块</td> <td>任意牌</td> </tr> <tr> <td>发展</td> <td>从玩家板永久移除 1–2 块可用产业</td> <td>任意牌</td> </tr> <tr> <td>出售</td> <td>一次出售 1 块或多块合格产业</td> <td>任意牌</td> </tr> <tr> <td>贷款</td> <td>取得 30 美元，收入下降 3 个等级</td> <td>任意牌</td> </tr> <tr> <td>跳过</td> <td>取得 1 威士忌</td> <td>任意牌</td> </tr> </tbody> </table> <p>“跳过”仍是一次行动，因此也要弃牌。摩天大楼给出的奖励出售行动是明确例外，不弃牌。</p> <h3 id="一轮结束">一轮结束</h3> <p>所有玩家完成回合后：</p> <ol> <li>比较本轮放在人物板块上的花费。花费最少者排在下一轮最左侧，最多者排在最右侧；相同花费保持原来的相对顺序。</li> <li>把这些花费退回公共供应区。</li> <li>每位玩家按当前收入等级拿钱；负收入则向公共供应区付款。全局最后一轮不执行收入步骤。</li> </ol> <p>凡是在自己回合中支付的金钱，包括市场、范德比尔特和第二块连接的 10 美元，都应放到人物板块上，供轮末排序。</p> <h3 id="无法支付负收入">无法支付负收入</h3> <p>若无法支付负收入，仍可继续游戏，但依次：</p> <ol> <li>归还自己全部威士忌；</li> <li>失去 40 胜利点，允许降到 0 以下；</li> <li>把收入标记移回收入等级 0，也就是进度轨第 10 格。</li> </ol> <h2 id="五地图上的三种关系">五、地图上的三种关系</h2> <h3 id="个人网络">个人网络</h3> <p>规则中的“地点”只指至少接有一条铁路线的城市或商人地点，油田不算地点。</p> <p>一个地点在满足以下任一条件时属于你的<strong>个人网络</strong>：</p> <ul> <li>地点内有你的产业板块；</li> <li>地点与至少一块你的连接板块相邻。</li> </ul> <p>产业牌建造和后续网络扩张会检查个人网络。地点牌可以绕过这个限制，直接在牌面地点建造。</p> <h3 id="两个地点连通">两个地点连通</h3> <p>两个地点之间只要存在一条连续铁路路线，就彼此<strong>连通</strong>。路线可以混用任何玩家的轻型或重型列车。管线不建立地点之间的连通。</p> <p>因此，“属于你的网络”和“能够运输”是两项不同检查：前者看你的产业与连接，后者看桌上所有连续铁路。</p> <blockquote> <p><strong>扩展理解｜基础设施可以共用，经营权仍各自保留</strong></p> <p>对手的铁路可以运送你的资源，对手未翻面的资源产业也可能被你优先取用；铁路计分、产业翻面奖励和收入仍归组件所有者。这条共享关系是整局互动的核心。</p> </blockquote> <h3 id="资源运输与来源优先级">资源运输与来源优先级</h3> <p><img decoding="async" loading="lazy" height="1500" width="1020" src="/assets/posts/202608102107/resource-transport.webp" alt="煤炭、生铁、钢材和焦炭沿连续铁路运输，并按产业、市场、重型列车或范德比尔特选择来源；原油离开油田时必须先经过管线"></p> <p><em>图：官方规则书第 7 页的资源运输说明；产业资源具有强制优先级，管线不能运送资源方块。<a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">当前公开规则书</a>，© Roxley Games；本站仅作教学所需裁切与压缩。</em></p> <p>煤炭、生铁、钢材和焦炭都可以沿连续铁路运输任意距离。每需要 1 个方块，就单独检查一次来源：</p> <ol> <li> <strong>先看连通的未翻面产业</strong>。若任意玩家的产业里有需要的方块，就必须从其中一块免费取用，不能改买市场或范德比尔特。</li> <li>没有可用产业时，可以从连通市场按印出的价格购买、使用自己连通的资源型重型列车，或按范德比尔特的价格送到任意地点。</li> </ol> <p>同一笔费用中的不同方块可以来自不同来源。资源从产业取走后，如果最后一个方块被移除，立即翻面该产业并让所有者领取右下角奖励。</p> <p>原油多一层限制：从油田取出的原油必须先通过一条可运输原油的管线离开油田，再沿连续铁路抵达使用地点。原油经过管线时，管线所有者立即按类型取得奖励。预备管线不能运输原油。若原油已经储存在自己的资源型重型列车上，则按该列车的特例供自己使用，并沿铁路送往需要的位置。</p> <h2 id="六建造行动">六、建造行动</h2> <h3 id="选择弃牌与地点">选择弃牌与地点</h3> <p>建造时先确定牌的作用：</p> <ul> <li> <strong>地点牌</strong>：在牌面地点建造允许的任意产业，不要求该地点属于个人网络；</li> <li> <strong>产业牌</strong>：在个人网络内建造对应产业；若自己在版图上还没有任何产业或连接，可以在任意允许地点建造；</li> <li> <strong>任意牌加 1 威士忌</strong>：把该牌当作任意地点牌或产业牌。</li> </ul> <p>然后从对应产业轨选择 1 块可用板块。放置时：</p> <ol> <li>地点若有一个空格只印该产业图标，必须优先放到该格；否则可以使用印有多个图标的空格。</li> <li>第一时代，同一玩家在一个地点最多有 1 块产业；第二时代解除限制。</li> <li>带半圆时代标记的产业只在第一时代建造，带完整圆形标记的产业只在第二时代建造。</li> </ol> <h3 id="支付与升级">支付与升级</h3> <p>按板块左侧支付金钱、资源和收入调整，顺序由当前玩家决定。需要资源时遵循上一节的运输与来源优先级。</p> <p>费用中带升级图标的板块只能通过升级建造：</p> <ul> <li>被替换产业必须属于自己；</li> <li>它必须已经翻面；</li> <li>立即移除旧产业并结算其胜利点；</li> <li>新产业放到原格，不能放进空格。</li> </ul> <h3 id="放置资源与自动卖给市场">放置资源与自动卖给市场</h3> <p>建成后，按板块右下角放上资源方块或原油桶。若煤炭、生铁、钢材或焦炭产业与仍有空格的同类市场连通，资源会在建造当下自动出售：</p> <ol> <li>尽量把资源移入一个或多个连通市场，市场顺序由建造者决定；</li> <li>每放入 1 个方块，取得市场旁印出的金钱，以及该格印出的胜利点；</li> <li>最后一个资源离开产业时，翻面并领取奖励；无法进入市场的资源留在产业上。</li> </ol> <p>这次自动出售只发生在产业建成的瞬间。以后市场出现空格时，留存资源不会自动移动。</p> <p>少数产业建成时已经翻面：立即处理右下角奖励，但左下角胜利点仍等到时代末；通过升级被移除时才提前计分。</p> <h2 id="七网络行动">七、网络行动</h2> <p><img decoding="async" loading="lazy" height="1500" width="952" src="/assets/posts/202608102107/network-action.webp" alt="网络行动依次放置轻型列车、重型列车或管线；管线会增加油田产量，额外支付 10 美元可在同一行动放第二块连接"></p> <p><em>图：官方规则书第 9 页的网络行动与油田示例；第一条连接可以为同一行动中的第二条连接提供新路线或资源。<a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">当前公开规则书</a>，© Roxley Games；本站仅作教学所需裁切与压缩。</em></p> <p>执行网络行动：</p> <ol> <li>弃任意 1 张牌。</li> <li>从个人供应区选 1 块已经解锁的连接，放到对应的空线路。</li> <li>新连接必须邻接个人网络中的地点。若自己在版图上还没有任何组件，可以放到任意合适的空线路。</li> <li>支付该连接的资源费用；铁路若覆盖威士忌、收入或免费发展图标，立即取得奖励。</li> </ol> <p>三类基础连接：</p> <table> <thead> <tr> <th>连接</th> <th>基础费用</th> <th>用途与时代处理</th> </tr> </thead> <tbody> <tr> <td>轻型列车</td> <td>1 煤炭</td> <td>运送方块和原油；每个时代末计分后移除</td> </tr> <tr> <td>重型列车</td> <td>2 钢材</td> <td>同样运输；建成时有专属奖励，第一时代末保留</td> </tr> <tr> <td>管线</td> <td>1 生铁</td> <td>连接城市与油田；不运输方块，不参与铁路计分</td> </tr> </tbody> </table> <p>放好第一块后，可以额外支付 <strong>10 美元</strong>，在同一行动中再放 1 块任意类型的连接，并再次支付对应资源。先完整结算第一块；它新建的路线、产生的资源和触发的奖励都可以帮助建第二块。第二块连接不再弃一张牌。</p> <h3 id="管线与油田">管线与油田</h3> <ul> <li>管线路线上印有原油桶时，立即把对应数量加到所连接的油田。</li> <li>第一条连接某油田的管线建成后，翻开油田板块并领取左侧奖励。</li> <li>若在第一时代翻开，油田板块留在原处；第一时代末再把右侧数量的原油加入油田。</li> <li>若在第二时代翻开，立即加入右侧原油，然后把油田板块移到版图底部对应位置。</li> </ul> <h2 id="八发展贷款与跳过">八、发展、贷款与跳过</h2> <h3 id="发展">发展</h3> <ol> <li>弃任意 1 张牌。</li> <li>从玩家板永久移除 1 块或 2 块可用产业；可以来自不同产业轨。</li> <li>每移除 1 块，支付 1 生铁或 1 钢材。资源仍按运输优先级取得；没有可连通来源时，可按范德比尔特价格送达。</li> </ol> <p>被发展掉的板块本局不再使用。发展常用于跳过低阶产业，或解锁压在产业之间的管线与重型列车；连接一旦变为可用，立即移入个人供应区。</p> <h3 id="贷款">贷款</h3> <ol> <li>弃任意 1 张牌。</li> <li>取得 30 美元。</li> <li>收入下降 <strong>3 个等级</strong>，并把标记放到新等级的最高格。</li> </ol> <p>贷款不会偿还。若这次下降会让收入低于 −10，就不能贷款。收入“增加”通常按格数前进，收入“下降”按等级后退，二者不要混用。</p> <h3 id="跳过与威士忌">跳过与威士忌</h3> <p>弃任意 1 张牌，取得 1 威士忌。每位玩家最多持有 3 个，超过部分忽略。威士忌有两种用途：</p> <ul> <li>建造时把任意牌变成任意地点牌或产业牌；</li> <li>出售时每支付 1 个，为本次品质奖励增加 1 颗品质星。</li> </ul> <h2 id="九出售行动">九、出售行动</h2> <p><img decoding="async" loading="lazy" height="1500" width="944" src="/assets/posts/202608102107/sell-action.webp" alt="出售行动选择一个或多个煤油、制成品或汽车产业，输送所需原油，结算商人与品质奖励后翻面产业"></p> <p><em>图：官方规则书第 9 页的出售流程；品质星可以跨本次出售的多个产业合计，每次出售最多领取 1 块品质奖励。<a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">当前公开规则书</a>，© Roxley Games；本站仅作教学所需裁切与压缩。</em></p> <p>出售只处理三类未翻面产业：</p> <ul> <li>煤油精炼厂；</li> <li>制成品；</li> <li>汽车制造厂。</li> </ul> <p>依次执行：</p> <ol> <li>弃任意 1 张牌。</li> <li>选择 1 块或多块自己的未翻面可出售产业。每块都必须与显示相应产业图标的正面商人板块连通。</li> <li>按每块产业右上角的数量提供原油。直接从油田取油时，原油必须先走管线；每桶经过管线时，管线所有者领取一次印出奖励。结算完后把原油放回公共供应。</li> <li>对本次使用的每块正面商人板块，领取其奖励，再翻到背面。</li> <li>可选结算 1 块品质奖励：合计本次出售产业上的品质星；每花 1 威士忌再加 1 星。达到或超过一块正面品质奖励的门槛时，领取该板块及奖励，然后翻面。一次出售最多领取 1 块。</li> <li>翻面所有已出售产业，立即领取右下角奖励。左下角胜利点留到时代末。</li> </ol> <p>煤炭、生铁、钢材和焦炭产业靠资源耗尽翻面，不使用出售行动。</p> <blockquote> <p><strong>扩展理解｜一次出售由三条链共同成立</strong></p> <p>产业到商人的铁路负责“可出售”，油田到产业的“管线＋铁路”负责原油，品质星只计算本次选中的产业。三条链分别检查，缺少其中一条不会由另外两条补足。</p> </blockquote> <h2 id="十特殊连接与皇冠明珠产业">十、特殊连接与皇冠明珠产业</h2> <p><img decoding="async" loading="lazy" height="1500" width="1078" src="/assets/posts/202608102107/special-industries.webp" alt="四类重型列车和四座皇冠明珠产业的官方规则摘要，包括资源列车、替换列车、石油城、机车厂、多相交流发电机和摩天大楼"></p> <p><em>图：官方规则书第 10 页的重型列车与皇冠明珠产业摘要；这些组件改写普通建造、运输或时代计分规则。<a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">当前公开规则书</a>，© Roxley Games；本站仅作教学所需裁切与压缩。</em></p> <h3 id="四类重型列车">四类重型列车</h3> <ul> <li> <strong>资源型</strong>：建成时按图放上焦炭、钢材或原油。这些资源不会自动卖给市场，只有列车所有者可以免费使用，并仍须沿铁路运输。钢材型列车上的钢材不能支付建造它自己的费用。</li> <li> <strong>威士忌型</strong>：建成时取得 1 威士忌。</li> <li> <strong>双倍连接型</strong>：时代末，这条铁路从相邻地点取得的连接胜利点翻倍。</li> <li> <strong>替换型</strong>：可以替换对手的轻型列车。被替换的列车先立即为原所有者计分并返回其供应区，再放入替换型列车。</li> </ul> <h3 id="四类管线">四类管线</h3> <ul> <li> <strong>收入管线</strong>：每有 1 桶原油通过，所有者按图增加收入；</li> <li> <strong>金钱管线</strong>：每桶取得印出的金钱；</li> <li> <strong>胜利点管线</strong>：每桶取得印出的胜利点；</li> <li> <strong>预备管线</strong>：建成时向油田增加 1 桶原油，但任何玩家都不能通过它运油。所有者以后建管线时，可以用个人供应区另一块管线替换它，并收回预备管线。</li> </ul> <h3 id="四座皇冠明珠产业">四座皇冠明珠产业</h3> <ul> <li> <strong>石油城（Oil City）</strong>：第二时代使用指定煤油牌，直接建在已经有管线连接的油田上。把油田现有全部原油和额外 3 桶放到石油城；任何玩家都可经连通管线取用。最后一桶被取走时翻面并奖励 25 美元。</li> <li> <strong>多相交流发电机（Polyphase Alternator）</strong>：以升级煤炭产业建造，落地已翻面，立即取得当前收入两倍的金钱；时代末按玩家板空产业格数量计分。</li> <li> <strong>机车厂（Locomotive Works）</strong>：第二时代升级制造业，落地已翻面并提供 3 次免费发展；时代末每块自己建造的重型列车值 4 分。</li> <li> <strong>摩天大楼（Skyscraper）</strong>：落地已翻面，并提供一次可选的奖励出售行动；不弃牌，若使用必须立即完成。</li> </ul> <p>皇冠明珠产业仍遵守升级的一般条件：被升级的产业属于自己且已经翻面。</p> <h2 id="十一一个完整的三人首轮">十一、一个完整的三人首轮</h2> <p>以下例子不固定产业板块上的具体金额，只演示第一轮的合法顺序与规则连接。假设三位玩家依次为甲、乙、丙。</p> <ol> <li> <strong>甲建造煤炭产业。</strong>甲弃 1 张匹兹堡地点牌，在匹兹堡的煤炭格放入当前可用煤炭板块，按左侧费用付款并放上煤炭。甲拥有产业后，匹兹堡成为甲个人网络的一部分。若此时没有连通的煤炭市场，煤炭留在板块上。</li> <li> <strong>乙铺轻型列车。</strong>乙在版图上尚无组件，可以把第一条铁路放到任意空铁路。乙选择一条邻接匹兹堡的线路。放好后要支付 1 煤炭；甲的未翻面煤炭产业已经连通并有煤炭，因此乙必须优先免费取用其中 1 个，不能改向范德比尔特购买。</li> <li> <strong>丙贷款。</strong>丙弃任意牌，取得 30 美元，收入下降 3 个等级。贷款本身没有花钱，因此丙的人物板块上仍是 0 美元。</li> </ol> <p>第一时代第 1 轮每人只做这 1 个行动，随后各自补回 8 张手牌。轮末先比较花费：丙以 0 美元排到下一轮前方；甲、乙按实际花费从少到多排列，若相同则保持先后。所有人再按收入等级拿钱或付款。</p> <p>这个首轮已经建立三条后续路线：甲可以等待对手继续消耗煤炭并争取翻面；乙有了个人网络，可以用产业牌建造；丙用行动顺序与现金换取了较低的长期收入。</p> <h2 id="十二时代结束与计分">十二、时代结束与计分</h2> <p><img decoding="async" loading="lazy" height="1500" width="997" src="/assets/posts/202608102107/era-scoring-example.webp" alt="第一时代结算示例在各条铁路旁标出相邻地点连接点，并标记要移除的轻型列车与一级产业"></p> <p><em>图：官方规则书第 11 页的第一时代计分示例；轻型列车计分后移除，重型列车和管线保留，未翻面的产业不计分。<a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">当前公开规则书</a>，© Roxley Games；本站仅作教学所需裁切与压缩。</em></p> <p>当所有玩家在同一轮用完手中最后的牌，该轮完成后时代结束。先照常处理轮末顺序与收入；只有全局最后一轮跳过收入。然后按以下顺序结算。</p> <h3 id="每个时代都执行">每个时代都执行</h3> <ol> <li> <strong>铁路计分</strong>：自己的每块轻型或重型列车，按两端相邻地点印出的连接点各得 1 分。双倍连接型重型列车按其特例翻倍。</li> <li> <strong>移除列车</strong>：第一时代只移除已经计分的轻型列车，重型列车留下；第二时代移除全部列车。管线始终留在版图上且不计连接分。</li> <li> <strong>产业计分</strong>：每块已翻面产业按左下角得分，未翻面产业不得分。</li> </ol> <h3 id="第一时代额外执行">第一时代额外执行</h3> <ol> <li>移除版图上所有一级产业，无论是否翻面。</li> <li>把每块油田板块下方等待生产的原油移到油田上。</li> <li>收集所有弃牌堆；翻转各弃牌堆最下面那张牌，使所有牌方向一致，再洗成第二时代牌库。每位玩家抽 8 张。</li> </ol> <p>未被移除的二级以上产业与重型列车继续留在版图上。它们若保持合格状态，会在第二时代末再次计分。</p> <p>第二时代完成同样的铁路与产业计分后，胜利点最高者获胜；平手先比较收入轨上更高的位置，再比较剩余金钱。</p> <blockquote> <p><strong>扩展理解｜时代转换保留的是长期资本</strong></p> <p>第一时代会清掉轻型列车和一级产业，重型列车、管线及高阶产业继续存在。首个时代的投入应同时考虑眼前计分、第二时代可复用性和被清除的风险。</p> </blockquote> <h2 id="十三首局速查">十三、首局速查</h2> <h3 id="回合核对">回合核对</h3> <ol> <li>本轮是否为第一时代第 1 轮？是则只做 1 个行动，否则做 2 个。</li> <li>每个行动是否已经弃 1 张牌？建造时弃牌是否匹配地点或产业？</li> <li>所有金钱花费是否放到人物板块上？</li> <li>回合结束后是否补到 8 张手牌？</li> <li>轮末是否先按花费调整顺序，再结算收入？</li> </ol> <h3 id="行动核对">行动核对</h3> <ul> <li> <strong>建造</strong>：可用板块、地点空格、时代标记、个人网络、费用、资源放置、市场自动出售；</li> <li> <strong>网络</strong>：连接已解锁、线路类型正确、邻接个人网络、支付资源、线路奖励；</li> <li> <strong>发展</strong>：只移除可用板块，每块支付 1 生铁或钢材；</li> <li> <strong>出售</strong>：产业可出售、商人图标匹配、原油路线成立、商人与品质奖励翻面、产业最后翻面；</li> <li> <strong>贷款</strong>：收入下降 3 个等级且不会低于 −10；</li> <li> <strong>跳过</strong>：弃 1 张牌，威士忌不超过 3 个。</li> </ul> <h3 id="常见误读">常见误读</h3> <ul> <li>个人网络只看自己的组件；资源运输可以使用任何玩家的连续铁路。</li> <li>若有连通产业提供所需方块，必须先取产业资源。</li> <li>管线不能运输煤炭、生铁、钢材或焦炭；油田原油离开时必须先走管线。</li> <li>资源建成时自动卖市场只结算一次；之后不会因市场空出而自动移动。</li> <li>出售行动翻面产业并领取即时奖励，产业胜利点仍在时代末结算。</li> <li>第二块连接属于同一个网络行动：额外付 10 美元与资源，不多弃一张牌。</li> <li>收入增加按“格”前进，贷款等收入下降按“等级”后退。</li> <li>第一时代末移除轻型列车和全部一级产业；重型列车、管线和高阶产业保留。</li> <li>当前公开规则稿仍可能改动。遇到新版规则书、牌面或官方澄清不一致时，采用更新材料。</li> </ul> </div> </article> <aside class="article-side-toc"> <nav aria-label="文章章节" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#%E4%B8%80%E6%9C%AC%E6%96%87%E8%8C%83%E5%9B%B4%E4%B8%8E%E8%A7%84%E5%88%99%E7%89%88%E6%9C%AC">一、本文范围与规则版本</a></li> <li class="toc-entry toc-h2"> <a href="#%E4%BA%8C%E7%9B%AE%E6%A0%87%E4%B8%8E%E6%A1%8C%E9%9D%A2%E6%A6%82%E8%A7%88">二、目标与桌面概览</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%85%88%E8%AE%A4%E7%89%88%E5%9B%BE">先认版图</a></li> <li class="toc-entry toc-h3"><a href="#%E5%86%8D%E8%AF%BB%E7%8E%A9%E5%AE%B6%E6%9D%BF%E4%B8%8E%E4%BA%A7%E4%B8%9A%E6%9D%BF%E5%9D%97">再读玩家板与产业板块</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E4%B8%89%E4%B8%89%E4%BA%BA%E5%B1%80%E8%AE%BE%E7%BD%AE">三、三人局设置</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%85%AC%E5%85%B1%E5%8C%BA">公共区</a></li> <li class="toc-entry toc-h3"><a href="#%E7%8E%A9%E5%AE%B6%E5%8C%BA%E4%B8%8E%E9%A6%96%E8%BD%AE%E9%A1%BA%E5%BA%8F">玩家区与首轮顺序</a></li> <li class="toc-entry toc-h3"><a href="#%E5%85%B6%E4%BB%96%E4%BA%BA%E6%95%B0">其他人数</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%9B%9B%E6%97%B6%E4%BB%A3%E8%BD%AE%E6%AC%A1%E4%B8%8E%E7%8E%A9%E5%AE%B6%E5%9B%9E%E5%90%88">四、时代、轮次与玩家回合</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%B8%80%E4%B8%AA%E7%8E%A9%E5%AE%B6%E5%9B%9E%E5%90%88">一个玩家回合</a></li> <li class="toc-entry toc-h3"><a href="#%E4%B8%80%E8%BD%AE%E7%BB%93%E6%9D%9F">一轮结束</a></li> <li class="toc-entry toc-h3"><a href="#%E6%97%A0%E6%B3%95%E6%94%AF%E4%BB%98%E8%B4%9F%E6%94%B6%E5%85%A5">无法支付负收入</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E4%BA%94%E5%9C%B0%E5%9B%BE%E4%B8%8A%E7%9A%84%E4%B8%89%E7%A7%8D%E5%85%B3%E7%B3%BB">五、地图上的三种关系</a> <ul> <li class="toc-entry toc-h3"><a href="#%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%BB%9C">个人网络</a></li> <li class="toc-entry toc-h3"><a href="#%E4%B8%A4%E4%B8%AA%E5%9C%B0%E7%82%B9%E8%BF%9E%E9%80%9A">两个地点连通</a></li> <li class="toc-entry toc-h3"><a href="#%E8%B5%84%E6%BA%90%E8%BF%90%E8%BE%93%E4%B8%8E%E6%9D%A5%E6%BA%90%E4%BC%98%E5%85%88%E7%BA%A7">资源运输与来源优先级</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%85%AD%E5%BB%BA%E9%80%A0%E8%A1%8C%E5%8A%A8">六、建造行动</a> <ul> <li class="toc-entry toc-h3"><a href="#%E9%80%89%E6%8B%A9%E5%BC%83%E7%89%8C%E4%B8%8E%E5%9C%B0%E7%82%B9">选择弃牌与地点</a></li> <li class="toc-entry toc-h3"><a href="#%E6%94%AF%E4%BB%98%E4%B8%8E%E5%8D%87%E7%BA%A7">支付与升级</a></li> <li class="toc-entry toc-h3"><a href="#%E6%94%BE%E7%BD%AE%E8%B5%84%E6%BA%90%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8D%96%E7%BB%99%E5%B8%82%E5%9C%BA">放置资源与自动卖给市场</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E4%B8%83%E7%BD%91%E7%BB%9C%E8%A1%8C%E5%8A%A8">七、网络行动</a> <ul> <li class="toc-entry toc-h3"><a href="#%E7%AE%A1%E7%BA%BF%E4%B8%8E%E6%B2%B9%E7%94%B0">管线与油田</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%85%AB%E5%8F%91%E5%B1%95%E8%B4%B7%E6%AC%BE%E4%B8%8E%E8%B7%B3%E8%BF%87">八、发展、贷款与跳过</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%8F%91%E5%B1%95">发展</a></li> <li class="toc-entry toc-h3"><a href="#%E8%B4%B7%E6%AC%BE">贷款</a></li> <li class="toc-entry toc-h3"><a href="#%E8%B7%B3%E8%BF%87%E4%B8%8E%E5%A8%81%E5%A3%AB%E5%BF%8C">跳过与威士忌</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E4%B9%9D%E5%87%BA%E5%94%AE%E8%A1%8C%E5%8A%A8">九、出售行动</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%8D%81%E7%89%B9%E6%AE%8A%E8%BF%9E%E6%8E%A5%E4%B8%8E%E7%9A%87%E5%86%A0%E6%98%8E%E7%8F%A0%E4%BA%A7%E4%B8%9A">十、特殊连接与皇冠明珠产业</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%9B%9B%E7%B1%BB%E9%87%8D%E5%9E%8B%E5%88%97%E8%BD%A6">四类重型列车</a></li> <li class="toc-entry toc-h3"><a href="#%E5%9B%9B%E7%B1%BB%E7%AE%A1%E7%BA%BF">四类管线</a></li> <li class="toc-entry toc-h3"><a href="#%E5%9B%9B%E5%BA%A7%E7%9A%87%E5%86%A0%E6%98%8E%E7%8F%A0%E4%BA%A7%E4%B8%9A">四座皇冠明珠产业</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#%E5%8D%81%E4%B8%80%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E4%B8%89%E4%BA%BA%E9%A6%96%E8%BD%AE">十一、一个完整的三人首轮</a></li> <li class="toc-entry toc-h2"> <a href="#%E5%8D%81%E4%BA%8C%E6%97%B6%E4%BB%A3%E7%BB%93%E6%9D%9F%E4%B8%8E%E8%AE%A1%E5%88%86">十二、时代结束与计分</a> <ul> <li class="toc-entry toc-h3"><a href="#%E6%AF%8F%E4%B8%AA%E6%97%B6%E4%BB%A3%E9%83%BD%E6%89%A7%E8%A1%8C">每个时代都执行</a></li> <li class="toc-entry toc-h3"><a href="#%E7%AC%AC%E4%B8%80%E6%97%B6%E4%BB%A3%E9%A2%9D%E5%A4%96%E6%89%A7%E8%A1%8C">第一时代额外执行</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#%E5%8D%81%E4%B8%89%E9%A6%96%E5%B1%80%E9%80%9F%E6%9F%A5">十三、首局速查</a> <ul> <li class="toc-entry toc-h3"><a href="#%E5%9B%9E%E5%90%88%E6%A0%B8%E5%AF%B9">回合核对</a></li> <li class="toc-entry toc-h3"><a href="#%E8%A1%8C%E5%8A%A8%E6%A0%B8%E5%AF%B9">行动核对</a></li> <li class="toc-entry toc-h3"><a href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E8%AF%BB">常见误读</a></li> </ul> </li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="zh-CN" data-loading-text="正在加载评论……" data-retry-text="重新加载" data-error-text="评论暂时无法加载；你可以重试，或使用上方 GitHub Discussions 链接。" data-auto-load-enabled-text="已开启自动加载评论。" data-auto-load-disabled-text="已关闭自动加载评论。" data-auto-load-unavailable-text="浏览器无法保存自动加载设置；你仍可手动显示评论。" aria-labelledby="page-comments-title-zh"> <h2 id="page-comments-title-zh">评论</h2> <p class="page-comments__introduction"> 评论公开保存在 <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>。只有在你手动显示评论或开启自动加载后，本页才会连接 giscus.app 与 GitHub，并发送当前页面路径。首次加载约 0.13 MB，实际用量随评论内容变化。请勿留下私人信息。 </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>显示评论（首次约 0.13 MB）</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-zh" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-zh" class="page-comments__auto-load-label">在本站自动加载评论</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">请启用 JavaScript 后选择上方按钮显示评论，或使用上方 GitHub Discussions 链接。</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="输入关键词开始搜索。" data-no-results="没有找到匹配内容。" data-missing-translation="这篇内容目前没有中文版本，已回到中文随笔索引。"> <div class="search-dialog__header"> <h2 id="search-title">搜索本站</h2> <button id="search-close" class="icon-button" type="button" aria-label="关闭搜索"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">搜索本站</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="搜索随笔、项目、论文或小玩意"> <p id="search-status" class="search-status" aria-live="polite">输入关键词开始搜索。</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+      
+      {
+        "title": "《工业革命：匹兹堡》规则教学：从摆桌到第一次时代结算",
+        "description": "按真实开局顺序讲清摆桌、资源运输、六种行动、特殊产业与时代结算，并标出当前公开规则稿仍未定稿的边界。",
+        "tags": ["桌游","规则教学","Brass: Pittsburgh"],
+        "url": "/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "与珍珠鸟建立信任：从行为研究推导可检验训练流程",
+        "description": "根据珍珠鸟的社会关系、应激反应、个体差异和联结学习研究，建立个体基线，并用主动接近与恢复时间检验训练效果。",
+        "tags": ["珍珠鸟","动物福利"],
+        "url": "/posts/%E4%B8%8E%E7%8F%8D%E7%8F%A0%E9%B8%9F%E5%BB%BA%E7%AB%8B%E4%BF%A1%E4%BB%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四种颜色的外套：按用途减少重复购买",
+        "description": "用砖红、米黄、橄榄绿和炭灰覆盖四种外套用途，再按穿着场景、版型、现有搭配和清洁收纳成本筛选款式。",
+        "tags": ["穿搭","色彩"],
+        "url": "/posts/%E5%9B%9B%E7%A7%8D%E9%A2%9C%E8%89%B2%E7%9A%84%E5%A4%96%E5%A5%97%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "小厨房的最小系统：用常做的饭确定工具、库存与清洁收尾",
+        "description": "从三顿常做的饭检查工具、库存和清洁收尾，用四个购买问题减少闲置物品，并说明食品安全信息的权威查询入口。",
+        "tags": ["厨房","个人系统"],
+        "url": "/posts/%E5%B0%8F%E5%8E%A8%E6%88%BF%E7%9A%84%E6%9C%80%E5%B0%8F%E7%B3%BB%E7%BB%9F/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "从能运行到可维护：Minecraft 服务器的最小运维闭环",
+        "description": "把 Java 兼容性、专用账户、受控启动、最小暴露、备份恢复、升级演练和监控串成一条小型服务器运维闭环；示例不包含私人端口、账号或玩家标识。",
+        "tags": ["Minecraft","服务器运维"],
+        "url": "/posts/Minecraft%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%9C%80%E5%B0%8F%E8%BF%90%E7%BB%B4%E9%97%AD%E7%8E%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "《SETI》桌游规则：从摆桌到完成第一局",
+        "description": "依照实际游玩顺序，用官方图片串联摆桌、回合、行动、轮次结束与计分；适合边读边开局，末尾另收扩展与促销牌。",
+        "tags": ["桌游","规则教学","SETI"],
+        "url": "/posts/SETI%E6%A1%8C%E6%B8%B8%E8%A7%84%E5%88%99-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E5%AE%8C%E6%88%90%E7%AC%AC%E4%B8%80%E5%B1%80/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《大创造时代》资源-分值量化计算思路",
+        "description": "用跨轮迭代估算金币、工具、书、学者、学科进度、航海和建筑收益，把当前兑换和未来产出放进同一尺度；适合检查中长期规划。",
+        "tags": ["大创造时代","桌游"],
+        "url": "/posts/%E5%A4%A7%E5%88%9B%E9%80%A0%E6%97%B6%E4%BB%A3-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《特鲁瓦》资源-分值量化分析攻略",
+        "description": "把影响力、事件、骰子、活动牌和金钱放到同一价值框架，说明共享骰池怎样改变随机资源的价格；适合比较跨系统行动，补足单卡点评缺少的全局尺度。",
+        "tags": ["特鲁瓦","桌游"],
+        "url": "/posts/%E7%89%B9%E9%B2%81%E7%93%A6-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "《盖亚计划》资源-分值量化计算思路",
+        "description": "把信用点、矿石、知识、Q.I.C.、建筑收益和胜利分换到近似统一尺度，再逐种族检查例外，为经验打法提供一套可复算的宏观规划基准。",
+        "tags": ["盖亚计划","桌游"],
+        "url": "/posts/%E7%9B%96%E4%BA%9A%E8%AE%A1%E5%88%92-%E8%B5%84%E6%BA%90-%E5%88%86%E5%80%BC%E9%87%8F%E5%8C%96%E8%AE%A1%E7%AE%97%E6%80%9D%E8%B7%AF/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "了解游泳",
+        "description": "从安全入水、漂浮与呼吸开始，按蛙泳腿、手、配合和距离进阶练到 50 米；同时解释浮力、阻力与遇险处置的可靠边界。",
+        "tags": ["游泳"],
+        "url": "/posts/%E4%BA%86%E8%A7%A3%E6%B8%B8%E6%B3%B3/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "逻辑对决桌游攻略",
+        "description": "基于近 500 局 BGA 实战，把问题选择写成候选集划分，并连到数字推理、先后手与终局攻防；比记固定问题评级更能迁移到新局面。",
+        "tags": ["逻辑对决","桌游"],
+        "url": "/posts/%E9%80%BB%E8%BE%91%E5%AF%B9%E5%86%B3%E6%A1%8C%E6%B8%B8%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "四季物语量化分析攻略",
+        "description": "用统一分值估算能量、召唤等级、晶化、卡牌和骰子行动，再把资源约束、轮抽和对抗放回实战；比单张卡牌评级更适合回答“此刻哪种选择更值”。",
+        "tags": ["四季物语","桌游"],
+        "url": "/posts/%E5%9B%9B%E5%AD%A3%E7%89%A9%E8%AF%AD%E9%87%8F%E5%8C%96%E5%88%86%E6%9E%90%E6%94%BB%E7%95%A5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "装机记录",
+        "description": "以 R5 5600 + RX 6600 XT 实际装机为例，把需求、部件取舍、价格和组装问题放在同一份记录中，展示预算如何一步步变成平衡配置。",
+        "tags": ["装机"],
+        "url": "/posts/%E8%A3%85%E6%9C%BA%E8%AE%B0%E5%BD%95/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "制作一张匹配形状的字符画",
+        "description": "从平均灰度匹配推进到字符形状匹配，给出字符模板、局部比较、直方图均衡和灰度一致性实现，适合想让轮廓更贴近原图的读者。",
+        "tags": ["NoneBot","Python","字符画"],
+        "url": "/posts/%E5%88%B6%E4%BD%9C%E4%B8%80%E5%BC%A0%E5%8C%B9%E9%85%8D%E5%BD%A2%E7%8A%B6%E7%9A%84%E5%AD%97%E7%AC%A6%E7%94%BB/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "云服务器与部署架构：从域名到可靠运行",
+        "description": "用一条完整请求链解释 DNS、CDN、代理、云网络、计算与存储，再给出产品选型、安全部署、成本复核和故障定位清单。",
+        "tags": ["云服务器"],
+        "url": "/posts/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8A%98%E8%85%BE%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "可靠强化学习实验与工程指南",
+        "description": "从环境契约、Gymnasium 语义、开放任务与视觉预训练，到算法选择、奖励设计、经验回放、调试和不确定性报告，建立一套可复核的强化学习实验流程。",
+        "tags": ["强化学习","元强化学习","表征学习"],
+        "url": "/posts/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E9%97%AE%E9%A2%98%E9%9A%8F%E7%AC%94/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "GitHub Pages 建站：从静态托管到可复现部署",
+        "description": "从发布路径选择、Jekyll 依赖锁定、CI 验证到域名、HTTPS 与故障定位，建立一套可复现、可长期维护的 GitHub Pages 建站流程。",
+        "tags": ["GitHub"],
+        "url": "/posts/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA-github-%E4%B8%BB%E9%A1%B5/",
+        "kind": "随笔"
+      }
+      
+    
+  
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "把角色语音合成 API 接入 NoneBot2：用聊天指令生成中、英、日、韩语音，并可配置角色、语速、语气与接口参数。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "统一的高维贝叶斯优化基准：汇集合成与真实任务、代表性算法封装，便于开展可复现的对比实验。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "轻量《图灵机》谜题求解器：枚举有效密码，搜索三次验证的最佳提问方案，并估算成功率。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "轻量语音对话示例：用免费组件串联本地 SenseVoice 语音识别、OpenAI 兼容聊天接口与 Edge TTS。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "面向大语言模型超参数优化的零样本在线跨任务迁移：每轮只调用一次模型，同时提出目标候选并选择辅助查询。",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "为 Codex 提供 MCP 任务工具：可委托 Claude Code 实现或发起独立审阅，并显式约束权限、模型来源与结构化结果。",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/publications/#hdbo-b-ijcnn-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "高维贝叶斯优化研究综述",
+      "description": "陈泉霖, 陈奕宇, 霍静, 曹宏业, 高阳, 李栋, 郝建业 · 软件学报",
+      "tags": [2025],
+      "url": "/publications/#hdbo-survey-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/publications/#trust-region-newton-ecai-2025",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "元强化学习研究综述",
+      "description": "陈奕宇, 霍静, 丁天雨, 高阳 · 软件学报 · 2024年高被关注综述论文",
+      "tags": [2024],
+      "url": "/publications/#meta-rl-survey-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/publications/#supervised-dr-ppsn-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/publications/#casil-aamas-2024",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/publications/#radar-rl-2023",
+      "kind": "论文"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/publications/#tild-aamas-2023",
+      "kind": "论文"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "萌娘百科猜猜",
+        "description": "读读匿名化的导言，看看四个候选里谁是答案。",
+        "tags": ["百科","萌娘百科","条目","问答"],
+        "url": "/toys/#moegirl-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "名画猜猜（克利夫兰艺术博物馆）",
+        "description": "可选择猜题方向，以及题名、作者、年代等线索。",
+        "tags": ["名画","配对","艺术","博物馆","克利夫兰","图像","猜题"],
+        "url": "/toys/#art-glimpse",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "动画主角猜猜（AniList）",
+        "description": "可选择动画找主角、主角找动画或同作主角配对。",
+        "tags": ["AniList","动画","角色","主角","关系","猜题"],
+        "url": "/toys/#anilist-role-quiz",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "色差挑战",
+        "description": "找出颜色略有不同的方块，看看你能走到第几关。",
+        "tags": ["颜色","视觉","辨识","挑战"],
+        "url": "/toys/#color-challenge",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "盲估十秒",
+        "description": "不看计时器，凭感觉停在十秒附近。",
+        "tags": ["十秒","时间","直觉","挑战"],
+        "url": "/toys/#ten-second",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "反应时间",
+        "description": "等待信号出现后尽快作出反应。",
+        "tags": ["反应","时间","速度","挑战"],
+        "url": "/toys/#reaction-time",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "数字 Wordle",
+        "description": "根据“完全命中”和“仅数字命中”，逐步排除隐藏答案。",
+        "tags": ["数字 Wordle","数字码","推理","排除","逻辑","游戏"],
+        "url": "/toys/#codebreaker",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "凑成 24",
+        "description": "四个数各用一次，选择运算顺序，让最后的精确结果等于 24。",
+        "tags": ["凑成 24","四则运算","分数","心算","逻辑","游戏"],
+        "url": "/toys/#make-24",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "翻灯",
+        "description": "每次翻转一格和它的四邻格，用尽量清晰的规划让所有灯熄灭。",
+        "tags": ["翻灯","网格","最短步数","规划","逻辑","游戏"],
+        "url": "/toys/#lights-out",
+        "kind": "小玩意"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "随机密码",
+        "description": "在当前浏览器中生成可调整的随机密码。",
+        "tags": ["随机","密码","安全","生成器"],
+        "url": "/toys/#random-password",
+        "kind": "小玩意"
+      }
+      
+    
+      ,
+      {
+        "title": "随机数字",
+        "description": "从指定整数范围中生成一个或多个随机结果。",
+        "tags": ["随机","数字","整数","生成器"],
+        "url": "/toys/#random-number",
+        "kind": "小玩意"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>

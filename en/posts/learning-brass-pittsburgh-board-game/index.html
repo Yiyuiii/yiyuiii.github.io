@@ -1,0 +1,559 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Brass: Pittsburgh Rules: From Setup to the First Era Scoring | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="Learn setup, resource transport, six actions, special industries, and era scoring in play order, with the current public rulebook’s unfinished boundaries clearly marked."> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/en/posts/learning-brass-pittsburgh-board-game/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/en/posts/learning-brass-pittsburgh-board-game/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/learning-brass-pittsburgh-board-game/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="Brass: Pittsburgh Rules: From Setup to the First Era Scoring"> <meta property="og:url" content="https://yiyuiii.github.io/en/posts/learning-brass-pittsburgh-board-game/"> <meta property="og:description" content="Learn setup, resource transport, six actions, special industries, and era scoring in play order, with the current public rulebook’s unfinished boundaries clearly marked."> <meta property="og:locale" content="en_US"> <meta property="og:locale:alternate" content="zh_CN"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202608102107/cover-brass-pittsburgh-official-square.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Brass: Pittsburgh Rules: From Setup to the First Era Scoring"> <meta name="twitter:description" content="Learn setup, resource transport, six actions, special industries, and era scoring in play order, with the current public rulebook’s unfinished boundaries clearly marked."> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202608102107/cover-brass-pittsburgh-official-square.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/en/posts/learning-brass-pittsburgh-board-game/",
+    "headline": "Brass: Pittsburgh Rules: From Setup to the First Era Scoring",
+    "description": "Learn setup, resource transport, six actions, special industries, and era scoring in play order, with the current public rulebook’s unfinished boundaries clearly marked.",
+    "inLanguage": "en",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2026-08-10T21:07:00+08:00",
+    "dateModified": "2026-08-10T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">Skip to content</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/en/" aria-label="Return to the English welcome page"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="Turn off the sunlight background" aria-pressed="true" data-enable-light-label="Turn on the sunlight background" data-disable-light-label="Turn off the sunlight background" data-enable-dark-label="Turn on the moonlight background" data-disable-dark-label="Turn off the moonlight background" data-status-light-on="Sunlight background is on" data-status-light-off="Sunlight background is off" data-status-dark-on="Moonlight background is on" data-status-dark-off="Moonlight background is off" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/en/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="Primary navigation"> <a href="/en/">Welcome</a> <a href="/en/writing/">Writing</a> <a href="/en/projects/">GitHub</a> <a href="/en/publications/">Papers</a> <a href="/en/toys/">Toys</a> <a href="/en/about/">About yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="Search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="Switch to the night appearance" aria-pressed="false" data-enable-light-label="Switch to the light appearance" data-enable-dark-label="Switch to the night appearance" data-status-light="Light appearance is on" data-status-dark="Night appearance is on" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/posts/%E5%B7%A5%E4%B8%9A%E9%9D%A9%E5%91%BD%E5%8C%B9%E5%85%B9%E5%A0%A1%E8%A7%84%E5%88%99%E6%95%99%E5%AD%A6-%E4%BB%8E%E6%91%86%E6%A1%8C%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%97%B6%E4%BB%A3%E7%BB%93%E7%AE%97/" aria-label="Switch to Chinese"> 中 </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>Brass: Pittsburgh Rules: From Setup to the First Era Scoring</h1> <div class="article-meta"> <div class="article-tags"> <a href="/en/writing/?tag=Board+Games">Board Games</a> <a href="/en/writing/?tag=Rules">Rules</a> <a href="/en/writing/?tag=Brass:+Pittsburgh">Brass: Pittsburgh</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> First published <time datetime="2026-08-10">2026-08-10</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">Revision history</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2026-08-10">2026-08-10</time> <span>Written by Codex from the current public rules draft, with every official instructional image recorded at source</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>Sections</summary> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#1-scope-and-rules-version">1. Scope and Rules Version</a></li> <li class="toc-entry toc-h2"> <a href="#2-objective-and-table-overview">2. Objective and Table Overview</a> <ul> <li class="toc-entry toc-h3"><a href="#read-the-board-first">Read the Board First</a></li> <li class="toc-entry toc-h3"><a href="#then-read-the-player-mat-and-industry-tiles">Then Read the Player Mat and Industry Tiles</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#3-three-player-setup">3. Three-Player Setup</a> <ul> <li class="toc-entry toc-h3"><a href="#shared-area">Shared Area</a></li> <li class="toc-entry toc-h3"><a href="#player-areas-and-first-round-order">Player Areas and First-Round Order</a></li> <li class="toc-entry toc-h3"><a href="#other-player-counts">Other Player Counts</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#4-eras-rounds-and-player-turns">4. Eras, Rounds, and Player Turns</a> <ul> <li class="toc-entry toc-h3"><a href="#one-player-turn">One Player Turn</a></li> <li class="toc-entry toc-h3"><a href="#end-of-a-round">End of a Round</a></li> <li class="toc-entry toc-h3"><a href="#unable-to-pay-negative-income">Unable to Pay Negative Income</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#5-three-relationships-on-the-map">5. Three Relationships on the Map</a> <ul> <li class="toc-entry toc-h3"><a href="#your-network">Your Network</a></li> <li class="toc-entry toc-h3"><a href="#connected-locations">Connected Locations</a></li> <li class="toc-entry toc-h3"><a href="#resource-transport-and-source-priority">Resource Transport and Source Priority</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#6-build-action">6. Build Action</a> <ul> <li class="toc-entry toc-h3"><a href="#choose-a-card-and-location">Choose a Card and Location</a></li> <li class="toc-entry toc-h3"><a href="#pay-and-upgrade">Pay and Upgrade</a></li> <li class="toc-entry toc-h3"><a href="#place-resources-and-sell-automatically-to-markets">Place Resources and Sell Automatically to Markets</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#7-network-action">7. Network Action</a> <ul> <li class="toc-entry toc-h3"><a href="#pipelines-and-oilfields">Pipelines and Oilfields</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#8-develop-loan-and-pass">8. Develop, Loan, and Pass</a> <ul> <li class="toc-entry toc-h3"><a href="#develop">Develop</a></li> <li class="toc-entry toc-h3"><a href="#loan">Loan</a></li> <li class="toc-entry toc-h3"><a href="#pass-and-whiskey">Pass and Whiskey</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#9-sell-action">9. Sell Action</a></li> <li class="toc-entry toc-h2"> <a href="#10-special-links-and-crown-jewel-industries">10. Special Links and Crown Jewel Industries</a> <ul> <li class="toc-entry toc-h3"><a href="#four-heavy-train-types">Four Heavy Train Types</a></li> <li class="toc-entry toc-h3"><a href="#four-pipeline-types">Four Pipeline Types</a></li> <li class="toc-entry toc-h3"><a href="#four-crown-jewel-industries">Four Crown Jewel Industries</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#11-a-complete-three-player-first-round">11. A Complete Three-Player First Round</a></li> <li class="toc-entry toc-h2"> <a href="#12-era-end-and-scoring">12. Era End and Scoring</a> <ul> <li class="toc-entry toc-h3"><a href="#at-the-end-of-each-era">At the End of Each Era</a></li> <li class="toc-entry toc-h3"><a href="#additional-steps-after-era-1">Additional Steps After Era 1</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#13-first-game-reference">13. First-Game Reference</a> <ul> <li class="toc-entry toc-h3"><a href="#turn-check">Turn Check</a></li> <li class="toc-entry toc-h3"><a href="#action-check">Action Check</a></li> <li class="toc-entry toc-h3"><a href="#common-misreads">Common Misreads</a></li> </ul> </li> </ul> </nav> </details> <figure class="article-cover"> <img height="1000" width="1000" class="article-cover__image" src="/assets/posts/202608102107/cover-brass-pittsburgh-official-square.webp" alt="Official Brass: Pittsburgh box art showing a steam locomotive crossing an industrial city and riverfront" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>Cover image: <a href="https://roxley.com/products/brass-pittsburgh" rel="external nofollow noopener" target="_blank">Roxley’s official Brass: Pittsburgh product image</a>, © Roxley Games; licensed as Roxley retailer/content-creator media use through its <a href="https://roxley.com/pages/media-assets" rel="external nofollow noopener" target="_blank">media page</a> and converted only to WebP by this site.</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <h2 id="1-scope-and-rules-version">1. Scope and Rules Version</h2> <p>This guide teaches the currently public <strong>2–4 player rules</strong> for <em>Brass: Pittsburgh</em>. New players can read in order while setting up the table. Players who already know another Brass game may start with “Three Relationships on the Map,” “Special Links and Crown Jewel Industries,” and “First-Game Reference.”</p> <p>The game is still in production. Roxley’s download page labels the current file <strong>2026-06-01</strong>, while the PDF footer reads <strong><code class="language-plaintext highlighter-rouge">Rulebook v2026.01</code></strong>. Roxley also describes it as a near-final draft: pink text is non-final, solo play remains in development, and translations will follow after the rules are finalized. The historical-figure page still contains placeholder copy as well. This guide covers only the published multiplayer procedure and does not invent biographies, solo rules, or missing rulings.</p> <blockquote> <p><strong>Rules references</strong></p> <ul> <li> <a href="https://roxley.com/products/brass-pittsburgh" rel="external nofollow noopener" target="_blank">Roxley’s official product and download page</a>;</li> <li> <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">the current public English rulebook PDF</a>;</li> <li> <a href="https://gamefound.com/en/projects/roxley/brass-pittsburgh/updates/28" rel="external nofollow noopener" target="_blank">the rulebook release notice</a>, which establishes the multiplayer scope and draft status.</li> </ul> </blockquote> <p class="article-evidence">If a later release changes card text, values, or timing, the newer official material controls.</p> <h2 id="2-objective-and-table-overview">2. Objective and Table Overview</h2> <p>The game lasts <strong>2 eras</strong>, each with <strong>8 rounds</strong>. The player with the most Victory Points after era 2 wins. Break ties by the higher position on the income track, then by money remaining.</p> <p>The main scoring sources are:</p> <ul> <li>Victory Points on flipped industries at each era end;</li> <li>link points in locations adjacent to train links;</li> <li>cubes sold to markets when a resource industry is built;</li> <li>Quality Rewards and immediate effects on selected industries, pipelines, and Heavy Trains.</li> </ul> <p><img decoding="async" loading="lazy" height="1500" width="1132" src="/assets/posts/202608102107/board-setup.webp" alt="The three-to-four-player board contains city industry spaces, railroads, pipeline routes, six resource markets, oilfields, and three faceup Quality Rewards"></p> <p><em>Figure: Board setup from page 4 of the official rulebook. Railroads run between cities, black routes connect oilfields, and resource markets sit around the inner and outer board. <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">Current public rulebook</a>, © Roxley Games; cropped and compressed only as needed for instruction.</em></p> <h3 id="read-the-board-first">Read the Board First</h3> <ul> <li> <strong>City locations:</strong> Industry spaces show the industry types allowed there. A space displaying only one industry icon has placement priority for that type.</li> <li> <strong>Merchant locations:</strong> Merchant tiles around the board edge show which industries may sell there and a one-time reward.</li> <li> <strong>Railroad lines:</strong> Blue-gray routes between cities and merchants. Both Light Trains and Heavy Trains occupy them.</li> <li> <strong>Pipeline routes:</strong> Black routes from oilfields to cities. Pipelines are the first step that lets oil leave an oilfield.</li> <li> <strong>Resource markets:</strong> Three Coal/Iron markets sit inside the map; three Steel/Coke markets sit around its perimeter.</li> <li> <strong>Vanderbilt:</strong> The board’s fallback supplier. When no suitable industry is available and you do not use a market, he can deliver a resource anywhere at the high printed price.</li> <li> <strong>Progress track:</strong> Tracks both VP and income position. The coin beneath the income marker’s space shows the current income level.</li> </ul> <h3 id="then-read-the-player-mat-and-industry-tiles">Then Read the Player Mat and Industry Tiles</h3> <p><img decoding="async" loading="lazy" height="1100" width="1230" src="/assets/posts/202608102107/player-mat.webp" alt="A player mat arranges five industry paths for kerosene, coal, manufacturing, coke, and iron and steel, with pipelines and Heavy Trains locked between industries"></p> <p><em>Figure: Player-mat example from page 5 of the official rulebook. Arrows define accessible industry progression, while adjacent industries unlock pipelines and Heavy Trains. <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">Current public rulebook</a>, © Roxley Games; cropped and compressed only as needed for instruction.</em></p> <p>Each mat has five industry paths: Kerosene, Coal, Manufacturing, Coke, and Iron &amp; Steel. The Steel path branches toward Skyscrapers, while Coke and Manufacturing have shortcut branches. An <strong>accessible tile</strong> is available to build or develop: it is the bottom tile in its path, or the next tile reached by following the arrows past a cleared position.</p> <p>Every industry tile has one of two states:</p> <ul> <li> <strong>Unflipped:</strong> Newly built, still holding resources or awaiting sale;</li> <li> <strong>Flipped:</strong> Production or sale is complete, immediate rewards have been taken, and its lower-left VP will score at era end.</li> </ul> <p>Common tile areas are:</p> <ul> <li>left side: build costs, which may include money, resources, and income adjustments;</li> <li>upper right: oil required to sell;</li> <li>right-side stars: Quality Stars;</li> <li>lower right: immediate rewards gained on flipping;</li> <li>lower-left black hex: Victory Points at era end;</li> <li>top blue link icons: link points used by adjacent train scoring.</li> </ul> <blockquote> <p><strong>Further Context — Flipping Marks the End of an Industry Chain</strong></p> <p>Resource industries usually flip when their final cube is removed. Kerosene, Manufactured Goods, and Automobiles flip through a Sell action. A few late industries enter play already flipped. Identify the family first, then find its flip timing.</p> </blockquote> <h2 id="3-three-player-setup">3. Three-Player Setup</h2> <h3 id="shared-area">Shared Area</h3> <ol> <li>Use the 3–4 player side of the board. Before shuffling, keep only Location and Industry cards with a 3-player icon at bottom right.</li> <li>Place one random Merchant tile gold-side up at each merchant location.</li> <li>Shuffle the oilfield tiles used for this player count and place one facedown on every oilfield space.</li> <li>Shuffle the 6 Quality Reward tiles, reveal 3 at the lower left of the board, and return the rest to the box.</li> <li>Fill all three Coal/Iron markets and all three Steel markets. Put only 1 Coke cube in the top space of each Coke market.</li> <li>Put money, Whiskey, oil barrels, Coal, Iron, Steel, and Coke within reach. The general supply is unlimited; use substitutes if components run short.</li> </ol> <h3 id="player-areas-and-first-round-order">Player Areas and First-Round Order</h3> <p>Each player:</p> <ol> <li>Chooses one side of a Character tile and takes the matching player mat and all industry tiles of that color.</li> <li>Stacks industries on matching mat spaces, solid-color side up. Tiles without a solid-color side are simply placed in position.</li> <li>Fills the printed Pipeline and Heavy Train spaces on the mat with matching link tiles, then puts the remaining 2 Heavy Trains, 2 Pipelines, and 9 Light Trains in a personal supply.</li> <li>Takes <strong>$30</strong>, places the VP marker on 0, and puts the income marker on progress space 10, which is income level 0.</li> <li>Draws 8 cards. During era 1 setup only, draw 1 additional card and place it facedown in the discard pile.</li> </ol> <p>After everyone is ready, shuffle the Character tiles and place them randomly on the turn-order track. This is the order for round 1.</p> <h3 id="other-player-counts">Other Player Counts</h3> <table> <thead> <tr> <th>Players</th> <th>Board</th> <th>Deck filter</th> <th>Additional change</th> </tr> </thead> <tbody> <tr> <td>2</td> <td>2-player side</td> <td>Keep only cards with a 2-player icon</td> <td>Remove the oilfield that produces 3 oil and the merchant that rewards $15</td> </tr> <tr> <td>3</td> <td>3–4 player side</td> <td>Keep only cards with a 3-player icon</td> <td>None</td> </tr> <tr> <td>4</td> <td>3–4 player side</td> <td>Keep only cards with a 4-player icon</td> <td>None</td> </tr> </tbody> </table> <p>The oilfield tiles used on each board side are also pictured along the bottom of that side.</p> <h2 id="4-eras-rounds-and-player-turns">4. Eras, Rounds, and Player Turns</h2> <p><img decoding="async" loading="lazy" height="1500" width="1417" src="/assets/posts/202608102107/turn-flow.webp" alt="The official flow page places two eight-round eras beside player actions, end-of-round turn order, income, and bankruptcy"></p> <p><em>Figure: Flow summary from page 6 of the official rulebook. The player who spends less acts earlier next round, and income uses the coin value beneath the marker’s current position. <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">Current public rulebook</a>, © Roxley Games; cropped and compressed only as needed for instruction.</em></p> <h3 id="one-player-turn">One Player Turn</h3> <p>A normal turn proceeds as follows:</p> <ol> <li>Choose and complete action 1, discarding 1 card faceup.</li> <li>Choose and complete action 2, discarding another card faceup. The two actions may be identical.</li> <li>After both actions, draw back to 8 cards if possible. Once the deck is empty, hands shrink from round to round.</li> </ol> <p>The only round exception is <strong>round 1 of era 1</strong>: each player takes only 1 action, then refills.</p> <p>The six actions are:</p> <table> <thead> <tr> <th>Action</th> <th>Main result</th> <th>Card requirement</th> </tr> </thead> <tbody> <tr> <td>Build</td> <td>Place 1 industry from the player mat on the board</td> <td>Location card, Industry card, or any card plus 1 Whiskey</td> </tr> <tr> <td>Network</td> <td>Place 1 link; optionally pay another $10 to place a second</td> <td>Any card</td> </tr> <tr> <td>Develop</td> <td>Permanently remove 1–2 accessible industries from the mat</td> <td>Any card</td> </tr> <tr> <td>Sell</td> <td>Sell one or more eligible industries together</td> <td>Any card</td> </tr> <tr> <td>Loan</td> <td>Gain $30 and reduce income by 3 levels</td> <td>Any card</td> </tr> <tr> <td>Pass</td> <td>Gain 1 Whiskey</td> <td>Any card</td> </tr> </tbody> </table> <p>Pass is still an action, so it also discards a card. The bonus Sell action from a Skyscraper is an explicit exception and discards no card.</p> <h3 id="end-of-a-round">End of a Round</h3> <p>After every player finishes:</p> <ol> <li>Compare the money placed on Character tiles this round. The lowest spender moves to the leftmost position for next round, and the highest to the rightmost. Ties preserve relative order.</li> <li>Return that spent money to the general supply.</li> <li>Each player takes money equal to their current income level, or pays the supply if it is negative. Skip this income step after the final round of the whole game.</li> </ol> <p>All money paid during a turn, including market purchases, Vanderbilt delivery, and the $10 for a second link, goes on the Character tile for turn-order comparison.</p> <h3 id="unable-to-pay-negative-income">Unable to Pay Negative Income</h3> <p>If a player cannot pay negative income, they continue playing but must:</p> <ol> <li>return all Whiskey they hold;</li> <li>lose 40 VP, even if this moves below 0;</li> <li>return the income marker to income level 0, progress space 10.</li> </ol> <h2 id="5-three-relationships-on-the-map">5. Three Relationships on the Map</h2> <h3 id="your-network">Your Network</h3> <p>A “location” is a city or merchant space with at least one railroad line connected to it. Oilfields are not locations.</p> <p>A location is part of <strong>your network</strong> if either condition is true:</p> <ul> <li>it contains one or more of your industry tiles;</li> <li>it is adjacent to one or more of your link tiles.</li> </ul> <p>Industry-card Builds and later Network expansion check your network. A Location card bypasses this restriction and builds directly in its named location.</p> <h3 id="connected-locations">Connected Locations</h3> <p>Two locations are <strong>connected</strong> when a continuous railroad route joins them. The route may mix any players’ Light and Heavy Trains. Pipelines never connect two locations.</p> <p>“In your network” and “able to transport” are therefore separate checks. The former looks for your own industries and links; the latter looks for a continuous railroad made from everyone’s trains.</p> <blockquote> <p><strong>Further Context — Infrastructure Is Shared, Ownership Is Not</strong></p> <p>Opponents’ railroads may carry your resources, and their unflipped resource industries may become your mandatory source. Railroad scoring, industry flip rewards, and income still belong to the component owner. This shared dependency drives the table interaction.</p> </blockquote> <h3 id="resource-transport-and-source-priority">Resource Transport and Source Priority</h3> <p><img decoding="async" loading="lazy" height="1500" width="1020" src="/assets/posts/202608102107/resource-transport.webp" alt="Coal, Iron, Steel, and Coke travel along continuous railways and come from industries, markets, Heavy Trains, or Vanderbilt, while oil must first leave an oilfield through a pipeline"></p> <p><em>Figure: Resource transport from page 7 of the official rulebook. Industry resources have mandatory priority, and pipelines cannot carry resource cubes. <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">Current public rulebook</a>, © Roxley Games; cropped and compressed only as needed for instruction.</em></p> <p>Coal, Iron, Steel, and Coke may travel any distance along a continuous railroad. Check a source separately for each cube required:</p> <ol> <li> <strong>Check connected unflipped industries first.</strong> If any player’s industry has the required cube, you must take one from an eligible tile for free. You cannot choose a market or Vanderbilt instead.</li> <li>If no industry can supply it, buy from a connected market at the printed price, use your own connected Resource Heavy Train, or pay Vanderbilt’s price for delivery to any location.</li> </ol> <p>Different cubes in one cost may use different sources. When the last cube leaves an industry, flip it immediately and give its owner the lower-right reward.</p> <p>Oil adds one restriction: oil taken from an oilfield must first leave through a Pipeline that can transport oil, then follow continuous railroads to its destination. Whenever oil uses a Pipeline, that Pipeline’s owner immediately gains its type of reward. A Reserve Pipeline cannot carry oil. Oil already stored on your own Resource Heavy Train instead follows that train’s exception and travels by rail to where you use it.</p> <h2 id="6-build-action">6. Build Action</h2> <h3 id="choose-a-card-and-location">Choose a Card and Location</h3> <p>First determine what the discarded card permits:</p> <ul> <li> <strong>Location card:</strong> Build any allowed industry in that location, even outside your network;</li> <li> <strong>Industry card:</strong> Build the matching industry in a location in your network. If you have no industries or links anywhere on the board, it may build in any allowed location;</li> <li> <strong>Any card plus 1 Whiskey:</strong> Treat that card as any Location or Industry card.</li> </ul> <p>Then choose 1 accessible tile from the matching path. When placing it:</p> <ol> <li>If the location has an empty space showing only that industry icon, you must use that space first. Otherwise use a multi-industry space.</li> <li>In era 1, each player may have at most 1 industry in a location. Era 2 removes this restriction.</li> <li>Industries marked with an era-1 half-circle build only in era 1; full-circle industries build only in era 2.</li> </ol> <h3 id="pay-and-upgrade">Pay and Upgrade</h3> <p>Pay money, resources, and income adjustments shown along the tile’s left side in any order. Required resources follow the transport and source priority above.</p> <p>A tile with an upgrade icon in its cost can be built only by upgrading:</p> <ul> <li>the replaced industry must be yours;</li> <li>it must already be flipped;</li> <li>remove it immediately and score its VP;</li> <li>place the new industry in that same space, never an empty one.</li> </ul> <h3 id="place-resources-and-sell-automatically-to-markets">Place Resources and Sell Automatically to Markets</h3> <p>After building, place the resource cubes or oil barrels shown at lower right. If a Coal, Iron, Steel, or Coke industry is connected to matching markets with empty slots, its resources sell automatically at that moment:</p> <ol> <li>Move as many resources as possible into one or more connected markets, in an order chosen by the builder.</li> <li>For each cube, gain the money beside the market and any VP printed in the slot filled.</li> <li>If the final resource leaves, flip the industry and take its reward. Resources that cannot enter a market remain on the tile.</li> </ol> <p>This automatic market sale occurs only when the industry is built. Resources do not move later merely because market space opens.</p> <p>A few industries are already flipped when built. Resolve their lower-right rewards immediately, but leave their lower-left VP until era end unless an upgrade later removes them.</p> <h2 id="7-network-action">7. Network Action</h2> <p><img decoding="async" loading="lazy" height="1500" width="952" src="/assets/posts/202608102107/network-action.webp" alt="A Network action places a Light Train, Heavy Train, or Pipeline; Pipelines add oilfield production, and an additional $10 permits a second link in the same action"></p> <p><em>Figure: Network action and oilfield examples from page 9 of the official rulebook. The first link may provide a route or resource for the second link in that same action. <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">Current public rulebook</a>, © Roxley Games; cropped and compressed only as needed for instruction.</em></p> <p>To take a Network action:</p> <ol> <li>Discard any 1 card.</li> <li>Choose an unlocked link from your supply and place it on a matching empty route.</li> <li>The new link must be adjacent to a location in your network. If you have no components on the board, it may occupy any valid empty route.</li> <li>Pay the resource cost. If a train covers a Whiskey, income, or free Develop icon, gain that bonus immediately.</li> </ol> <p>The three basic link classes are:</p> <table> <thead> <tr> <th>Link</th> <th>Base cost</th> <th>Use and era handling</th> </tr> </thead> <tbody> <tr> <td>Light Train</td> <td>1 Coal</td> <td>Carries cubes and oil; scores and is removed at each era end</td> </tr> <tr> <td>Heavy Train</td> <td>2 Steel</td> <td>Also carries resources; has a build reward and remains after era 1</td> </tr> <tr> <td>Pipeline</td> <td>1 Iron</td> <td>Connects a city to an oilfield; carries no cubes and never scores as a railroad</td> </tr> </tbody> </table> <p>After fully resolving the first link, you may pay an additional <strong>$10</strong> and place a second link of any type in the same action, paying its resource cost as normal. The first link’s new route, generated resources, and rewards may help place the second. Do not discard another card for it.</p> <h3 id="pipelines-and-oilfields">Pipelines and Oilfields</h3> <ul> <li>If the Pipeline route shows oil-barrel icons, add that much oil to its oilfield immediately.</li> <li>When the first Pipeline connects to an oilfield, reveal its oilfield tile and gain the left-side reward.</li> <li>If revealed during era 1, leave the tile there and add its right-side oil production at the end of era 1.</li> <li>If revealed during era 2, add the right-side oil immediately, then move the tile to its matching space along the bottom of the board.</li> </ul> <h2 id="8-develop-loan-and-pass">8. Develop, Loan, and Pass</h2> <h3 id="develop">Develop</h3> <ol> <li>Discard any 1 card.</li> <li>Permanently remove 1 or 2 accessible industries from your player mat. They may come from different paths.</li> <li>Pay 1 Iron or 1 Steel per tile removed. Use normal source priority; if no source is connected, Vanderbilt can deliver at the printed price.</li> </ol> <p>Developed tiles never return. Developing skips lower industries and may unlock Pipelines or Heavy Trains between them. As soon as a link becomes accessible, move it into your personal supply.</p> <h3 id="loan">Loan</h3> <ol> <li>Discard any 1 card.</li> <li>Take $30.</li> <li>Reduce income by <strong>3 levels</strong>, placing the marker on the highest space of the new level.</li> </ol> <p>Loans are never repaid. You cannot take one if it would reduce income below −10. Income increases normally move by spaces, while income reductions move by levels; keep the two units separate.</p> <h3 id="pass-and-whiskey">Pass and Whiskey</h3> <p>Discard any 1 card and gain 1 Whiskey. A player can hold at most 3; ignore any excess. Whiskey has two uses:</p> <ul> <li>turn any card into any Location or Industry card during Build;</li> <li>spend 1 during Sell to add 1 Quality Star toward that action’s Quality Reward.</li> </ul> <h2 id="9-sell-action">9. Sell Action</h2> <p><img decoding="async" loading="lazy" height="1500" width="944" src="/assets/posts/202608102107/sell-action.webp" alt="A Sell action selects one or more Kerosene, Manufactured Goods, or Automobile industries, supplies oil, resolves Merchants and a Quality Reward, and flips the industries"></p> <p><em>Figure: Sell procedure from page 9 of the official rulebook. Quality Stars may be totaled across all industries in this sale, but each Sell action claims at most 1 Quality Reward. <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">Current public rulebook</a>, © Roxley Games; cropped and compressed only as needed for instruction.</em></p> <p>Sell handles only three kinds of unflipped industry:</p> <ul> <li>Kerosene Refineries;</li> <li>Manufactured Goods;</li> <li>Automobile Manufacturers.</li> </ul> <p>Resolve these steps in order:</p> <ol> <li>Discard any 1 card.</li> <li>Choose one or more of your unflipped sellable industries. Each must connect to a faceup Merchant showing that industry icon.</li> <li>Supply the oil shown at upper right on each industry. Oil taken directly from an oilfield must first use a Pipeline. For every barrel passing through it, the Pipeline’s owner gains the printed reward. Return the used oil to the general supply after all rewards resolve.</li> <li>For every faceup Merchant used in this sale, gain its reward and flip it facedown.</li> <li>Optionally resolve 1 Quality Reward. Total the Quality Stars on all industries sold, then spend any number of Whiskey for 1 additional star each. If the total meets or exceeds a faceup reward’s requirement, claim the tile and its reward, then flip it facedown. One Sell action claims at most 1.</li> <li>Flip every sold industry and gain its lower-right reward immediately. Leave lower-left VP for era end.</li> </ol> <p>Coal, Iron, Steel, and Coke industries flip by depletion and never use the Sell action.</p> <blockquote> <p><strong>Further Context — One Sale Requires Three Independent Chains</strong></p> <p>Rail from industry to Merchant establishes eligibility. “Pipeline plus rail” from oilfield to industry supplies oil. Quality Stars count only the industries selected in this action. Check each chain separately; success in one does not repair another.</p> </blockquote> <h2 id="10-special-links-and-crown-jewel-industries">10. Special Links and Crown Jewel Industries</h2> <p><img decoding="async" loading="lazy" height="1500" width="1078" src="/assets/posts/202608102107/special-industries.webp" alt="The official summary shows four Heavy Train types and four Crown Jewel Industries, including Resource and Replacement Trains, Oil City, Locomotive Works, Polyphase Alternator, and Skyscraper"></p> <p><em>Figure: Heavy Trains and Crown Jewel Industries from page 10 of the official rulebook. These components modify ordinary Build, transport, or era-scoring rules. <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">Current public rulebook</a>, © Roxley Games; cropped and compressed only as needed for instruction.</em></p> <h3 id="four-heavy-train-types">Four Heavy Train Types</h3> <ul> <li> <strong>Resource:</strong> Place the pictured Coke, Steel, or oil on it when built. These resources do not sell automatically; only the owner may consume them for free, and they still travel by rail. Steel on the Steel Resource Train cannot pay for that train’s own construction.</li> <li> <strong>Whiskey:</strong> Gain 1 Whiskey when built.</li> <li> <strong>Double Link:</strong> Double this train’s link-point VP at era scoring.</li> <li> <strong>Replacement:</strong> May replace an opponent’s Light Train. First score the displaced train immediately for its owner and return it to that owner’s supply, then place the Replacement Train.</li> </ul> <h3 id="four-pipeline-types">Four Pipeline Types</h3> <ul> <li> <strong>Income Pipeline:</strong> Its owner gains the printed income for every oil barrel passing through;</li> <li> <strong>Money Pipeline:</strong> Its owner gains the printed money per barrel;</li> <li> <strong>VP Pipeline:</strong> Its owner gains the printed VP per barrel;</li> <li> <strong>Reserve Pipeline:</strong> Adds 1 oil to the connected oilfield when built, but no player may transport oil through it. When its owner later places a Pipeline, they may replace the Reserve Pipeline with another Pipeline from their supply and return the Reserve to supply.</li> </ul> <h3 id="four-crown-jewel-industries">Four Crown Jewel Industries</h3> <ul> <li> <strong>Oil City:</strong> In era 2, use the specified Kerosene card to build directly on an oilfield that already has a Pipeline connection. Move all oil there plus 3 additional barrels onto Oil City. Any player may consume it through connected Pipelines. Flip it when the last barrel leaves and gain $25.</li> <li> <strong>Polyphase Alternator:</strong> Upgrade a Coal industry; it enters flipped and immediately gains money equal to twice current income. At era end, score VP equal to empty industry spaces on the player mat.</li> <li> <strong>Locomotive Works:</strong> In era 2, upgrade a Manufacturing industry; it enters flipped and grants 3 free Develops. At era end, score 4 VP per Heavy Train you built.</li> <li> <strong>Skyscraper:</strong> Enters flipped and grants an optional bonus Sell action. It discards no card and, if used, must resolve immediately.</li> </ul> <p>Crown Jewel Industries still follow the normal upgrade conditions: the replaced industry must be yours and already flipped.</p> <h2 id="11-a-complete-three-player-first-round">11. A Complete Three-Player First Round</h2> <p>This example avoids fixed printed prices and demonstrates only legal order and rule connections. Assume players A, B, and C act in that order.</p> <ol> <li> <strong>A builds Coal.</strong> A discards a Pittsburgh Location card, places the current accessible Coal tile in Pittsburgh’s Coal space, pays the costs at left, and adds Coal cubes. Owning that industry makes Pittsburgh part of A’s network. If no Coal market is connected, the cubes stay on the tile.</li> <li> <strong>B places a Light Train.</strong> B has no component on the board, so the first railroad may occupy any empty line. B chooses one adjacent to Pittsburgh. After placement it costs 1 Coal. A’s connected unflipped Coal industry can supply it, so B must take 1 there for free instead of buying from Vanderbilt.</li> <li> <strong>C takes a Loan.</strong> C discards any card, gains $30, and moves income down 3 levels. The Loan itself spends no money, so C’s Character tile still shows $0 spent.</li> </ol> <p>Round 1 of era 1 gives each player only that single action, after which everyone refills to 8 cards. At round end, C’s $0 moves to the front of next round. A and B sort by their actual spending, preserving order if tied. Everyone then takes or pays current income.</p> <p>The round has already created three future lines: A may let opponents deplete and flip the Coal industry; B now has a network for Industry-card Builds; C traded long-term income for cash and earlier turn order.</p> <h2 id="12-era-end-and-scoring">12. Era End and Scoring</h2> <p><img decoding="async" loading="lazy" height="1500" width="997" src="/assets/posts/202608102107/era-scoring-example.webp" alt="An era-1 scoring example marks link points beside each railroad and identifies Light Trains and level-1 industries that will be removed"></p> <p><em>Figure: Era-1 scoring example from page 11 of the official rulebook. Light Trains leave after scoring, while Heavy Trains and Pipelines remain; unflipped industries do not score. <a href="https://cdn.shopify.com/s/files/1/0246/2190/8043/files/Brass-P-Rulebook-ENG.pdf?v=1775836834" rel="external nofollow noopener" target="_blank">Current public rulebook</a>, © Roxley Games; cropped and compressed only as needed for instruction.</em></p> <p>An era ends after the round in which every player uses their final cards. First resolve normal end-of-round turn order and income; only the final round of the whole game skips income. Then follow the era procedure.</p> <h3 id="at-the-end-of-each-era">At the End of Each Era</h3> <ol> <li> <strong>Score train links:</strong> For each of your Light and Heavy Trains, score 1 VP for every link-point icon in its two adjacent locations. A Double Link Heavy Train applies its exception.</li> <li> <strong>Remove trains:</strong> After era 1, remove scored Light Trains but leave Heavy Trains. After era 2, remove every train. Pipelines always remain and never score railroad links.</li> <li> <strong>Score industries:</strong> Score the lower-left VP on every flipped industry. Unflipped industries score nothing.</li> </ol> <h3 id="additional-steps-after-era-1">Additional Steps After Era 1</h3> <ol> <li>Remove every level-1 industry from the board, flipped or unflipped.</li> <li>Move oil waiting beneath each oilfield tile onto that oilfield.</li> <li>Collect all discard piles. Turn over the bottom card in each pile so every card faces the same direction, shuffle them into the era-2 deck, and deal 8 cards to each player.</li> </ol> <p>Industries above level 1 and Heavy Trains that were not removed remain on the board. If they still qualify, they score again at the end of era 2.</p> <p>After the same railroad and industry scoring in era 2, the most VP wins. Break ties by higher income-track position, then by most money.</p> <blockquote> <p><strong>Further Context — Era Transition Preserves Long-Term Capital</strong></p> <p>Era 1 removes Light Trains and level-1 industries, while Heavy Trains, Pipelines, and higher industries persist. Early investment should weigh immediate scoring, era-2 reuse, and removal risk together.</p> </blockquote> <h2 id="13-first-game-reference">13. First-Game Reference</h2> <h3 id="turn-check">Turn Check</h3> <ol> <li>Is this round 1 of era 1? Take only 1 action; otherwise take 2.</li> <li>Did every action discard 1 card? For Build, did the card match its location or industry?</li> <li>Is all money spent sitting on the Character tile?</li> <li>Did the player refill to 8 cards after the turn?</li> <li>At round end, did turn order change before income resolved?</li> </ol> <h3 id="action-check">Action Check</h3> <ul> <li> <strong>Build:</strong> Accessible tile, legal space, era icon, network permission, costs, resource placement, automatic market sale;</li> <li> <strong>Network:</strong> Link unlocked, correct route type, adjacent to your network, resources paid, route bonus resolved;</li> <li> <strong>Develop:</strong> Remove only accessible tiles and pay 1 Iron or Steel per tile;</li> <li> <strong>Sell:</strong> Industry eligible, Merchant icon matches, oil route exists, Merchant and Quality Reward flip, industries flip last;</li> <li> <strong>Loan:</strong> Income falls 3 levels and does not go below −10;</li> <li> <strong>Pass:</strong> Discard 1 card and keep Whiskey at 3 or fewer.</li> </ul> <h3 id="common-misreads">Common Misreads</h3> <ul> <li>Your network uses only your components; resource transport may use any player’s continuous railroad.</li> <li>If a connected industry provides a required cube, you must consume industry supply first.</li> <li>Pipelines cannot transport Coal, Iron, Steel, or Coke. Oil leaving an oilfield must use a Pipeline first.</li> <li>Automatic sale to a market occurs once, when the resource industry is built. Later vacancies do not move resources automatically.</li> <li>Sell flips industries and gives immediate rewards, but industry VP waits for era scoring.</li> <li>A second link belongs to the same Network action: pay another $10 and its resources, but discard no additional card.</li> <li>Income increases move by spaces; Loans and other income reductions move by levels.</li> <li>Era 1 removes Light Trains and all level-1 industries. Heavy Trains, Pipelines, and higher industries remain.</li> <li>The current public rules draft may still change. If a newer rulebook, card, or official clarification conflicts, use the newer material.</li> </ul> </div> </article> <aside class="article-side-toc"> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#1-scope-and-rules-version">1. Scope and Rules Version</a></li> <li class="toc-entry toc-h2"> <a href="#2-objective-and-table-overview">2. Objective and Table Overview</a> <ul> <li class="toc-entry toc-h3"><a href="#read-the-board-first">Read the Board First</a></li> <li class="toc-entry toc-h3"><a href="#then-read-the-player-mat-and-industry-tiles">Then Read the Player Mat and Industry Tiles</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#3-three-player-setup">3. Three-Player Setup</a> <ul> <li class="toc-entry toc-h3"><a href="#shared-area">Shared Area</a></li> <li class="toc-entry toc-h3"><a href="#player-areas-and-first-round-order">Player Areas and First-Round Order</a></li> <li class="toc-entry toc-h3"><a href="#other-player-counts">Other Player Counts</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#4-eras-rounds-and-player-turns">4. Eras, Rounds, and Player Turns</a> <ul> <li class="toc-entry toc-h3"><a href="#one-player-turn">One Player Turn</a></li> <li class="toc-entry toc-h3"><a href="#end-of-a-round">End of a Round</a></li> <li class="toc-entry toc-h3"><a href="#unable-to-pay-negative-income">Unable to Pay Negative Income</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#5-three-relationships-on-the-map">5. Three Relationships on the Map</a> <ul> <li class="toc-entry toc-h3"><a href="#your-network">Your Network</a></li> <li class="toc-entry toc-h3"><a href="#connected-locations">Connected Locations</a></li> <li class="toc-entry toc-h3"><a href="#resource-transport-and-source-priority">Resource Transport and Source Priority</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#6-build-action">6. Build Action</a> <ul> <li class="toc-entry toc-h3"><a href="#choose-a-card-and-location">Choose a Card and Location</a></li> <li class="toc-entry toc-h3"><a href="#pay-and-upgrade">Pay and Upgrade</a></li> <li class="toc-entry toc-h3"><a href="#place-resources-and-sell-automatically-to-markets">Place Resources and Sell Automatically to Markets</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#7-network-action">7. Network Action</a> <ul> <li class="toc-entry toc-h3"><a href="#pipelines-and-oilfields">Pipelines and Oilfields</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#8-develop-loan-and-pass">8. Develop, Loan, and Pass</a> <ul> <li class="toc-entry toc-h3"><a href="#develop">Develop</a></li> <li class="toc-entry toc-h3"><a href="#loan">Loan</a></li> <li class="toc-entry toc-h3"><a href="#pass-and-whiskey">Pass and Whiskey</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#9-sell-action">9. Sell Action</a></li> <li class="toc-entry toc-h2"> <a href="#10-special-links-and-crown-jewel-industries">10. Special Links and Crown Jewel Industries</a> <ul> <li class="toc-entry toc-h3"><a href="#four-heavy-train-types">Four Heavy Train Types</a></li> <li class="toc-entry toc-h3"><a href="#four-pipeline-types">Four Pipeline Types</a></li> <li class="toc-entry toc-h3"><a href="#four-crown-jewel-industries">Four Crown Jewel Industries</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#11-a-complete-three-player-first-round">11. A Complete Three-Player First Round</a></li> <li class="toc-entry toc-h2"> <a href="#12-era-end-and-scoring">12. Era End and Scoring</a> <ul> <li class="toc-entry toc-h3"><a href="#at-the-end-of-each-era">At the End of Each Era</a></li> <li class="toc-entry toc-h3"><a href="#additional-steps-after-era-1">Additional Steps After Era 1</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#13-first-game-reference">13. First-Game Reference</a> <ul> <li class="toc-entry toc-h3"><a href="#turn-check">Turn Check</a></li> <li class="toc-entry toc-h3"><a href="#action-check">Action Check</a></li> <li class="toc-entry toc-h3"><a href="#common-misreads">Common Misreads</a></li> </ul> </li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="en" data-loading-text="Loading comments…" data-retry-text="Try again" data-error-text="Comments could not be loaded. Try again, or use the GitHub Discussions link above." data-auto-load-enabled-text="Automatic comment loading is on." data-auto-load-disabled-text="Automatic comment loading is off." data-auto-load-unavailable-text="Your browser could not save this setting. You can still show comments manually." aria-labelledby="page-comments-title-en"> <h2 id="page-comments-title-en">Comments</h2> <p class="page-comments__introduction"> Comments are public and stored in <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>. This page connects to giscus.app and GitHub and sends the current page path only after you show comments manually or enable automatic loading. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information. </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>Show comments (~0.13 MB first load)</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-en" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-en" class="page-comments__auto-load-label">Auto-load comments on this site</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">Enable JavaScript and use the button above to show comments, or use the GitHub Discussions link above.</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="Enter a term to start searching." data-no-results="No matching content found." data-missing-translation="This item has no English version yet. You are viewing the English writing index."> <div class="search-dialog__header"> <h2 id="search-title">Search this site</h2> <button id="search-close" class="icon-button" type="button" aria-label="Close search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">Search this site</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search writing, projects, papers, or toys"> <p id="search-status" class="search-status" aria-live="polite">Enter a term to start searching.</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+  
+    
+      
+      {
+        "title": "Brass: Pittsburgh Rules: From Setup to the First Era Scoring",
+        "description": "Learn setup, resource transport, six actions, special industries, and era scoring in play order, with the current public rulebook’s unfinished boundaries clearly marked.",
+        "tags": ["Brass: Pittsburgh","Board Games","Rules"],
+        "url": "/en/posts/learning-brass-pittsburgh-board-game/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building Trust with Zebra Finches: An Evidence-Informed, Testable Training Plan",
+        "description": "Uses research on zebra-finch social relationships, stress responses, individual variation, and associative learning to establish baselines and test voluntary approach and recovery.",
+        "tags": ["Zebra finches","Animal welfare"],
+        "url": "/en/posts/building-trust-with-zebra-finches/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Four-Color Outerwear: Reduce Duplicate Purchases by Use",
+        "description": "Uses brick red, warm beige, olive, and charcoal for four outerwear uses, then compares occasion, silhouette, existing outfits, cleaning, and storage.",
+        "tags": ["Clothing","Color"],
+        "url": "/en/posts/a-four-color-outerwear-system/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Minimal System for a Small Kitchen: Tools, Ingredients, and Cleanup Built Around Everyday Meals",
+        "description": "Uses three recurring meals to test tools, inventory, and cleanup, applies four questions before a purchase, and points food-safety questions to authoritative guidance.",
+        "tags": ["Kitchen","Personal systems"],
+        "url": "/en/posts/a-minimal-system-for-a-small-kitchen/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "From Running to Maintainable: A Minimal Operations Loop for a Minecraft Server",
+        "description": "A compact Minecraft server operations loop—Java compatibility, a dedicated system account, managed startup, least exposure, tested restores, staged upgrades, and monitoring.",
+        "tags": ["Minecraft","Server operations"],
+        "url": "/en/posts/a-minimal-operations-loop-for-a-minecraft-server/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "SETI Rules: From Setup to Your First Complete Game",
+        "description": "Official illustrations and play order connect setup, turns, actions, round ends, and scoring; follow it at the table, then add Space Agencies and the promo cards.",
+        "tags": ["SETI","Space Agencies","Board Games","Rules"],
+        "url": "/en/posts/learning-seti-board-game/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Age of Innovation",
+        "description": "A cross-round valuation of Coins, Tools, Books, Scholars, Discipline advancement, Shipping, and buildings, placing exchanges and future income on one scale for medium- and long-term planning.",
+        "tags": ["Age of Innovation","Board Games"],
+        "url": "/en/posts/age-of-innovation-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Troyes",
+        "description": "A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply.",
+        "tags": ["Troyes","Board Games"],
+        "url": "/en/posts/troyes-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Gaia Project",
+        "description": "An approximate common scale for Credits, Ore, Knowledge, Q.I.C., buildings, and victory points, then checked against faction exceptions to give experience-based planning a reproducible baseline.",
+        "tags": ["Gaia Project","Board Games"],
+        "url": "/en/posts/gaia-project-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Understanding Swimming",
+        "description": "A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 meters, with reliable boundaries for buoyancy, drag, and emergencies.",
+        "tags": ["Swimming"],
+        "url": "/en/posts/understanding-swimming/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Break the Code Strategy Guide",
+        "description": "Drawn from nearly 500 BGA games, this guide treats questions as candidate-set partitions and connects them to deduction, turn order, and endgame play, so the method transfers beyond fixed rankings.",
+        "tags": ["Break the Code","Board Games"],
+        "url": "/en/posts/break-the-code-strategy-guide/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Quantitative Strategy Guide to Seasons",
+        "description": "A common point scale for energy, Summoning-gauge spaces, transmutation, cards, and dice actions, tested against drafting and interaction to compare choices during play.",
+        "tags": ["Seasons","Board Games"],
+        "url": "/en/posts/quantitative-strategy-guide-to-seasons/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "PC Build Log",
+        "description": "A complete R5 5600 + RX 6600 XT build record that keeps requirements, component trade-offs, prices, and assembly problems together, showing how a budget became a balanced machine.",
+        "tags": ["PC Building"],
+        "url": "/en/posts/pc-build-log/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building Shape-Matched ASCII Art",
+        "description": "A shape-aware ASCII-art method using glyph templates, comparison, histogram equalization, and grayscale consistency to make outlines follow source images more closely than average-brightness mapping.",
+        "tags": ["NoneBot","Python","ASCII Art"],
+        "url": "/en/posts/building-shape-matched-ascii-art/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Cloud Servers and Deployment Architecture: From Domains to Reliable Operations",
+        "description": "A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting.",
+        "tags": ["Cloud Servers"],
+        "url": "/en/posts/notes-on-cloud-servers/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Practical Guide to Reliable Reinforcement Learning Experiments",
+        "description": "A reproducible RL workflow spanning environment contracts, Gymnasium semantics, open task distributions, visual pre-training, method choice, reward, replay, debugging, and uncertainty reporting.",
+        "tags": ["Reinforcement Learning","Meta-Reinforcement Learning","Representation Learning"],
+        "url": "/en/posts/reinforcement-learning-issues/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building on GitHub Pages: From Static Hosting to Reproducible Deployment",
+        "description": "Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically.",
+        "tags": ["GitHub"],
+        "url": "/en/posts/build-a-personal-github-page/",
+        "kind": "Writing"
+      }
+      
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "A NoneBot2 plugin that turns chat commands into multilingual character voices through configurable speech-synthesis APIs and voice parameters.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "A unified benchmark for reproducible high-dimensional Bayesian optimization experiments, combining synthetic and realistic tasks with representative algorithm wrappers.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "A lightweight solver for Turing Machine puzzles that enumerates valid codes, searches the best three-verifier questioning plan, and estimates success.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "A lightweight voice-to-voice LLM demo connecting local SenseVoice ASR, an OpenAI-compatible chat API, and Edge TTS with free components.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "Zero-shot online cross-task transfer for LLM-based hyperparameter optimization: one LLM call per BO round proposes target candidates and selects an auxiliary query.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "MCP tools for Codex to delegate implementation and request independent Claude Code reviews with explicit authority, provider routing, and structured results.",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-b-ijcnn-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey on High-dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Hongye Cao, Yang Gao, Dong Li, Jianye Hao · Journal of Software",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-survey-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/en/publications/#trust-region-newton-ecai-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey of Meta-reinforcement Learning Research",
+      "description": "Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao · Journal of Software · 2024 Top-20 High-Attention Review Paper",
+      "tags": [2024],
+      "url": "/en/publications/#meta-rl-survey-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/en/publications/#supervised-dr-ppsn-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/en/publications/#casil-aamas-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/en/publications/#radar-rl-2023",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/en/publications/#tild-aamas-2023",
+      "kind": "Papers"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "Moegirlpedia quiz",
+        "description": "Read the Chinese anonymized introduction and choose the matching entry.",
+        "tags": ["encyclopedia","Moegirlpedia","Chinese","entry","quiz"],
+        "url": "/en/toys/#moegirl-quiz",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Artwork quiz (Cleveland Museum of Art)",
+        "description": "Choose the quiz direction and whether to show title, artist, or date.",
+        "tags": ["art","matching","painting","museum","Cleveland","image","quiz"],
+        "url": "/en/toys/#art-glimpse",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Anime protagonist quiz (AniList)",
+        "description": "Choose among three four-choice links between anime and their main characters.",
+        "tags": ["AniList","anime","character","main role","relation","quiz"],
+        "url": "/en/toys/#anilist-role-quiz",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Color difference challenge",
+        "description": "Find the subtly different tile and see how far you can go.",
+        "tags": ["color","vision","perception","challenge"],
+        "url": "/en/toys/#color-challenge",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Ten-second estimate",
+        "description": "Stop as close to ten seconds as you can without watching a timer.",
+        "tags": ["ten seconds","time","intuition","challenge"],
+        "url": "/en/toys/#ten-second",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Reaction time",
+        "description": "Wait for the signal, then respond as quickly as possible.",
+        "tags": ["reaction","time","speed","challenge"],
+        "url": "/en/toys/#reaction-time",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Number Wordle",
+        "description": "Use exact and digit-only matches to deduce the hidden number code.",
+        "tags": ["number Wordle","codebreaker","deduction","logic","numbers","game"],
+        "url": "/en/toys/#codebreaker",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Make 24",
+        "description": "Use each of four numbers once and combine them to make exactly 24.",
+        "tags": ["make 24","arithmetic","fractions","mental math","logic","game"],
+        "url": "/en/toys/#make-24",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Lights Out",
+        "description": "Flip a cell and its neighbours, then plan a route to turn every light off.",
+        "tags": ["lights out","grid","minimum moves","planning","logic","game"],
+        "url": "/en/toys/#lights-out",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Random password",
+        "description": "Generate a configurable random password in your browser.",
+        "tags": ["random","password","security","generator"],
+        "url": "/en/toys/#random-password",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Random numbers",
+        "description": "Generate one or more random results from an integer range.",
+        "tags": ["random","number","integer","generator"],
+        "url": "/en/toys/#random-number",
+        "kind": "Toys"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>
