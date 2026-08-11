@@ -101,7 +101,7 @@ for (const viewport of [
   });
 }
 
-test("quotes, evidence, and code follow their intended prose or wide canvas", async ({
+test("quotes, evidence, and ordinary code align with prose while wide code stays opt-in", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
@@ -145,35 +145,62 @@ test("quotes, evidence, and code follow their intended prose or wide canvas", as
   expectClose(evidence.quote.left, evidence.prose.left);
   expectClose(evidence.quote.width, evidence.prose.width);
 
-  await page.goto("/en/posts/building-shape-matched-ascii-art/", {
-    waitUntil: "domcontentloaded",
-  });
-  const code = await page.evaluate(() => {
-    const content = document.querySelector(".post-content").getBoundingClientRect();
-    const prose = document
-      .querySelector(".post-content > p:not(:has(img))")
-      .getBoundingClientRect();
-    const wrapper = document
-      .querySelector(".post-content > .highlighter-rouge")
-      .getBoundingClientRect();
-    const pre = document
-      .querySelector(".post-content > .highlighter-rouge pre")
-      .getBoundingClientRect();
-    return {
-      content: { left: content.left, width: content.width },
-      prose: { left: prose.left, width: prose.width },
-      wrapper: { left: wrapper.left, width: wrapper.width },
-      pre: { left: pre.left, right: pre.right },
-      pageOverflows:
-        document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
-    };
-  });
-  expectClose(code.wrapper.left, code.content.left);
-  expectClose(code.wrapper.width, code.content.width);
-  expect(code.wrapper.width - code.prose.width).toBeGreaterThan(300);
-  expect(code.pre.left).toBeGreaterThanOrEqual(code.wrapper.left - 1);
-  expect(code.pre.right).toBeLessThanOrEqual(code.wrapper.left + code.wrapper.width + 1);
-  expect(code.pageOverflows).toBe(false);
+  for (const route of [
+    "/posts/Minecraft服务器的最小运维闭环/",
+    "/en/posts/a-minimal-operations-loop-for-a-minecraft-server/",
+  ]) {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    const code = await page.evaluate(() => {
+      const contentNode = document.querySelector(".post-content");
+      const content = contentNode.getBoundingClientRect();
+      const prose = contentNode
+        .querySelector(":scope > p:not(:has(img))")
+        .getBoundingClientRect();
+      const wrappers = Array.from(
+        contentNode.querySelectorAll(":scope > .highlighter-rouge"),
+      ).map((wrapper) => {
+        const wrapperBox = wrapper.getBoundingClientRect();
+        const preBox = wrapper.querySelector("pre").getBoundingClientRect();
+        return {
+          wrapper: { left: wrapperBox.left, width: wrapperBox.width },
+          pre: { left: preBox.left, right: preBox.right },
+        };
+      });
+      return {
+        content: { left: content.left, width: content.width },
+        prose: { left: prose.left, width: prose.width },
+        wrappers,
+        pageOverflows:
+          document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+      };
+    });
+    expect(code.wrappers).toHaveLength(5);
+    for (const block of code.wrappers) {
+      expectClose(block.wrapper.left, code.prose.left);
+      expectClose(block.wrapper.width, code.prose.width);
+      expect(block.pre.left).toBeGreaterThanOrEqual(block.wrapper.left - 1);
+      expect(block.pre.right).toBeLessThanOrEqual(
+        block.wrapper.left + block.wrapper.width + 1,
+      );
+    }
+    expect(code.pageOverflows).toBe(false);
+
+    const wideCode = await page.evaluate(() => {
+      const content = document.querySelector(".post-content").getBoundingClientRect();
+      const wrapper = document.querySelector(
+        ".post-content > .highlighter-rouge",
+      );
+      wrapper.classList.add("article-wide");
+      const wide = wrapper.getBoundingClientRect();
+      return {
+        content: { left: content.left, width: content.width },
+        wide: { left: wide.left, width: wide.width },
+      };
+    });
+    expectClose(wideCode.wide.left, wideCode.content.left);
+    expectClose(wideCode.wide.width, wideCode.content.width);
+    expect(wideCode.wide.width - code.prose.width).toBeGreaterThan(300);
+  }
 });
 
 test("narrative paragraphs indent while all compact conversion blocks stay aligned", async ({

@@ -209,8 +209,10 @@ def test_article_sections_use_a_native_inline_disclosure_below_the_side_rail_bre
 def test_article_wide_content_is_progressive_and_locally_scrollable():
     article = CSS[CSS.index(".article-shell") : CSS.index(".about-greeting")]
 
-    assert "> :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote, details, hr, .footnotes)" in article
-    assert "> :where(pre, .highlight, .highlighter-rouge, figure, .mermaid, .article-wide)" in article
+    assert ".footnotes," in article
+    assert ".highlighter-rouge," in article
+    assert "figure.highlight" in article
+    assert "> :where(figure:not(.highlight), .mermaid, .article-wide)" in article
     assert ".post-content > p:has(> img:only-child)" in article
     assert ".post-content > p:has(> a:only-child > img:only-child)" in article
     assert ".post-content > .article-prose" in article

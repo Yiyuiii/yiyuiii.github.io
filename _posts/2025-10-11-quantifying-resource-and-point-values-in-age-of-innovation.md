@@ -9,7 +9,7 @@ translation_key: post-202510112233
 translation_url: /posts/大创造时代-资源-分值量化计算思路/
 translation_source: _posts/2025-10-11-《大创造时代》资源-分值量化计算思路.md
 translation_status: current
-source_hash: 9c48043b3f83d1799f753438cf20b1e88268cdeb5295a349c1df0d9e7adc4c3b
+source_hash: af5812be0146eda643eae40da8dce5e6c6dbc81ee461499d97a898baf9e89efe
 aliases: []
 categories:
 - Board Games
@@ -66,7 +66,7 @@ Using the exchange ratio of Power actions establishes these baseline units:
 1c = 1 点通用资源
 1o = 3 点通用资源
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 These are only the baseline units used for the comparisons that follow.
 
@@ -81,7 +81,7 @@ Using a T4 arrival at 9k followed by the 3-point reward gives:
 ```text
 1k = 1.5 资源 + 1.4 分
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 ### Books: b
 
@@ -94,7 +94,7 @@ Innovations—the original draft called them “advanced tiles”—are the main
 ```text
 1b = 3.6 分
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 #### Book Actions
 
@@ -137,7 +137,7 @@ Sending a Scholar can advance 3/2/1k. The three spaces are valued as:
 ```text
 p = 4.5/3/1.5 资源 + 4.2/2.8/1.4 分
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 Early in the game, Scholars can pair with Round Score tiles to contest 3k; 2k is more suitable later. When spending a Scholar for Discipline advancement provides the valuation basis, each k can alternatively count as 2 resources.
 
@@ -165,14 +165,14 @@ The valuation target is this endgame position:
 ```text
 9M 2TC 3RL 1SH 1AC 3航 3铲 4p 3桥 24k
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 On the common scale, it expands to:
 
 ```text
 9×5  2×14  3×28  32  23  3×9  3×13  4×5  3×3  24×2
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 The total is 355 resources.
 
@@ -225,7 +225,7 @@ To estimate the practical value of converting resources into points during the g
 ```text
 T1 的 1c 约等于 T6 的 2.72 分
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 This conversion represents only the model’s marginal value for in-game comparisons.
 
@@ -274,7 +274,7 @@ Use 2c + 3-point income as the baseline for comparing Competency tiles.
 ```text
 1o + 1k = 4.5c + 1.4 分
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 Compared with 2c + 3-point income, the break-even value of 2.5c = 1.6 points lies approximately in T3–T4:
 
@@ -282,14 +282,14 @@ Compared with 2c + 3-point income, the break-even value of 2.5c = 1.6 points lie
 T1：1o + 1k 收入 ≥ 2c + 3 分收入
 T2–T6：2c + 3 分收入 > 1o + 1k 收入
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 #### 1b + 1-Power Income
 
 ```text
 1b + 1 魔力 = 5.5c
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 Compared with 1o + 1k income, the break-even value of 1c = 1.4 points lies approximately in T3:
 
@@ -297,14 +297,14 @@ Compared with 1o + 1k income, the break-even value of 1c = 1.4 points lies appro
 T1：1b + 1 魔力收入 ≥ 1o + 1k 收入
 T2–T6：1o + 1k 收入 > 1b + 1 魔力收入
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 #### 4-Power Action
 
 ```text
 4 魔力 = 2c；当轮再产出 2c
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 Under this article's framework, its return is lower than 1o + 1k income. It remains useful when Power must be replenished or another synergy applies.
 
@@ -316,7 +316,7 @@ Under this article's framework, its return is lower than 1o + 1k income. It rema
 T1 的 1o + 1k 收入终局估值 = 38.40c + 18.19 分
 T1 的 1b + 1 魔力收入终局估值 = 46.93c + 13.67 分
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 Double Spade gains a few more points in the model. Early play rarely needs two consecutive terrain transformations, so its practical advantage over persistent-income tiles is smaller than the numerical gap.
 
@@ -327,7 +327,7 @@ Among resource-income Competency tiles, the T1 model ranking is:
 ```text
 1b + 1 魔力收入 ≥ 1o + 1k 收入 ≥ 2c + 3 分收入
 ```
-{: .article-prose .article-conversion}
+{: .article-conversion}
 
 Double Spade is also viable. The T1 differences among these Competency tiles are small; after T1, prioritize 2c + 3-point income.
 
