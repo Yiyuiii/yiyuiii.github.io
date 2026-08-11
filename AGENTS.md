@@ -45,6 +45,7 @@
 - 2026-08-10，当前 16 组、32 篇随笔已按领域共识术语和阅读负担原则完成全量整理；主称呼、首次定义、双语语义、修订记录及结构契约见 `docs/all-posts-reader-language-2026-08-10.md`。SETI 资源量化研究底稿继续暂缓，不属于公开随笔候选。
 - 2026-08-11，《大创造时代》中英文随笔各自的 14 个换算式代码框均使用 `article-prose article-conversion` 语义标记，与正文栏左边界对齐并保持紧凑宽度；`tests/browser/article-layout-round3.spec.mjs` 同时检查两种语言的完整数量、逐框对齐、等号对齐和页面横向溢出。
 - 2026-08-11，《工业革命：匹兹堡》双语规则教学已纳入候选；文章按摆桌、回合结构、资源运输、六种行动、完整首轮与时代结算的顺序组织，以当前公开多人规则稿为版本边界，配图来源和规则审计分别记录在 `docs/article-assets/202608102107.yml` 与 `docs/brass-pittsburgh-rules-audit-2026-08-10.md`。
+- 2026-08-11，《四种颜色的外套》中英文随笔已重构为同一虚构模特的受控穿搭图谱与个人衣橱验证流程：综合图只改变同款外套颜色，四张分组图固定各自外套并比较支持搭配；正文明确区分图内相对比较、实物色貌、个人偏好与耐用证据，生成提示、参考输入、尺寸和 SHA-256 记录在 `docs/article-assets/202608081100.yml`，研究与视觉协议见 `docs/four-color-outerwear-research-2026-08-11.md`。
 - 《与珍珠鸟建立信任》于 2026-08-09 二次重构为《与珍珠鸟建立信任：从行为机制到可检验训练》：以社会性、情境应激、个体差异和联结学习的原始研究为起点，明确实验到家庭的外推边界，再用健康／刺激负荷／退出能力／社会情境／学习历史／动机六变量模型推导基线指标、五阶段协议、故障诊断和停止条件；中英文保留原 `uid`、日期、URL 与题图。
 - 2026-08-08 已在 `content/evergreen-article-rewrite-20260808` 外部工作树完成 GitHub Pages、强化学习、云服务器和游泳四组中英文随笔重构，并同步完成无效资源声明清理、外链检查器加固、SCSS 八模块拆分与维护文档修正；随后将 `codex/obsidian-export-20260808` 工作树中的四组新随笔、12 项题图及索引派生资产、来源登记和首页条目合并进来，强化学习文章保留原常青教程并融合开放任务分布、元强化学习混淆、长时程和视觉预训练内容。2026-08-08 首轮候选曾通过 Replit 完成端到端审阅，这只属于历史实验；2026-08-09 珍珠鸟二次重构又通过 392 项 Python、77 项 JavaScript、production Jekyll 构建、70 条旧 URL 和 169 项浏览器回归，同日开始把审阅流程迁移到 `preview/review` 的 GitHub artifact 与本机 loopback。截至 2026-08-09，该候选尚未合入正式 `master`。2026-08-11 已继续整合《工业革命：匹兹堡》双语教程，并完成 403 项 Python、77 项 JavaScript 和 169 项浏览器回归；用户随后授权正式发布。每次判断发布状态时，应复核当前 Git refs、GitHub run SHA、artifact 内 `preview-source-sha.txt` 和正式 Pages 运行结果。范围、来源、交叉审阅修正和验证证据记录在 `docs/evergreen-article-rewrite-2026-08-08.md`；合并、继续修改或放弃工作树时必须同步更新。
 - `scripts/translation_guard.py` 同时保护翻译 source hash、成对 URL、结构签名、修订日期与题图元数据；题图 alt/图注可本地化，但共享 thumbnail、图注 Markdown 结构和链接目标／顺序受保护。普通代码围栏逐字保护，Mermaid 仅允许独立 `ID(可见标签)` 节点的标签本地化，图类型、节点 ID、形状和边仍必须一致。
@@ -69,6 +70,8 @@ python scripts/validate.py --browser
 - GitHub 测试分支与本地审阅流程：docs/preview-workflow.md
 - 2026-08-08 持久型随笔重构：docs/evergreen-article-rewrite-2026-08-08.md
 - 2026-08-10 全站随笔术语与阅读负担整理：docs/all-posts-reader-language-2026-08-10.md
+- 2026-08-11《四种颜色的外套》研究与视觉协议：docs/four-color-outerwear-research-2026-08-11.md
+- 《四种颜色的外套》正文生成图来源：docs/article-assets/202608081100.yml
 - 双语随笔基础：docs/superpowers/specs/2026-08-01-bilingual-post-foundation.md
 - 生产封面来源：docs/asset-provenance.yml
 - 随笔题图组件：docs/article-cover-component.md

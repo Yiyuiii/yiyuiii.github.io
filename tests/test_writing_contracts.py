@@ -113,7 +113,12 @@ def test_seasons_screenshots_use_managed_webp_derivatives():
     assert policy["policy"]["format"] == "WEBP"
     assert policy["policy"]["quality"] == 82
     assert policy["policy"]["hash"] == "SHA-256"
-    assert len(policy["images"]) == 6
+    seasons_images = [
+        record
+        for record in policy["images"]
+        if record["source"].startswith("assets/posts/202301162233/")
+    ]
+    assert len(seasons_images) == 6
     assert "bigcards-content-v2-800.webp" in str(policy)
     assert all(record.get("source_sha256") for record in policy["images"])
     assert all(record.get("source_dimensions") for record in policy["images"])
@@ -123,6 +128,35 @@ def test_seasons_screenshots_use_managed_webp_derivatives():
         assert path in english
         assert f"/assets/posts/202301162233/scene{index}.png" not in chinese
         assert f"/assets/posts/202301162233/scene{index}.png" not in english
+
+
+def test_outerwear_atlas_uses_managed_consistent_model_images():
+    policy = yaml.safe_load(text("_data/article_image_derivatives.yml"))
+    chinese = text("_posts/2026-08-08-四种颜色的外套系统.md")
+    english = text("_posts/2026-08-08-a-four-color-outerwear-system.md")
+    records = {record["source"]: record for record in policy["images"]}
+    expected = [
+        "outerwear-color-controlled-comparison.webp",
+        "outerwear-brick-red-pairings.webp",
+        "outerwear-warm-beige-pairings.webp",
+        "outerwear-muted-olive-pairings.webp",
+        "outerwear-charcoal-pairings.webp",
+    ]
+
+    for filename in expected:
+        relative = f"assets/posts/202608081100/{filename}"
+        public = f"/{relative}"
+        assert public in chinese
+        assert public in english
+        assert relative in records
+        assert records[relative]["published"] == relative
+        assert [variant["width"] for variant in records[relative]["variants"]] == [
+            800,
+            1400,
+        ]
+
+    assert chinese.count("AI 生成示意图") == 5
+    assert english.count("AI-generated illustration") == 5
 
 
 def test_every_post_body_starts_at_h2_and_never_skips_a_heading_level():

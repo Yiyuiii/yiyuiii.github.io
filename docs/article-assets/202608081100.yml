@@ -1,0 +1,159 @@
+version: 1
+article_uid: "202608081100"
+title: "Four-color outerwear controlled outfit atlas"
+generator: "OpenAI image_gen via Codex built-in tool"
+generated_at: "2026-08-11"
+rights_basis:
+  generated_images: >-
+    All five body images were generated for this article from text prompts. No
+    catalogue photo, brand asset, product image, or third-party fashion
+    photograph was used. The identity anchor is a generated fictional adult
+    and does not represent the author or another real person.
+  use_boundary: >-
+    These images are comparative editorial illustrations. They are not product
+    photographs, exact colour samples, fit guarantees, durability evidence, or
+    claims that the depicted garments exist for sale.
+reference_inputs:
+  identity_anchor:
+    stored_in_repository: false
+    source_sha256: "fece12af3c3c2cde92e02fda15d0a383b69c4fe87df3c372ba97c4b3bfd38eb5"
+    dimensions: [1024, 1536]
+    description: >-
+      AI-generated fictional East Asian adult used only to constrain identity,
+      body, pose, camera, lighting, and studio consistency across the body-image
+      series. The source remains under Codex generated_images and is not a
+      production asset.
+    prompt: |-
+      Use case: photorealistic-natural
+      Asset type: identity and composition anchor for a bilingual editorial article's controlled outerwear comparison series
+      Primary request: create one consistent adult fashion model who will be reused across later outfit comparison images
+      Scene/backdrop: quiet seamless warm light-gray photography studio, no props, no visible horizon clutter
+      Subject: one East Asian adult in their late twenties with an androgynous, approachable appearance, short naturally textured black hair, medium height and average build; relaxed neutral expression; wearing a plain warm-white crew-neck knit, straight dark-indigo jeans, and minimal dark-brown leather sneakers; no outerwear, no accessories
+      Style/medium: photorealistic natural fashion editorial photograph with realistic skin, fabric texture, wrinkles, and ordinary human proportions; polished but not commercial glamour
+      Composition/framing: full body fully visible from head to shoes, eye-level 50 mm look, vertical composition, slight three-quarter stance facing camera, arms relaxed naturally, generous margin around the figure
+      Lighting/mood: soft diffused daylight from camera-left, neutral white balance, gentle grounded shadow, calm and practical
+      Constraints: exactly one person; preserve a clear unobstructed face, hairstyle, body proportions, pose, camera angle, crop, lighting, backdrop, and footwear as a strong identity anchor for later edits; no text, no letters, no numbers, no logo, no brand marks, no jewelry, no bag, no watermark
+      Avoid: runway pose, exaggerated thinness, beauty retouching, dramatic makeup, cinematic color grading, fashion-show background, extra garments, cropped feet or head
+assets:
+  - asset: "assets/posts/202608081100/outerwear-color-controlled-comparison.webp"
+    purpose: "Controlled comparison: same model, pose, base outfit, jacket design, studio, and lighting; only outerwear colour changes."
+    reference_inputs:
+      - "Generated identity anchor fece12af3c3c2cde92e02fda15d0a383b69c4fe87df3c372ba97c4b3bfd38eb5"
+    prompt: |-
+      Use case: identity-preserve
+      Asset type: landscape controlled-comparison figure for a bilingual editorial article about four outerwear colors
+      Input images: Image 1 is the identity, body, hairstyle, pose, camera, lighting, and studio reference
+      Primary request: create a clean four-panel contact sheet showing the exact same person from Image 1 four times; in every panel add the exact same simple hip-length unbranded cotton jacket, changing only its color from panel to panel
+      Scene/backdrop: preserve Image 1's seamless warm light-gray studio, floor, shadow direction, camera height, and neutral white balance in every panel
+      Subject: preserve the same East Asian adult's face, short black hair, age, expression, body proportions, full-body scale, three-quarter stance, and dark-brown leather sneakers; underneath every jacket use the same warm-white crew-neck knit and the same straight dark-indigo jeans from Image 1
+      Panel order from left to right: 1 brick red (#984737 visual target), 2 warm beige (#C2A77D visual target), 3 muted olive (#66683D visual target), 4 charcoal gray (#3C4043 visual target)
+      Outerwear: identical clean hip-length single-breasted cotton work jacket in all four panels; identical collar, seam placement, pockets, buttons, fabric, fit, hem length, and sleeve length; only the jacket color changes
+      Style/medium: photorealistic natural fashion editorial photograph with realistic skin and fabric texture
+      Composition/framing: wide landscape contact sheet, exactly four equal panels with subtle neutral gutters; one full-body figure centered in each panel, head and shoes fully visible, equal scale and margins
+      Lighting/mood: preserve the same soft diffused daylight from camera-left and gentle grounded shadow in all panels
+      Constraints: change only jacket color across panels; keep identity, face, hair, pose, expression, body, base garments, shoes, jacket design, background, crop, scale, camera, and lighting unchanged; exactly four people total; no text, letters, numbers, labels, logos, brand marks, accessories, watermark, panel borders, or color swatches
+      Avoid: different faces, different body shapes, different poses, different jacket cuts, duplicated limbs, extra garments, cropped heads or feet, commercial catalogue branding, heavy retouching
+    transform: "Generated at 1672 × 941 PNG; converted without resizing to RGB WebP quality 82, method 6, optimize enabled, with EXIF and ICC metadata removed using Pillow 12.3.0 and libwebp 1.6.0."
+    dimensions: [1672, 941]
+    sha256: "caa913ceac149ca848d9224a5a4d8bb26507f5e50459886649d19248e6385aca"
+    approval: "Selected after visual inspection as a publication candidate; final editorial approval remains with the user."
+
+  - asset: "assets/posts/202608081100/outerwear-brick-red-pairings.webp"
+    purpose: "Two brick-red outerwear examples with a fixed model and jacket, comparing a dark/cool base with a softer natural base."
+    reference_inputs:
+      - "Generated identity anchor fece12af3c3c2cde92e02fda15d0a383b69c4fe87df3c372ba97c4b3bfd38eb5"
+      - "assets/posts/202608081100/outerwear-color-controlled-comparison.webp"
+    prompt: |-
+      Use case: identity-preserve
+      Asset type: two-panel outfit comparison figure for the brick-red section of a bilingual outerwear essay
+      Input images: Image 1 is the exact identity, body, pose, camera, lighting, and studio anchor; Image 2 is the exact jacket-design and color-series reference, especially its leftmost brick-red jacket
+      Primary request: create exactly two full-body panels of the same person wearing the exact same brick-red short cotton work jacket; use two supporting outfits to show a dark/cool base and a softer natural base
+      Scene/backdrop: preserve the seamless warm light-gray studio, camera height, floor, and shadow direction from Image 1
+      Subject invariants: preserve the exact same East Asian adult's face, short black hairstyle, age, neutral expression, body proportions, scale, relaxed three-quarter stance, and ordinary realistic appearance in both panels
+      Outerwear invariant: the same unbranded brick-red (#984737 visual target) short cotton work jacket in both panels; preserve collar, buttons, patch pockets, seams, texture, fit, sleeve length, and hem
+      Left panel supporting outfit: warm-white crew-neck knit, straight dark-indigo jeans, dark-brown minimal leather sneakers
+      Right panel supporting outfit: charcoal crew-neck knit, warm-beige straight trousers, dark-brown minimal leather sneakers
+      Style/medium: photorealistic natural fashion editorial photograph, realistic skin, fabric texture, seams, wrinkles, and grounded shadows
+      Composition/framing: wide landscape image with exactly two equal panels and a subtle neutral gutter; one full-body figure centered per panel; identical scale, crop, camera angle, pose, and margins; head and shoes fully visible
+      Lighting/mood: identical soft diffused daylight from camera-left and neutral white balance
+      Constraints: change only the supporting knit and trousers between panels; keep identity, jacket, shoes, pose, camera, backdrop, crop, scale, and lighting unchanged; exactly two people total; no text, letters, numbers, labels, logos, brand marks, accessories, bags, jewelry, watermark, or decorative props
+      Avoid: different faces, body drift, pose drift, jacket redesign, saturated scarlet, burgundy, cropped feet, commercial glamour, duplicated limbs
+    transform: "Generated at 1672 × 941 PNG; converted without resizing to RGB WebP quality 82, method 6, optimize enabled, with EXIF and ICC metadata removed using Pillow 12.3.0 and libwebp 1.6.0."
+    dimensions: [1672, 941]
+    sha256: "fca9d9a952fddcc35e6dd66e433697aa76cf9af3924fb199ac2bff4df3466d4c"
+    approval: "Selected after visual inspection as a publication candidate; final editorial approval remains with the user."
+
+  - asset: "assets/posts/202608081100/outerwear-warm-beige-pairings.webp"
+    purpose: "Two warm-beige outerwear examples with a fixed model and jacket, comparing a pale cool base with a muted natural base."
+    reference_inputs:
+      - "Generated identity anchor fece12af3c3c2cde92e02fda15d0a383b69c4fe87df3c372ba97c4b3bfd38eb5"
+      - "assets/posts/202608081100/outerwear-color-controlled-comparison.webp"
+    prompt: |-
+      Use case: identity-preserve
+      Asset type: two-panel outfit comparison figure for the warm-beige section of a bilingual outerwear essay
+      Input images: Image 1 is the exact identity, body, pose, camera, lighting, and studio anchor; Image 2 is the exact jacket-design and color-series reference, especially its second warm-beige jacket
+      Primary request: create exactly two full-body panels of the same person wearing the exact same warm-beige hip-length cotton work jacket; use two supporting outfits to compare a pale cool base with a muted natural-color base
+      Scene/backdrop: preserve the seamless warm light-gray studio, floor, camera height, and shadow direction from Image 1
+      Subject invariants: preserve the exact same East Asian adult's face, short black hairstyle, age, neutral expression, body proportions, full-body scale, relaxed three-quarter stance, and ordinary realistic appearance in both panels
+      Outerwear invariant: the same unbranded warm-beige (#C2A77D visual target) hip-length cotton work jacket in both panels; preserve collar, buttons, patch pockets, seams, texture, fit, sleeve length, and hem
+      Left panel supporting outfit: pale-blue oxford shirt with no tie, straight charcoal trousers, dark-brown minimal leather sneakers
+      Right panel supporting outfit: muted olive crew-neck knit, straight mid-blue jeans, off-white minimal leather sneakers
+      Style/medium: photorealistic natural fashion editorial photograph, realistic skin, fabric texture, seams, wrinkles, and grounded shadows
+      Composition/framing: wide landscape image with exactly two equal panels and a subtle neutral gutter; one full-body figure centered per panel; identical scale, crop, camera angle, pose, and margins; head and shoes fully visible
+      Lighting/mood: identical soft diffused daylight from camera-left and neutral white balance
+      Constraints: change only the supporting shirt or knit, trousers or jeans, and specified shoe color between panels; keep identity, jacket, pose, camera, backdrop, crop, scale, and lighting unchanged; exactly two people total; no text, letters, numbers, labels, logos, brand marks, accessories, bags, jewelry, watermark, or decorative props
+      Avoid: different faces, body drift, pose drift, jacket redesign, yellow tan, pink beige, cropped feet, commercial glamour, duplicated limbs
+    transform: "Generated at 1672 × 941 PNG; converted without resizing to RGB WebP quality 82, method 6, optimize enabled, with EXIF and ICC metadata removed using Pillow 12.3.0 and libwebp 1.6.0."
+    dimensions: [1672, 941]
+    sha256: "5620dd1a49f86e7a50a3cfc8c310869d6e8d3e6afe5bdd4a71497adc24d84fd7"
+    approval: "Selected after visual inspection as a publication candidate; final editorial approval remains with the user."
+
+  - asset: "assets/posts/202608081100/outerwear-muted-olive-pairings.webp"
+    purpose: "Two muted-olive outerwear examples with a fixed model and jacket, comparing a light-neutral denim base with a low-saturation warm base."
+    reference_inputs:
+      - "Generated identity anchor fece12af3c3c2cde92e02fda15d0a383b69c4fe87df3c372ba97c4b3bfd38eb5"
+      - "assets/posts/202608081100/outerwear-color-controlled-comparison.webp"
+    prompt: |-
+      Use case: identity-preserve
+      Asset type: two-panel outfit comparison figure for the muted-olive section of a bilingual outerwear essay
+      Input images: Image 1 is the exact identity, body, pose, camera, lighting, and studio anchor; Image 2 is the exact jacket-design and color-series reference, especially its third muted-olive jacket
+      Primary request: create exactly two full-body panels of the same person wearing the exact same muted-olive hip-length cotton utility jacket; use two supporting outfits to compare a light-neutral denim base with a low-saturation warm base
+      Scene/backdrop: preserve the seamless warm light-gray studio, floor, camera height, and shadow direction from Image 1
+      Subject invariants: preserve the exact same East Asian adult's face, short black hairstyle, age, neutral expression, body proportions, full-body scale, relaxed three-quarter stance, and ordinary realistic appearance in both panels
+      Outerwear invariant: the same unbranded muted-olive (#66683D visual target) hip-length cotton utility jacket in both panels; preserve collar, buttons, patch pockets, seams, texture, fit, sleeve length, and hem
+      Left panel supporting outfit: warm-white crew-neck knit, straight dark-indigo jeans, dark-brown minimal leather ankle boots
+      Right panel supporting outfit: muted brick-red crew-neck knit, straight ecru trousers, dark-brown minimal leather sneakers
+      Style/medium: photorealistic natural fashion editorial photograph, realistic skin, fabric texture, seams, wrinkles, and grounded shadows
+      Composition/framing: wide landscape image with exactly two equal panels and a subtle neutral gutter; one full-body figure centered per panel; identical scale, crop, camera angle, pose, and margins; head and shoes fully visible
+      Lighting/mood: identical soft diffused daylight from camera-left and neutral white balance
+      Constraints: change only the supporting knit, trousers or jeans, and specified shoe style between panels; keep identity, jacket, pose, camera, backdrop, crop, scale, and lighting unchanged; exactly two people total; no text, letters, numbers, labels, logos, brand marks, accessories, bags, jewelry, watermark, or decorative props
+      Avoid: different faces, body drift, pose drift, jacket redesign, vivid grass green, camouflage, military insignia, saturated red, cropped feet, commercial glamour, duplicated limbs
+    transform: "Generated at 1672 × 941 PNG; converted without resizing to RGB WebP quality 82, method 6, optimize enabled, with EXIF and ICC metadata removed using Pillow 12.3.0 and libwebp 1.6.0."
+    dimensions: [1672, 941]
+    sha256: "c4493fd9eab35bb753d638518f9cfab227c9b0c7a9ed1ca05ae58cac14bbcb80"
+    approval: "Selected after visual inspection as a publication candidate; final editorial approval remains with the user."
+
+  - asset: "assets/posts/202608081100/outerwear-charcoal-pairings.webp"
+    purpose: "Two charcoal long-coat examples with a fixed model and coat, comparing a sharper pale-and-dark base with a softer earth-tone base."
+    reference_inputs:
+      - "Generated identity anchor fece12af3c3c2cde92e02fda15d0a383b69c4fe87df3c372ba97c4b3bfd38eb5"
+      - "assets/posts/202608081100/cover-four-color-outerwear-generated-square.webp"
+    prompt: |-
+      Use case: identity-preserve
+      Asset type: two-panel outfit comparison figure for the charcoal section of a bilingual outerwear essay
+      Input images: Image 1 is the exact identity, body, pose, camera, lighting, and studio anchor; Image 2 provides a reference for the clean unbranded charcoal wool coat silhouette
+      Primary request: create exactly two full-body panels of the same person wearing the exact same charcoal knee-length single-breasted wool coat; use two supporting outfits to compare a sharper pale-and-dark base with a softer earth-tone base
+      Scene/backdrop: preserve the seamless warm light-gray studio, floor, camera height, and shadow direction from Image 1
+      Subject invariants: preserve the exact same East Asian adult's face, short black hairstyle, age, neutral expression, body proportions, full-body scale, relaxed three-quarter stance, and ordinary realistic appearance in both panels
+      Outerwear invariant: the same unbranded charcoal (#3C4043 visual target) knee-length single-breasted wool coat in both panels; clean notched collar, three dark buttons, simple welt pockets, restrained tailoring, realistic matte wool texture; preserve fit, sleeve length, hem, collar, buttons, seams, and pockets
+      Left panel supporting outfit: pale-blue oxford shirt, straight deep-navy trousers, simple black leather derby shoes
+      Right panel supporting outfit: warm-cream crew-neck knit, straight muted-olive trousers, dark-brown minimal leather ankle boots
+      Style/medium: photorealistic natural fashion editorial photograph, realistic skin, wool texture, seams, wrinkles, and grounded shadows
+      Composition/framing: wide landscape image with exactly two equal panels and a subtle neutral gutter; one full-body figure centered per panel; identical scale, crop, camera angle, pose, and margins; head and shoes fully visible
+      Lighting/mood: identical soft diffused daylight from camera-left and neutral white balance
+      Constraints: change only the supporting shirt or knit, trousers, and specified shoes between panels; keep identity, coat, pose, camera, backdrop, crop, scale, and lighting unchanged; exactly two people total; no text, letters, numbers, labels, logos, brand marks, accessories, bags, jewelry, watermark, or decorative props
+      Avoid: different faces, body drift, pose drift, coat redesign, pure black coat, blue-black clipping, oversized runway coat, cropped feet, commercial glamour, duplicated limbs
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 82, method 6, optimize enabled, with EXIF and ICC metadata removed using Pillow 12.3.0 and libwebp 1.6.0."
+    dimensions: [1536, 1024]
+    sha256: "0efd41f0aef22176a0ea40b37409aac76ddf1b530f1a1c76ca68e9eb708f29dc"
+    approval: "Selected after visual inspection as a publication candidate; final editorial approval remains with the user."
