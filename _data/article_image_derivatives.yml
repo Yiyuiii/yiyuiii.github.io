@@ -96,3 +96,98 @@ images:
   published_dimensions:
   - 798
   - 817
+- source: assets/posts/202608081100/outerwear-color-controlled-comparison.webp
+  published: assets/posts/202608081100/outerwear-color-controlled-comparison.webp
+  variants:
+  - asset: assets/posts/202608081100/outerwear-color-controlled-comparison-content-v2-800.webp
+    width: 800
+    sha256: 2a48d3d5b78d308e09edaa4df64adaadf40893e6633267a95775f55c4b1b022d
+    dimensions:
+    - 800
+    - 450
+  - asset: assets/posts/202608081100/outerwear-color-controlled-comparison-content-v2-1400.webp
+    width: 1400
+    sha256: 73905f5e4da5ae4650a225c88cfdfb3aa77ce85e688526767adb5f50cd94d99b
+    dimensions:
+    - 1400
+    - 788
+  source_sha256: caa913ceac149ca848d9224a5a4d8bb26507f5e50459886649d19248e6385aca
+  source_dimensions:
+  - 1672
+  - 941
+- source: assets/posts/202608081100/outerwear-brick-red-pairings.webp
+  published: assets/posts/202608081100/outerwear-brick-red-pairings.webp
+  variants:
+  - asset: assets/posts/202608081100/outerwear-brick-red-pairings-content-v2-800.webp
+    width: 800
+    sha256: cd84f209e4748c751c8a99896c93c1c4b4d7f915b87ff3060808f70684d1d902
+    dimensions:
+    - 800
+    - 450
+  - asset: assets/posts/202608081100/outerwear-brick-red-pairings-content-v2-1400.webp
+    width: 1400
+    sha256: 8bfec10287e9ae5d681ad7d17dfd038f4c50755799c7f51cc827e44f564aa3cd
+    dimensions:
+    - 1400
+    - 788
+  source_sha256: fca9d9a952fddcc35e6dd66e433697aa76cf9af3924fb199ac2bff4df3466d4c
+  source_dimensions:
+  - 1672
+  - 941
+- source: assets/posts/202608081100/outerwear-warm-beige-pairings.webp
+  published: assets/posts/202608081100/outerwear-warm-beige-pairings.webp
+  variants:
+  - asset: assets/posts/202608081100/outerwear-warm-beige-pairings-content-v2-800.webp
+    width: 800
+    sha256: 747ac71b1511780d23bca54f4e6d309e3fecc0622cfc4ab309d51ae7ed5b6639
+    dimensions:
+    - 800
+    - 450
+  - asset: assets/posts/202608081100/outerwear-warm-beige-pairings-content-v2-1400.webp
+    width: 1400
+    sha256: 9a8312fd1f8f88757c335f9ddfbacbbc35af901a773ee1364b4cecf1914578bd
+    dimensions:
+    - 1400
+    - 788
+  source_sha256: 5620dd1a49f86e7a50a3cfc8c310869d6e8d3e6afe5bdd4a71497adc24d84fd7
+  source_dimensions:
+  - 1672
+  - 941
+- source: assets/posts/202608081100/outerwear-muted-olive-pairings.webp
+  published: assets/posts/202608081100/outerwear-muted-olive-pairings.webp
+  variants:
+  - asset: assets/posts/202608081100/outerwear-muted-olive-pairings-content-v2-800.webp
+    width: 800
+    sha256: 007b1283cc5db146d720f910c6959e0355ae6a11aa05e7c61f065c1844f2c118
+    dimensions:
+    - 800
+    - 450
+  - asset: assets/posts/202608081100/outerwear-muted-olive-pairings-content-v2-1400.webp
+    width: 1400
+    sha256: e4bf247f674abb5efb5f14e8e3a5e40e32573d756db66c4f9d2818e4be94477d
+    dimensions:
+    - 1400
+    - 788
+  source_sha256: c4493fd9eab35bb753d638518f9cfab227c9b0c7a9ed1ca05ae58cac14bbcb80
+  source_dimensions:
+  - 1672
+  - 941
+- source: assets/posts/202608081100/outerwear-charcoal-pairings.webp
+  published: assets/posts/202608081100/outerwear-charcoal-pairings.webp
+  variants:
+  - asset: assets/posts/202608081100/outerwear-charcoal-pairings-content-v2-800.webp
+    width: 800
+    sha256: 4f638756dae7543357c9008e2d3a8ba379726f5577fc10f7efcfec0a45f9d802
+    dimensions:
+    - 800
+    - 533
+  - asset: assets/posts/202608081100/outerwear-charcoal-pairings-content-v2-1400.webp
+    width: 1400
+    sha256: 1d854647ef9e3c30f3432cb4cfaae8d140b841bd1bd0b10cdc7f6211d22f84e9
+    dimensions:
+    - 1400
+    - 933
+  source_sha256: 0efd41f0aef22176a0ea40b37409aac76ddf1b530f1a1c76ca68e9eb708f29dc
+  source_dimensions:
+  - 1536
+  - 1024
