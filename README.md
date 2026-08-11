@@ -34,7 +34,7 @@ git ls-files docs/content-revisions docs/content-covers
 首次准备：
 
 ```powershell
-python -m pip install --require-hashes -r scripts/requirements-dev.txt
+python -m pip install --require-hashes -r scripts/requirements.txt
 python -m pip check
 bundle install
 npm ci
@@ -71,13 +71,13 @@ python scripts/run_browser_tests.py --site _site -- tests/browser/site.spec.mjs
 python scripts/validate.py --browser -- tests/browser/site.spec.mjs
 ```
 
-Python 直接依赖维护在 `scripts/requirements-dev.in`，完整版本与分发包哈希由 `scripts/requirements-dev.txt` 固定。更新时使用 Python 3.12 与 `pip-tools==7.5.3`：
+Python 直接依赖维护在 `scripts/requirements.in`，完整版本与分发包哈希由 `scripts/requirements.txt` 固定。更新时使用 Python 3.12 与 `pip-tools==7.5.3`：
 
 ```powershell
 python -m pip install "pip-tools==7.5.3"
-$env:CUSTOM_COMPILE_COMMAND = "python -m piptools compile --strip-extras --generate-hashes --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements-dev.txt scripts/requirements-dev.in"
-python -m piptools compile --strip-extras --generate-hashes --index-url=https://pypi.org/simple --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements-dev.txt scripts/requirements-dev.in
-python -m pip install --require-hashes -r scripts/requirements-dev.txt
+$env:CUSTOM_COMPILE_COMMAND = "python -m piptools compile --strip-extras --generate-hashes --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements.txt scripts/requirements.in"
+python -m piptools compile --strip-extras --generate-hashes --index-url=https://pypi.org/simple --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements.txt scripts/requirements.in
+python -m pip install --require-hashes -r scripts/requirements.txt
 python -m pip check
 ```
 

@@ -5,8 +5,8 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
-INPUT = ROOT / "scripts" / "requirements-dev.in"
-LOCK = ROOT / "scripts" / "requirements-dev.txt"
+INPUT = ROOT / "scripts" / "requirements.in"
+LOCK = ROOT / "scripts" / "requirements.txt"
 
 
 def text(path: Path) -> str:
@@ -31,8 +31,9 @@ def locked_versions(source: str) -> dict[str, str]:
     return versions
 
 
-def test_python_checks_use_a_development_input_and_hashed_lock():
-    assert not (ROOT / "scripts" / "requirements.txt").exists()
+def test_python_checks_use_an_input_and_hashed_lock():
+    assert not (ROOT / "scripts" / "requirements-dev.in").exists()
+    assert not (ROOT / "scripts" / "requirements-dev.txt").exists()
     assert INPUT.is_file()
     assert LOCK.is_file()
 
@@ -81,16 +82,16 @@ def test_workflow_and_dependabot_install_and_maintain_the_lock():
     readme = text(ROOT / "README.md")
     dependabot = yaml.safe_load(text(ROOT / ".github" / "dependabot.yml"))
 
-    assert "scripts/requirements-dev.in" in workflow
-    assert "scripts/requirements-dev.txt" in workflow
+    assert "scripts/requirements.in" in workflow
+    assert "scripts/requirements.txt" in workflow
     assert (
         "python -m pip install --require-hashes "
-        "-r scripts/requirements-dev.txt"
+        "-r scripts/requirements.txt"
     ) in workflow
     assert "python -m pip check" in workflow
     assert (
         "python -m pip install --require-hashes "
-        "-r scripts/requirements-dev.txt"
+        "-r scripts/requirements.txt"
     ) in readme
 
     pip_updates = [

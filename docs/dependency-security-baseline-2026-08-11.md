@@ -12,9 +12,9 @@
 
 ## 清单结构
 
-- `scripts/requirements-dev.in` 保存五项跨平台直接依赖约束，并为 Windows 声明 `tzdata`。Windows 标准 Python 依靠该包载入 `Asia/Hong_Kong`；Linux 继续使用系统时区数据库。
-- `scripts/requirements-dev.txt` 使用 Python 3.12 与 `pip-tools==7.5.3` 生成，固定全部直接和传递依赖，并保存 PyPI 分发包 SHA-256。
-- 文件名包含 `dev`，使 GitHub 将这组本地、测试和构建工具识别为开发依赖。
+- `scripts/requirements.in` 保存五项跨平台直接依赖约束，并为 Windows 声明 `tzdata`。Windows 标准 Python 依靠该包载入 `Asia/Hong_Kong`；Linux 继续使用系统时区数据库。
+- `scripts/requirements.txt` 使用 Python 3.12 与 `pip-tools==7.5.3` 生成，固定全部直接和传递依赖，并保存 PyPI 分发包 SHA-256。
+- [GitHub Dependency Graph 的支持清单](https://docs.github.com/en/code-security/reference/supply-chain-security/dependency-graph-supported-package-ecosystems)将 pip 静态分析入口列为标准文件名 `requirements.txt`。分支依赖对比已确认 `requirements-dev.txt` 不会生成新增依赖记录，因此锁文件沿用标准名称。[Dependabot 的 pip 与 pip-compile 说明](https://docs.github.com/en/code-security/reference/supply-chain-security/supported-ecosystems-and-repositories#pip-and-pip-compile)支持维护 `.txt` 清单；本站继续按 `/scripts` 目录检查更新。
 - CI 使用 `--require-hashes` 安装锁文件，随后运行 `pip check` 检查解析结果。
 - Pillow 继续固定为 12.3.0，并与 `docs/asset-provenance.yml`、`_data/article_image_derivatives.yml` 和图片生成脚本的确定性契约保持一致。
 
@@ -24,9 +24,9 @@
 
 ```powershell
 python -m pip install "pip-tools==7.5.3"
-$env:CUSTOM_COMPILE_COMMAND = "python -m piptools compile --strip-extras --generate-hashes --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements-dev.txt scripts/requirements-dev.in"
-python -m piptools compile --strip-extras --generate-hashes --index-url=https://pypi.org/simple --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements-dev.txt scripts/requirements-dev.in
-python -m pip install --require-hashes -r scripts/requirements-dev.txt
+$env:CUSTOM_COMPILE_COMMAND = "python -m piptools compile --strip-extras --generate-hashes --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements.txt scripts/requirements.in"
+python -m piptools compile --strip-extras --generate-hashes --index-url=https://pypi.org/simple --no-emit-index-url --no-emit-trusted-host --newline=LF --output-file=scripts/requirements.txt scripts/requirements.in
+python -m pip install --require-hashes -r scripts/requirements.txt
 python -m pip check
 ```
 
