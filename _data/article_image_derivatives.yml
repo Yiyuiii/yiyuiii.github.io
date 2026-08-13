@@ -191,3 +191,120 @@ images:
   source_dimensions:
   - 1536
   - 1024
+- source: assets/posts/202608121000/muscle-priority-map-language-neutral.webp
+  published: assets/posts/202608121000/muscle-priority-map-language-neutral.webp
+  variants:
+  - asset: assets/posts/202608121000/muscle-priority-map-language-neutral-content-v2-800.webp
+    width: 800
+    sha256: bd421b153772f6f08b032268918c0a2506691b541de367e5e27cbc0060088264
+    dimensions:
+    - 800
+    - 533
+  source_sha256: 295fcce2c996042d126ff9d4ca7f856645e3aa60072edfe5416a0ae320b9f8ee
+  source_dimensions:
+  - 1536
+  - 1024
+- source: assets/posts/202608121000/lower-body-movement-guide.webp
+  published: assets/posts/202608121000/lower-body-movement-guide.webp
+  variants:
+  - asset: assets/posts/202608121000/lower-body-movement-guide-content-v2-800.webp
+    width: 800
+    sha256: 5401e6e60c972004966e770630b951830109e8a7baef7a0f24ddf73dcf0d613f
+    dimensions:
+    - 800
+    - 533
+  source_sha256: d949d0f0a2c1009c0a05332fe48f3151b8fb80bfabb99041f02453eca29ec1f4
+  source_dimensions:
+  - 1536
+  - 1024
+- source: assets/posts/202608121000/lower-body-movement-guide-b.webp
+  published: assets/posts/202608121000/lower-body-movement-guide-b.webp
+  variants:
+  - asset: assets/posts/202608121000/lower-body-movement-guide-b-content-v2-800.webp
+    width: 800
+    sha256: 3f8bf0b11cbab054fb0665834955c32fb1f2875f7133b1a4d1ddeddbda3cbf26
+    dimensions:
+    - 800
+    - 533
+  source_sha256: 7eff6488588d5131d893d76af5240b635c15404e3dd1d867836d560517cf529d
+  source_dimensions:
+  - 1536
+  - 1024
+- source: assets/posts/202608121000/upper-body-movement-guide.webp
+  published: assets/posts/202608121000/upper-body-movement-guide.webp
+  variants:
+  - asset: assets/posts/202608121000/upper-body-movement-guide-content-v2-800.webp
+    width: 800
+    sha256: 822db834d9ac0a315e85868fd1a698f34766f28d96f46c192973ea82caead827
+    dimensions:
+    - 800
+    - 533
+  source_sha256: a4efca82b98ff16f83353dc78c59766f868dada00e62c2d25f74de2398dd6052
+  source_dimensions:
+  - 1536
+  - 1024
+- source: assets/posts/202608121000/upper-body-movement-guide-b.webp
+  published: assets/posts/202608121000/upper-body-movement-guide-b.webp
+  variants:
+  - asset: assets/posts/202608121000/upper-body-movement-guide-b-content-v2-800.webp
+    width: 800
+    sha256: e1f4f55337f18588973535db4d0224db0f11327d686d763d9bf457ec873420aa
+    dimensions:
+    - 800
+    - 533
+  source_sha256: f97618b9133ff0dd7f8293c7a3c87ab4b34fe9f28c3d25c9914ca13ab61df785
+  source_dimensions:
+  - 1536
+  - 1024
+- source: assets/posts/202608121000/core-and-forearm-movement-guide.webp
+  published: assets/posts/202608121000/core-and-forearm-movement-guide.webp
+  variants:
+  - asset: assets/posts/202608121000/core-and-forearm-movement-guide-content-v2-800.webp
+    width: 800
+    sha256: 1bc1fe5344e47ecc9942fa42519f4636e105b2b3c94403edcfc503e7d5e419ed
+    dimensions:
+    - 800
+    - 533
+  source_sha256: e1544cd13c927f5220e754566c4d10643100d50d80b2639ce40319af5d929a10
+  source_dimensions:
+  - 1536
+  - 1024
+- source: assets/posts/202608121000/core-and-forearm-movement-guide-b.webp
+  published: assets/posts/202608121000/core-and-forearm-movement-guide-b.webp
+  variants:
+  - asset: assets/posts/202608121000/core-and-forearm-movement-guide-b-content-v2-800.webp
+    width: 800
+    sha256: 322d034addb87eaadff1199706df6a1535a583cd131d5305309bc70b346b4a47
+    dimensions:
+    - 800
+    - 533
+  source_sha256: f7db00ef6cedf4ab61fdc039811ea98c028802ceeca2c8ceb8e517c317d8655f
+  source_dimensions:
+  - 1536
+  - 1024
+- source: assets/posts/202608121000/singing-coordination-warmup-guide.webp
+  published: assets/posts/202608121000/singing-coordination-warmup-guide.webp
+  variants:
+  - asset: assets/posts/202608121000/singing-coordination-warmup-guide-content-v2-800.webp
+    width: 800
+    sha256: b194d85c69397547264817312792952a7afeff86336086c45da6b4c46bb310d5
+    dimensions:
+    - 800
+    - 533
+  source_sha256: 7c8efc0392952f5b31a26679c19c40d739621e56fe8fbed631d31698b887e9fa
+  source_dimensions:
+  - 1536
+  - 1024
+- source: assets/posts/202608121000/equipment-selection-and-safety-guide.webp
+  published: assets/posts/202608121000/equipment-selection-and-safety-guide.webp
+  variants:
+  - asset: assets/posts/202608121000/equipment-selection-and-safety-guide-content-v2-800.webp
+    width: 800
+    sha256: 4d546865e48f18847401856e76793744d971be2056e849626e196530adf8e57b
+    dimensions:
+    - 800
+    - 533
+  source_sha256: 236f6fa485cbec128746310e1aef5967140a8c887c9c32c6c118b0a95d1bc819
+  source_dimensions:
+  - 1536
+  - 1024

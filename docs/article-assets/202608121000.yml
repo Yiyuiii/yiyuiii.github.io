@@ -1,0 +1,166 @@
+version: 1
+article_uid: "202608121000"
+title: "Language-neutral muscle-priority locator and teaching plates"
+generator: "OpenAI image_gen via Codex built-in tool"
+generated_at: "2026-08-12"
+rights_basis:
+  generated_image: >-
+    The body map and teaching plates were generated from text prompts. The new
+    B plates used only the project-local generated A plates as visual-style
+    references. No anatomy plate, personal photograph, product image, brand
+    asset, or third-party reference image was used.
+  use_boundary: >-
+    This image is a simplified editorial locator for the article's priority
+    tiers. It is not a clinical anatomy plate, diagnosis, movement
+    demonstration, or evidence that the depicted boundaries are exact.
+assets:
+  - asset: "assets/posts/202608121000/muscle-priority-map-language-neutral.webp"
+    purpose: "One language-neutral front-and-back locator shared by the Chinese and English articles; numerals and colours map to the localized priority table."
+    reference_inputs:
+      - "No reference image input; the text-only prompt was derived from the article's three visual priority tiers."
+    prompt: |-
+      Use case: scientific-educational
+      Asset type: language-neutral muscle-priority locator for the body of a bilingual fitness essay
+      Primary request: create a clean front-and-back human body map that helps a reader with little anatomy knowledge locate three training-priority tiers
+      Scene/backdrop: plain warm-white background with ample whitespace
+      Subject: exactly two full-body adult male figures of ordinary athletic build, one front view and one back view, standing in neutral anatomical pose with arms slightly away from the torso; simplified anatomically plausible surface-muscle illustration, non-sexual, wearing plain dark neutral fitted shorts
+      Priority overlays:
+      1 red: lateral and rear shoulders, latissimus and middle upper back, gluteus maximus, quadriceps, and hamstrings
+      2 amber: chest, upper arms, rectus abdominis and side abdominal wall, lower spinal erectors, serratus region, and small shoulder-stabilizer region
+      3 blue: forearms, outer hips, inner thighs, calves, and front of lower legs
+      All other tissue: quiet light gray so the priority colors are unambiguous
+      Layout: front figure on the left, back figure on the right; at the bottom, exactly three large plain color swatches—red, amber, blue—each paired only with one clear Arabic numeral: 1, 2, 3
+      Style/medium: polished modern medical-editorial vector-like illustration, clear large regions rather than tiny fiber detail; anatomically plausible locator, not a surgical plate
+      Composition/framing: landscape 3:2, figures fully visible with generous safe margins, symmetric, readable on a phone, no leader lines
+      Accessibility: tiers must differ in both lightness and hue; high contrast against the neutral body
+      Constraints: no title, no words, no letters, no muscle labels, no logos, no watermark, no extra person, no bones, no organs, no exposed genitals, no bodybuilder proportions, no dramatic veins, no needles, no pain marks; the only characters allowed are the three Arabic numerals 1, 2, and 3, each appearing exactly once in the bottom legend; conceptual locator, not medical evidence
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 82, method 6, with EXIF and ICC metadata removed using Pillow 12.3.0 and libwebp 1.6.0."
+    dimensions: [1536, 1024]
+    sha256: "295fcce2c996042d126ff9d4ca7f856645e3aa60072edfe5416a0ae320b9f8ee"
+    approval: "Selected after visual inspection as a publication candidate; final editorial approval remains with the user."
+  - asset: "assets/posts/202608121000/equipment-selection-and-safety-guide.webp"
+    purpose: "Four-panel language-neutral equipment-selection and first-use safety guide shared by the Chinese and English articles."
+    reference_inputs:
+      - "No third-party or user image was used. An AI-generated base from the text-only prompt was used for one targeted same-session correction of dumbbell scale and the bar-test pose."
+      - "Safety geometry was checked against the article's manufacturer-instruction boundary; the plate does not certify any depicted equipment or installation."
+    prompt_summary: >-
+      Four numbered panels show long loop bands with a compatible door anchor and a marked recoil path, a matched compact adjustable-dumbbell pair with collars checked on the floor, a fixed bar tested with feet grounded, and a stable bench, mat, and sliders. The targeted edit replaced oversized barbell-like weights with compact adjustable dumbbells and lowered the bar-test pose to keep both feet grounded.
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 88, method 6, with metadata removed using Pillow 12.2.0."
+    dimensions: [1536, 1024]
+    sha256: "236f6fa485cbec128746310e1aef5967140a8c887c9c32c6c118b0a95d1bc819"
+    approval: "Selected after two-pass visual inspection of recoil path, locks, bar contact, limbs, and panel numbering; final editorial approval remains with the user."
+  - asset: "assets/posts/202608121000/lower-body-movement-guide.webp"
+    purpose: "Four-panel language-neutral locator for lateral landing, split squat, hip hinge, and glute bridge mechanics."
+    reference_inputs:
+      - "No third-party or user image was used. An AI-generated base from the text-only prompt was used for one targeted correction that changed raised floor rails into flat alignment guides."
+      - "Movement cues were calibrated against the ACE Exercise Library and the NSCA Basics of Strength and Conditioning Manual; the article prose retains the execution and stop rules."
+    prompt_summary: >-
+      Four numbered panels show a quiet controlled single-leg landing, a split squat with staggered feet, a dumbbell Romanian-deadlift hip hinge with a long neutral spine, and a glute bridge without lumbar overextension. Teal marks the start or reference pose, charcoal the finish, and orange arrows the movement direction.
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 88, method 6, with metadata removed using Pillow 12.2.0."
+    dimensions: [1536, 1024]
+    sha256: "d949d0f0a2c1009c0a05332fe48f3151b8fb80bfabb99041f02453eca29ec1f4"
+    approval: "Selected after two-pass visual inspection of knee tracking, foot contact, spine line, hip position, limbs, and panel numbering; final editorial approval remains with the user."
+  - asset: "assets/posts/202608121000/upper-body-movement-guide.webp"
+    purpose: "Four-panel language-neutral locator for push-up, pike push-up, one-arm row, and high-anchor band pulldown mechanics."
+    reference_inputs:
+      - "No third-party or user image was used. An AI-generated base from the text-only prompt was used for one targeted correction of the band path and overlaid start pose."
+      - "Movement cues were calibrated against the ACE Exercise Library; manufacturer compatibility still governs every real anchor, support, and bar."
+    prompt_summary: >-
+      Four numbered panels show a push-up with a controlled trunk line, pike push-up with the head descending between the hands, supported one-arm row without trunk rotation, and an upright kneeling band pulldown whose two band sides remain visibly connected to a high anchor in front.
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 88, method 6, with metadata removed using Pillow 12.2.0."
+    dimensions: [1536, 1024]
+    sha256: "a4efca82b98ff16f83353dc78c59766f868dada00e62c2d25f74de2398dd6052"
+    approval: "Selected after two-pass visual inspection of trunk lines, elbow paths, band continuity, anchor direction, limbs, and numbering; final editorial approval remains with the user."
+  - asset: "assets/posts/202608121000/core-and-forearm-movement-guide.webp"
+    purpose: "Four-panel language-neutral locator for dead bug, reverse crunch, forearm side plank, and forearm rotation."
+    reference_inputs:
+      - "No third-party or user image was used. An AI-generated base from the text-only prompt was used for one targeted correction from palm support to the article's forearm side-plank version."
+      - "Movement cues were calibrated against the ACE Exercise Library; the drawing communicates direction rather than a mandatory maximum range."
+    prompt_summary: >-
+      Four numbered panels show contralateral dead-bug reach with trunk control, a small pelvic curl in the reverse crunch, a forearm side plank with a translucent bent-knee regression, and seated water-bottle pronation and supination while the elbow stays beside the torso.
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 88, method 6, with metadata removed using Pillow 12.2.0."
+    dimensions: [1536, 1024]
+    sha256: "e1544cd13c927f5220e754566c4d10643100d50d80b2639ce40319af5d929a10"
+    approval: "Selected after two-pass visual inspection of trunk contact, pelvic range, forearm support, bottle grip, limbs, and numbering; final editorial approval remains with the user."
+  - asset: "assets/posts/202608121000/lower-body-movement-guide-b.webp"
+    purpose: "Second four-panel lower-body plate, paired with Figure 2A so every L1–L8 instruction has one uniquely numbered panel."
+    reference_inputs:
+      - "Project-local AI-generated style reference: assets/posts/202608121000/lower-body-movement-guide.webp."
+      - "No third-party or user image was used; the article prose remains authoritative for execution details and stop rules."
+    prompt: |-
+      Use case: scientific-educational
+      Asset type: four-panel language-neutral lower-body movement teaching plate for a bilingual fitness article
+      Primary request: create one polished 2-by-2 plate showing exactly four distinct exercises, one exercise per equal panel, for an adult beginner
+      Scene/backdrop: flat warm-white editorial background, thin pale dividers between panels, ample safe margins
+      Subject: the same ordinary athletic adult man in a plain teal short-sleeve shirt, black shorts, and neutral trainers; anatomically plausible proportions; full relevant body visible; non-sexual
+      Panel 1 — low step-up: side three-quarter view of a very low, stable rectangular training step with four non-slip feet; teal translucent start pose with the whole working foot planted on the step and trailing foot on floor; charcoal finish standing tall on the step; orange arrow upward; working knee tracks over toes; do not show a chair
+      Panel 2 — bridge walkout: side view on the floor; charcoal hips held in a controlled glute-bridge position while small translucent sequential heel positions show alternating short steps outward and back; orange arrows along the floor; pelvis level, ribs controlled; no slider discs
+      Panel 3 — calf raise: side view beside a plain wall, fingertips touching only for balance; teal start with heels down and charcoal finish with both heels raised; orange vertical arrow; knees straight but not locked, torso upright
+      Panel 4 — tibialis raise: side view leaning the upper back lightly against a plain wall, heels fixed on floor a half-step forward; teal start with forefeet down and charcoal finish with toes and forefeet lifted; orange curved upward arrow at toes; legs and ankles clearly visible
+      Style/medium: match an existing modern medical-editorial fitness illustration: clean vector-like digital rendering with modest realistic anatomy, teal translucent start/reference pose, charcoal finish pose, turquoise dashed alignment guides used sparingly, orange movement arrows
+      Composition/framing: landscape 3:2, 1536 by 1024 feel, exact 2-by-2 grid, readable at phone width
+      Panel labels: exactly four large plain Arabic numerals 5, 6, 7, 8, one in the upper-left corner of its corresponding panel, in order left-to-right then top-to-bottom
+      Constraints: no title, no words, no letters, no extra numbers, no logos, no watermark, no brands, no gym clutter, no unsafe furniture, no extra limbs or merged bodies, no bodybuilding proportions; movement direction and start/end must be unambiguous; each panel shows only its assigned exercise; the only characters allowed are 5, 6, 7, 8, each exactly once
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 82, method 6, with metadata removed using Pillow 12.3.0 and libwebp 1.6.0; the responsive 800-pixel derivative uses the same committed pipeline."
+    dimensions: [1536, 1024]
+    sha256: "7eff6488588d5131d893d76af5240b635c15404e3dd1d867836d560517cf529d"
+    approval: "Selected after visual inspection of step stability, working-foot contact, bridge pelvis position, heel and forefoot directions, limbs, and 5–8 numbering; final editorial approval remains with the user."
+  - asset: "assets/posts/202608121000/upper-body-movement-guide-b.webp"
+    purpose: "Second four-panel upper-body plate, paired with Figure 3A so every U1–U8 instruction has one uniquely numbered panel."
+    reference_inputs:
+      - "Project-local AI-generated style reference: assets/posts/202608121000/upper-body-movement-guide.webp."
+      - "No third-party or user image was used; two same-session edits clarified arrow direction, straight-elbow scapular motion, water-bottle grips, and the separate Y, T, and W positions."
+    prompt: |-
+      Use case: scientific-educational
+      Asset type: four-panel language-neutral upper-body movement teaching plate for a bilingual fitness article
+      Primary request: create one polished 2-by-2 plate showing exactly four distinct accessory exercises, one exercise per equal panel, for an adult beginner
+      Scene/backdrop: flat warm-white editorial background, thin pale dividers between panels, ample safe margins
+      Subject: the same ordinary athletic adult man in a plain teal short-sleeve shirt, black shorts, and neutral trainers; anatomically plausible proportions; non-sexual; full relevant body and both hands visible
+      Panel 5 — lateral raise: front three-quarter standing view; holding two identical small sealed water bottles at the sides in a teal translucent start pose and raising both arms slightly forward of the body’s exact sides to about shoulder height in a charcoal finish pose; elbows softly bent, shoulders down; orange arrows outward and up
+      Panel 6 — bent-over reverse fly: front three-quarter view in a controlled hip hinge with a long neutral spine and soft knees; two identical very light water bottles hang below shoulders in teal start, then arms open in a wide arc to the sides in charcoal finish; torso does not rise or rotate; orange arrows outward
+      Panel 7 — push-up plus: side view in a high-plank position with elbows completely straight in both poses; teal neutral shoulder-blade position and charcoal finish with upper back gently rounded only because the floor is pushed farther away; hips and head stay fixed; use a small horizontal/directional arrow near the upper torso; do not depict a normal push-up and do not bend elbows
+      Panel 8 — prone Y-T-W: one person lying face down on a clean exercise mat, chin gently tucked, with three small sequential upper-body/arm overlays showing the arms forming a clear Y, then T, then W while the chest lifts only minimally; orange short arrows upward; legs remain still; no bench
+      Style/medium: match an existing modern medical-editorial fitness illustration: clean vector-like digital rendering with modest realistic anatomy, teal translucent start/reference pose, charcoal finish pose, turquoise dashed alignment guides used sparingly, orange movement arrows
+      Composition/framing: landscape 3:2, exact 2-by-2 grid, readable at phone width
+      Panel labels: exactly four large plain Arabic numerals 5, 6, 7, 8, one in the upper-left corner of its corresponding panel, in order left-to-right then top-to-bottom
+      Constraints: no title, no words, no letters anywhere (including no Y/T/W text), no extra numbers, no logos, no watermark, no brand labels, no dumbbells, no resistance bands, no extra limbs or merged bodies, no bodybuilding proportions; movement direction and start/end must be unambiguous; each panel shows only its assigned exercise; the only characters allowed are 5, 6, 7, 8, each exactly once
+    edit_prompt: |-
+      Preserve the entire 2-by-2 layout, background, dividers, subject, clothing, palette, style, and numerals 5–8. Keep panels 5 and 7 unchanged. In panel 6 preserve the long-spine hip hinge, teal hanging-arm start, charcoal wide-arm finish, and outward arrows, while making one identical small sealed water bottle clearly visible in each hand in both poses. In panel 8 show exactly three distinct prone arm shapes: a diagonal overhead Y, arms straight sideways at shoulder height as a horizontal T, and bent elbows as a W. Keep the chest lift minimal and write no letters.
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 82, method 6, with metadata removed using Pillow 12.3.0 and libwebp 1.6.0; the responsive 800-pixel derivative uses the same committed pipeline."
+    dimensions: [1536, 1024]
+    sha256: "f97618b9133ff0dd7f8293c7a3c87ab4b34fe9f28c3d25c9914ca13ab61df785"
+    approval: "Selected after iterative visual inspection of bottle grips, outward reverse-fly arrows, straight-elbow push-up-plus geometry, distinct Y/T/W positions, limbs, and 5–8 numbering; final editorial approval remains with the user."
+  - asset: "assets/posts/202608121000/core-and-forearm-movement-guide-b.webp"
+    purpose: "Second four-panel trunk and forearm plate, paired with Figure 4A so every C1–C6 and F1–F2 instruction has one uniquely numbered panel."
+    reference_inputs:
+      - "Project-local AI-generated style reference: assets/posts/202608121000/core-and-forearm-movement-guide.webp."
+      - "No third-party or user image was used; manufacturer instructions remain authoritative for the real resistance-band anchor and adjustable dumbbell."
+    prompt: |-
+      Use case: scientific-educational
+      Asset type: four-panel language-neutral trunk, adductor, carry, and forearm teaching plate for a bilingual fitness article
+      Primary request: create one polished 2-by-2 plate showing exactly four distinct exercises, one exercise per equal panel, for an adult beginner
+      Scene/backdrop: flat warm-white editorial background, thin pale dividers between panels, ample safe margins
+      Subject: the same ordinary athletic adult man in a plain teal short-sleeve shirt, black shorts, and neutral trainers; anatomically plausible proportions; non-sexual; all relevant limbs visible
+      Panel 5 — pillow adductor squeeze: supine front/three-quarter view on the floor with knees bent and both feet planted; a plain firm rectangular pillow visibly between the inner knees; teal relaxed-knee start overlay and charcoal finish with both knees pressing inward symmetrically; two orange arrows point inward toward the pillow; pelvis remains on floor; no hip bridge
+      Panel 6 — Pallof press: standing side-on to a reliable chest-height band anchor shown at the far left; both hands hold one continuous resistance band at the sternum in the teal start and press straight forward to arm’s length in the charcoal finish; torso, shoulders, and pelvis remain square and do not rotate toward the anchor; orange horizontal arrow away from chest; band remains visibly continuous from anchor to both hands; enough space between body and anchor; no recoil path toward face
+      Panel 7 — one-arm suitcase carry: front view walking along a clear floor path while holding one compact adjustable dumbbell at one side only; teal start stance and charcoal next walking step; shoulders and pelvis level, torso upright, free hand hanging naturally; short orange forward arrow at feet; dumbbell does not touch leg; no backpack
+      Panel 8 — wrist extension: seated side/three-quarter view with one forearm supported firmly on the thigh, palm facing down and wrist just beyond the knee; holding a very light small water bottle; teal start with hand lowered slightly and charcoal finish with the back of the hand raised while forearm stays fixed; small orange curved arrow upward at the wrist; elbow and shoulder still
+      Style/medium: match an existing modern medical-editorial fitness illustration: clean vector-like digital rendering with modest realistic anatomy, teal translucent start/reference pose, charcoal finish pose, turquoise dashed alignment guides used sparingly, orange movement arrows
+      Composition/framing: landscape 3:2, exact 2-by-2 grid, readable at phone width
+      Panel labels: exactly four large plain Arabic numerals 5, 6, 7, 8, one in the upper-left corner of its corresponding panel, in order left-to-right then top-to-bottom
+      Constraints: no title, no words, no letters, no extra numbers, no logos, no watermark, no brands, no extra limbs or merged bodies, no bodybuilding proportions; movement direction and start/end must be unambiguous; each panel shows only its assigned exercise; the only characters allowed are 5, 6, 7, 8, each exactly once
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 82, method 6, with metadata removed using Pillow 12.3.0 and libwebp 1.6.0; the responsive 800-pixel derivative uses the same committed pipeline."
+    dimensions: [1536, 1024]
+    sha256: "f7db00ef6cedf4ab61fdc039811ea98c028802ceeca2c8ceb8e517c317d8655f"
+    approval: "Selected after visual inspection of pillow placement, inward squeeze arrows, continuous band path, level carry posture, fixed forearm and wrist arc, limbs, and 5–8 numbering; final editorial approval remains with the user."
+  - asset: "assets/posts/202608121000/singing-coordination-warmup-guide.webp"
+    purpose: "Four-panel language-neutral sequence for the article's low-load posture, inhalation, hiss, and semi-occluded voice-practice unit."
+    reference_inputs:
+      - "No third-party or user image was used; the text-only prompt was derived from the article's 6–10-minute practice sequence."
+      - "The sequence was checked against NIDCD voice-care guidance and the singing-breathing studies cited in the article; it is not a laryngeal anatomy plate or voice-disorder treatment."
+    prompt_summary: >-
+      Four numbered panels show relaxed seated alignment, quiet lower-rib expansion with still shoulders, a gentle even hiss, and comfortable humming or lip trill. The plate contains no organ cutaway, musical notation, words, or maximal-effort cue.
+    transform: "Generated at 1536 × 1024 PNG; converted without resizing to RGB WebP quality 88, method 6, with metadata removed using Pillow 12.2.0."
+    dimensions: [1536, 1024]
+    sha256: "7c8efc0392952f5b31a26679c19c40d739621e56fe8fbed631d31698b887e9fa"
+    approval: "Selected after visual inspection of relaxed posture, rib-direction arrows, airflow cue, facial effort, limbs, and numbering; final editorial approval remains with the user."

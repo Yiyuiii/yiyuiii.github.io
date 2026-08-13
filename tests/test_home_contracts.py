@@ -93,7 +93,7 @@ def test_home_feed_manifest_is_complete_stable_and_has_no_duplicated_dates():
     items = manifest["items"]
 
     assert manifest["date_semantics"].strip()
-    assert len(items) == 31
+    assert len(items) == 32
     assert len({item["id"] for item in items}) == len(items)
     assert "type-defined marker date" in manifest["date_semantics"]
     assert all(set(item) == {"id", "kind", "ref"} for item in items)
@@ -179,6 +179,7 @@ def test_all_marker_dates_have_explicit_sources_and_expected_values():
         "writing:202608081100": "2026-08-08",
         "writing:202608081130": "2026-08-08",
         "writing:202608102107": "2026-08-10",
+        "writing:202608121000": "2026-08-12",
         "project:Yiyuiii/codex-cc-tools": "2026-05-22",
         "project:Yiyuiii/HDBO-B": "2023-05-30",
         "project:Yiyuiii/nonebot-plugin-moegoe": "2022-08-20",
@@ -198,6 +199,7 @@ def test_all_marker_dates_have_explicit_sources_and_expected_values():
 
     ordered = sorted(actual, key=lambda item_id: (-date.fromisoformat(actual[item_id]).toordinal(), item_id))
     assert ordered[:8] == [
+        "writing:202608121000",
         "writing:202608102107",
         "writing:202608081000",
         "writing:202608081030",
@@ -205,7 +207,6 @@ def test_all_marker_dates_have_explicit_sources_and_expected_values():
         "writing:202608081130",
         "writing:202608021600",
         "project:Yiyuiii/codex-cc-tools",
-        "project:Yiyuiii/taco",
     ]
 
 

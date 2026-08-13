@@ -334,3 +334,40 @@ covers:
     sha256: "654cdc0a95a26ed730dd7f608a06cdf180d1e46b0666bc927925a657ac7dd368"
     dimensions: [1000, 1000]
     attribution: "© Roxley Games"
+
+  - asset: "assets/posts/202608121000/cover-cross-training-system-generated-square.webp"
+    posts:
+      - "_posts/2026-08-12-从零器械到长期维护的综合训练系统.md"
+      - "_posts/2026-08-12-a-cross-training-system-from-bodyweight-to-maintenance.md"
+    origin_type: "generated"
+    source_url: null
+    author: "Generated under Yiyu Chen's direction"
+    license: "project-use-rights"
+    license_url: null
+    generator: "OpenAI image_gen via Codex (text-to-image plus one targeted edit)"
+    generated_at: "2026-08-12"
+    source_description: "AI-original generation followed by one same-session pose and artifact correction; no personal photograph, product image, brand asset, or third-party reference image was used."
+    reference_inputs:
+      - "One AI-generated base image from the same text-only prompt was used as the edit target; no user-provided or third-party image was used."
+    purpose: "Square writing-index and article cover; a sustainable cross-training concept, not exercise instruction, medical evidence, or an equipment endorsement."
+    approval: "Generated for this user-authorized bilingual essay; retained in the isolated content worktree for review and not published by this task."
+    prompt: |-
+      Base generation:
+      Use case: stylized-concept
+      Asset type: square editorial cover for a bilingual personal essay about an equipment-light training system serving aesthetics, singing, boxing, historical European martial arts, and skiing
+      Primary request: create a polished, calm illustration of one healthy adult man doing a technically controlled bodyweight split squat in a modest home training corner, with compact future equipment stored nearby
+      Scene/backdrop: uncluttered warm-neutral room with a simple mat; an adjustable dumbbell pair and a long resistance band are neatly placed at the edge, not being used
+      Subject: one adult male of ordinary athletic build, fully visible, neutral identity, plain fitted training clothes, balanced posture, front foot flat, rear knee descending under control, torso upright; the image is conceptual and should not be treated as exercise instruction
+      Supporting details: four subtle unbranded hobby cues arranged tidily in the background—one microphone, a pair of boxing gloves, one historical fencing mask beside a plain longsword, and ski goggles with crossed ski poles; all secondary to the athlete
+      Style/medium: refined contemporary editorial illustration with softly dimensional forms, anatomically plausible but not photorealistic, practical and attainable rather than superhero or bodybuilding fantasy
+      Composition/framing: centered square 1:1, full body and all objects within generous safe margins, strong silhouette and readable at thumbnail size, no crop-sensitive details
+      Lighting/mood: soft daylight, disciplined, calm, sustainable
+      Color palette: warm ivory, muted navy, slate blue, natural wood, restrained rust accents
+      Constraints: exactly one person; no text, no letters, no numbers, no labels, no logos, no brand-specific equipment, no gym machines, no giant muscles, no exposed torso, no boxing stance or weapon use, no unsafe exercise posture, no watermark; conceptual cover, not medical advice or a technical movement diagram
+
+      Targeted edit:
+      Remove every inscription, pseudo-letter, number, logo, label, and brand-like mark from both adjustable dumbbells. Change the athlete to the middle of a controlled split-squat repetition with the rear knee clearly hovering above the mat, both legs supporting the body, front foot fully flat, front knee tracking naturally over the toes, and torso upright and balanced. Keep the identity, clothing, body proportions, room, equipment and hobby cues, lighting, palette, square framing, and editorial style unchanged as far as the pose correction permits. Add no people, objects, text, logos, or watermark.
+    transform: "Generated as an original 1254 × 1254 square illustration, converted to RGB, resized to 1024 × 1024 with Lanczos, stripped of metadata, and exported as WebP quality 82 with Pillow 12.3.0 method 6."
+    sha256: "5f71d46e5e49b9e61473fc0b2a96e334d1486944d3fc016cbd79c1eebbede4c3"
+    dimensions: [1024, 1024]
+    attribution: "AI-generated sustainable cross-training concept; not movement instruction or medical evidence."
