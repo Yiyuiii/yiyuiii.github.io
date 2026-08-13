@@ -448,7 +448,7 @@ def test_every_post_now_has_a_local_thumbnail():
 def test_every_post_uses_one_explicit_cover_component_without_body_duplication():
     posts = sorted((ROOT / "_posts").glob("*.md"))
 
-    assert len(posts) == 34
+    assert len(posts) == 36
     for path in posts:
         data = frontmatter(path)
         cover = data.get("article_cover")
@@ -513,3 +513,61 @@ def test_article_navigation_uses_inline_disclosure_and_progressive_scroll_tracki
     assert "data-article-section-trigger" not in script
     assert "data-article-section-close" not in script
     assert "preventScroll" in script
+
+
+def test_fitness_post_movement_cards_keep_one_name_from_table_to_instruction():
+    paths = (
+        ROOT / "_posts" / "2026-08-12-从零器械到长期维护的综合训练系统.md",
+        ROOT
+        / "_posts"
+        / "2026-08-12-a-cross-training-system-from-bodyweight-to-maintenance.md",
+    )
+    include_pattern = re.compile(
+        r"\{% include movement-plate\.liquid (?P<arguments>.*?) %\}"
+    )
+    argument_pattern = re.compile(r'(\w+)="([^"]*)"')
+
+    for path in paths:
+        body = path.read_text(encoding="utf-8").split("---", 2)[2]
+        plates = [
+            dict(argument_pattern.findall(match.group("arguments")))
+            for match in include_pattern.finditer(body)
+        ]
+        assert len(plates) == 6, path
+
+        figures = []
+        names = []
+        hrefs = []
+        for plate in plates:
+            for image_key in ("image", "image_800"):
+                assert plate[image_key].startswith("/assets/posts/202608121000/")
+                assert (ROOT / plate[image_key].lstrip("/")).is_file()
+
+            for index in range(1, 5):
+                figure = plate[f"figure_{index}"]
+                name = plate[f"name_{index}"]
+                href = plate[f"href_{index}"]
+                assert href.startswith("#")
+                anchor = href.removeprefix("#")
+                heading = re.search(
+                    rf"^###\s+{re.escape(name)}.*[（(]{re.escape(figure)}"
+                    rf".*\{{#{re.escape(anchor)}\}}\s*$",
+                    body,
+                    re.MULTILINE,
+                )
+                assert heading, f"{path.name}: {figure} / {name} / {href}"
+                figures.append(figure)
+                names.append(name)
+                hrefs.append(href)
+
+        assert len(set(figures)) == 24, path
+        assert len(set(names)) == 24, path
+        assert len(set(hrefs)) == 24, path
+
+    component = text("_includes/movement-plate.liquid")
+    styles = text("_sass/site/_article.scss")
+    assert component.count('<a class="movement-panel-card"') == 4
+    assert 'role="group"' in component
+    assert 'aria-hidden="true"' in component
+    assert ".movement-panel-card__frame" in styles
+    assert "grid-template-columns: minmax(0, 1fr);" in styles

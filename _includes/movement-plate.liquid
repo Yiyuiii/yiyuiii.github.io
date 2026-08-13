@@ -1,0 +1,60 @@
+<div class="movement-plate article-wide" role="group" aria-label="{{ include.title | escape }}">
+  <p class="movement-plate__title">
+    <strong>{{ include.title }}</strong>
+    <span>{{ include.hint }}</span>
+  </p>
+  <div class="movement-plate__grid">
+    <a class="movement-panel-card" href="{{ include.href_1 }}">
+      <span class="movement-panel-card__frame" aria-hidden="true">
+        <img class="movement-panel-card__image movement-panel-card__image--top-left"
+             src="{{ include.image | relative_url }}"
+             srcset="{{ include.image_800 | relative_url }} 800w, {{ include.image | relative_url }} 1536w"
+             sizes="(max-width: 640px) calc(200vw - 3rem), 960px"
+             width="1536" height="1024" alt="" loading="lazy" decoding="async">
+      </span>
+      <span class="movement-panel-card__label">
+        <span class="movement-panel-card__figure">{{ include.figure_1 }}</span>
+        <strong>{{ include.name_1 }}</strong>
+      </span>
+    </a>
+    <a class="movement-panel-card" href="{{ include.href_2 }}">
+      <span class="movement-panel-card__frame" aria-hidden="true">
+        <img class="movement-panel-card__image movement-panel-card__image--top-right"
+             src="{{ include.image | relative_url }}"
+             srcset="{{ include.image_800 | relative_url }} 800w, {{ include.image | relative_url }} 1536w"
+             sizes="(max-width: 640px) calc(200vw - 3rem), 960px"
+             width="1536" height="1024" alt="" loading="lazy" decoding="async">
+      </span>
+      <span class="movement-panel-card__label">
+        <span class="movement-panel-card__figure">{{ include.figure_2 }}</span>
+        <strong>{{ include.name_2 }}</strong>
+      </span>
+    </a>
+    <a class="movement-panel-card" href="{{ include.href_3 }}">
+      <span class="movement-panel-card__frame" aria-hidden="true">
+        <img class="movement-panel-card__image movement-panel-card__image--bottom-left"
+             src="{{ include.image | relative_url }}"
+             srcset="{{ include.image_800 | relative_url }} 800w, {{ include.image | relative_url }} 1536w"
+             sizes="(max-width: 640px) calc(200vw - 3rem), 960px"
+             width="1536" height="1024" alt="" loading="lazy" decoding="async">
+      </span>
+      <span class="movement-panel-card__label">
+        <span class="movement-panel-card__figure">{{ include.figure_3 }}</span>
+        <strong>{{ include.name_3 }}</strong>
+      </span>
+    </a>
+    <a class="movement-panel-card" href="{{ include.href_4 }}">
+      <span class="movement-panel-card__frame" aria-hidden="true">
+        <img class="movement-panel-card__image movement-panel-card__image--bottom-right"
+             src="{{ include.image | relative_url }}"
+             srcset="{{ include.image_800 | relative_url }} 800w, {{ include.image | relative_url }} 1536w"
+             sizes="(max-width: 640px) calc(200vw - 3rem), 960px"
+             width="1536" height="1024" alt="" loading="lazy" decoding="async">
+      </span>
+      <span class="movement-panel-card__label">
+        <span class="movement-panel-card__figure">{{ include.figure_4 }}</span>
+        <strong>{{ include.name_4 }}</strong>
+      </span>
+    </a>
+  </div>
+</div>

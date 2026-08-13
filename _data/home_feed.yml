@@ -24,6 +24,7 @@ items:
   - {id: "writing:202608081100", kind: writing, ref: "202608081100"}
   - {id: "writing:202608081130", kind: writing, ref: "202608081130"}
   - {id: "writing:202608102107", kind: writing, ref: "202608102107"}
+  - {id: "writing:202608121000", kind: writing, ref: "202608121000"}
 
   - {id: "project:Yiyuiii/codex-cc-tools", kind: project, ref: "Yiyuiii/codex-cc-tools"}
   - {id: "project:Yiyuiii/HDBO-B", kind: project, ref: "Yiyuiii/HDBO-B"}

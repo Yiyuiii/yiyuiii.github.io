@@ -263,7 +263,7 @@ node --test tests/toy_challenges.logic.test.mjs tests/toy_challenge_history.logi
 
 - 正文：`_posts/*.md`
 - 中文文章使用 `lang: zh`，英文文章使用 `lang: en`
-- 新文章必须同时提供完整中英文版本；当前 17 组、34 篇随笔已经全部配对，`_data/translation_exemptions.yml` 必须保持空闭集，不能加入新豁免
+- 新文章必须同时提供完整中英文版本；当前 18 组、36 篇随笔已经全部配对，`_data/translation_exemptions.yml` 必须保持空闭集，不能加入新豁免
 - 每组共用引号包裹的 12 位 `uid` 和 `post-<uid>` 形式的 `translation_key`
 - 中文 URL 位于 `/posts/`，英文 URL 位于 `/en/posts/`，并且全部使用显式 `permalink`
 - `tags` 是文章自己的真实标签；随笔索引会按当前语言中的全局出现频率自动排序
