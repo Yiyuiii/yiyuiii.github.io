@@ -47,6 +47,7 @@
 - 2026-08-11，全站普通代码块已在共享 `_sass/site/_article.scss` 中默认对齐 `50rem` 正文栏，额外宽度改为显式 `article-wide` 语义；《大创造时代》中英文随笔各自的 14 个换算式代码框继续使用 `article-conversion` 保持紧凑宽度与等号对齐。`tests/browser/article-layout-round3.spec.mjs` 同时检查 Minecraft 双语随笔的普通代码对齐、宽代码显式覆盖，以及两种语言换算框的完整数量、逐框对齐和页面横向溢出。
 - 2026-08-11，《工业革命：匹兹堡》双语规则教学已纳入候选；文章按摆桌、回合结构、资源运输、六种行动、完整首轮与时代结算的顺序组织，以当前公开多人规则稿为版本边界，配图来源和规则审计分别记录在 `docs/article-assets/202608102107.yml` 与 `docs/brass-pittsburgh-rules-audit-2026-08-10.md`。
 - 2026-08-11，《四种颜色的外套》中英文随笔已重构为同一虚构模特的受控穿搭图谱与个人衣橱验证流程：综合图只改变同款外套颜色，四张分组图固定各自外套并比较支持搭配；正文明确区分图内相对比较、实物色貌、个人偏好与耐用证据，生成提示、参考输入、尺寸和 SHA-256 记录在 `docs/article-assets/202608081100.yml`，研究与视觉协议见 `docs/four-color-outerwear-research-2026-08-11.md`。
+- 2026-08-17，《从零器械到长期维护的综合训练系统》双语候选已完成肌群与 24 个动作的科学审计：增肌／力量、爆发／落地、动作控制、等长／搬运分别使用负重与 RIR、速度与质量、杠杆与代偿、张力与时间／距离标尺；每个动作都保留作用边界、强度标尺及初学到负重、替换或删除的进阶链。双脚自重提踵只作学习版本，主训练以扶墙单腿或可量化负重为进阶；胫骨前肌、夹枕内收及前臂附件明确证据不足和退出条件。完整等级、肌群地图与逐项依据见 `docs/cross-training-science-audit-2026-08-17.md`。
 - 2026-08-11，《Minecraft 服务器的最小运维闭环》已完整重写为《状态型服务的运维方法：以 Minecraft Java 服务器为例》及对应英文版；原 `uid`、日期、URL 与题图保持不变。文章以依赖、配置与身份、可变状态、运行证据四类对象为模型，以单写者、可复现、可恢复、可观测四项不变量贯穿兼容性、信任边界、容量、备份、升级和排障；动态版本只指向官方入口，论断边界、来源矩阵与验收设计见 `docs/minecraft-server-operations-research-2026-08-11.md`。
 - 《与珍珠鸟建立信任》于 2026-08-09 二次重构为《与珍珠鸟建立信任：从行为机制到可检验训练》：以社会性、情境应激、个体差异和联结学习的原始研究为起点，明确实验到家庭的外推边界，再用健康／刺激负荷／退出能力／社会情境／学习历史／动机六变量模型推导基线指标、五阶段协议、故障诊断和停止条件；中英文保留原 `uid`、日期、URL 与题图。
 - 2026-08-08 已在 `content/evergreen-article-rewrite-20260808` 外部工作树完成 GitHub Pages、强化学习、云服务器和游泳四组中英文随笔重构，并同步完成无效资源声明清理、外链检查器加固、SCSS 八模块拆分与维护文档修正；随后将 `codex/obsidian-export-20260808` 工作树中的四组新随笔、12 项题图及索引派生资产、来源登记和首页条目合并进来，强化学习文章保留原常青教程并融合开放任务分布、元强化学习混淆、长时程和视觉预训练内容。2026-08-08 首轮候选曾通过 Replit 完成端到端审阅，这只属于历史实验；2026-08-09 珍珠鸟二次重构又通过 392 项 Python、77 项 JavaScript、production Jekyll 构建、70 条旧 URL 和 169 项浏览器回归，同日开始把审阅流程迁移到 `preview/review` 的 GitHub artifact 与本机 loopback。截至 2026-08-09，该候选尚未合入正式 `master`。2026-08-11 已继续整合《工业革命：匹兹堡》双语教程，并完成 403 项 Python、77 项 JavaScript 和 169 项浏览器回归；用户随后授权正式发布。每次判断发布状态时，应复核当前 Git refs、GitHub run SHA、artifact 内 `preview-source-sha.txt` 和正式 Pages 运行结果。范围、来源、交叉审阅修正和验证证据记录在 `docs/evergreen-article-rewrite-2026-08-08.md`；合并、继续修改或放弃工作树时必须同步更新。
@@ -73,6 +74,7 @@ python scripts/validate.py --browser
 - 2026-08-08 持久型随笔重构：docs/evergreen-article-rewrite-2026-08-08.md
 - 2026-08-10 全站随笔术语与阅读负担整理：docs/all-posts-reader-language-2026-08-10.md
 - 2026-08-11《四种颜色的外套》研究与视觉协议：docs/four-color-outerwear-research-2026-08-11.md
+- 2026-08-17《综合训练系统》肌群与动作科学审计：docs/cross-training-science-audit-2026-08-17.md
 - 《四种颜色的外套》正文生成图来源：docs/article-assets/202608081100.yml
 - 2026-08-11 Minecraft 服务器运维研究与论断边界：docs/minecraft-server-operations-research-2026-08-11.md
 - 双语随笔基础：docs/superpowers/specs/2026-08-01-bilingual-post-foundation.md

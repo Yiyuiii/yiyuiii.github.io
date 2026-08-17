@@ -571,3 +571,56 @@ def test_fitness_post_movement_cards_keep_one_name_from_table_to_instruction():
     assert 'aria-hidden="true"' in component
     assert ".movement-panel-card__frame" in styles
     assert "grid-template-columns: minmax(0, 1fr);" in styles
+
+
+def test_fitness_post_defines_scientific_progression_for_all_24_movements():
+    posts = (
+        (
+            ROOT / "_posts" / "2026-08-12-从零器械到长期维护的综合训练系统.md",
+            ("**作用与边界：**", "**强度标尺：**", "**进阶链：**"),
+            "同一套计划需要四把不同的“强度尺”",
+            "双脚 25 次后若仍有至少 4 次余力",
+            "对健康年轻成人的长期增肌、表现和防伤证据不足",
+        ),
+        (
+            ROOT
+            / "_posts"
+            / "2026-08-12-a-cross-training-system-from-bodyweight-to-maintenance.md",
+            (
+                "**Role and boundary:**",
+                "**Intensity metric:**",
+                "**Progression path:**",
+            ),
+            "One plan therefore needs four different intensity rulers",
+            "If 25 two-leg repetitions still leave at least four available",
+            "Direct long-term evidence for hypertrophy, performance, or injury prevention",
+        ),
+    )
+    movement_heading = re.compile(
+        r"^###\s+(?P<movement_id>[LUCF]\d)\b.*\{#[a-z0-9-]+\}\s*$",
+        re.MULTILINE,
+    )
+    expected_ids = {
+        *(f"L{index}" for index in range(1, 9)),
+        *(f"U{index}" for index in range(1, 9)),
+        *(f"C{index}" for index in range(1, 7)),
+        "F1",
+        "F2",
+    }
+
+    for path, labels, meter_text, calf_gate, evidence_limit in posts:
+        body = path.read_text(encoding="utf-8").split("---", 2)[2]
+        matches = list(movement_heading.finditer(body))
+        assert len(matches) == 24, path
+        assert {match.group("movement_id") for match in matches} == expected_ids, path
+
+        for index, match in enumerate(matches):
+            section_end = matches[index + 1].start() if index + 1 < len(matches) else len(body)
+            section = body[match.end() : section_end]
+            for label in labels:
+                assert label in section, f"{path.name}: {match.group('movement_id')} lacks {label}"
+
+        assert meter_text in body
+        assert "{#progression-ladders}" in body
+        assert calf_gate in body
+        assert evidence_limit in body
