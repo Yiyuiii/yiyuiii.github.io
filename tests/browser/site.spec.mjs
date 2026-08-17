@@ -371,13 +371,14 @@ test("localized toy indexes expose only live lightweight interactions", async ({
       "openaccess-api.clevelandart.org",
       "openaccess-cdn.clevelandart.org",
       "graphql.anilist.co",
+      "diax7.github.io",
     ].includes(new URL(request.url()).hostname)) {
       toyExternalRequests.push(request.url());
     }
   });
   for (const [route, heading, groupHeadings] of [
-    ["/toys/", "小玩意", ["知识问答", "轻松挑战", "逻辑谜题", "随机生成"]],
-    ["/en/toys/", "Toys", ["Knowledge quizzes", "Quick challenges", "Logic puzzles", "Random generators"]],
+    ["/toys/", "小玩意", ["知识问答", "轻松挑战", "逻辑谜题", "随机生成", "实用工具"]],
+    ["/en/toys/", "Toys", ["Knowledge quizzes", "Quick challenges", "Logic puzzles", "Random generators", "Utilities"]],
   ]) {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(route);
@@ -392,9 +393,9 @@ test("localized toy indexes expose only live lightweight interactions", async ({
       }),
     ).toBe(true);
     await expect(page.locator(".toy-group__title")).toHaveText(groupHeadings);
-    const disclosures = page.locator(".toy-group__items > details.toy-entry");
-    await expect(disclosures).toHaveCount(11);
-    expect(await disclosures.evaluateAll((items) => items.map((item) => item.id))).toEqual([
+    const entries = page.locator(".toy-group__items > .toy-entry");
+    await expect(entries).toHaveCount(12);
+    expect(await entries.evaluateAll((items) => items.map((item) => item.id))).toEqual([
       "moegirl-quiz",
       "art-glimpse",
       "anilist-role-quiz",
@@ -406,15 +407,22 @@ test("localized toy indexes expose only live lightweight interactions", async ({
       "lights-out",
       "random-password",
       "random-number",
+      "apple-gift-card-scanner",
     ]);
     expect(
-      await disclosures.evaluateAll((items) => {
+      await entries.evaluateAll((items) => {
         const boxes = items.map((item) => item.getBoundingClientRect());
         return boxes.every((box, index) => index === 0 || box.top > boxes[index - 1].top);
       }),
     ).toBe(true);
+    const disclosures = page.locator(".toy-group__items > details.toy-entry");
+    await expect(disclosures).toHaveCount(11);
     await expect(page.locator(".toy-grid, .toy-card")).toHaveCount(0);
     expect(await disclosures.evaluateAll((items) => items.every((item) => !item.open))).toBe(true);
+    await expect(page.locator("#apple-gift-card-scanner.toy-entry--external")).toHaveAttribute(
+      "href",
+      "https://diax7.github.io/redeem-apple-gift-cards-without-typing/",
+    );
     await expect(page.locator(".moegirl-quiz[data-moegirl-quiz]")).toHaveCount(1);
     await expect(page.locator(".art-glimpse[data-art-glimpse]")).toHaveCount(1);
     await expect(page.locator(".acg-relation-quiz[data-acg-relation-quiz]")).toHaveCount(1);

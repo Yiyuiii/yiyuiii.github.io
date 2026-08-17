@@ -30,6 +30,25 @@
         <div class="toy-group__items">
           {% for toy in group.items %}
             {% capture toy_title_id %}{{ toy.id }}-title{% endcapture %}
+            {% if toy.external_url %}
+              <a
+                id="{{ toy.id | escape }}"
+                class="toy-entry toy-entry--external"
+                href="{{ toy.external_url | escape }}"
+                target="_blank"
+                rel="external noopener noreferrer"
+              >
+                {% if group_title %}
+                  <h3 id="{{ toy_title_id }}">
+                {% else %}
+                  <h2 id="{{ toy_title_id }}">
+                {% endif %}
+                    <span class="toy-entry__title">{{ toy.title[lang_key] }}</span>
+                    <small class="toy-entry__description">{{ toy.description[lang_key] }}</small>
+                    <small class="toy-entry__external-label">{{ toy.external_label[lang_key] }} <span aria-hidden="true">↗</span></small>
+                {% if group_title %}</h3>{% else %}</h2>{% endif %}
+              </a>
+            {% else %}
             {% assign toy_assets = '' %}
             {% case toy.id %}
               {% when 'moegirl-quiz' %}{% assign toy_assets = 'moegirl' %}
@@ -90,6 +109,7 @@
                 {% endcase %}
               </div>
             </details>
+            {% endif %}
           {% endfor %}
         </div>
       </section>

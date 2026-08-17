@@ -92,6 +92,7 @@ const clickDifferentColor = async (page) => {
 
 const clickMatchingColor = async (page) => {
   const cells = page.locator("[data-toy-color-challenge] [data-color-index]");
+  await expect(cells).toHaveCount(16);
   const normalIndex = await cells.evaluateAll((buttons) => {
     const colors = buttons.map((button) => getComputedStyle(button).backgroundColor);
     const counts = new Map();
