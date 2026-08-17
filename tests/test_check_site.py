@@ -182,6 +182,7 @@ def valid_site(root):
                 "quick": "轻松挑战",
                 "logic": "逻辑谜题",
                 "random": "随机生成",
+                "utilities": "实用工具",
                 "items": [
                     ("moegirl-quiz", "萌娘百科猜猜"),
                     ("art-glimpse", "名画猜猜（克利夫兰艺术博物馆）"),
@@ -194,6 +195,7 @@ def valid_site(root):
                     ("lights-out", "翻灯"),
                     ("random-password", "随机密码"),
                     ("random-number", "随机数字"),
+                    ("apple-gift-card-scanner", "Apple 礼品码转相机可扫描卡片（外部）"),
                 ],
             },
             "en": {
@@ -202,6 +204,7 @@ def valid_site(root):
                 "quick": "Quick challenges",
                 "logic": "Logic puzzles",
                 "random": "Random generators",
+                "utilities": "Utilities",
                 "items": [
                     ("moegirl-quiz", "Moegirlpedia quiz"),
                     ("art-glimpse", "Artwork quiz (Cleveland Museum of Art)"),
@@ -214,6 +217,10 @@ def valid_site(root):
                     ("lights-out", "Lights Out"),
                     ("random-password", "Random password"),
                     ("random-number", "Random numbers"),
+                    (
+                        "apple-gift-card-scanner",
+                        "Apple gift code to camera-scannable card (external)",
+                    ),
                 ],
             },
         }[language]
@@ -221,6 +228,20 @@ def valid_site(root):
         entries = []
         for index, (item_id, title) in enumerate(localized["items"]):
             level = 2 if index == 0 else 3
+            if item_id == "apple-gift-card-scanner":
+                entries.append(
+                    '<a id="apple-gift-card-scanner" '
+                    'class="toy-entry toy-entry--external" '
+                    'href="https://diax7.github.io/'
+                    'redeem-apple-gift-cards-without-typing/" '
+                    'target="_blank" rel="external noopener noreferrer">'
+                    '<h3 id="apple-gift-card-scanner-title">'
+                    f'<span class="toy-entry__title">{title}</span>'
+                    '<small class="toy-entry__description">Description.</small>'
+                    '<small class="toy-entry__external-label">External.</small>'
+                    '</h3></a>'
+                )
+                continue
             if item_id == "moegirl-quiz":
                 component = (
                     '<div class="moegirl-quiz" data-moegirl-quiz '
@@ -263,7 +284,10 @@ def valid_site(root):
             f'<div class="toy-group__items">{"".join(entries[6:9])}</div></section>'
             '<section class="toy-group" data-toy-group="random-generators">'
             f'<h2 class="toy-group__title">{localized["random"]}</h2>'
-            f'<div class="toy-group__items">{"".join(entries[9:])}</div></section>'
+            f'<div class="toy-group__items">{"".join(entries[9:11])}</div></section>'
+            '<section class="toy-group" data-toy-group="utilities">'
+            f'<h2 class="toy-group__title">{localized["utilities"]}</h2>'
+            f'<div class="toy-group__items">{"".join(entries[11:])}</div></section>'
             '</div><script src="/assets/js/toy-loader.js"></script></div>'
         )
 

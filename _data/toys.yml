@@ -151,3 +151,23 @@ groups:
         keywords:
           zh: [随机, 数字, 整数, 生成器]
           en: [random, number, integer, generator]
+
+  - id: utilities
+    title:
+      zh: 实用工具
+      en: Utilities
+    items:
+      - id: apple-gift-card-scanner
+        title:
+          zh: Apple 礼品码转相机可扫描卡片（外部）
+          en: Apple gift code to camera-scannable card (external)
+        description:
+          zh: 把原本需要手动输入的文字礼品码转换成可供 Apple 设备摄像头扫描录入的卡片；功能由 diax7 的第三方页面提供，本站不处理礼品码。
+          en: Turn a text gift code that would otherwise need typing into a card an Apple device can scan with its camera; diax7's third-party page provides the conversion, and this site does not handle the code.
+        external_url: https://diax7.github.io/redeem-apple-gift-cards-without-typing/
+        external_label:
+          zh: 前往 diax7.github.io（新标签页）
+          en: Visit diax7.github.io (new tab)
+        keywords:
+          zh: [Apple, 礼品卡, 兑换码, 扫码, 相机, 免输入, 外部工具]
+          en: [Apple, gift card, redemption code, camera, scan, no typing, external tool]

@@ -36,11 +36,13 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
         "quick-challenges",
         "logic-puzzles",
         "random-generators",
+        "utilities",
     ]
     assert groups[0]["title"] == {"zh": "知识问答", "en": "Knowledge quizzes"}
     assert groups[1]["title"] == {"zh": "轻松挑战", "en": "Quick challenges"}
     assert groups[2]["title"] == {"zh": "逻辑谜题", "en": "Logic puzzles"}
     assert groups[3]["title"] == {"zh": "随机生成", "en": "Random generators"}
+    assert groups[4]["title"] == {"zh": "实用工具", "en": "Utilities"}
 
     expected_ids = [
         "moegirl-quiz",
@@ -54,6 +56,7 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
         "lights-out",
         "random-password",
         "random-number",
+        "apple-gift-card-scanner",
     ]
     items = [item for group in groups for item in group["items"]]
     assert [item["id"] for item in items] == expected_ids
@@ -65,7 +68,10 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
     }.intersection(expected_ids)
 
     for item in items:
-        assert set(item) == {"id", "title", "description", "keywords"}
+        expected_fields = {"id", "title", "description", "keywords"}
+        if item["id"] == "apple-gift-card-scanner":
+            expected_fields.update({"external_url", "external_label"})
+        assert set(item) == expected_fields
         for field in ("title", "description", "keywords"):
             assert set(item[field]) == {"zh", "en"}
         assert all(item["title"][language].strip() for language in ("zh", "en"))
@@ -77,6 +83,13 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
             for language in ("zh", "en")
             for keyword in item["keywords"][language]
         )
+
+    external = items[-1]
+    assert external["external_url"] == (
+        "https://diax7.github.io/redeem-apple-gift-cards-without-typing/"
+    )
+    assert set(external["external_label"]) == {"zh", "en"}
+    assert all(external["external_label"][language].strip() for language in ("zh", "en"))
 
 
 def test_toy_routes_are_a_complete_localized_pair_and_use_the_shared_renderer():
@@ -151,6 +164,11 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
     assert "data-toy-loader-status" in include
     assert include.count(" defer></script>") == 1
     assert "toy-loader.js" in include
+    assert "{% if toy.external_url %}" in include
+    assert 'class="toy-entry toy-entry--external"' in include
+    assert 'target="_blank"' in include
+    assert 'rel="external noopener noreferrer"' in include
+    assert "toy-apple-gift-card" not in include
 
 
 def test_encyclopedia_component_uses_the_disclosure_heading_without_repeating_it():

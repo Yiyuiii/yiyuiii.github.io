@@ -160,11 +160,49 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         "lights-out",
         "random-password",
         "random-number",
+        "apple-gift-card-scanner",
     ]
-    entries = soup.select(".toy-group__items > details.toy-entry[id]")
+    entries = soup.select(".toy-group__items > .toy-entry[id]")
     ids = [str(entry.get("id", "")) for entry in entries]
     if ids != expected_ids:
         raise SiteCheckError(f"{route}: toy identities/order are {ids!r}")
+
+    disclosures = soup.select(".toy-group__items > details.toy-entry[id]")
+    if [str(entry.get("id", "")) for entry in disclosures] != expected_ids[:-1]:
+        raise SiteCheckError(f"{route}: local toy disclosures are incomplete")
+
+    external = soup.select_one(
+        ".toy-group__items > a#apple-gift-card-scanner.toy-entry--external"
+    )
+    external_heading = (
+        external.find(["h2", "h3"], recursive=False) if external else None
+    )
+    external_description = (
+        external.select_one(".toy-entry__description") if external else None
+    )
+    external_label = (
+        external.select_one(".toy-entry__external-label") if external else None
+    )
+    if (
+        external is None
+        or external.get("href")
+        != "https://diax7.github.io/redeem-apple-gift-cards-without-typing/"
+        or external.get("target") != "_blank"
+        or not {"external", "noopener", "noreferrer"}.issubset(
+            set(external.get("rel") or [])
+        )
+        or external.get("data-toy-disclosure") is not None
+        or external.get("data-toy-assets") is not None
+        or external.select_one(".toy-entry__body")
+        or not external_heading
+        or not external_description
+        or not external_description.get_text(" ", strip=True)
+        or not external_label
+        or not external_label.get_text(" ", strip=True)
+    ):
+        raise SiteCheckError(
+            f"{route}: Apple gift-card utility must be one safely isolated external link"
+        )
 
     groups = soup.select(".toy-list > section.toy-group[data-toy-group]")
     group_ids = [str(group.get("data-toy-group", "")) for group in groups]
@@ -173,12 +211,13 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         "quick-challenges",
         "logic-puzzles",
         "random-generators",
+        "utilities",
     ]:
         raise SiteCheckError(f"{route}: toy groups/order are {group_ids!r}")
     expected_group_titles = (
-        ["知识问答", "轻松挑战", "逻辑谜题", "随机生成"]
+        ["知识问答", "轻松挑战", "逻辑谜题", "随机生成", "实用工具"]
         if language == "zh"
-        else ["Knowledge quizzes", "Quick challenges", "Logic puzzles", "Random generators"]
+        else ["Knowledge quizzes", "Quick challenges", "Logic puzzles", "Random generators", "Utilities"]
     )
     actual_group_titles = [
         node.get_text(" ", strip=True) for node in soup.select(".toy-group__title")
@@ -186,7 +225,7 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
     if actual_group_titles != expected_group_titles:
         raise SiteCheckError(f"{route}: toy group headings are not localized")
 
-    for entry in entries:
+    for entry in disclosures:
         summary = entry.find("summary", recursive=False)
         heading_node = summary.find(["h2", "h3"], recursive=False) if summary else None
         description = summary.select_one(".toy-entry__description") if summary else None
