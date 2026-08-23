@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Iterable, Mapping
-from urllib.parse import urlsplit
+from urllib.parse import quote, urlsplit
 from zoneinfo import ZoneInfo
 
 import yaml
@@ -559,11 +559,13 @@ def check_post_contracts(
     if unknown_exemptions:
         raise TranslationError(f"translation exemptions reference missing posts: {sorted(unknown_exemptions)}")
 
-    internal_link_map = {
-        document.frontmatter["permalink"]: f"post:{key}"
-        for key, members in groups.items()
-        for document in members
-    }
+    internal_link_map = {}
+    for key, members in groups.items():
+        for document in members:
+            permalink = document.frontmatter["permalink"]
+            identity = f"post:{key}"
+            internal_link_map[permalink] = identity
+            internal_link_map[quote(permalink, safe="/")] = identity
 
     for key, members in groups.items():
         languages = {member.frontmatter["lang"] for member in members}

@@ -371,3 +371,48 @@ covers:
     sha256: "5f71d46e5e49b9e61473fc0b2a96e334d1486944d3fc016cbd79c1eebbede4c3"
     dimensions: [1024, 1024]
     attribution: "AI-generated sustainable cross-training concept; not movement instruction or medical evidence."
+  - asset: "assets/posts/202608231837/cover-he-tang-yue-se-public-v005-square.webp"
+    posts:
+      - "_posts/2026-08-23-把荷塘月色做成五分四十九秒的夜行.md"
+      - "_posts/2026-08-23-turning-moonlight-over-the-lotus-pond-into-a-night-walk.md"
+    origin_type: "self-produced"
+    source_url: null
+    author: "Yiyu Chen with AI-generated imagery via OpenAI/Codex"
+    license: "project-owned"
+    license_url: null
+    transform: "The verified 1672 × 941 v005 Bilibili cover was converted to RGB, placed unchanged at vertical center on a 1672 × 1672 dark-navy canvas so no public-cover text was cropped, stripped of metadata, and exported as WebP quality 82 with Pillow 12.3.0 method 6."
+    sha256: "50ef7b724be75fa203518f849e129e463bc8ee69b5ff7c17ca5ceb4ab3bcf3d8"
+    dimensions: [1672, 1672]
+    attribution: "Public-cover layout and adaptation production by Yiyu Chen; background includes AI-generated imagery and is not a historical photograph."
+  - asset: "assets/posts/202608231838/cover-long-form-workflow-v001.webp"
+    posts:
+      - "_posts/2026-08-23-从全文朗读到可验证影像的构建流程.md"
+      - "_posts/2026-08-23-from-full-reading-to-verifiable-film.md"
+    origin_type: "generated"
+    source_url: null
+    author: "Generated under Yiyu Chen's direction"
+    license: "project-use-rights"
+    license_url: null
+    generator: "OpenAI image_gen via Codex"
+    generated_at: "2026-08-23"
+    source_description: "Original text-only generation for the workflow essay; no user-provided photograph, third-party image, brand asset, or source-project frame was used as an image input."
+    reference_inputs:
+      - "No reference image was used; the generation used only the recorded text prompt."
+    purpose: "Square writing-index and article cover for the reusable long-form audiovisual workflow essay."
+    approval: "Generated for this user-authorized bilingual essay split; retained in the isolated content worktree for local review and not published by this task."
+    prompt: |-
+      Use case: stylized-concept
+      Asset type: square editorial cover for a bilingual essay about a reusable long-form AI audiovisual production workflow
+      Primary request: create a polished conceptual illustration that makes a production pipeline readable without using any words
+      Scene/backdrop: a calm moonlit studio abstraction that subtly echoes a lotus-pond night but remains about process rather than literary scenery
+      Subject: one continuous left-to-right visual system: a manuscript page represented by clean abstract line blocks, a narration waveform, a short sequence of consistent lotus-leaf keyframe states, a structured video timeline with aligned tracks, and a final verification frame with restrained check marks; connect them with one clear flowing path
+      Style/medium: refined contemporary editorial illustration, softly dimensional, crisp enough for a small website thumbnail, not a literal software screenshot
+      Composition/framing: exact square 1:1; strong central hierarchy; all essential elements within generous safe margins; readable at 160 pixels; no crop-sensitive details
+      Lighting/mood: cool moonlight, calm, rigorous, reversible, methodical
+      Color palette: deep navy, muted teal, moonlit silver, small warm amber accents
+      Materials/textures: paper, subtle glassy timeline panels, organic lotus leaves, restrained grain
+      Constraints: exactly one coherent workflow; no people; no text; no letters; no numbers; no logos; no brand marks; no watermark; no fake UI labels; no historical-photograph claim; avoid busy infographic clutter, neon cyberpunk, glowing circuit boards, and generic robot imagery
+    transform: "Generated as a 1254 × 1254 PNG, converted without resizing to RGB WebP quality 82 with Pillow 12.3.0 method 6 and metadata omitted."
+    sha256: "1923adcb2b2a7be7c689c1d6ee551a1cc77b5ae2e56348bba73dad8c1ef57572"
+    dimensions: [1254, 1254]
+    attribution: "AI-generated conceptual workflow cover; not a software screenshot, process receipt, or historical photograph."

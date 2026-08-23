@@ -308,3 +308,60 @@ images:
   source_dimensions:
   - 1536
   - 1024
+- source: assets/posts/202608231837/moonlight-through-clouds-and-leaves.webp
+  published: assets/posts/202608231837/moonlight-through-clouds-and-leaves.webp
+  variants:
+  - asset: assets/posts/202608231837/moonlight-through-clouds-and-leaves-content-v2-800.webp
+    width: 800
+    sha256: 9db7f30f0384be02c851dfa6f5a29397d80b5e95c7785aa02471a4e3cb9bae54
+    dimensions:
+    - 800
+    - 534
+  - asset: assets/posts/202608231837/moonlight-through-clouds-and-leaves-content-v2-1400.webp
+    width: 1400
+    sha256: 548bc48b721c9e182c10bda546962d6bec94529dc7e56b0950331d049d90e324
+    dimensions:
+    - 1400
+    - 934
+  source_sha256: 2e59740be977454c046af32fb7e9e31134ba7910f89c7d6758075b456cf03039
+  source_dimensions:
+  - 1535
+  - 1024
+- source: assets/posts/202608231837/return-to-home-gate.webp
+  published: assets/posts/202608231837/return-to-home-gate.webp
+  variants:
+  - asset: assets/posts/202608231837/return-to-home-gate-content-v2-800.webp
+    width: 800
+    sha256: 721e3dfdc3fcb8314f2b4bdd3686d4f7c865b6daa1941fb20a80a1add48b6959
+    dimensions:
+    - 800
+    - 450
+  - asset: assets/posts/202608231837/return-to-home-gate-content-v2-1400.webp
+    width: 1400
+    sha256: 40be73f5f76445d9be0773ed77b93b9ad56226f30d361c15c750f1582887be43
+    dimensions:
+    - 1400
+    - 788
+  source_sha256: c752a6ce700ec03108802a401fe8cc59f058be3e975cd6c13db6361a3d266517
+  source_dimensions:
+  - 1672
+  - 941
+- source: assets/posts/202608231837/s023-organic-wave-six-state.webp
+  published: assets/posts/202608231837/s023-organic-wave-six-state.webp
+  variants:
+  - asset: assets/posts/202608231837/s023-organic-wave-six-state-content-v2-800.webp
+    width: 800
+    sha256: 47fa06eea0520524623918f46c5a91e64c4b37621fb302a3128c5fa1b776c24a
+    dimensions:
+    - 800
+    - 301
+  - asset: assets/posts/202608231837/s023-organic-wave-six-state-content-v2-1400.webp
+    width: 1400
+    sha256: bdb6ea62dc76a9c2b31447f4b87be013fe6e74736f6476da3b099b5757893620
+    dimensions:
+    - 1400
+    - 526
+  source_sha256: 041708ccb1b664cfd9d19c55a1f64716233f5495567d58d639a9bfd4265d9621
+  source_dimensions:
+  - 1671
+  - 628
