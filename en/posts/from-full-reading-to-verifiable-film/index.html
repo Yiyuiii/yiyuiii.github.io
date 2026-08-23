@@ -1,0 +1,613 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> From Full Reading to Verifiable Film: A Reversible Production Workflow | yiyuiii </title> <meta name="author" content="Yiyu Chen"> <meta name="description" content="A reusable long-form workflow linking textual responsibilities, real narration time, keyframes, sound, deterministic assembly, and frame-level checks."> <meta name="keywords" content="yiyuiii, 随笔, 开源项目, 复杂系统"> <link rel="canonical" href="https://yiyuiii.github.io/en/posts/from-full-reading-to-verifiable-film/"> <meta name="giscus:backlink" content="https://yiyuiii.github.io/en/posts/from-full-reading-to-verifiable-film/"> <link rel="alternate" hreflang="zh-CN" href="https://yiyuiii.github.io/posts/%E4%BB%8E%E5%85%A8%E6%96%87%E6%9C%97%E8%AF%BB%E5%88%B0%E5%8F%AF%E9%AA%8C%E8%AF%81%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B/"> <link rel="alternate" hreflang="en" href="https://yiyuiii.github.io/en/posts/from-full-reading-to-verifiable-film/"> <link rel="alternate" hreflang="x-default" href="https://yiyuiii.github.io/posts/%E4%BB%8E%E5%85%A8%E6%96%87%E6%9C%97%E8%AF%BB%E5%88%B0%E5%8F%AF%E9%AA%8C%E8%AF%81%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B/"> <meta property="og:site_name" content="yiyuiii"> <meta property="og:type" content="article"> <meta property="og:title" content="From Full Reading to Verifiable Film: A Reversible Production Workflow"> <meta property="og:url" content="https://yiyuiii.github.io/en/posts/from-full-reading-to-verifiable-film/"> <meta property="og:description" content="A reusable long-form workflow linking textual responsibilities, real narration time, keyframes, sound, deterministic assembly, and frame-level checks."> <meta property="og:locale" content="en_US"> <meta property="og:locale:alternate" content="zh_CN"> <meta property="og:image" content="https://yiyuiii.github.io/assets/posts/202608231838/cover-long-form-workflow-v001.webp"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="From Full Reading to Verifiable Film: A Reversible Production Workflow"> <meta name="twitter:description" content="A reusable long-form workflow linking textual responsibilities, real narration time, keyframes, sound, deterministic assembly, and frame-level checks."> <meta name="twitter:image" content="https://yiyuiii.github.io/assets/posts/202608231838/cover-long-form-workflow-v001.webp"> <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "url": "https://yiyuiii.github.io/en/posts/from-full-reading-to-verifiable-film/",
+    "headline": "From Full Reading to Verifiable Film: A Reversible Production Workflow",
+    "description": "A reusable long-form workflow linking textual responsibilities, real narration time, keyframes, sound, deterministic assembly, and frame-level checks.",
+    "inLanguage": "en",
+    "author": {
+      "@type": "Person",
+      "name": "Yiyu Chen"
+    },
+    "datePublished": "2026-08-23T18:38:00+08:00",
+    "dateModified": "2026-08-23T00:00:00+08:00"
+    
+  }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://openaccess-cdn.clevelandart.org; font-src 'self' data:; media-src 'self'; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://graphql.anilist.co https://openaccess-api.clevelandart.org https://zh.moegirl.org.cn;"> <script>
+    (function () {
+      var sunlight = null;
+      var theme = null;
+      try {
+        sunlight = localStorage.getItem("yiyuiii.sunlight.v1");
+        theme = localStorage.getItem("yiyuiii.theme.v1");
+      } catch (error) {
+        sunlight = null;
+        theme = null;
+      }
+      sunlight = sunlight === "on" || sunlight === "off" ? sunlight : "on";
+      theme = theme === "light" || theme === "dark" ? theme : "light";
+      document.documentElement.dataset.sunlight = sunlight;
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script> <link rel="icon" href="/assets/img/favicons/favicon.ico" sizes="any"> <style>:root { --max-content-width: 960px; }</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" id="highlight_theme_light"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> </head> <body> <a class="skip-link" href="#main-content">Skip to content</a> <header class="site-header"> <div class="site-header__inner"> <span class="site-brand"> <a id="sunlight-fallback-link" class="site-brand__avatar-home" href="/en/" aria-label="Return to the English welcome page"> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </a> <button id="sunlight-toggle" class="site-brand__avatar-toggle" type="button" aria-label="Turn off the sunlight background" aria-pressed="true" data-enable-light-label="Turn on the sunlight background" data-disable-light-label="Turn off the sunlight background" data-enable-dark-label="Turn on the moonlight background" data-disable-dark-label="Turn off the moonlight background" data-status-light-on="Sunlight background is on" data-status-light-off="Sunlight background is off" data-status-dark-on="Moonlight background is on" data-status-dark-off="Moonlight background is off" hidden> <img class="site-brand__avatar" src="/assets/img/favicons/android-chrome-256x256.png" alt="" width="40" height="40"> </button> <a class="site-brand__name" href="/en/">yiyuiii</a> <span id="sunlight-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> </span> <nav class="site-nav" aria-label="Primary navigation"> <a href="/en/">Welcome</a> <a href="/en/writing/">Writing</a> <a href="/en/projects/">GitHub</a> <a href="/en/publications/">Papers</a> <a href="/en/toys/">Toys</a> <a href="/en/about/">About yiyuiii</a> </nav> <div class="site-actions"> <button id="search-toggle" class="icon-button" type="button" aria-label="Search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <circle cx="11" cy="11" r="6.5"></circle> <path d="m16 16 4 4"></path> </svg> </button> <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="Switch to the night appearance" aria-pressed="false" data-enable-light-label="Switch to the light appearance" data-enable-dark-label="Switch to the night appearance" data-status-light="Light appearance is on" data-status-dark="Night appearance is on" hidden> <svg class="theme-toggle__sun" viewbox="0 0 24 24" aria-hidden="true"> <circle cx="12" cy="12" r="3.4"></circle> <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path> </svg> <svg class="theme-toggle__moon" viewbox="0 0 24 24" aria-hidden="true"> <path d="M20.1 15.2A8.6 8.6 0 0 1 8.8 3.9 8.6 8.6 0 1 0 20.1 15.2Z"></path> </svg> </button> <span id="theme-status" class="sr-only" aria-live="polite" aria-atomic="true"></span> <a class="language-switch" href="/posts/%E4%BB%8E%E5%85%A8%E6%96%87%E6%9C%97%E8%AF%BB%E5%88%B0%E5%8F%AF%E9%AA%8C%E8%AF%81%E5%BD%B1%E5%83%8F%E7%9A%84%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B/" aria-label="Switch to Chinese"> 中 </a> </div> </div> </header> <main id="main-content" class="site-main" tabindex="-1"> <div class="article-shell"> <article class="article-column"> <header class="article-header"> <h1>From Full Reading to Verifiable Film: A Reversible Production Workflow</h1> <div class="article-meta"> <div class="article-tags"> <a href="/en/writing/?tag=AI+Filmmaking">AI Filmmaking</a> <a href="/en/writing/?tag=Production+Workflow">Production Workflow</a> <a href="/en/writing/?tag=Audiovisual+Design">Audiovisual Design</a> </div> <details class="article-history"> <summary> <span class="article-history__summary"> <span> First published <time datetime="2026-08-23">2026-08-23</time> </span> <span class="article-meta__separator" aria-hidden="true">·</span> <span class="article-history__action">Revision history</span> </span> </summary> <ol class="article-history__list"> <li> <time datetime="2026-08-23">2026-08-23</time> <span>Reframed from the full production record of Moonlight over the Lotus Pond as a standalone essay on reusable workflow and design; written by Codex</span> </li> </ol> </details> </div> </header> <details class="article-inline-toc"> <summary>Sections</summary> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#why-a-workflow">Why a workflow is necessary</a></li> <li class="toc-entry toc-h2"><a href="#design-goals">Four design goals</a></li> <li class="toc-entry toc-h2"> <a href="#seven-step-workflow">A seven-step production workflow</a> <ul> <li class="toc-entry toc-h3"><a href="#text-responsibility">1. Begin with a textual responsibility table</a></li> <li class="toc-entry toc-h3"><a href="#narration-timeline">2. Let the final narration establish the timeline</a></li> <li class="toc-entry toc-h3"><a href="#visual-state">3. Express the visual specification as state constraints</a></li> <li class="toc-entry toc-h3"><a href="#division-of-labor">4. Divide labor among keyframes, sound, and silence</a></li> <li class="toc-entry toc-h3"><a href="#deterministic-assembly">5. Assemble a deterministic data timeline</a></li> <li class="toc-entry toc-h3"><a href="#local-rollback">6. Test local samples before returning them to the full film</a></li> <li class="toc-entry toc-h3"><a href="#machine-and-human">7. Let machines filter first and people judge aesthetics</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#organic-wave">Representative case: state propagation in “a passing breeze”</a></li> <li class="toc-entry toc-h2"> <a href="#failures-to-rules">How three failures became design rules</a> <ul> <li class="toc-entry toc-h3"><a href="#narration-continuity">Narration joins: good segments do not guarantee a continuous reading</a></li> <li class="toc-entry toc-h3"><a href="#black-canvas">Black edges during pans: correct still files do not guarantee valid motion</a></li> <li class="toc-entry toc-h3"><a href="#cover-redesign">Cover redesign: production truth and entry copy need separate layers</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#tools">Tools enter the system by responsibility</a></li> <li class="toc-entry toc-h2"><a href="#scope-and-boundaries">Scope and boundaries</a></li> <li class="toc-entry toc-h2"><a href="#method-references">Method references</a></li> <li class="toc-entry toc-h2"><a href="#production-note">Production note</a></li> </ul> </nav> </details> <figure class="article-cover"> <img height="1254" width="1254" class="article-cover__image" src="/assets/posts/202608231838/cover-long-form-workflow-v001.webp" alt="A square illustration above a moonlit lotus pond, linking a manuscript, narration waveform, sequential leaf states, data timeline, and verification results into one production workflow" loading="eager" fetchpriority="high" decoding="async"> <figcaption class="article-cover__caption"> <p>This AI-generated cover was created with OpenAI image_gen from the workflow described in the essay, connecting manuscript, sound, key states, timeline, and validation in sequence. It is not a photograph, software screenshot, or factual record of a workflow run.</p> </figcaption> </figure> <div class="post-content" id="markdown-content"> <h2 id="why-a-workflow">Why a workflow is necessary</h2> <p>Pairing a few passages with images is easy. The real difficulty appears when the work becomes long: a character state may drift between passages, the narration may enter a new sentence while the image still represents the previous one, a local revision may disturb the entire timeline, and a successful render may conceal black edges in motion, audible joins, or a narrative misreading.</p> <p>The 5:49 adaptation of Moonlight over the Lotus Pond gave us a complete test case. For the film and its literary interpretation, read the companion <a href="/en/posts/turning-moonlight-over-the-lotus-pond-into-a-night-walk/">essay on the finished work</a>, or <a href="https://www.bilibili.com/video/BV1KQ8x6bEGk/" rel="external nofollow noopener" target="_blank">watch the public film on Bilibili</a>. This essay addresses a different question: how can long-form text become an audiovisual system that can be built in stages, rolled back locally, and verified repeatedly?</p> <h2 id="design-goals">Four design goals</h2> <p>The workflow was derived backwards from four goals:</p> <ol> <li> <strong>Textual evidence comes first.</strong> Every shot must identify the passage it serves. An attractive image cannot cover a gap in interpretation.</li> <li> <strong>Real time is the organizing axis.</strong> Shots, subtitles, actions, and sounds follow the final narration rather than estimated character counts or a preset rhythm.</li> <li> <strong>Changes remain local.</strong> A gust of wind, one transition, or a narration join can be compared and withdrawn without forcing the entire film to be regenerated.</li> <li> <strong>Validation duties remain separate.</strong> Machines check measurable omissions, wrong frames, black edges, and timing; people judge naturalness, rhythm, meaning, and whether an effect deserves to remain.</li> </ol> <p>Together they imply one central choice: store the work as sources, states, timing, and rules, then assemble the film with deterministic tools. The finished film is one output of that system, not the only master that can still be edited.</p> <h2 id="seven-step-workflow">A seven-step production workflow</h2> <h3 id="text-responsibility">1. Begin with a textual responsibility table</h3> <p>The first production artifact is not a storyboard. It is a textual responsibility table. We divide the full text into semantic passages and record the location, time, discourse layer, required objects, character state, continuity with neighboring passages, and prohibited misreadings for each one.</p> <p>Reality, rhetoric, and cultural memory must be separated here. The Tsinghua night walk belongs to physical space. “Moonlight like flowing water” changes how light is perceived; it does not require a literal river. Jiangnan lotus-picking is a cultural association and cannot quietly become an event that occurred that night. Once these boundaries are registered, image generation receives a stable area of responsibility.</p> <h3 id="narration-timeline">2. Let the final narration establish the timeline</h3> <p>After the main reading is complete, shot lengths are no longer estimated from character counts. We read the actual onsets, pauses, passage boundaries, and total duration from the audio. Subtitles, key states, sound entries, and transitions all attach to that timeline.</p> <p>Automatic speech recognition (ASR) helps locate when words actually occur. Pulse-code modulation (PCM) waveform analysis helps reveal loudness jumps, clipping, and abnormal silence. Both are locating tools: they can tell us where to listen again, but they cannot judge whether a reading has literary restraint.</p> <h3 id="visual-state">3. Express the visual specification as state constraints</h3> <p>Continuity across a long film cannot depend on adding “keep everything consistent” to every prompt. Identity, clothing, period character, weather, light direction, palette, spatial relations, and neighboring states need stable records. Each keyframe then declares what it is allowed to change.</p> <p>The production unit becomes a state rather than an image. One lotus pond can have thinner moonlight, leaves disturbed by wind, or denser mist. Each revision touches only the variables inside its responsibility. Generated images still make mistakes, but those mistakes become easier to locate and reverse.</p> <h3 id="division-of-labor">4. Divide labor among keyframes, sound, and silence</h3> <p>Keyframes establish locations, relationships, and indispensable visible states. Narration carries sentences and tone. Environmental sound extends space beyond the frame. Silence and held images give viewers time to read.</p> <p>This division deliberately reduces the number of shots. Laughter beyond the wall does not require a new child on screen. A distant cicada can enlarge a still night scene. A figure of speech does not have to trigger an immediate literal image. One less generated shot often removes several opportunities for identity drift, weather jumps, and purposeless transitions.</p> <h3 id="deterministic-assembly">5. Assemble a deterministic data timeline</h3> <p>Remotion is a framework that renders video from React and data-driven timelines. Here it combines keyframes, state changes, pans, zooms, dissolves, and subtitles. FFmpeg handles audio assembly, encoding, and media inspection. With unchanged sources, timings, and parameters, the same structure can be produced again.</p> <p>Determinism does not require every encoding run to produce identical bytes. It requires the more important relationships to remain reproducible: the same sentence reaches the same states, the same sound enters at the same time, and a repair cannot drift because someone dragged a clip by hand.</p> <h3 id="local-rollback">6. Test local samples before returning them to the full film</h3> <p>High-risk passages are compared first as samples lasting several seconds. A candidate can be retained, replaced, or discarded altogether. It enters the full timeline only after it works with the real narration and its surrounding context.</p> <p>Local samples form a short feedback loop; the complete film forms a long one. The short loop resolves movement, composition, and sound details. The long loop checks spatial continuity, accumulated fatigue, and whether the return structure still closes. Separating the loops prevents a polished local effect from masquerading as a successful film.</p> <h3 id="machine-and-human">7. Let machines filter first and people judge aesthetics</h3> <p>Machine checks cover file and data contracts, subtitle completeness, the timing of key states, black frames and edges, audio continuity, media specifications, and reproducible builds. Human viewing focuses on whether movement feels natural, whether imagery competes with the prose, whether pauses are sufficient, and whether an effect deserves to exist.</p> <p>A machine pass only means that predefined faults were not found. A human impression that the film “flows” cannot replace evidence about sources and timing. Keeping both judgments side by side prevents technical closure from being reported as an aesthetic conclusion.</p> <h2 id="organic-wave">Representative case: state propagation in “a passing breeze”</h2> <p>The sentence about “a passing breeze” requires visible change without looking like a switch. In the first version, the whole field of leaves changed together. The information was clear, but the movement felt mechanical.</p> <p>The revision divided one gust into twenty-four propagation states and six recovery states. A small tremor begins nearby. Only when the narration reaches “in an instant” does it travel rightward and into the distance. After arriving, it gradually settles. Each state changes a limited region; direction, speed differences, and recovery appear only in continuous playback.</p> <p><img decoding="async" loading="lazy" srcset="/assets/posts/202608231837/s023-organic-wave-six-state-content-v2-800.webp 800w, /assets/posts/202608231837/s023-organic-wave-six-state-content-v2-1400.webp 1400w, /assets/posts/202608231837/s023-organic-wave-six-state.webp 1671w" sizes="(max-width: 1200px) calc(100vw - 2rem), 1152px" height="628" width="1671" src="/assets/posts/202608231837/s023-organic-wave-six-state.webp" alt="Six consecutive states of the same night pond, with the disturbance spreading from a local region across the leaves before recovering"></p> <p><em>Figure 1 | Six sampled states show local tremor, outward propagation, and gradual recovery. The film uses a denser sequence. AI supplied the base keyframe; propagation and assembly were controlled by the local deterministic workflow.</em></p> <p>The reusable lesson is not simply to make more images. Continuous action can be described as constrained state propagation: define its origin, direction, covered region, arrival time, and recovery condition, then select enough intermediate states. Machines check those conditions; people decide whether the result resembles wind.</p> <h2 id="failures-to-rules">How three failures became design rules</h2> <h3 id="narration-continuity">Narration joins: good segments do not guarantee a continuous reading</h3> <p>Individually clear narration segments can still jump in breathing, timbre, pace, loudness, or noise floor after assembly. The workflow therefore treats every neighboring boundary as an explicit check: ASR and PCM analysis locate candidates, then a person listens through each join. Once the voice is continuous, extra visual transitions are no longer needed to conceal seams.</p> <h3 id="black-canvas">Black edges during pans: correct still files do not guarantee valid motion</h3> <p>Six panning shots once exposed black canvas at their edges. The source images existed, their dimensions were correct, and the render completed. The error appeared only when image size, displacement, and frame boundaries changed together over time. The repair slightly enlarged the shots, restricted the pan range, and added frame-by-frame edge scanning.</p> <p>The rule applies to every motion design: validation must include time. Inspecting only input files and final encoding status is insufficient.</p> <h3 id="cover-redesign">Cover redesign: production truth and entry copy need separate layers</h3> <p>The first cover behaved like a film poster. Its atmosphere was coherent, but at thumbnail size it could not quickly communicate “classic school text, full reading, AI production.” The public cover enlarged the title and used direct functional language so an unfamiliar viewer could decide whether to open it. The essay then explains the tools, labor, and boundaries.</p> <p>Titles and covers serve entry decisions; articles and production records serve accurate explanation. With these duties separated, acquisition copy does not have to absorb every technical fact, and a thumbnail does not have to carry the full production argument.</p> <p>“Zero cost” in the public title means only that this production did not purchase actors, a studio, or a generative-video service for finished shots. Anyone reproducing the workflow may still incur subscription, computing, and time costs. “AI” likewise identifies only part of the image source; it does not summarize narration, sound, assembly, validation, or human judgment.</p> <h2 id="tools">Tools enter the system by responsibility</h2> <table> <thead> <tr> <th>Stage</th> <th>Tools actually used</th> <th>Responsibility in the workflow</th> </tr> </thead> <tbody> <tr> <td>Textual interpretation and production orchestration</td> <td>OpenAI/Codex</td> <td>Organize textual and historical constraints and establish responsibility tables, visual specifications, and validation tasks</td> </tr> <tr> <td>Keyframe generation</td> <td>OpenAI image generation</td> <td>Generate and locally correct key states under the visual specification</td> </tr> <tr> <td>Reading and supporting voices</td> <td>Volcengine Doubao TTS 2.0 (seed-tts-2.0)</td> <td>Produce the complete main reading and a small amount of controlled supporting voice</td> </tr> <tr> <td>Audiovisual assembly</td> <td>Remotion, FFmpeg</td> <td>Drive shots, motion, dissolves, subtitles, encoding, audio assembly, and media inspection from data</td> </tr> <tr> <td>Nonverbal sound</td> <td>Licensed Mixkit effects</td> <td>Supply off-screen cues such as insects, footsteps, fabric, breeze, water, and frogs</td> </tr> <tr> <td>Data contracts</td> <td>Node.js, TypeScript, YAML, Zod, Vitest</td> <td>Store the timeline, validate structure, and reject incomplete inputs</td> </tr> <tr> <td>Media checks</td> <td>ASR, PCM analysis, frame-by-frame inspection</td> <td>Locate missing words, loudness jumps, abnormal silence, black edges, wrong frames, and state-timing faults</td> </tr> </tbody> </table> <p>The tool list is not the method. What transfers is the division of responsibility: text constrains visuals, real audio establishes time, state data drives assembly, checks decide whether work can advance, and people receive only questions machines cannot answer reliably.</p> <h2 id="scope-and-boundaries">Scope and boundaries</h2> <p>This workflow suits medium- and long-form audiovisual work with stable text, explicit narration, and continuity across passages. It can also support instructional material, historical narrative, and visual documentary essays when the team is willing to register sources and narrative responsibilities first.</p> <p>It does not solve literary interpretation automatically, nor can it guarantee the historical accuracy of generated images. We did not run the research systems cited below, did not use their experimental results as evidence of this film’s quality, and did not use a generative video model to create complete shots or the full film directly. The formal adaptation of Moonlight over the Lotus Pond was assembled from keyframes, sound, a data timeline, and deterministic tools.</p> <h2 id="method-references">Method references</h2> <ol> <li>Lin H, Zala A, Cho J, Bansal M. <a href="https://arxiv.org/abs/2309.15091" rel="external nofollow noopener" target="_blank">VideoDirectorGPT: Consistent Multi-scene Video Generation via LLM-Guided Planning</a> [C]. COLM, 2024. Inspired planning across multiple scenes before visual generation.</li> <li>Shin A, Kaneko K. <a href="https://openaccess.thecvf.com/content/ICCV2025W/AISTORY/html/Shin_Generating_Visually_Consistent_Images_for_Storytelling_via_Narrative_Graph_Prompting_ICCVW_2025_paper.html" rel="external nofollow noopener" target="_blank">Generating Visually Consistent Images for Storytelling via Narrative Graph Prompting</a> [C]. ICCV Workshops, 2025. Inspired narrative records for stable subjects, relationships, states, and canonical attributes.</li> <li>Gao S, Mathew S, Mi L, et al. <a href="https://openaccess.thecvf.com/content/CVPR2025/html/Gao_VinaBench_Benchmark_for_Faithful_and_Consistent_Visual_Narratives_CVPR_2025_paper.html" rel="external nofollow noopener" target="_blank">VinaBench: Benchmark for Faithful and Consistent Visual Narratives</a> [C]. CVPR, 2025. Inspired explicit records of characters, locations, time, discourse layers, and prohibited misreadings.</li> <li>Wang Y, He X, Wang K, et al. <a href="https://openaccess.thecvf.com/content/CVPR2025/html/Wang_Is_Your_World_Simulator_a_Good_Story_Presenter_A_Consecutive_CVPR_2025_paper.html" rel="external nofollow noopener" target="_blank">Is Your World Simulator a Good Story Presenter? A Consecutive Events-Based Benchmark for Future Long Video Generation</a> [C]. CVPR, 2025. Inspired checks of consecutive events and arrival order.</li> <li>Matsuda R, Kudo K, Yoshida H, Shimizu N, Suzuki J. <a href="https://arxiv.org/abs/2603.29186" rel="external nofollow noopener" target="_blank">SLVMEval: Synthetic Meta Evaluation Benchmark for Text-to-Long Video Generation</a> [C/OL]. CVPR, 2026. Inspired injecting one controlled fault to confirm that checking rules catch a known failure.</li> <li>Tang Y, Liu T, Lai Y, et al. <a href="https://arxiv.org/abs/2607.14202" rel="external nofollow noopener" target="_blank">KeyFrame-Compass: Towards Comprehensive Evaluation of Keyframe-Conditioned Video Generation</a> [EB/OL]. arXiv:2607.14202, 2026. Inspired separate checks for the presence, fidelity, order, timing, duration, and uniqueness of key states.</li> </ol> <h2 id="production-note">Production note</h2> <p>The cover and state figure in this essay come from the formal production assets for Moonlight over the Lotus Pond. This site stores only the WebP files needed for reading and their responsive derivatives. Source paths, purposes, transformations, dimensions, and SHA-256 values are recorded in the article asset manifest. The images explain the workflow; they are not historical photographs, documentary records, or outputs from any cited research system.</p> </div> </article> <aside class="article-side-toc"> <nav aria-label="Article sections" data-article-navigation> <ul class="section-nav"> <li class="toc-entry toc-h2"><a href="#why-a-workflow">Why a workflow is necessary</a></li> <li class="toc-entry toc-h2"><a href="#design-goals">Four design goals</a></li> <li class="toc-entry toc-h2"> <a href="#seven-step-workflow">A seven-step production workflow</a> <ul> <li class="toc-entry toc-h3"><a href="#text-responsibility">1. Begin with a textual responsibility table</a></li> <li class="toc-entry toc-h3"><a href="#narration-timeline">2. Let the final narration establish the timeline</a></li> <li class="toc-entry toc-h3"><a href="#visual-state">3. Express the visual specification as state constraints</a></li> <li class="toc-entry toc-h3"><a href="#division-of-labor">4. Divide labor among keyframes, sound, and silence</a></li> <li class="toc-entry toc-h3"><a href="#deterministic-assembly">5. Assemble a deterministic data timeline</a></li> <li class="toc-entry toc-h3"><a href="#local-rollback">6. Test local samples before returning them to the full film</a></li> <li class="toc-entry toc-h3"><a href="#machine-and-human">7. Let machines filter first and people judge aesthetics</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#organic-wave">Representative case: state propagation in “a passing breeze”</a></li> <li class="toc-entry toc-h2"> <a href="#failures-to-rules">How three failures became design rules</a> <ul> <li class="toc-entry toc-h3"><a href="#narration-continuity">Narration joins: good segments do not guarantee a continuous reading</a></li> <li class="toc-entry toc-h3"><a href="#black-canvas">Black edges during pans: correct still files do not guarantee valid motion</a></li> <li class="toc-entry toc-h3"><a href="#cover-redesign">Cover redesign: production truth and entry copy need separate layers</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#tools">Tools enter the system by responsibility</a></li> <li class="toc-entry toc-h2"><a href="#scope-and-boundaries">Scope and boundaries</a></li> <li class="toc-entry toc-h2"><a href="#method-references">Method references</a></li> <li class="toc-entry toc-h2"><a href="#production-note">Production note</a></li> </ul> </nav> </aside> <section class="page-shell page-comments" data-page-comments data-repo="Yiyuiii/yiyuiii.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnk0MDY0MTE1MTM=" data-category="Announcements" data-category-id="DIC_kwDOGDlY-c4DCk8v" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-light-theme="light" data-dark-theme="dark" data-giscus-lang="en" data-loading-text="Loading comments…" data-retry-text="Try again" data-error-text="Comments could not be loaded. Try again, or use the GitHub Discussions link above." data-auto-load-enabled-text="Automatic comment loading is on." data-auto-load-disabled-text="Automatic comment loading is off." data-auto-load-unavailable-text="Your browser could not save this setting. You can still show comments manually." aria-labelledby="page-comments-title-en"> <h2 id="page-comments-title-en">Comments</h2> <p class="page-comments__introduction"> Comments are public and stored in <a data-comments-direct href="https://github.com/Yiyuiii/yiyuiii.github.io/discussions/categories/announcements" rel="external nofollow noopener noreferrer" referrerpolicy="no-referrer" target="_blank">GitHub Discussions</a>. This page connects to giscus.app and GitHub and sends the current page path only after you show comments manually or enable automatic loading. The first load is about 0.13 MB; actual usage varies with comment content. Do not include private information. </p> <div class="page-comments__actions"> <button type="button" data-comments-load hidden>Show comments (~0.13 MB first load)</button> <div class="page-comments__auto-load" data-comments-auto-option hidden> <input id="page-comments-auto-load-en" type="checkbox" data-comments-auto-load> <label for="page-comments-auto-load-en" class="page-comments__auto-load-label">Auto-load comments on this site</label> </div> </div> <p class="page-comments__status" data-comments-status role="status" aria-live="polite"></p> <div class="page-comments__thread" data-comments-thread hidden></div> <noscript><p class="page-comments__noscript">Enable JavaScript and use the button above to show comments, or use the GitHub Discussions link above.</p></noscript> </section> </div> <script src="/assets/js/article-navigation.js?v=c76317415a1d84e2c74f422dc6c3499c" defer></script> </main> <dialog id="site-search" class="search-dialog" aria-labelledby="search-title" data-empty="Enter a term to start searching." data-no-results="No matching content found." data-missing-translation="This item has no English version yet. You are viewing the English writing index."> <div class="search-dialog__header"> <h2 id="search-title">Search this site</h2> <button id="search-close" class="icon-button" type="button" aria-label="Close search"> <svg viewbox="0 0 24 24" aria-hidden="true"> <path d="M6 6l12 12M18 6 6 18"></path> </svg> </button> </div> <label class="sr-only" for="site-search-input">Search this site</label> <input id="site-search-input" type="search" inputmode="search" autocomplete="off" placeholder="Search writing, projects, papers, or toys"> <p id="search-status" class="search-status" aria-live="polite">Enter a term to start searching.</p> <ol id="search-results" class="search-results"></ol> </dialog> <script id="site-search-data" type="application/json">
+[
+  
+  
+    
+  
+    
+      
+      {
+        "title": "From Full Reading to Verifiable Film: A Reversible Production Workflow",
+        "description": "A reusable long-form workflow linking textual responsibilities, real narration time, keyframes, sound, deterministic assembly, and frame-level checks.",
+        "tags": ["AI Filmmaking","Production Workflow","Audiovisual Design"],
+        "url": "/en/posts/from-full-reading-to-verifiable-film/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Turning “Moonlight over the Lotus Pond” into a 5:49 Night Walk",
+        "description": "From restlessness and solitary freedom to the pond's consolation and the longing for Jiangnan, this essay follows one adult's feelings about life and how the complete film carries that inner journey.",
+        "tags": ["AI Filmmaking","Literary Adaptation","Moonlight over the Lotus Pond"],
+        "url": "/en/posts/turning-moonlight-over-the-lotus-pond-into-a-night-walk/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "From Bodyweight to Long-Term Maintenance: A Training System for Aesthetics, Singing, Boxing, HEMA, and Skiing",
+        "description": "Start with a three-day bodyweight plan, learn setup and progression for every movement, then use twelve weeks of logged bottlenecks to decide which compact equipment is worth buying.",
+        "tags": ["Fitness","Personal systems"],
+        "url": "/en/posts/a-cross-training-system-from-bodyweight-to-maintenance/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Brass: Pittsburgh Rules: From Setup to the First Era Scoring",
+        "description": "Learn setup, resource transport, six actions, special industries, and era scoring in play order, with the current public rulebook’s unfinished boundaries clearly marked.",
+        "tags": ["Brass: Pittsburgh","Board Games","Rules"],
+        "url": "/en/posts/learning-brass-pittsburgh-board-game/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building Trust with Zebra Finches: An Evidence-Informed, Testable Training Plan",
+        "description": "Uses research on zebra-finch social relationships, stress responses, individual variation, and associative learning to establish baselines and test voluntary approach and recovery.",
+        "tags": ["Zebra finches","Animal welfare"],
+        "url": "/en/posts/building-trust-with-zebra-finches/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Four Outerwear Colors: A Consistent-Model Atlas and Wardrobe Test",
+        "description": "A controlled, consistent-model atlas compares brick red, warm beige, olive, and charcoal, then tests candidates by new wearable outfits, real try-ons, and care demands.",
+        "tags": ["Clothing","Color"],
+        "url": "/en/posts/a-four-color-outerwear-system/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Minimal System for a Small Kitchen: Let Three Recurring Meals Decide What to Buy",
+        "description": "Stress-test three real recurring meals, fix sequence and placement first, then turn only repeated, non-substitutable bottlenecks into a personal kitchen shopping list.",
+        "tags": ["Kitchen","Personal systems"],
+        "url": "/en/posts/a-minimal-system-for-a-small-kitchen/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Operating a Stateful Service: A Minecraft Java Server as the Worked Example",
+        "description": "A verifiable operations method for a small Minecraft Java server, covering single-writer state, manifests, trust, capacity, restores, staged upgrades, monitoring, and diagnosis.",
+        "tags": ["Minecraft","Server operations"],
+        "url": "/en/posts/a-minimal-operations-loop-for-a-minecraft-server/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "SETI Rules: From Setup to Your First Complete Game",
+        "description": "Official illustrations and play order connect setup, turns, actions, round ends, and scoring; follow it at the table, then add Space Agencies and the promo cards.",
+        "tags": ["SETI","Space Agencies","Board Games","Rules"],
+        "url": "/en/posts/learning-seti-board-game/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Age of Innovation",
+        "description": "A cross-round valuation of Coins, Tools, Books, Scholars, Discipline advancement, Shipping, and buildings, placing exchanges and future income on one scale for medium- and long-term planning.",
+        "tags": ["Age of Innovation","Board Games"],
+        "url": "/en/posts/age-of-innovation-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Troyes",
+        "description": "A shared value framework for influence, events, dice, activity cards, and money that shows how the common dice pool changes prices across systems—context that isolated card reviews cannot supply.",
+        "tags": ["Troyes","Board Games"],
+        "url": "/en/posts/troyes-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Quantifying Resource and Point Values in Gaia Project",
+        "description": "An approximate common scale for Credits, Ore, Knowledge, Q.I.C., buildings, and victory points, then checked against faction exceptions to give experience-based planning a reproducible baseline.",
+        "tags": ["Gaia Project","Board Games"],
+        "url": "/en/posts/gaia-project-resource-and-point-value-analysis/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Understanding Swimming",
+        "description": "A progression from safe entry, floating, and breathing through breaststroke kick, pull, coordination, and 50 meters, with reliable boundaries for buoyancy, drag, and emergencies.",
+        "tags": ["Swimming"],
+        "url": "/en/posts/understanding-swimming/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Break the Code Strategy Guide",
+        "description": "Drawn from nearly 500 BGA games, this guide treats questions as candidate-set partitions and connects them to deduction, turn order, and endgame play, so the method transfers beyond fixed rankings.",
+        "tags": ["Break the Code","Board Games"],
+        "url": "/en/posts/break-the-code-strategy-guide/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Quantitative Strategy Guide to Seasons",
+        "description": "A common point scale for energy, Summoning-gauge spaces, transmutation, cards, and dice actions, tested against drafting and interaction to compare choices during play.",
+        "tags": ["Seasons","Board Games"],
+        "url": "/en/posts/quantitative-strategy-guide-to-seasons/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "PC Build Log",
+        "description": "A complete R5 5600 + RX 6600 XT build record that keeps requirements, component trade-offs, prices, and assembly problems together, showing how a budget became a balanced machine.",
+        "tags": ["PC Building"],
+        "url": "/en/posts/pc-build-log/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building Shape-Matched ASCII Art",
+        "description": "A shape-aware ASCII-art method using glyph templates, comparison, histogram equalization, and grayscale consistency to make outlines follow source images more closely than average-brightness mapping.",
+        "tags": ["NoneBot","Python","ASCII Art"],
+        "url": "/en/posts/building-shape-matched-ascii-art/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Cloud Servers and Deployment Architecture: From Domains to Reliable Operations",
+        "description": "A request-path guide to DNS, CDNs, proxies, cloud networks, compute, and storage, followed by checklists for product selection, secure deployment, cost review, and troubleshooting.",
+        "tags": ["Cloud Servers"],
+        "url": "/en/posts/notes-on-cloud-servers/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "A Practical Guide to Reliable Reinforcement Learning Experiments",
+        "description": "A reproducible RL workflow spanning environment contracts, Gymnasium semantics, open task distributions, visual pre-training, method choice, reward, replay, debugging, and uncertainty reporting.",
+        "tags": ["Reinforcement Learning","Meta-Reinforcement Learning","Representation Learning"],
+        "url": "/en/posts/reinforcement-learning-issues/",
+        "kind": "Writing"
+      }
+      
+    
+  
+    
+  
+    
+      ,
+      {
+        "title": "Building on GitHub Pages: From Static Hosting to Reproducible Deployment",
+        "description": "Build a maintainable GitHub Pages site by choosing the right publishing path, locking Jekyll dependencies, testing in CI, configuring DNS and HTTPS, and diagnosing failures systematically.",
+        "tags": ["GitHub"],
+        "url": "/en/posts/build-a-personal-github-page/",
+        "kind": "Writing"
+      }
+      
+    
+  
+  
+    ,
+    {
+      "title": "nonebot-plugin-moegoe",
+      "description": "A NoneBot2 plugin that turns chat commands into multilingual character voices through configurable speech-synthesis APIs and voice parameters.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/nonebot-plugin-moegoe",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "HDBO-B",
+      "description": "A unified benchmark for reproducible high-dimensional Bayesian optimization experiments, combining synthetic and realistic tasks with representative algorithm wrappers.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/HDBO-B",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "solver4turingmachine",
+      "description": "A lightweight solver for Turing Machine puzzles that enumerates valid codes, searches the best three-verifier questioning plan, and estimates success.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/solver4turingmachine",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "simple_asr_llm_tts",
+      "description": "A lightweight voice-to-voice LLM demo connecting local SenseVoice ASR, an OpenAI-compatible chat API, and Edge TTS with free components.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/simple_asr_llm_tts",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "taco",
+      "description": "Zero-shot online cross-task transfer for LLM-based hyperparameter optimization: one LLM call per BO round proposes target candidates and selects an auxiliary query.",
+      "tags": ["Python"],
+      "url": "https://github.com/Yiyuiii/taco",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+    ,
+    {
+      "title": "codex-cc-tools",
+      "description": "MCP tools for Codex to delegate implementation and request independent Claude Code reviews with explicit authority, provider routing, and structured results.",
+      "tags": ["TypeScript"],
+      "url": "https://github.com/Yiyuiii/codex-cc-tools",
+      "kind": "GitHub",
+      "external": true
+    }
+    
+  
+  
+    ,
+    
+    
+    {
+      "title": "HDBO-B: On Benchmarking High-Dimensional Bayesian Optimization",
+      "description": "Yiyu Chen, Hongye Cao, Quanlin Chen, Jing Huo, Dong Li, Xu He, Yang Gao · IJCNN",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-b-ijcnn-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey on High-dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Hongye Cao, Yang Gao, Dong Li, Jianye Hao · Journal of Software",
+      "tags": [2025],
+      "url": "/en/publications/#hdbo-survey-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Enhancing Trust-Region Bayesian Optimization via Newton Methods",
+      "description": "Quanlin Chen, Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao, Yuetong Chen · ECAI",
+      "tags": [2025],
+      "url": "/en/publications/#trust-region-newton-ecai-2025",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Survey of Meta-reinforcement Learning Research",
+      "description": "Yiyu Chen, Jing Huo, Tianyu Ding, Yang Gao · Journal of Software · 2024 Top-20 High-Attention Review Paper",
+      "tags": [2024],
+      "url": "/en/publications/#meta-rl-survey-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Re-examining Supervised Dimension Reduction for High-Dimensional Bayesian Optimization",
+      "description": "Quanlin Chen, Jing Huo, Yiyu Chen, Tianyu Ding, Yang Gao, Dong Li, Xu He · PPSN",
+      "tags": [2024],
+      "url": "/en/publications/#supervised-dr-ppsn-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "Cognizing and Imitating Robotic Skills via a Dual Cognition-Action Architecture",
+      "description": "Zixuan Chen, Ze Ji, Shuyang Liu, Jing Huo, Yiyu Chen, Yang Gao · AAMAS",
+      "tags": [2024],
+      "url": "/en/publications/#casil-aamas-2024",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "A Practical Reinforcement Learning Framework for Automatic Radar Detection",
+      "description": "Junpeng Yu, Yiyu Chen · ZTE Communications",
+      "tags": [2023],
+      "url": "/en/publications/#radar-rl-2023",
+      "kind": "Papers"
+    }
+    
+  
+    ,
+    
+    
+    {
+      "title": "TiLD: Third-person Imitation Learning by Estimating Domain Cognitive Differences of Visual Demonstrations",
+      "description": "Zixuan Chen, Wenbin Li, Yang Gao, Yiyu Chen · AAMAS",
+      "tags": [2023],
+      "url": "/en/publications/#tild-aamas-2023",
+      "kind": "Papers"
+    }
+    
+  
+  
+    
+      ,
+      {
+        "title": "Moegirlpedia quiz",
+        "description": "Read the Chinese anonymized introduction and choose the matching entry.",
+        "tags": ["encyclopedia","Moegirlpedia","Chinese","entry","quiz"],
+        "url": "/en/toys/#moegirl-quiz",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Artwork quiz (Cleveland Museum of Art)",
+        "description": "Choose the quiz direction and whether to show title, artist, or date.",
+        "tags": ["art","matching","painting","museum","Cleveland","image","quiz"],
+        "url": "/en/toys/#art-glimpse",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Anime protagonist quiz (AniList)",
+        "description": "Choose among three four-choice links between anime and their main characters.",
+        "tags": ["AniList","anime","character","main role","relation","quiz"],
+        "url": "/en/toys/#anilist-role-quiz",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Color difference challenge",
+        "description": "Find the subtly different tile and see how far you can go.",
+        "tags": ["color","vision","perception","challenge"],
+        "url": "/en/toys/#color-challenge",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Ten-second estimate",
+        "description": "Stop as close to ten seconds as you can without watching a timer.",
+        "tags": ["ten seconds","time","intuition","challenge"],
+        "url": "/en/toys/#ten-second",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Reaction time",
+        "description": "Wait for the signal, then respond as quickly as possible.",
+        "tags": ["reaction","time","speed","challenge"],
+        "url": "/en/toys/#reaction-time",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Number Wordle",
+        "description": "Use exact and digit-only matches to deduce the hidden number code.",
+        "tags": ["number Wordle","codebreaker","deduction","logic","numbers","game"],
+        "url": "/en/toys/#codebreaker",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Make 24",
+        "description": "Use each of four numbers once and combine them to make exactly 24.",
+        "tags": ["make 24","arithmetic","fractions","mental math","logic","game"],
+        "url": "/en/toys/#make-24",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Lights Out",
+        "description": "Flip a cell and its neighbours, then plan a route to turn every light off.",
+        "tags": ["lights out","grid","minimum moves","planning","logic","game"],
+        "url": "/en/toys/#lights-out",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Random password",
+        "description": "Generate a configurable random password in your browser.",
+        "tags": ["random","password","security","generator"],
+        "url": "/en/toys/#random-password",
+        "kind": "Toys"
+      }
+      
+    
+      ,
+      {
+        "title": "Random numbers",
+        "description": "Generate one or more random results from an integer range.",
+        "tags": ["random","number","integer","generator"],
+        "url": "/en/toys/#random-number",
+        "kind": "Toys"
+      }
+      
+    
+  
+    
+      ,
+      {
+        "title": "Apple gift code to camera-scannable card (external)",
+        "description": "Turn a text gift code that would otherwise need typing into a card an Apple device can scan with its camera; diax7's third-party page provides the conversion, and this site does not handle the code.",
+        "tags": ["Apple","gift card","redemption code","camera","scan","no typing","external tool"],
+        "url": "/en/toys/#apple-gift-card-scanner",
+        "kind": "Toys"
+      }
+      
+    
+  
+]
+</script> <footer class="site-footer"> <p>© 2026 yiyuiii</p> </footer> <script src="/assets/js/theme-compat.js?v=c73fdd8059e0f3e07d41a677feb46910"></script> <script src="/assets/js/site-search.js?v=367128d108e9ed246d8969b2e19e28d2"></script> <script src="/assets/js/theme.js?v=1fa0111c587a00ae299f38a6066da01b"></script> <script src="/assets/js/page-comments.js?v=e730e544d1e773a1f44024d2be4e001b"></script> <script src="/assets/js/sunlight.js?v=9365051168fef58dad97f2b8b0a94940"></script> </body> </html>
