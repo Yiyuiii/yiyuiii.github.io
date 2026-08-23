@@ -1,0 +1,64 @@
+version: 1
+article_uid: "202608231837"
+companion_article_uid: "202608231838"
+title: "Moonlight over the Lotus Pond: finished-work interpretation and reusable production workflow"
+source_project: "D:/Codes/ai_motion_comic"
+rights_basis: >-
+  These are project-owned production composites and keyframes from the
+  authorized Moonlight over the Lotus Pond audiovisual adaptation. Their
+  imagery includes OpenAI-generated content assembled and reviewed in the
+  source project. They are reused here only to explain the work and are not
+  presented as historical photographs or redistributed as an asset pack.
+public_work:
+  platform: "Bilibili"
+  url: "https://www.bilibili.com/video/BV1KQ8x6bEGk/"
+  identifier: "BV1KQ8x6bEGk"
+  public_title: "顶级AI零成本制作 | 经典课文《荷塘月色》配图朗读"
+  published_at: "2026-08-23 17:37:40 +0800"
+  displayed_duration: "05:49"
+  ai_content_label: true
+assets:
+  - asset: "assets/posts/202608231837/cover-he-tang-yue-se-public-v005-square.webp"
+    source: "episodes/zhuziqing_he_tang_yue_se_001/exports/v011d_formal_candidate/covers/he_tang_yue_se_bilibili_cover_a_v005.png"
+    source_sha256: "7509694392f24b008f82e8df6d3de7307f96e0fae2c8c99fa04fc673cba30b22"
+    source_dimensions: [1672, 941]
+    purpose: "Canonical cover and writing-index thumbnail for the literary finished-work essay; preserves the public v005 cover without cropping its text."
+    transform: "Converted to RGB, placed unchanged at vertical center on a 1672 × 1672 dark-navy canvas, stripped of metadata, and exported as WebP quality 82 with Pillow 12.3.0 method 6."
+    dimensions: [1672, 1672]
+    sha256: "50ef7b724be75fa203518f849e129e463bc8ee69b5ff7c17ca5ceb4ab3bcf3d8"
+
+  - asset: "assets/posts/202608231838/cover-long-form-workflow-v001.webp"
+    source: "OpenAI image_gen via Codex built-in tool; text-only generation"
+    source_sha256: "b73d32952bf42e5db045f0e15fc00649a8b5bab44b8375d90a1f09e62f89af46"
+    source_dimensions: [1254, 1254]
+    purpose: "Independent square cover and writing-index thumbnail for the reusable workflow essay."
+    transform: "Converted without resizing from the generated PNG to RGB WebP quality 82 with Pillow 12.3.0 method 6 and metadata omitted."
+    dimensions: [1254, 1254]
+    sha256: "1923adcb2b2a7be7c689c1d6ee551a1cc77b5ae2e56348bba73dad8c1ef57572"
+
+  - asset: "assets/posts/202608231837/moonlight-through-clouds-and-leaves.webp"
+    source: "episodes/zhuziqing_he_tang_yue_se_001/assets/keyframes/batch_008_clouded_moon_shadows/S029-F1_v002.png"
+    source_sha256: "e4f1bc02bbfa584dba94ebf27472858cb18821cfd10d3859db28d2633a102541"
+    source_dimensions: [1535, 1024]
+    purpose: "Explain how cloud and foliage filter moonlight before it reaches the pond."
+    transform: "Converted without resizing to RGB WebP quality 82, method 6, optimize enabled, with EXIF and ICC metadata removed."
+    dimensions: [1535, 1024]
+    sha256: "2e59740be977454c046af32fb7e9e31134ba7910f89c7d6758075b456cf03039"
+
+  - asset: "assets/posts/202608231837/return-to-home-gate.webp"
+    source: "episodes/zhuziqing_he_tang_yue_se_001/assets/keyframes/batch_015_return_home_ending/S051-F2_v001.png"
+    source_sha256: "e9a92ca656b5fc629bbdb89a4df1b89b77de1a9eba1d8beee4a134f927ec1c02"
+    source_dimensions: [1672, 941]
+    purpose: "Explain why the return through the home gate closes the essay's full spatial structure."
+    transform: "Converted without resizing to RGB WebP quality 82, method 6, optimize enabled, with EXIF and ICC metadata removed."
+    dimensions: [1672, 941]
+    sha256: "c752a6ce700ec03108802a401fe8cc59f058be3e975cd6c13db6361a3d266517"
+
+  - asset: "assets/posts/202608231837/s023-organic-wave-six-state.webp"
+    source: "episodes/zhuziqing_he_tang_yue_se_001/assets/refs/v011a/lotus_pond/s023_six_state_contact_sheet_v001.png"
+    source_sha256: "22161d020db7147a219f8a5c58a878a569fb4a0a489cebc8ca7ce75d1bce4fa2"
+    source_dimensions: [1671, 628]
+    purpose: "Show six sampled states from the local tremor, directional propagation, and recovery design for the passing-breeze passage."
+    transform: "Converted without resizing to RGB WebP quality 82, method 6, optimize enabled, with EXIF and ICC metadata removed."
+    dimensions: [1671, 628]
+    sha256: "041708ccb1b664cfd9d19c55a1f64716233f5495567d58d639a9bfd4265d9621"

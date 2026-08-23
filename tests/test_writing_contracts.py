@@ -448,7 +448,7 @@ def test_every_post_now_has_a_local_thumbnail():
 def test_every_post_uses_one_explicit_cover_component_without_body_duplication():
     posts = sorted((ROOT / "_posts").glob("*.md"))
 
-    assert len(posts) == 36
+    assert len(posts) == 40
     for path in posts:
         data = frontmatter(path)
         cover = data.get("article_cover")
