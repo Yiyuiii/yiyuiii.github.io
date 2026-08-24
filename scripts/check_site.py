@@ -80,6 +80,8 @@ TOY_RUNTIME_PATHS = {
     "/assets/js/toy-generators.js",
     "/assets/js/toy-lights-out.js",
     "/assets/js/toy-make-24.js",
+    "/assets/js/toy-network-latency-logic.js",
+    "/assets/js/toy-network-latency.js",
     "/assets/js/toy-random.js",
 }
 TOY_LOADER_PATH = "/assets/js/toy-loader.js"
@@ -160,6 +162,7 @@ def _check_toys(soup: BeautifulSoup, route: str, language: str) -> list[str]:
         "lights-out",
         "random-password",
         "random-number",
+        "network-latency",
         "apple-gift-card-scanner",
     ]
     entries = soup.select(".toy-group__items > .toy-entry[id]")

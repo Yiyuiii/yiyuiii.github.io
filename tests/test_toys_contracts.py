@@ -56,6 +56,7 @@ def test_toy_manifest_is_bilingual_grouped_and_contains_only_real_features():
         "lights-out",
         "random-password",
         "random-number",
+        "network-latency",
         "apple-gift-card-scanner",
     ]
     items = [item for group in groups for item in group["items"]]
@@ -138,6 +139,7 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
         "toy-lights-out.liquid",
         "toy-random-password.liquid",
         "toy-random-number.liquid",
+        "toy-network-latency.liquid",
     ]
     for component in expected_includes:
         assert f"include {component}" in include
@@ -155,6 +157,8 @@ def test_toy_renderer_has_one_hidden_page_heading_and_native_disclosures():
         "codebreaker": "toy-codebreaker.js",
         "make24": "toy-make-24.js",
         "lights": "toy-lights-out.js",
+        "network-logic": "toy-network-latency-logic.js",
+        "network-ui": "toy-network-latency.js",
     }
     for token, script in expected_assets.items():
         assert f'"{token}":' in include

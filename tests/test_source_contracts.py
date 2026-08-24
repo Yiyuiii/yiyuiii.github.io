@@ -127,6 +127,16 @@ def test_content_security_policy_names_only_active_runtime_origins():
         "https://graphql.anilist.co",
         "https://openaccess-api.clevelandart.org",
         "https://zh.moegirl.org.cn",
+        "https://api.ip.sb",
+        "https://speed.cloudflare.com",
+        "https://doh.pub",
+        "https://dns.alidns.com",
+        "https://hnd-jp-ping.vultr.com",
+        "https://sgp-ping.vultr.com",
+        "https://sel-kor-ping.vultr.com",
+        "https://fra-de-ping.vultr.com",
+        "https://lax-ca-us-ping.vultr.com",
+        "https://nj-us-ping.vultr.com",
     ):
         assert origin in policy
     assert " https:;" not in policy

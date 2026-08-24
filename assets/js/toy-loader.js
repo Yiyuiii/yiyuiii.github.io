@@ -17,6 +17,8 @@
     art: "/assets/js/art-glimpse.js",
     "acg-logic": "/assets/js/acg-relation-quiz-logic.js",
     "acg-ui": "/assets/js/acg-relation-quiz.js",
+    "network-logic": "/assets/js/toy-network-latency-logic.js",
+    "network-ui": "/assets/js/toy-network-latency.js",
   });
   const allowedDependencies = Object.freeze({
     "moegirl-quiz": ["moegirl"],
@@ -30,6 +32,7 @@
     "lights-out": ["random", "lights"],
     "random-password": ["random", "generators"],
     "random-number": ["random", "generators"],
+    "network-latency": ["network-logic", "network-ui"],
   });
   const manifestNode = root.querySelector("[data-toy-asset-manifest]");
   const assetUrls = new Map();

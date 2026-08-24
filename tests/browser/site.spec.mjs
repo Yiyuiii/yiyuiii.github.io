@@ -394,7 +394,7 @@ test("localized toy indexes expose only live lightweight interactions", async ({
     ).toBe(true);
     await expect(page.locator(".toy-group__title")).toHaveText(groupHeadings);
     const entries = page.locator(".toy-group__items > .toy-entry");
-    await expect(entries).toHaveCount(12);
+    await expect(entries).toHaveCount(13);
     expect(await entries.evaluateAll((items) => items.map((item) => item.id))).toEqual([
       "moegirl-quiz",
       "art-glimpse",
@@ -407,6 +407,7 @@ test("localized toy indexes expose only live lightweight interactions", async ({
       "lights-out",
       "random-password",
       "random-number",
+      "network-latency",
       "apple-gift-card-scanner",
     ]);
     expect(
@@ -416,7 +417,7 @@ test("localized toy indexes expose only live lightweight interactions", async ({
       }),
     ).toBe(true);
     const disclosures = page.locator(".toy-group__items > details.toy-entry");
-    await expect(disclosures).toHaveCount(11);
+    await expect(disclosures).toHaveCount(12);
     await expect(page.locator(".toy-grid, .toy-card")).toHaveCount(0);
     expect(await disclosures.evaluateAll((items) => items.every((item) => !item.open))).toBe(true);
     await expect(page.locator("#apple-gift-card-scanner.toy-entry--external")).toHaveAttribute(

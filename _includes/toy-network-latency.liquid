@@ -1,0 +1,128 @@
+{% assign lang_key = page.lang | default: 'zh' %}
+{% if lang_key == 'zh-CN' %}{% assign lang_key = 'zh' %}{% endif %}
+{% assign latency_data = site.data.toy_network_latency %}
+{% assign copy = latency_data.copy[lang_key] %}
+
+<section class="toy-network-latency" data-network-latency data-language="{{ lang_key }}">
+  <script type="application/json" data-network-latency-copy>{{ copy | jsonify }}</script>
+
+  <div class="toy-network-latency__control-bar">
+    <div class="toy-network-latency__actions">
+      <button type="button" data-latency-test-start>{{ copy.test_start }}</button>
+      <button type="button" data-latency-stop hidden>{{ copy.stop }}</button>
+    </div>
+    <p class="toy-network-latency__status" data-latency-status role="status" aria-live="polite">{{ copy.test_idle }}</p>
+  </div>
+
+  <section class="toy-network-latency__section" aria-labelledby="network-latency-visitor-{{ lang_key }}">
+    <h4 id="network-latency-visitor-{{ lang_key }}">{{ copy.visitor_title }}</h4>
+    <p class="toy-network-latency__visitor-source">
+      {{ copy.visitor_source_intro }}<a href="https://www.ipip.net/myip.html" target="_blank" rel="external noopener noreferrer">IPIP.NET</a>{{ copy.visitor_source_between }}<a href="https://ip.sb/api/" target="_blank" rel="external noopener noreferrer">IP.SB</a>{{ copy.visitor_source_suffix }}
+      {{ copy.visitor_source_current }}<strong data-visitor-source>{{ copy.metric_placeholder }}</strong>
+    </p>
+    <dl class="toy-network-latency__visitor" data-network-visitor>
+      {% for field in copy.visitor_fields %}
+        <div>
+          <dt>{{ field[1] }}</dt>
+          <dd data-visitor-field="{{ field[0] }}">{{ copy.metric_placeholder }}</dd>
+        </div>
+      {% endfor %}
+    </dl>
+  </section>
+
+  <section class="toy-network-latency__section" aria-labelledby="network-latency-dashboard-{{ lang_key }}">
+    <h4 id="network-latency-dashboard-{{ lang_key }}">{{ copy.dashboard_title }}</h4>
+    <div class="toy-network-latency__quality-legend" role="group" aria-label="{{ copy.quality_legend_label }}">
+      {% for threshold_group in copy.quality_thresholds %}
+        <div class="toy-network-latency__quality-legend-row">
+          <strong>{{ threshold_group.label }}</strong>
+          {% for band in threshold_group.bands %}
+            <span class="toy-network-latency__quality-band" data-quality="{{ band.quality }}">
+              <span class="toy-network-latency__indicator" aria-hidden="true"></span>
+              <span>{{ band.label }}</span>
+              <span class="sr-only"> — {{ copy.grades[band.quality] }}</span>
+            </span>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="toy-network-latency__quality-list" role="list">
+      {% for node in latency_data.nodes %}
+        <article class="toy-network-latency__quality-row" data-latency-live-row="{{ node.id }}" role="listitem">
+          <h5>{{ node.title[lang_key] }}</h5>
+          <div class="toy-network-latency__compact-metric" data-latency-indicator="p50" data-quality="unavailable">
+            <span class="toy-network-latency__indicator" aria-hidden="true"></span>
+            <span>{{ copy.core_metrics.p50 }}</span>
+            <strong data-latency-live="p50">{{ copy.metric_placeholder }}</strong>
+          </div>
+          <div class="toy-network-latency__compact-metric" data-latency-indicator="jitter" data-quality="unavailable">
+            <span class="toy-network-latency__indicator" aria-hidden="true"></span>
+            <span>{{ copy.core_metrics.jitter }}</span>
+            <strong data-latency-live="jitter">{{ copy.metric_placeholder }}</strong>
+          </div>
+          <details class="toy-network-latency__diagnostics">
+            <summary>{{ copy.diagnostics_title }}</summary>
+            <div class="toy-network-latency__diagnostics-content">
+              <section aria-label="{{ copy.diagnostics_metrics_title }}">
+                <h6>{{ copy.diagnostics_metrics_title }}</h6>
+                <dl class="toy-network-latency__diagnostics-stats">
+                  {% for field in copy.diagnostics %}
+                    <div><dt>{{ field[1] }}</dt><dd><span data-latency-live="{{ field[0] }}">{{ copy.metric_placeholder }}</span></dd></div>
+                  {% endfor %}
+                </dl>
+              </section>
+              <section aria-label="{{ copy.diagnostics_node_title }}">
+                <h6>{{ copy.diagnostics_node_title }}</h6>
+                <dl class="toy-network-latency__node-meta">
+                  <div><dt>{{ copy.node_labels.location }}</dt><dd>{{ node.location[lang_key] }}</dd></div>
+                  <div><dt>{{ copy.node_labels.network }}</dt><dd>{{ node.network[lang_key] }}</dd></div>
+                  {% if node.provider %}
+                    {% assign provider_copy = copy.providers[node.provider] %}
+                    <div>
+                      <dt>{{ provider_copy.title }}</dt>
+                      <dd>{{ provider_copy.description }} <a href="{{ provider_copy.url }}" target="_blank" rel="external noopener noreferrer">{{ provider_copy.link_label }}</a></dd>
+                    </div>
+                  {% endif %}
+                  <div>
+                    <dt>{{ copy.node_labels.source }}</dt>
+                    <dd><a href="{{ node.source_url }}" target="_blank" rel="external noopener noreferrer">{{ node.source_name }}<span class="sr-only"> — {{ copy.source_link_label }}</span></a></dd>
+                  </div>
+                  <div><dt>{{ copy.node_labels.method }}</dt><dd>{{ node.method[lang_key] }}</dd></div>
+                  <div><dt>{{ copy.node_labels.features }}</dt><dd>{{ node.features[lang_key] }}</dd></div>
+                </dl>
+              </section>
+            </div>
+          </details>
+        </article>
+      {% endfor %}
+    </div>
+
+    <div class="toy-network-latency__chart" data-latency-chart hidden>
+      <div class="toy-network-latency__legend" aria-label="{{ copy.chart_legend_label }}">
+        {% for node in latency_data.nodes %}
+          <div data-latency-series="{{ node.id }}">
+            <span class="toy-network-latency__legend-swatch" aria-hidden="true"></span>
+            <span>{{ node.title[lang_key] }}</span>
+            <span data-latency-legend-value="{{ node.id }}">{{ copy.not_measured }}</span>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="toy-network-latency__chart-scroll">
+        <svg viewBox="0 0 640 220" role="img" aria-labelledby="network-latency-chart-title-{{ lang_key }} network-latency-chart-desc-{{ lang_key }}" preserveAspectRatio="xMidYMid meet">
+          <title id="network-latency-chart-title-{{ lang_key }}">{{ copy.chart_title }}</title>
+          <desc id="network-latency-chart-desc-{{ lang_key }}">{{ copy.chart_description }}</desc>
+          <g data-latency-chart-grid></g>
+          <g data-latency-chart-lines>
+            {% for node in latency_data.nodes %}<path data-latency-chart-line="{{ node.id }}" data-latency-series="{{ node.id }}"></path>{% endfor %}
+          </g>
+          <text x="54" y="208">1</text>
+          <text x="624" y="208" text-anchor="end">60</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <p class="toy-network-latency__privacy">{{ copy.privacy }}</p>
+  <noscript><p>{{ copy.no_script }}</p></noscript>
+</section>

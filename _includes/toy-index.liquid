@@ -60,6 +60,7 @@
               {% when 'make-24' %}{% assign toy_assets = 'random make24' %}
               {% when 'lights-out' %}{% assign toy_assets = 'random lights' %}
               {% when 'random-password' or 'random-number' %}{% assign toy_assets = 'random generators' %}
+              {% when 'network-latency' %}{% assign toy_assets = 'network-logic network-ui' %}
             {% endcase %}
             <details
               id="{{ toy.id | escape }}"
@@ -106,6 +107,8 @@
                     {% include toy-random-password.liquid %}
                   {% when 'random-number' %}
                     {% include toy-random-number.liquid %}
+                  {% when 'network-latency' %}
+                    {% include toy-network-latency.liquid %}
                 {% endcase %}
               </div>
             </details>
@@ -129,7 +132,9 @@
       "moegirl": {{ '/assets/js/moegirl-quiz.js' | relative_url | bust_file_cache | jsonify }},
       "art": {{ '/assets/js/art-glimpse.js' | relative_url | bust_file_cache | jsonify }},
       "acg-logic": {{ '/assets/js/acg-relation-quiz-logic.js' | relative_url | bust_file_cache | jsonify }},
-      "acg-ui": {{ '/assets/js/acg-relation-quiz.js' | relative_url | bust_file_cache | jsonify }}
+      "acg-ui": {{ '/assets/js/acg-relation-quiz.js' | relative_url | bust_file_cache | jsonify }},
+      "network-logic": {{ '/assets/js/toy-network-latency-logic.js' | relative_url | bust_file_cache | jsonify }},
+      "network-ui": {{ '/assets/js/toy-network-latency.js' | relative_url | bust_file_cache | jsonify }}
     }
   </script>
   <script src="{{ '/assets/js/toy-loader.js' | relative_url | bust_file_cache }}" defer></script>

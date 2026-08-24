@@ -12,6 +12,8 @@ const runtimePaths = new Set([
   "/assets/js/toy-generators.js",
   "/assets/js/toy-lights-out.js",
   "/assets/js/toy-make-24.js",
+  "/assets/js/toy-network-latency-logic.js",
+  "/assets/js/toy-network-latency.js",
   "/assets/js/toy-random.js",
 ]);
 
@@ -59,6 +61,10 @@ test("cold toy indexes request each fixed local runtime only when first opened",
     ["lights-out", ["/assets/js/toy-lights-out.js"]],
     ["random-password", ["/assets/js/toy-generators.js"]],
     ["random-number", []],
+    ["network-latency", [
+      "/assets/js/toy-network-latency-logic.js",
+      "/assets/js/toy-network-latency.js",
+    ]],
   ];
   let runtimeCount = 0;
   for (const [id, expected] of expectedNewPaths) {
