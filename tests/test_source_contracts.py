@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import yaml
 
@@ -116,6 +117,12 @@ def test_custom_shell_does_not_load_unused_theme_runtime_assets():
 def test_content_security_policy_names_only_active_runtime_origins():
     head = text("_includes/head.liquid")
     policy = head.split('http-equiv="Content-Security-Policy"', 1)[1].split(">", 1)[0]
+    latency_data = yaml.safe_load(text("_data/toy_network_latency.yml"))
+    fixed_latency_origins = {
+        f"{urlsplit(node['source_url']).scheme}://{urlsplit(node['source_url']).netloc}"
+        for node in latency_data["nodes"]
+        if node.get("provider")
+    }
 
     assert "object-src 'none'" in policy
     assert "base-uri 'self'" in policy
@@ -123,21 +130,17 @@ def test_content_security_policy_names_only_active_runtime_origins():
     assert "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app" in policy
     assert "img-src 'self' data: https://openaccess-cdn.clevelandart.org" in policy
     assert "frame-src https://giscus.app" in policy
-    for origin in (
+    for origin in {
         "https://graphql.anilist.co",
         "https://openaccess-api.clevelandart.org",
         "https://zh.moegirl.org.cn",
+        "https://myip.ipip.net",
         "https://api.ip.sb",
         "https://speed.cloudflare.com",
         "https://doh.pub",
         "https://dns.alidns.com",
-        "https://hnd-jp-ping.vultr.com",
-        "https://sgp-ping.vultr.com",
-        "https://sel-kor-ping.vultr.com",
-        "https://fra-de-ping.vultr.com",
-        "https://lax-ca-us-ping.vultr.com",
-        "https://nj-us-ping.vultr.com",
-    ):
+        *fixed_latency_origins,
+    }:
         assert origin in policy
     assert " https:;" not in policy
 

@@ -37,10 +37,17 @@
       [...root.querySelectorAll("[data-latency-chart-line]")]
         .map((path) => [path.dataset.latencyChartLine, path]),
     );
+    const nodeToggles = new Map(
+      [...root.querySelectorAll("[data-latency-node-toggle]")]
+        .map((input) => [input.value, input]),
+    );
     if (
       liveRows.size !== expectedIds.length
       || chartLines.size !== expectedIds.length
-      || expectedIds.some((id) => !liveRows.has(id) || !chartLines.has(id))
+      || nodeToggles.size !== expectedIds.length
+      || expectedIds.some((id) => (
+        !liveRows.has(id) || !chartLines.has(id) || !nodeToggles.has(id)
+      ))
     ) continue;
 
     const testButton = root.querySelector("[data-latency-test-start]");
@@ -48,15 +55,35 @@
     const status = root.querySelector("[data-latency-status]");
     const chart = root.querySelector("[data-latency-chart]");
     const chartGrid = root.querySelector("[data-latency-chart-grid]");
+    const selectionCount = root.querySelector("[data-latency-selection-count]");
+    const selectionDefault = root.querySelector("[data-latency-selection-default]");
+    const selectionAll = root.querySelector("[data-latency-selection-all]");
+    const selectionNone = root.querySelector("[data-latency-selection-none]");
+    const selectionButtons = [selectionDefault, selectionAll, selectionNone].filter(Boolean);
     const samplesById = new Map(expectedIds.map((id) => [id, []]));
     let activeRun = null;
     let cloudflareFallback = null;
     let visitorResolved = false;
     let visitorSourcesExhausted = false;
 
+    const dashPatterns = ["none", "8 3", "3 2", "10 3 2 3", "5 2 1 2"];
+    expectedIds.forEach((id, index) => {
+      const color = `hsl(${Math.round((index * 137.508) % 360)} 64% 42%)`;
+      const dash = dashPatterns[index % dashPatterns.length];
+      for (const series of root.querySelectorAll(`[data-latency-series="${id}"]`)) {
+        series.style.setProperty("--latency-series-color", color);
+        series.style.setProperty("--latency-series-dash", dash);
+        series.style.setProperty("--latency-series-style", dash === "none" ? "solid" : "dashed");
+      }
+    });
+
+    const selectedIds = () => expectedIds.filter((id) => nodeToggles.get(id)?.checked);
+
     const setRunning = (running) => {
-      if (testButton) testButton.disabled = running;
+      if (testButton) testButton.disabled = running || selectedIds().length === 0;
       if (stopButton) stopButton.hidden = !running;
+      for (const input of nodeToggles.values()) input.disabled = running;
+      for (const button of selectionButtons) button.disabled = running;
       root.dataset.latencyRunning = running ? "true" : "false";
     };
 
@@ -76,7 +103,7 @@
       if (announce && status) status.textContent = copy.stopped;
     };
 
-    const createRun = () => {
+    const createRun = (nodeIds) => {
       cancelRun(false);
       const run = {
         cancelled: false,
@@ -84,6 +111,7 @@
         completedSamples: 0,
         controllers: new Set(),
         lastStatusUpdate: 0,
+        nodeIds,
       };
       activeRun = run;
       setRunning(true);
@@ -290,7 +318,8 @@
 
     const renderChart = () => {
       if (!chart || !chartGrid) return;
-      const allSamples = [...samplesById.values()];
+      const activeIds = selectedIds();
+      const allSamples = activeIds.map((id) => samplesById.get(id));
       const hasSamples = allSamples.some((samples) => samples.length > 0);
       chart.hidden = !hasSamples;
       if (!hasSamples) {
@@ -319,7 +348,7 @@
         chartGrid.append(line, label);
       }
 
-      for (const id of expectedIds) {
+      for (const id of activeIds) {
         const samples = samplesById.get(id);
         const parts = [];
         let connected = false;
@@ -340,15 +369,15 @@
 
     const renderProgress = (run) => {
       if (!status || run.cancelled) return;
-      const done = run.completedNodes === expectedIds.length;
+      const done = run.completedNodes === run.nodeIds.length;
       const now = globalScope.performance.now();
       if (!done && run.lastStatusUpdate && now - run.lastStatusUpdate < SAMPLE_INTERVAL) return;
       run.lastStatusUpdate = now;
       const values = {
         complete: run.completedNodes,
         current: run.completedSamples,
-        nodes: expectedIds.length,
-        total: expectedIds.length * LIVE_SAMPLES,
+        nodes: run.nodeIds.length,
+        total: run.nodeIds.length * LIVE_SAMPLES,
       };
       status.textContent = interpolate(
         done ? copy.test_done : copy.test_progress,
@@ -379,22 +408,74 @@
       renderProgress(run);
     };
 
-    testButton?.addEventListener("click", async () => {
-      const run = createRun();
-      clearVisitor();
+    const resetMeasurements = () => {
       for (const id of expectedIds) {
         samplesById.set(id, []);
         renderNode(id);
       }
       renderChart();
-      if (status) status.textContent = copy.test_warming;
+    };
 
-      const nodeTasks = expectedIds.map((id) => runNode(id, run));
+    const renderSelection = (announce = false) => {
+      const active = new Set(selectedIds());
+      for (const id of expectedIds) {
+        const enabled = active.has(id);
+        liveRows.get(id).hidden = !enabled;
+        if (!enabled) chartLines.get(id).setAttribute("d", "");
+        for (const series of root.querySelectorAll(`[data-latency-series="${id}"]`)) {
+          series.hidden = !enabled;
+        }
+      }
+      if (selectionCount) {
+        selectionCount.textContent = interpolate(copy.selection_count, {
+          selected: active.size,
+          total: expectedIds.length,
+        });
+      }
+      if (!activeRun) setRunning(false);
+      renderChart();
+      if (announce && status) {
+        status.textContent = active.size ? copy.test_idle : copy.selection_empty;
+      }
+    };
+
+    const applySelection = (select) => {
+      if (activeRun) return;
+      for (const input of nodeToggles.values()) input.checked = select(input);
+      resetMeasurements();
+      renderSelection(true);
+    };
+
+    testButton?.addEventListener("click", async () => {
+      const nodeIds = selectedIds();
+      if (!nodeIds.length) {
+        if (status) status.textContent = copy.selection_empty;
+        setRunning(false);
+        return;
+      }
+      const run = createRun(nodeIds);
+      clearVisitor();
+      resetMeasurements();
+      if (status) {
+        status.textContent = interpolate(copy.test_warming, { nodes: nodeIds.length });
+      }
+
+      const nodeTasks = nodeIds.map((id) => runNode(id, run));
       await Promise.all([loadVisitor(run), ...nodeTasks]);
       if (!run.cancelled) renderProgress(run);
       finishRun(run);
     });
 
+    for (const input of nodeToggles.values()) {
+      input.addEventListener("change", () => {
+        if (activeRun) return;
+        resetMeasurements();
+        renderSelection(true);
+      });
+    }
+    selectionDefault?.addEventListener("click", () => applySelection((input) => input.defaultChecked));
+    selectionAll?.addEventListener("click", () => applySelection(() => true));
+    selectionNone?.addEventListener("click", () => applySelection(() => false));
     stopButton?.addEventListener("click", () => cancelRun(true));
     root.closest("details")?.addEventListener("toggle", (event) => {
       if (!event.currentTarget.open) cancelRun(true);
@@ -403,5 +484,6 @@
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "hidden") cancelRun(true);
     });
+    renderSelection(false);
   }
 })();
