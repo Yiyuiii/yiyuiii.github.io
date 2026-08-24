@@ -29,17 +29,15 @@ const EXTERNAL_HOSTS = new Set([
   "openaccess-api.clevelandart.org",
   "openaccess-cdn.clevelandart.org",
   "graphql.anilist.co",
+  "myip.ipip.net",
   "api.ip.sb",
   "speed.cloudflare.com",
   "doh.pub",
   "dns.alidns.com",
-  "hnd-jp-ping.vultr.com",
-  "sgp-ping.vultr.com",
-  "sel-kor-ping.vultr.com",
-  "fra-de-ping.vultr.com",
-  "lax-ca-us-ping.vultr.com",
-  "nj-us-ping.vultr.com",
 ]);
+const EXTERNAL_HOST_SUFFIXES = [".hosthatch.com", ".vultr.com", ".linode.com"];
+const isExternalHost = (hostname) => EXTERNAL_HOSTS.has(hostname)
+  || EXTERNAL_HOST_SUFFIXES.some((suffix) => hostname.endsWith(suffix));
 const args = process.argv.slice(2);
 const valueAfter = (name, fallback) => {
   const index = args.indexOf(name);
@@ -138,7 +136,7 @@ const runMatrix = async (browser) => {
           });
           page.on("request", (request) => {
             const url = new URL(request.url());
-            if (EXTERNAL_HOSTS.has(url.hostname)) externalRequests.push(request.url());
+            if (isExternalHost(url.hostname)) externalRequests.push(request.url());
           });
           try {
             await page.goto(route, { waitUntil: "load" });

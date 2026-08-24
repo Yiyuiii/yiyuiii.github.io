@@ -1,6 +1,6 @@
 copy:
   zh:
-    privacy: 测试请求会把你的公网 IP、浏览器标识和请求时间发送给对应服务商。一次完整测试对每个节点发送 1 次预热和 60 次采样请求；当前网络信息先请求一次 IPIP.NET，只有失败时才请求一次 IP.SB，Cloudflare 节点的原有响应可作为仅含 IP 的最后补充。页面不保存测试结果，不使用 Cookie、localStorage 或 sessionStorage，也不会后台续测。
+    privacy: 测试请求会把你的公网 IP、浏览器标识和请求时间发送给对应服务商。一次完整测试对每个启用节点发送 1 次预热和 60 次采样请求；当前网络信息先请求一次 IPIP.NET，只有失败时才请求一次 IP.SB；启用 Cloudflare 节点时，其原有响应可作为仅含 IP 的最后补充。页面不保存测试结果或节点选择，不使用 Cookie、localStorage 或 sessionStorage，也不会后台续测。
     visitor_title: 当前网络
     visitor_source_intro: "来源依次尝试 "
     visitor_source_between: "，失败后才尝试 "
@@ -20,7 +20,21 @@ copy:
     test_start: 开始测试
     stop: 停止
     test_idle: 尚未开始
-    test_warming: 正在并发获取当前网络信息并预热 9 个节点……
+    test_warming: 正在并发获取当前网络信息并预热 {nodes} 个节点……
+    selection_title: 节点选择
+    selection_count: "{selected}/{total} 已启用"
+    selection_default: 恢复默认
+    selection_all: 全选
+    selection_none: 清空
+    selection_empty: 请至少启用一个节点。
+    node_groups:
+      automatic: 自动接入
+      asia: 亚洲
+      oceania: 大洋洲
+      europe: 欧洲
+      north_america: 北美洲
+      south_america: 南美洲
+      africa: 非洲
     test_progress: 已收到 {current}/{total} 个样本；{complete}/{nodes} 个节点完成。
     test_done: 全部节点测试完成，共收到 {current}/{total} 个样本。
     stopped: 测试已停止，保留本次页面内已有样本。
@@ -68,6 +82,16 @@ copy:
       method: 测量方式
       features: 特性
     providers:
+      hosthatch:
+        title: HostHatch 是什么
+        description: HostHatch 是国际云服务商；本页连接其公开 Looking Glass 健康端点。
+        url: https://hosthatch.com/
+        link_label: 官方网站
+      akamai_linode:
+        title: Akamai / Linode 是什么
+        description: Akamai 提供云计算、网络安全和内容分发服务，并于 2022 年收购 Linode。本页连接的是 Akamai Cloud 的 Linode 逐地区测速主机，不是 CDN 就近边缘。
+        url: https://www.akamai.com/cloud/speed-test
+        link_label: 官方测速页
       vultr:
         title: Vultr 是什么
         description: Vultr 是 Constant 于 2014 年推出的国际云服务商；本页连接其公开 Looking Glass。
@@ -90,7 +114,7 @@ copy:
       elevated: 延迟偏高
       unstable: 不稳定
       unavailable: 数据不足
-    chart_title: 9 个节点的连续延迟
+    chart_title: 已启用节点的连续延迟
     chart_description: 各节点成功样本的 HTTPS 往返耗时；断线处表示请求失败。横轴为每个节点各自的采样序号。
     chart_legend_label: 节点图例与最新值
     ms_value: "{value} ms"
@@ -106,7 +130,7 @@ copy:
     source_link_label: 打开来源
     no_script: 该检测器需要 JavaScript；禁用时不会向任何节点发送请求。
   en:
-    privacy: Test requests reveal your public IP, browser identifier, and request time to the corresponding providers. A complete test sends one warm-up plus 60 recorded requests to each node. Current-network details try IPIP.NET once, then IP.SB once only if the first source fails; the existing Cloudflare node response may provide an IP-only last fallback. This page stores no results, uses no cookies, localStorage, or sessionStorage, and does not continue testing in the background.
+    privacy: Test requests reveal your public IP, browser identifier, and request time to the corresponding providers. A complete test sends one warm-up plus 60 recorded requests to each enabled node. Current-network details try IPIP.NET once, then IP.SB once only if the first source fails; when the Cloudflare node is enabled, its existing response may provide an IP-only last fallback. This page stores neither results nor node choices, uses no cookies, localStorage, or sessionStorage, and does not continue testing in the background.
     visitor_title: Current network
     visitor_source_intro: "Sources are tried in order: "
     visitor_source_between: "; only after failure, "
@@ -126,7 +150,21 @@ copy:
     test_start: Start test
     stop: Stop
     test_idle: Not started
-    test_warming: Retrieving current network details and warming up 9 nodes concurrently…
+    test_warming: Retrieving current network details and warming up {nodes} nodes concurrently…
+    selection_title: Node selection
+    selection_count: "{selected}/{total} enabled"
+    selection_default: Restore defaults
+    selection_all: Select all
+    selection_none: Clear
+    selection_empty: Enable at least one node.
+    node_groups:
+      automatic: Automatic entry
+      asia: Asia
+      oceania: Oceania
+      europe: Europe
+      north_america: North America
+      south_america: South America
+      africa: Africa
     test_progress: Received {current}/{total} samples; {complete}/{nodes} nodes complete.
     test_done: All nodes complete; received {current}/{total} samples.
     stopped: Test stopped; samples already collected remain in this page.
@@ -174,6 +212,16 @@ copy:
       method: Measurement
       features: Characteristics
     providers:
+      hosthatch:
+        title: What is HostHatch?
+        description: HostHatch is an international cloud provider; this page connects to its public Looking Glass health endpoints.
+        url: https://hosthatch.com/
+        link_label: Official website
+      akamai_linode:
+        title: What are Akamai / Linode?
+        description: Akamai provides cloud computing, cybersecurity, and content delivery, and acquired Linode in 2022. These are regional Linode speed-test hosts for Akamai Cloud, not nearby CDN edges.
+        url: https://www.akamai.com/cloud/speed-test
+        link_label: Official speed-test page
       vultr:
         title: What is Vultr?
         description: Vultr is an international cloud provider launched by Constant in 2014; this page connects to its public Looking Glass.
@@ -196,7 +244,7 @@ copy:
       elevated: Elevated latency
       unstable: Unstable
       unavailable: Insufficient data
-    chart_title: Consecutive latency for 9 nodes
+    chart_title: Consecutive latency for enabled nodes
     chart_description: HTTPS round-trip time for each node's successful samples; gaps represent failed requests. The horizontal axis is each node's own sample number.
     chart_legend_label: Node legend and latest values
     ms_value: "{value} ms"
@@ -212,8 +260,46 @@ copy:
     source_link_label: Open source
     no_script: This checker requires JavaScript. With JavaScript disabled, it sends no request to any node.
 
+node_defaults:
+  hosthatch:
+    network:
+      zh: HostHatch 公有云公网；官方 Looking Glass
+      en: HostHatch public-cloud Internet network; official Looking Glass
+    source_name: HostHatch Looking Glass
+    method:
+      zh: HTTPS GET；约 0.2 KB 健康响应；浏览器不透明
+      en: HTTPS GET; approximately 0.2 KB health response; opaque to the browser
+    features:
+      zh: 固定机房；可计时和识别传输失败，不能读取 HTTP 状态、途中运营商或回程线路
+      en: Fixed facility; timing and transport failures are visible, but HTTP status, intermediate carriers, and return path are not
+  akamai_linode:
+    network:
+      zh: Akamai Connected Cloud 公有云公网；Linode 测速主机
+      en: Akamai Connected Cloud public Internet network; Linode speed-test host
+    source_name: Akamai Cloud Speed Test
+    method:
+      zh: HTTPS HEAD；零响应正文；浏览器不透明
+      en: HTTPS HEAD; zero response body; opaque to the browser
+    features:
+      zh: 官方固定地区测速主机；可计时和识别传输失败，不能读取 HTTP 状态、途中运营商或回程线路
+      en: Official fixed-region speed-test host; timing and transport failures are visible, but HTTP status, intermediate carriers, and return path are not
+  vultr:
+    network:
+      zh: Vultr 公有云国际公网
+      en: Vultr public-cloud Internet network
+    source_name: Vultr Looking Glass
+    method:
+      zh: HTTPS HEAD；零响应正文
+      en: HTTPS HEAD; zero response body
+    features:
+      zh: 固定都会区；允许跨域读取状态；途中运营商和回程线路未知
+      en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
+
 nodes:
   - id: dnspod-anycast
+    default_enabled: true
+    default_order: 10
+    group: automatic
     title:
       zh: 全球自动接入 · 腾讯 DNSPod
       en: Global automatic entry · Tencent DNSPod
@@ -233,6 +319,9 @@ nodes:
       en: BGP Anycast-selected and may enter Mainland China, Hong Kong, or North America; the browser response is opaque, so HTTP status and the actual PoP cannot be verified
 
   - id: alidns-global
+    default_enabled: true
+    default_order: 20
+    group: automatic
     title:
       zh: 全球自动接入 · 阿里公共 DNS
       en: Global automatic entry · Alibaba Public DNS
@@ -252,6 +341,9 @@ nodes:
       en: Opaque browser response; timing and transport failures are visible, but HTTP status and actual PoP are not
 
   - id: cloudflare-nearest
+    default_enabled: true
+    default_order: 30
+    group: automatic
     title:
       zh: 全球就近 · Cloudflare
       en: Global nearby · Cloudflare
@@ -270,7 +362,169 @@ nodes:
       zh: 可读取成功状态；实际边缘节点、中途运营商和回程线路未知
       en: Success status is readable; the actual edge, intermediate carriers, and return path are unknown
 
+  - id: hosthatch-hong-kong
+    default_enabled: true
+    default_order: 40
+    group: asia
+    provider: hosthatch
+    title:
+      zh: 中国香港 · 香港 · HostHatch
+      en: Hong Kong SAR · Hong Kong · HostHatch
+    location:
+      zh: 中国香港；HostHatch 官方 Looking Glass 标示设施为 Equinix HK1
+      en: Hong Kong SAR; HostHatch's official Looking Glass identifies the facility as Equinix HK1
+    source_url: https://lg.hkg.hosthatch.com/
+
+  - id: hosthatch-singapore
+    default_enabled: true
+    default_order: 80
+    group: asia
+    provider: hosthatch
+    title:
+      zh: 新加坡 · 新加坡 · HostHatch
+      en: Singapore · Singapore · HostHatch
+    location:
+      zh: 新加坡；HostHatch 官方 Looking Glass 标示设施为 Epsilon Global Hubs
+      en: Singapore; HostHatch's official Looking Glass identifies the facility as Epsilon Global Hubs
+    source_url: https://lg.sgp.hosthatch.com/
+
+  - id: hosthatch-tokyo
+    default_enabled: true
+    default_order: 50
+    group: asia
+    provider: hosthatch
+    title:
+      zh: 日本 · 东京 · HostHatch
+      en: Japan · Tokyo · HostHatch
+    location:
+      zh: 日本东京；HostHatch 官方 Looking Glass 标示设施为 Equinix TY8
+      en: Tokyo, Japan; HostHatch's official Looking Glass identifies the facility as Equinix TY8
+    source_url: https://lg.tok.hosthatch.com/
+
+  - id: hosthatch-seoul
+    default_enabled: false
+    group: asia
+    provider: hosthatch
+    title:
+      zh: 韩国 · 首尔 · HostHatch
+      en: South Korea · Seoul · HostHatch
+    location:
+      zh: 韩国首尔；HostHatch 官方 Looking Glass 标示设施为 KINX Dogok
+      en: Seoul, South Korea; HostHatch's official Looking Glass identifies the facility as KINX Dogok
+    source_url: https://lg.sel.hosthatch.com/
+
+  - id: hosthatch-sydney
+    default_enabled: false
+    group: oceania
+    provider: hosthatch
+    title:
+      zh: 澳大利亚 · 悉尼 · HostHatch
+      en: Australia · Sydney · HostHatch
+    location:
+      zh: 澳大利亚悉尼；HostHatch 官方 Looking Glass 标示设施为 Equinix SY4
+      en: Sydney, Australia; HostHatch's official Looking Glass identifies the facility as Equinix SY4
+    source_url: https://lg.syd.hosthatch.com/
+
+  - id: hosthatch-amsterdam
+    default_enabled: false
+    group: europe
+    provider: hosthatch
+    title:
+      zh: 荷兰 · 阿姆斯特丹 · HostHatch
+      en: Netherlands · Amsterdam · HostHatch
+    location:
+      zh: 荷兰阿姆斯特丹；HostHatch 官方 Looking Glass 标示设施为 Digital Realty AMS18
+      en: Amsterdam, Netherlands; HostHatch's official Looking Glass identifies the facility as Digital Realty AMS18
+    source_url: https://lg.ams.hosthatch.com/
+
+  - id: hosthatch-stockholm
+    default_enabled: false
+    group: europe
+    provider: hosthatch
+    title:
+      zh: 瑞典 · 斯德哥尔摩 · HostHatch
+      en: Sweden · Stockholm · HostHatch
+    location:
+      zh: 瑞典斯德哥尔摩；HostHatch 官方 Looking Glass 标示设施为 Digital Realty STO4
+      en: Stockholm, Sweden; HostHatch's official Looking Glass identifies the facility as Digital Realty STO4
+    source_url: https://lg.sto.hosthatch.com/
+
+  - id: hosthatch-oslo
+    default_enabled: false
+    group: europe
+    provider: hosthatch
+    title:
+      zh: 挪威 · 奥斯陆 · HostHatch
+      en: Norway · Oslo · HostHatch
+    location:
+      zh: 挪威奥斯陆；HostHatch 官方 Looking Glass 标示设施为 Blix BDC
+      en: Oslo, Norway; HostHatch's official Looking Glass identifies the facility as Blix BDC
+    source_url: https://lg.osl.hosthatch.com/
+
+  - id: hosthatch-london
+    default_enabled: false
+    group: europe
+    provider: hosthatch
+    title:
+      zh: 英国 · 伦敦 · HostHatch
+      en: United Kingdom · London · HostHatch
+    location:
+      zh: 英国伦敦；HostHatch 官方 Looking Glass 标示设施为 Iron Mountain LON1
+      en: London, United Kingdom; HostHatch's official Looking Glass identifies the facility as Iron Mountain LON1
+    source_url: https://lg.lon.hosthatch.com/
+
+  - id: hosthatch-vienna
+    default_enabled: false
+    group: europe
+    provider: hosthatch
+    title:
+      zh: 奥地利 · 维也纳 · HostHatch
+      en: Austria · Vienna · HostHatch
+    location:
+      zh: 奥地利维也纳；HostHatch 官方 Looking Glass 标示设施为 Digital Realty VIE2
+      en: Vienna, Austria; HostHatch's official Looking Glass identifies the facility as Digital Realty VIE2
+    source_url: https://lg.vie.hosthatch.com/
+
+  - id: hosthatch-zurich
+    default_enabled: false
+    group: europe
+    provider: hosthatch
+    title:
+      zh: 瑞士 · 苏黎世 · HostHatch
+      en: Switzerland · Zurich · HostHatch
+    location:
+      zh: 瑞士苏黎世；HostHatch 官方 Looking Glass 标示设施为 Digital Realty ZUR1
+      en: Zurich, Switzerland; HostHatch's official Looking Glass identifies the facility as Digital Realty ZUR1
+    source_url: https://lg.zrh.hosthatch.com/
+
+  - id: hosthatch-new-york
+    default_enabled: false
+    group: north_america
+    provider: hosthatch
+    title:
+      zh: 美国 · 纽约 · HostHatch
+      en: United States · New York · HostHatch
+    location:
+      zh: 美国纽约都会区；HostHatch 官方 Looking Glass 标示设施为 Evocative EWR1
+      en: New York metro, United States; HostHatch's official Looking Glass identifies the facility as Evocative EWR1
+    source_url: https://lg.nyc.hosthatch.com/
+
+  - id: hosthatch-los-angeles
+    default_enabled: false
+    group: north_america
+    provider: hosthatch
+    title:
+      zh: 美国 · 洛杉矶 · HostHatch
+      en: United States · Los Angeles · HostHatch
+    location:
+      zh: 美国洛杉矶；HostHatch 官方 Looking Glass 标示设施为 Digital Realty LAX10
+      en: Los Angeles, United States; HostHatch's official Looking Glass identifies the facility as Digital Realty LAX10
+    source_url: https://lg.lax.hosthatch.com/
+
   - id: vultr-tokyo
+    default_enabled: true
+    default_order: 60
+    group: asia
     provider: vultr
     title:
       zh: 日本 · 东京 · Vultr
@@ -291,6 +545,8 @@ nodes:
       en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
 
   - id: vultr-singapore
+    default_enabled: false
+    group: asia
     provider: vultr
     title:
       zh: 新加坡 · 新加坡 · Vultr
@@ -311,6 +567,8 @@ nodes:
       en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
 
   - id: vultr-seoul
+    default_enabled: false
+    group: asia
     provider: vultr
     title:
       zh: 韩国 · 首尔 · Vultr
@@ -331,6 +589,9 @@ nodes:
       en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
 
   - id: vultr-frankfurt
+    default_enabled: true
+    default_order: 90
+    group: europe
     provider: vultr
     title:
       zh: 德国 · 法兰克福 · Vultr
@@ -351,6 +612,9 @@ nodes:
       en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
 
   - id: vultr-los-angeles
+    default_enabled: true
+    default_order: 100
+    group: north_america
     provider: vultr
     title:
       zh: 美国 · 洛杉矶 · Vultr
@@ -371,6 +635,8 @@ nodes:
       en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
 
   - id: vultr-new-jersey
+    default_enabled: false
+    group: north_america
     provider: vultr
     title:
       zh: 美国 · 新泽西 · Vultr
@@ -389,3 +655,688 @@ nodes:
     features:
       zh: 固定都会区；允许跨域读取状态；途中运营商和回程线路未知
       en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
+
+  - id: vultr-bangalore
+    default_enabled: false
+    group: asia
+    provider: vultr
+    title:
+      zh: 印度 · 班加罗尔 · Vultr
+      en: India · Bangalore · Vultr
+    location:
+      zh: 印度班加罗尔都会区（BLR）；具体设施不公开
+      en: Bangalore metro, India (BLR); exact facility undisclosed
+    source_url: https://blr-in-ping.vultr.com/
+
+  - id: vultr-delhi
+    default_enabled: false
+    group: asia
+    provider: vultr
+    title:
+      zh: 印度 · 德里 NCR · Vultr
+      en: India · Delhi NCR · Vultr
+    location:
+      zh: 印度德里国家首都辖区（DEL）；具体设施不公开
+      en: Delhi National Capital Region, India (DEL); exact facility undisclosed
+    source_url: https://del-in-ping.vultr.com/
+
+  - id: vultr-mumbai
+    default_enabled: false
+    group: asia
+    provider: vultr
+    title:
+      zh: 印度 · 孟买 · Vultr
+      en: India · Mumbai · Vultr
+    location:
+      zh: 印度孟买都会区（BOM）；具体设施不公开
+      en: Mumbai metro, India (BOM); exact facility undisclosed
+    source_url: https://bom-in-ping.vultr.com/
+
+  - id: vultr-tel-aviv
+    default_enabled: false
+    group: asia
+    provider: vultr
+    title:
+      zh: 以色列 · 特拉维夫 · Vultr
+      en: Israel · Tel Aviv · Vultr
+    location:
+      zh: 以色列特拉维夫都会区（TLV）；具体设施不公开
+      en: Tel Aviv metro, Israel (TLV); exact facility undisclosed
+    source_url: https://tlv-il-ping.vultr.com/
+
+  - id: vultr-melbourne
+    default_enabled: false
+    group: oceania
+    provider: vultr
+    title:
+      zh: 澳大利亚 · 墨尔本 · Vultr
+      en: Australia · Melbourne · Vultr
+    location:
+      zh: 澳大利亚墨尔本都会区（MEL）；具体设施不公开
+      en: Melbourne metro, Australia (MEL); exact facility undisclosed
+    source_url: https://mel-au-ping.vultr.com/
+
+  - id: vultr-sydney
+    default_enabled: false
+    group: oceania
+    provider: vultr
+    title:
+      zh: 澳大利亚 · 悉尼 · Vultr
+      en: Australia · Sydney · Vultr
+    location:
+      zh: 澳大利亚悉尼都会区（SYD）；具体设施不公开
+      en: Sydney metro, Australia (SYD); exact facility undisclosed
+    source_url: https://syd-au-ping.vultr.com/
+
+  - id: vultr-amsterdam
+    default_enabled: false
+    group: europe
+    provider: vultr
+    title:
+      zh: 荷兰 · 阿姆斯特丹 · Vultr
+      en: Netherlands · Amsterdam · Vultr
+    location:
+      zh: 荷兰阿姆斯特丹都会区（AMS）；具体设施不公开
+      en: Amsterdam metro, Netherlands (AMS); exact facility undisclosed
+    source_url: https://ams-nl-ping.vultr.com/
+
+  - id: vultr-london
+    default_enabled: false
+    group: europe
+    provider: vultr
+    title:
+      zh: 英国 · 伦敦 · Vultr
+      en: United Kingdom · London · Vultr
+    location:
+      zh: 英国伦敦都会区（LHR）；具体设施不公开
+      en: London metro, United Kingdom (LHR); exact facility undisclosed
+    source_url: https://lon-gb-ping.vultr.com/
+
+  - id: vultr-madrid
+    default_enabled: false
+    group: europe
+    provider: vultr
+    title:
+      zh: 西班牙 · 马德里 · Vultr
+      en: Spain · Madrid · Vultr
+    location:
+      zh: 西班牙马德里都会区（MAD）；具体设施不公开
+      en: Madrid metro, Spain (MAD); exact facility undisclosed
+    source_url: https://mad-es-ping.vultr.com/
+
+  - id: vultr-manchester
+    default_enabled: false
+    group: europe
+    provider: vultr
+    title:
+      zh: 英国 · 曼彻斯特 · Vultr
+      en: United Kingdom · Manchester · Vultr
+    location:
+      zh: 英国曼彻斯特都会区（MAN）；具体设施不公开
+      en: Manchester metro, United Kingdom (MAN); exact facility undisclosed
+    source_url: https://man-uk-ping.vultr.com/
+
+  - id: vultr-milan
+    default_enabled: false
+    group: europe
+    provider: vultr
+    title:
+      zh: 意大利 · 米兰 · Vultr
+      en: Italy · Milan · Vultr
+    location:
+      zh: 意大利米兰都会区（MXP）；具体设施不公开
+      en: Milan metro, Italy (MXP); exact facility undisclosed
+    source_url: https://mxp-it-ping.vultr.com/
+
+  - id: vultr-paris
+    default_enabled: false
+    group: europe
+    provider: vultr
+    title:
+      zh: 法国 · 巴黎 · Vultr
+      en: France · Paris · Vultr
+    location:
+      zh: 法国巴黎都会区（CDG）；具体设施不公开
+      en: Paris metro, France (CDG); exact facility undisclosed
+    source_url: https://par-fr-ping.vultr.com/
+
+  - id: vultr-stockholm
+    default_enabled: false
+    group: europe
+    provider: vultr
+    title:
+      zh: 瑞典 · 斯德哥尔摩 · Vultr
+      en: Sweden · Stockholm · Vultr
+    location:
+      zh: 瑞典斯德哥尔摩都会区（STO）；具体设施不公开
+      en: Stockholm metro, Sweden (STO); exact facility undisclosed
+    source_url: https://sto-se-ping.vultr.com/
+
+  - id: vultr-warsaw
+    default_enabled: false
+    group: europe
+    provider: vultr
+    title:
+      zh: 波兰 · 华沙 · Vultr
+      en: Poland · Warsaw · Vultr
+    location:
+      zh: 波兰华沙都会区（WAW）；具体设施不公开
+      en: Warsaw metro, Poland (WAW); exact facility undisclosed
+    source_url: https://waw-pl-ping.vultr.com/
+
+  - id: vultr-atlanta
+    default_enabled: false
+    group: north_america
+    provider: vultr
+    title:
+      zh: 美国 · 亚特兰大 · Vultr
+      en: United States · Atlanta · Vultr
+    location:
+      zh: 美国佐治亚州亚特兰大都会区（ATL）；具体设施不公开
+      en: Atlanta metro, Georgia, US (ATL); exact facility undisclosed
+    source_url: https://ga-us-ping.vultr.com/
+
+  - id: vultr-chicago
+    default_enabled: false
+    group: north_america
+    provider: vultr
+    title:
+      zh: 美国 · 芝加哥 · Vultr
+      en: United States · Chicago · Vultr
+    location:
+      zh: 美国伊利诺伊州芝加哥都会区（ORD）；具体设施不公开
+      en: Chicago metro, Illinois, US (ORD); exact facility undisclosed
+    source_url: https://il-us-ping.vultr.com/
+
+  - id: vultr-dallas
+    default_enabled: false
+    group: north_america
+    provider: vultr
+    title:
+      zh: 美国 · 达拉斯 · Vultr
+      en: United States · Dallas · Vultr
+    location:
+      zh: 美国得克萨斯州达拉斯都会区（DFW）；具体设施不公开
+      en: Dallas metro, Texas, US (DFW); exact facility undisclosed
+    source_url: https://tx-us-ping.vultr.com/
+
+  - id: vultr-honolulu
+    default_enabled: false
+    group: north_america
+    provider: vultr
+    title:
+      zh: 美国 · 檀香山 · Vultr
+      en: United States · Honolulu · Vultr
+    location:
+      zh: 美国夏威夷州檀香山都会区（HNL）；具体设施不公开
+      en: Honolulu metro, Hawaii, US (HNL); exact facility undisclosed
+    source_url: https://hon-hi-us-ping.vultr.com/
+
+  - id: vultr-miami
+    default_enabled: false
+    group: north_america
+    provider: vultr
+    title:
+      zh: 美国 · 迈阿密 · Vultr
+      en: United States · Miami · Vultr
+    location:
+      zh: 美国佛罗里达州迈阿密都会区（MIA）；具体设施不公开
+      en: Miami metro, Florida, US (MIA); exact facility undisclosed
+    source_url: https://fl-us-ping.vultr.com/
+
+  - id: vultr-seattle
+    default_enabled: false
+    group: north_america
+    provider: vultr
+    title:
+      zh: 美国 · 西雅图 · Vultr
+      en: United States · Seattle · Vultr
+    location:
+      zh: 美国华盛顿州西雅图都会区（SEA）；具体设施不公开
+      en: Seattle metro, Washington, US (SEA); exact facility undisclosed
+    source_url: https://wa-us-ping.vultr.com/
+
+  - id: vultr-silicon-valley
+    default_enabled: false
+    group: north_america
+    provider: vultr
+    title:
+      zh: 美国 · 硅谷 · Vultr
+      en: United States · Silicon Valley · Vultr
+    location:
+      zh: 美国加州硅谷／圣何塞都会区（SJC）；具体设施不公开
+      en: Silicon Valley / San Jose metro, California, US (SJC); exact facility undisclosed
+    source_url: https://sjo-ca-us-ping.vultr.com/
+
+  - id: vultr-mexico-city
+    default_enabled: false
+    group: north_america
+    provider: vultr
+    title:
+      zh: 墨西哥 · 墨西哥城 · Vultr
+      en: Mexico · Mexico City · Vultr
+    location:
+      zh: 墨西哥墨西哥城都会区（MEX）；具体设施不公开
+      en: Mexico City metro, Mexico (MEX); exact facility undisclosed
+    source_url: https://mex-mx-ping.vultr.com/
+
+  - id: vultr-toronto
+    default_enabled: false
+    group: north_america
+    provider: vultr
+    title:
+      zh: 加拿大 · 多伦多 · Vultr
+      en: Canada · Toronto · Vultr
+    location:
+      zh: 加拿大多伦多都会区（YTO）；具体设施不公开
+      en: Toronto metro, Canada (YTO); exact facility undisclosed
+    source_url: https://tor-ca-ping.vultr.com/
+
+  - id: vultr-santiago
+    default_enabled: false
+    group: south_america
+    provider: vultr
+    title:
+      zh: 智利 · 圣地亚哥 · Vultr
+      en: Chile · Santiago · Vultr
+    location:
+      zh: 智利圣地亚哥都会区（SCL）；具体设施不公开
+      en: Santiago metro, Chile (SCL); exact facility undisclosed
+    source_url: https://scl-cl-ping.vultr.com/
+
+  - id: vultr-sao-paulo
+    default_enabled: false
+    group: south_america
+    provider: vultr
+    title:
+      zh: 巴西 · 圣保罗 · Vultr
+      en: Brazil · São Paulo · Vultr
+    location:
+      zh: 巴西圣保罗都会区（SAO）；具体设施不公开
+      en: São Paulo metro, Brazil (SAO); exact facility undisclosed
+    source_url: https://sao-br-ping.vultr.com/
+
+  - id: vultr-johannesburg
+    default_enabled: false
+    group: africa
+    provider: vultr
+    title:
+      zh: 南非 · 约翰内斯堡 · Vultr
+      en: South Africa · Johannesburg · Vultr
+    location:
+      zh: 南非约翰内斯堡都会区（JNB）；具体设施不公开
+      en: Johannesburg metro, South Africa (JNB); exact facility undisclosed
+    source_url: https://jnb-za-ping.vultr.com/
+
+  - id: linode-atlanta
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 美国 · 亚特兰大 · Akamai / Linode
+      en: United States · Atlanta · Akamai / Linode
+    location:
+      zh: 美国佐治亚州亚特兰大；官方测速页未公开具体设施
+      en: Atlanta, Georgia, United States; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.atlanta.linode.com/
+
+  - id: linode-chicago
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 美国 · 芝加哥 · Akamai / Linode
+      en: United States · Chicago · Akamai / Linode
+    location:
+      zh: 美国伊利诺伊州芝加哥；官方测速页未公开具体设施
+      en: Chicago, Illinois, United States; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.chicago.linode.com/
+
+  - id: linode-dallas
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 美国 · 达拉斯 · Akamai / Linode
+      en: United States · Dallas · Akamai / Linode
+    location:
+      zh: 美国得克萨斯州达拉斯；官方测速页未公开具体设施
+      en: Dallas, Texas, United States; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.dallas.linode.com/
+
+  - id: linode-fremont
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 美国 · 弗里蒙特 · Akamai / Linode
+      en: United States · Fremont · Akamai / Linode
+    location:
+      zh: 美国加利福尼亚州弗里蒙特；官方测速页未公开具体设施
+      en: Fremont, California, United States; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.fremont.linode.com/
+
+  - id: linode-los-angeles
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 美国 · 洛杉矶 · Akamai / Linode
+      en: United States · Los Angeles · Akamai / Linode
+    location:
+      zh: 美国加利福尼亚州洛杉矶；官方测速页未公开具体设施
+      en: Los Angeles, California, United States; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.los-angeles.linode.com/
+
+  - id: linode-miami
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 美国 · 迈阿密 · Akamai / Linode
+      en: United States · Miami · Akamai / Linode
+    location:
+      zh: 美国佛罗里达州迈阿密；官方测速页未公开具体设施
+      en: Miami, Florida, United States; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.miami.linode.com/
+
+  - id: linode-newark
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 美国 · 纽瓦克 · Akamai / Linode
+      en: United States · Newark · Akamai / Linode
+    location:
+      zh: 美国新泽西州纽瓦克；官方测速页未公开具体设施
+      en: Newark, New Jersey, United States; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.newark.linode.com/
+
+  - id: linode-sao-paulo
+    default_enabled: false
+    group: south_america
+    provider: akamai_linode
+    title:
+      zh: 巴西 · 圣保罗 · Akamai / Linode
+      en: Brazil · São Paulo · Akamai / Linode
+    location:
+      zh: 巴西圣保罗；官方测速页未公开具体设施
+      en: São Paulo, Brazil; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.sao-paulo.linode.com/
+
+  - id: linode-seattle
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 美国 · 西雅图 · Akamai / Linode
+      en: United States · Seattle · Akamai / Linode
+    location:
+      zh: 美国华盛顿州西雅图；官方测速页未公开具体设施
+      en: Seattle, Washington, United States; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.seattle.linode.com/
+
+  - id: linode-toronto
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 加拿大 · 多伦多 · Akamai / Linode
+      en: Canada · Toronto · Akamai / Linode
+    location:
+      zh: 加拿大安大略省多伦多；官方测速页未公开具体设施
+      en: Toronto, Ontario, Canada; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.toronto1.linode.com/
+
+  - id: linode-washington
+    default_enabled: false
+    group: north_america
+    provider: akamai_linode
+    title:
+      zh: 美国 · 华盛顿特区 · Akamai / Linode
+      en: United States · Washington, D.C. · Akamai / Linode
+    location:
+      zh: 美国华盛顿特区都会区；官方测速页未公开具体设施
+      en: Washington, D.C. metro, United States; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.washington.linode.com/
+
+  - id: linode-amsterdam
+    default_enabled: false
+    group: europe
+    provider: akamai_linode
+    title:
+      zh: 荷兰 · 阿姆斯特丹 · Akamai / Linode
+      en: Netherlands · Amsterdam · Akamai / Linode
+    location:
+      zh: 荷兰阿姆斯特丹；官方测速页未公开具体设施
+      en: Amsterdam, Netherlands; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.amsterdam.linode.com/
+
+  - id: linode-frankfurt
+    default_enabled: false
+    group: europe
+    provider: akamai_linode
+    title:
+      zh: 德国 · 法兰克福 · Akamai / Linode
+      en: Germany · Frankfurt · Akamai / Linode
+    location:
+      zh: 德国法兰克福；官方测速页未公开具体设施
+      en: Frankfurt, Germany; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.frankfurt.linode.com/
+
+  - id: linode-frankfurt-expansion
+    default_enabled: false
+    group: europe
+    provider: akamai_linode
+    title:
+      zh: 德国 · 法兰克福扩展节点 · Akamai / Linode
+      en: Germany · Frankfurt expansion · Akamai / Linode
+    location:
+      zh: 德国法兰克福的独立扩展测速节点；官方测速页未公开具体设施
+      en: Separate expansion speed-test node in Frankfurt, Germany; the official speed-test page does not disclose the exact facility
+    source_url: https://de-fra-2.speedtest.linode.com/
+
+  - id: linode-london
+    default_enabled: false
+    group: europe
+    provider: akamai_linode
+    title:
+      zh: 英国 · 伦敦 · Akamai / Linode
+      en: United Kingdom · London · Akamai / Linode
+    location:
+      zh: 英国伦敦；官方测速页未公开具体设施
+      en: London, United Kingdom; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.london.linode.com/
+
+  - id: linode-london-expansion
+    default_enabled: false
+    group: europe
+    provider: akamai_linode
+    title:
+      zh: 英国 · 伦敦扩展节点 · Akamai / Linode
+      en: United Kingdom · London expansion · Akamai / Linode
+    location:
+      zh: 英国伦敦的独立扩展测速节点；官方测速页未公开具体设施
+      en: Separate expansion speed-test node in London, United Kingdom; the official speed-test page does not disclose the exact facility
+    source_url: https://gb-lon.speedtest.linode.com/
+
+  - id: linode-madrid
+    default_enabled: false
+    group: europe
+    provider: akamai_linode
+    title:
+      zh: 西班牙 · 马德里 · Akamai / Linode
+      en: Spain · Madrid · Akamai / Linode
+    location:
+      zh: 西班牙马德里；官方测速页未公开具体设施
+      en: Madrid, Spain; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.madrid.linode.com/
+
+  - id: linode-milan
+    default_enabled: false
+    group: europe
+    provider: akamai_linode
+    title:
+      zh: 意大利 · 米兰 · Akamai / Linode
+      en: Italy · Milan · Akamai / Linode
+    location:
+      zh: 意大利米兰；官方测速页未公开具体设施
+      en: Milan, Italy; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.milan.linode.com/
+
+  - id: linode-paris
+    default_enabled: false
+    group: europe
+    provider: akamai_linode
+    title:
+      zh: 法国 · 巴黎 · Akamai / Linode
+      en: France · Paris · Akamai / Linode
+    location:
+      zh: 法国巴黎；官方测速页未公开具体设施
+      en: Paris, France; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.paris.linode.com/
+
+  - id: linode-stockholm
+    default_enabled: false
+    group: europe
+    provider: akamai_linode
+    title:
+      zh: 瑞典 · 斯德哥尔摩 · Akamai / Linode
+      en: Sweden · Stockholm · Akamai / Linode
+    location:
+      zh: 瑞典斯德哥尔摩；官方测速页未公开具体设施
+      en: Stockholm, Sweden; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.stockholm.linode.com/
+
+  - id: linode-chennai
+    default_enabled: false
+    group: asia
+    provider: akamai_linode
+    title:
+      zh: 印度 · 金奈 · Akamai / Linode
+      en: India · Chennai · Akamai / Linode
+    location:
+      zh: 印度泰米尔纳德邦金奈；官方测速页未公开具体设施
+      en: Chennai, Tamil Nadu, India; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.chennai.linode.com/
+
+  - id: linode-jakarta
+    default_enabled: false
+    group: asia
+    provider: akamai_linode
+    title:
+      zh: 印度尼西亚 · 雅加达 · Akamai / Linode
+      en: Indonesia · Jakarta · Akamai / Linode
+    location:
+      zh: 印度尼西亚雅加达；官方测速页未公开具体设施
+      en: Jakarta, Indonesia; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.jakarta.linode.com/
+
+  - id: linode-mumbai
+    default_enabled: false
+    group: asia
+    provider: akamai_linode
+    title:
+      zh: 印度 · 孟买 · Akamai / Linode
+      en: India · Mumbai · Akamai / Linode
+    location:
+      zh: 印度马哈拉施特拉邦孟买；官方测速页未公开具体设施
+      en: Mumbai, Maharashtra, India; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.mumbai1.linode.com/
+
+  - id: linode-mumbai-expansion
+    default_enabled: false
+    group: asia
+    provider: akamai_linode
+    title:
+      zh: 印度 · 孟买扩展节点 · Akamai / Linode
+      en: India · Mumbai expansion · Akamai / Linode
+    location:
+      zh: 印度孟买的独立扩展测速节点；官方测速页未公开具体设施
+      en: Separate expansion speed-test node in Mumbai, India; the official speed-test page does not disclose the exact facility
+    source_url: https://in-bom-2.speedtest.linode.com/
+
+  - id: linode-osaka
+    default_enabled: false
+    group: asia
+    provider: akamai_linode
+    title:
+      zh: 日本 · 大阪 · Akamai / Linode
+      en: Japan · Osaka · Akamai / Linode
+    location:
+      zh: 日本大阪；官方测速页未公开具体设施
+      en: Osaka, Japan; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.osaka.linode.com/
+
+  - id: linode-singapore
+    default_enabled: false
+    group: asia
+    provider: akamai_linode
+    title:
+      zh: 新加坡 · 新加坡 · Akamai / Linode
+      en: Singapore · Singapore · Akamai / Linode
+    location:
+      zh: 新加坡；官方测速页未公开具体设施
+      en: Singapore; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.singapore.linode.com/
+
+  - id: linode-singapore-expansion
+    default_enabled: false
+    group: asia
+    provider: akamai_linode
+    title:
+      zh: 新加坡 · 新加坡扩展节点 · Akamai / Linode
+      en: Singapore · Singapore expansion · Akamai / Linode
+    location:
+      zh: 新加坡的独立扩展测速节点；官方测速页未公开具体设施
+      en: Separate expansion speed-test node in Singapore; the official speed-test page does not disclose the exact facility
+    source_url: https://sg-sin-2.speedtest.linode.com/
+
+  - id: linode-tokyo
+    default_enabled: true
+    default_order: 70
+    group: asia
+    provider: akamai_linode
+    title:
+      zh: 日本 · 东京 · Akamai / Linode
+      en: Japan · Tokyo · Akamai / Linode
+    location:
+      zh: 日本东京；官方测速页未公开具体设施
+      en: Tokyo, Japan; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.tokyo2.linode.com/
+
+  - id: linode-tokyo-expansion
+    default_enabled: false
+    group: asia
+    provider: akamai_linode
+    title:
+      zh: 日本 · 东京扩展节点 · Akamai / Linode
+      en: Japan · Tokyo expansion · Akamai / Linode
+    location:
+      zh: 日本东京的独立扩展测速节点；官方测速页未公开具体设施
+      en: Separate expansion speed-test node in Tokyo, Japan; the official speed-test page does not disclose the exact facility
+    source_url: https://jp-tyo-3.speedtest.linode.com/
+
+  - id: linode-melbourne
+    default_enabled: false
+    group: oceania
+    provider: akamai_linode
+    title:
+      zh: 澳大利亚 · 墨尔本 · Akamai / Linode
+      en: Australia · Melbourne · Akamai / Linode
+    location:
+      zh: 澳大利亚维多利亚州墨尔本；官方测速页未公开具体设施
+      en: Melbourne, Victoria, Australia; the official speed-test page does not disclose the exact facility
+    source_url: https://au-mel.speedtest.linode.com/
+
+  - id: linode-sydney
+    default_enabled: false
+    group: oceania
+    provider: akamai_linode
+    title:
+      zh: 澳大利亚 · 悉尼 · Akamai / Linode
+      en: Australia · Sydney · Akamai / Linode
+    location:
+      zh: 澳大利亚新南威尔士州悉尼；官方测速页未公开具体设施
+      en: Sydney, New South Wales, Australia; the official speed-test page does not disclose the exact facility
+    source_url: https://speedtest.sydney.linode.com/

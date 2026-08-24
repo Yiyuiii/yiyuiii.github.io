@@ -1678,6 +1678,104 @@ html[data-theme="dark"] .moegirl-quiz {
   margin-top: 1rem;
 }
 
+.toy-network-latency__selector {
+  margin-top: 0.58rem;
+  border: 1px solid color-mix(in srgb, var(--divider) 74%, transparent);
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--page) 88%, var(--surface));
+}
+
+.toy-network-latency__selector > summary {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.48rem 0.62rem;
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 680;
+  cursor: pointer;
+}
+
+.toy-network-latency__selector > summary [data-latency-selection-count] {
+  color: var(--meta);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.toy-network-latency__selector-panel {
+  padding: 0.62rem;
+  border-top: 1px solid color-mix(in srgb, var(--divider) 64%, transparent);
+}
+
+.toy-network-latency__selector-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.42rem;
+  margin-bottom: 0.7rem;
+}
+
+.toy-entry__body .toy-network-latency__selector-actions button {
+  min-height: 2rem;
+  padding: 0.3rem 0.58rem;
+  font-size: 0.72rem;
+}
+
+.toy-network-latency__selector-groups {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.toy-network-latency__selector-groups fieldset {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.toy-network-latency__selector-groups legend {
+  margin-bottom: 0.32rem;
+  color: var(--meta);
+  font-size: 0.7rem;
+  font-weight: 720;
+}
+
+.toy-network-latency__selector-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: 0.28rem;
+}
+
+.toy-network-latency__selector-options label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.42rem;
+  align-items: start;
+  min-width: 0;
+  padding: 0.3rem 0.4rem;
+  border-radius: 0.34rem;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  font-size: 0.74rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.toy-network-latency__selector-options input {
+  margin: 0.14rem 0 0;
+  accent-color: var(--jade);
+}
+
+.toy-network-latency__selector-options label:has(input:focus-visible) {
+  outline: 2px solid color-mix(in srgb, var(--jade) 72%, transparent);
+  outline-offset: 1px;
+}
+
+.toy-network-latency__selector-options label:has(input:disabled) {
+  cursor: default;
+  opacity: 0.62;
+}
+
 .toy-network-latency__section > h4 {
   margin: 0 0 0.3rem;
   font-size: 1rem;
@@ -1750,6 +1848,7 @@ html[data-theme="dark"] .moegirl-quiz {
 
 .toy-network-latency__quality-legend {
   display: grid;
+  width: min(100%, 26rem);
   gap: 0.32rem;
   margin: 0.5rem 0 0;
   color: var(--meta);
@@ -1758,14 +1857,13 @@ html[data-theme="dark"] .moegirl-quiz {
 }
 
 .toy-network-latency__quality-legend-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.28rem 0.68rem;
+  display: grid;
+  grid-template-columns: 3.75rem repeat(4, minmax(0, 1fr));
+  column-gap: 0.28rem;
   align-items: center;
 }
 
 .toy-network-latency__quality-legend-row > strong {
-  min-width: 2.9rem;
   color: var(--ink);
   font-size: 0.74rem;
 }
@@ -1773,7 +1871,8 @@ html[data-theme="dark"] .moegirl-quiz {
 .toy-network-latency__quality-band {
   --quality-color: var(--meta);
   display: inline-flex;
-  gap: 0.32rem;
+  min-width: 0;
+  gap: 0.24rem;
   align-items: center;
   white-space: nowrap;
 }
@@ -2012,6 +2111,12 @@ html[data-theme="dark"] .moegirl-quiz {
   --latency-series-color: #7c3aed;
   --latency-series-dash: 2 3;
   --latency-series-style: dotted;
+}
+
+.toy-network-latency [data-latency-series="hosthatch-hong-kong"] {
+  --latency-series-color: #0f766e;
+  --latency-series-dash: 5 2 1 2;
+  --latency-series-style: dashed;
 }
 
 .toy-network-latency [data-latency-series="vultr-tokyo"] {

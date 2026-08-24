@@ -2,6 +2,88 @@
   "use strict";
 
   const globalScope = typeof window === "undefined" ? globalThis : window;
+  const HOSTHATCH_NODES = Object.freeze([
+    ["hosthatch-hong-kong", "lg.hkg.hosthatch.com"],
+    ["hosthatch-singapore", "lg.sgp.hosthatch.com"],
+    ["hosthatch-tokyo", "lg.tok.hosthatch.com"],
+    ["hosthatch-seoul", "lg.sel.hosthatch.com"],
+    ["hosthatch-sydney", "lg.syd.hosthatch.com"],
+    ["hosthatch-amsterdam", "lg.ams.hosthatch.com"],
+    ["hosthatch-stockholm", "lg.sto.hosthatch.com"],
+    ["hosthatch-oslo", "lg.osl.hosthatch.com"],
+    ["hosthatch-london", "lg.lon.hosthatch.com"],
+    ["hosthatch-vienna", "lg.vie.hosthatch.com"],
+    ["hosthatch-zurich", "lg.zrh.hosthatch.com"],
+    ["hosthatch-new-york", "lg.nyc.hosthatch.com"],
+    ["hosthatch-los-angeles", "lg.lax.hosthatch.com"],
+  ]);
+  const VULTR_NODES = Object.freeze([
+    ["vultr-tokyo", "hnd-jp-ping.vultr.com"],
+    ["vultr-singapore", "sgp-ping.vultr.com"],
+    ["vultr-seoul", "sel-kor-ping.vultr.com"],
+    ["vultr-frankfurt", "fra-de-ping.vultr.com"],
+    ["vultr-los-angeles", "lax-ca-us-ping.vultr.com"],
+    ["vultr-new-jersey", "nj-us-ping.vultr.com"],
+    ["vultr-bangalore", "blr-in-ping.vultr.com"],
+    ["vultr-delhi", "del-in-ping.vultr.com"],
+    ["vultr-mumbai", "bom-in-ping.vultr.com"],
+    ["vultr-tel-aviv", "tlv-il-ping.vultr.com"],
+    ["vultr-melbourne", "mel-au-ping.vultr.com"],
+    ["vultr-sydney", "syd-au-ping.vultr.com"],
+    ["vultr-amsterdam", "ams-nl-ping.vultr.com"],
+    ["vultr-london", "lon-gb-ping.vultr.com"],
+    ["vultr-madrid", "mad-es-ping.vultr.com"],
+    ["vultr-manchester", "man-uk-ping.vultr.com"],
+    ["vultr-milan", "mxp-it-ping.vultr.com"],
+    ["vultr-paris", "par-fr-ping.vultr.com"],
+    ["vultr-stockholm", "sto-se-ping.vultr.com"],
+    ["vultr-warsaw", "waw-pl-ping.vultr.com"],
+    ["vultr-atlanta", "ga-us-ping.vultr.com"],
+    ["vultr-chicago", "il-us-ping.vultr.com"],
+    ["vultr-dallas", "tx-us-ping.vultr.com"],
+    ["vultr-honolulu", "hon-hi-us-ping.vultr.com"],
+    ["vultr-miami", "fl-us-ping.vultr.com"],
+    ["vultr-seattle", "wa-us-ping.vultr.com"],
+    ["vultr-silicon-valley", "sjo-ca-us-ping.vultr.com"],
+    ["vultr-mexico-city", "mex-mx-ping.vultr.com"],
+    ["vultr-toronto", "tor-ca-ping.vultr.com"],
+    ["vultr-santiago", "scl-cl-ping.vultr.com"],
+    ["vultr-sao-paulo", "sao-br-ping.vultr.com"],
+    ["vultr-johannesburg", "jnb-za-ping.vultr.com"],
+  ]);
+  const AKAMAI_LINODE_NODES = Object.freeze([
+    ["linode-atlanta", "speedtest.atlanta.linode.com"],
+    ["linode-chicago", "speedtest.chicago.linode.com"],
+    ["linode-dallas", "speedtest.dallas.linode.com"],
+    ["linode-fremont", "speedtest.fremont.linode.com"],
+    ["linode-los-angeles", "speedtest.los-angeles.linode.com"],
+    ["linode-miami", "speedtest.miami.linode.com"],
+    ["linode-newark", "speedtest.newark.linode.com"],
+    ["linode-sao-paulo", "speedtest.sao-paulo.linode.com"],
+    ["linode-seattle", "speedtest.seattle.linode.com"],
+    ["linode-toronto", "speedtest.toronto1.linode.com"],
+    ["linode-washington", "speedtest.washington.linode.com"],
+    ["linode-amsterdam", "speedtest.amsterdam.linode.com"],
+    ["linode-frankfurt", "speedtest.frankfurt.linode.com"],
+    ["linode-frankfurt-expansion", "de-fra-2.speedtest.linode.com"],
+    ["linode-london", "speedtest.london.linode.com"],
+    ["linode-london-expansion", "gb-lon.speedtest.linode.com"],
+    ["linode-madrid", "speedtest.madrid.linode.com"],
+    ["linode-milan", "speedtest.milan.linode.com"],
+    ["linode-paris", "speedtest.paris.linode.com"],
+    ["linode-stockholm", "speedtest.stockholm.linode.com"],
+    ["linode-chennai", "speedtest.chennai.linode.com"],
+    ["linode-jakarta", "speedtest.jakarta.linode.com"],
+    ["linode-mumbai", "speedtest.mumbai1.linode.com"],
+    ["linode-mumbai-expansion", "in-bom-2.speedtest.linode.com"],
+    ["linode-osaka", "speedtest.osaka.linode.com"],
+    ["linode-singapore", "speedtest.singapore.linode.com"],
+    ["linode-singapore-expansion", "sg-sin-2.speedtest.linode.com"],
+    ["linode-tokyo", "speedtest.tokyo2.linode.com"],
+    ["linode-tokyo-expansion", "jp-tyo-3.speedtest.linode.com"],
+    ["linode-melbourne", "au-mel.speedtest.linode.com"],
+    ["linode-sydney", "speedtest.sydney.linode.com"],
+  ]);
   const NODE_DEFINITIONS = Object.freeze([
     Object.freeze({
       id: "dnspod-anycast",
@@ -18,36 +100,21 @@
       endpoint: "https://speed.cloudflare.com/__down",
       probe: "zero-byte-cors",
     }),
-    Object.freeze({
-      id: "vultr-tokyo",
-      endpoint: "https://hnd-jp-ping.vultr.com/",
+    ...HOSTHATCH_NODES.map(([id, hostname]) => Object.freeze({
+      id,
+      endpoint: `https://${hostname}/api/health`,
+      probe: "small-get-opaque",
+    })),
+    ...VULTR_NODES.map(([id, hostname]) => Object.freeze({
+      id,
+      endpoint: `https://${hostname}/`,
       probe: "head-cors",
-    }),
-    Object.freeze({
-      id: "vultr-singapore",
-      endpoint: "https://sgp-ping.vultr.com/",
-      probe: "head-cors",
-    }),
-    Object.freeze({
-      id: "vultr-seoul",
-      endpoint: "https://sel-kor-ping.vultr.com/",
-      probe: "head-cors",
-    }),
-    Object.freeze({
-      id: "vultr-frankfurt",
-      endpoint: "https://fra-de-ping.vultr.com/",
-      probe: "head-cors",
-    }),
-    Object.freeze({
-      id: "vultr-los-angeles",
-      endpoint: "https://lax-ca-us-ping.vultr.com/",
-      probe: "head-cors",
-    }),
-    Object.freeze({
-      id: "vultr-new-jersey",
-      endpoint: "https://nj-us-ping.vultr.com/",
-      probe: "head-cors",
-    }),
+    })),
+    ...AKAMAI_LINODE_NODES.map(([id, hostname]) => Object.freeze({
+      id,
+      endpoint: `https://${hostname}/`,
+      probe: "head-opaque",
+    })),
   ]);
   const NODE_BY_ID = new Map(NODE_DEFINITIONS.map((node) => [node.id, node]));
   const VISITOR_SOURCES = Object.freeze([
@@ -175,8 +242,18 @@
       });
     }
     url.searchParams.set("r", token);
+    if (node.probe === "small-get-opaque") {
+      return Object.freeze({
+        init: Object.freeze({ ...common, method: "GET", mode: "no-cors" }),
+        url: url.href,
+      });
+    }
     return Object.freeze({
-      init: Object.freeze({ ...common, method: "HEAD", mode: "cors" }),
+      init: Object.freeze({
+        ...common,
+        method: "HEAD",
+        mode: node.probe === "head-opaque" ? "no-cors" : "cors",
+      }),
       url: url.href,
     });
   };
