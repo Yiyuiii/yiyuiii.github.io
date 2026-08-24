@@ -195,6 +195,7 @@ def valid_site(root):
                     ("lights-out", "翻灯"),
                     ("random-password", "随机密码"),
                     ("random-number", "随机数字"),
+                    ("network-latency", "网络延迟与波动"),
                     ("apple-gift-card-scanner", "Apple 礼品码转相机可扫描卡片（外部）"),
                 ],
             },
@@ -217,6 +218,7 @@ def valid_site(root):
                     ("lights-out", "Lights Out"),
                     ("random-password", "Random password"),
                     ("random-number", "Random numbers"),
+                    ("network-latency", "Network latency and variation"),
                     (
                         "apple-gift-card-scanner",
                         "Apple gift code to camera-scannable card (external)",

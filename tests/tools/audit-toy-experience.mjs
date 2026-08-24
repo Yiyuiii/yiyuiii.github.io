@@ -14,6 +14,7 @@ const TOYS = [
   ["lights-out", "翻灯"],
   ["random-password", "随机密码"],
   ["random-number", "随机数字"],
+  ["network-latency", "网络延迟与波动"],
 ];
 const ROUTES = [["zh", "/toys/"], ["en", "/en/toys/"]];
 const VIEWPORTS = [
@@ -28,6 +29,16 @@ const EXTERNAL_HOSTS = new Set([
   "openaccess-api.clevelandart.org",
   "openaccess-cdn.clevelandart.org",
   "graphql.anilist.co",
+  "api.ip.sb",
+  "speed.cloudflare.com",
+  "doh.pub",
+  "dns.alidns.com",
+  "hnd-jp-ping.vultr.com",
+  "sgp-ping.vultr.com",
+  "sel-kor-ping.vultr.com",
+  "fra-de-ping.vultr.com",
+  "lax-ca-us-ping.vultr.com",
+  "nj-us-ping.vultr.com",
 ]);
 const args = process.argv.slice(2);
 const valueAfter = (name, fallback) => {
@@ -196,7 +207,7 @@ const runMultipleOpen = async (browser) => {
           overflow: document.documentElement.scrollWidth > innerWidth + 1,
         }));
         if (result.open !== TOYS.length || result.ready !== TOYS.length) issue(scope, "multiple-open", JSON.stringify(result));
-        if (result.overflow) issue(scope, "overflow", "十一项同时展开时发生横向溢出");
+        if (result.overflow) issue(scope, "overflow", `${TOYS.length} 项同时展开时发生横向溢出`);
       } catch (error) {
         issue(scope, "audit-exception", error.stack || error.message);
       } finally {
@@ -278,7 +289,7 @@ const renderReport = (audit) => {
   return `<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>M2 小玩意体验审阅</title>
   <style>:root{color-scheme:light dark;--bg:#f6f3fb;--card:#fff;--ink:#282333;--muted:#696174;--line:#d8d0df;--accent:#7552a3}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,sans-serif}main{max-width:1120px;margin:auto;padding:32px 20px 72px}h1{font-size:clamp(1.8rem,5vw,3rem);line-height:1.15}h2{margin-top:2.5rem}.summary,.decision,details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}.pass{color:#176b45;font-weight:800}.fail{color:#a23636;font-weight:800}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}figure img{display:block;width:100%;height:auto}figcaption{padding:10px 14px;color:var(--muted)}table{width:100%;border-collapse:collapse;background:var(--card);font-size:.88rem}th,td{padding:8px;border:1px solid var(--line);text-align:left;vertical-align:top}code{overflow-wrap:anywhere}label{display:block;margin:.45rem 0}.decision{margin:1rem 0}.decision h3{margin-top:0}textarea{width:100%;min-height:8rem;padding:10px}.page-shot{max-height:580px;object-fit:contain;object-position:top;background:#ddd}@media(max-width:600px){main{padding-inline:12px}.table-wrap{overflow-x:auto}}</style></head><body><main>
   <p>M0–M2 阶段审阅 · 2026-08-07</p><h1>小玩意页：按需加载与体验矩阵</h1>
-  <section class="summary"><h2>机器已经替你过滤的内容</h2><p class="${issues.length ? "fail" : "pass"}">${status}</p><ul><li>24 种页面环境：中英双语 × 320/390/1280 × 明暗主题 × 普通/减少动效。</li><li>264 次逐项键盘展开；检查焦点、横向溢出、控件名称、24px 最小目标、状态区与主题。</li><li>6 种十一项同时展开环境；22 次逐项目冷启动测量。</li><li>仅展开三个联网问答时，第三方请求应为 0。</li></ul><p>完整机器结果嵌入本报告生成时对应的 JSON；本页只把仍需人判断的密度、分组和展开策略留下。</p></section>
+  <section class="summary"><h2>机器已经替你过滤的内容</h2><p class="${issues.length ? "fail" : "pass"}">${status}</p><ul><li>24 种页面环境：中英双语 × 320/390/1280 × 明暗主题 × 普通/减少动效。</li><li>${24 * TOYS.length} 次逐项键盘展开；检查焦点、横向溢出、控件名称、24px 最小目标、状态区与主题。</li><li>6 种 ${TOYS.length} 项同时展开环境；${ROUTES.length * TOYS.length} 次逐项目冷启动测量。</li><li>仅展开三个联网问答和网络检测器时，第三方请求应为 0。</li></ul><p>完整机器结果嵌入本报告生成时对应的 JSON；本页只把仍需人判断的密度、分组和展开策略留下。</p></section>
   <h2>页面全貌</h2><div class="grid"><figure><img class="page-shot" src="data:image/png;base64,${desktop}" alt="中文 1280px 明亮主题折叠页面"><figcaption>中文 · 1280px · 明亮</figcaption></figure><figure><img class="page-shot" src="data:image/png;base64,${mobileDark}" alt="英文 390px 暗色主题折叠页面"><figcaption>英文 · 390px · 暗色</figcaption></figure></div>
   <h2>逐项目冷启动</h2><p>耗时是本机 loopback 预览中，从点击 summary 到组件依赖链完成的墙钟时间；用于发现相对异常，不代表公网延迟。字节数为本次新请求的本站脚本原始传输大小。</p><div class="table-wrap"><table><thead><tr><th>语言</th><th>项目</th><th>初始化 ms</th><th>本站 bytes</th><th>首次新增脚本</th><th>站外请求</th></tr></thead><tbody>${perfRows}</tbody></table></div>
   <h2>自动检查明细</h2><div class="table-wrap"><table><thead><tr><th>范围</th><th>类型</th><th>详情</th></tr></thead><tbody>${issueRows}</tbody></table></div>

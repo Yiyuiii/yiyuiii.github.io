@@ -1,0 +1,391 @@
+copy:
+  zh:
+    privacy: 测试请求会把你的公网 IP、浏览器标识和请求时间发送给对应服务商。一次完整测试对每个节点发送 1 次预热和 60 次采样请求；当前网络信息先请求一次 IPIP.NET，只有失败时才请求一次 IP.SB，Cloudflare 节点的原有响应可作为仅含 IP 的最后补充。页面不保存测试结果，不使用 Cookie、localStorage 或 sessionStorage，也不会后台续测。
+    visitor_title: 当前网络
+    visitor_source_intro: "来源依次尝试 "
+    visitor_source_between: "，失败后才尝试 "
+    visitor_source_suffix: 。
+    visitor_source_current: 本次采用：
+    visitor_sources:
+      ipip: IPIP.NET
+      ipsb: IP.SB
+      cloudflare: Cloudflare 节点（仅部分信息）
+    visitor_fields:
+      ip: 公网 IP / 版本
+      network: 运营商 / 网络
+      region: 近似地区
+      browser_connection: 浏览器估计
+    unavailable: 无法获取
+    metric_placeholder: "—"
+    test_start: 开始测试
+    stop: 停止
+    test_idle: 尚未开始
+    test_warming: 正在并发获取当前网络信息并预热 9 个节点……
+    test_progress: 已收到 {current}/{total} 个样本；{complete}/{nodes} 个节点完成。
+    test_done: 全部节点测试完成，共收到 {current}/{total} 个样本。
+    stopped: 测试已停止，保留本次页面内已有样本。
+    dashboard_title: 节点网络延迟
+    quality_legend_label: P50 与波动阈值
+    quality_thresholds:
+      - label: P50
+        bands:
+          - quality: excellent
+            label: "≤50 ms"
+          - quality: good
+            label: "≤100 ms"
+          - quality: elevated
+            label: "≤200 ms"
+          - quality: unstable
+            label: ">200 ms"
+      - label: 波动
+        bands:
+          - quality: excellent
+            label: "≤8 ms"
+          - quality: good
+            label: "≤20 ms"
+          - quality: elevated
+            label: "≤40 ms"
+          - quality: unstable
+            label: ">40 ms"
+    core_metrics:
+      p50: P50
+      jitter: 波动
+    diagnostics_title: 查看详情
+    diagnostics_metrics_title: 实时诊断
+    diagnostics_node_title: 节点来源与特性
+    diagnostics:
+      grade: 综合参考
+      latest: 当前样本
+      samples: 成功/已测
+      p95: P95
+      maximum: 最大值
+      failures: 失败
+      spikes: 尖峰
+    node_labels:
+      location: 最细位置
+      network: 网络类型
+      source: 来源
+      method: 测量方式
+      features: 特性
+    providers:
+      vultr:
+        title: Vultr 是什么
+        description: Vultr 是 Constant 于 2014 年推出的国际云服务商；本页连接其公开 Looking Glass。
+        url: https://blogs.vultr.com/announcement-availability-of-NVIDIA-H100
+        link_label: 官方说明
+    not_measured: 尚未测量
+    stats:
+      grade: 实时业务参考
+      samples: 成功样本
+      p50: P50
+      p95: P95
+      maximum: 最大值
+      jitter: 相邻波动
+      failures: 请求失败
+      spikes: 延迟尖峰
+      longest_bad_streak: 最长异常连续段
+    grades:
+      excellent: 优秀
+      good: 良好
+      elevated: 延迟偏高
+      unstable: 不稳定
+      unavailable: 数据不足
+    chart_title: 9 个节点的连续延迟
+    chart_description: 各节点成功样本的 HTTPS 往返耗时；断线处表示请求失败。横轴为每个节点各自的采样序号。
+    chart_legend_label: 节点图例与最新值
+    ms_value: "{value} ms"
+    count_value: "{value} 个"
+    sample_value: "{success}/{total}"
+    failure_value: "{failures}/{total}（{rate}%）"
+    spike_value: ">100 ms：{over100}；>200 ms：{over200}；>300 ms：{over300}"
+    browser_rtt_value: "RTT {rtt}"
+    browser_downlink_value: "下行 {downlink}"
+    browser_connection_unknown: 浏览器未提供
+    request_failed: 本轮请求失败
+    all_failed: 没有成功样本
+    source_link_label: 打开来源
+    no_script: 该检测器需要 JavaScript；禁用时不会向任何节点发送请求。
+  en:
+    privacy: Test requests reveal your public IP, browser identifier, and request time to the corresponding providers. A complete test sends one warm-up plus 60 recorded requests to each node. Current-network details try IPIP.NET once, then IP.SB once only if the first source fails; the existing Cloudflare node response may provide an IP-only last fallback. This page stores no results, uses no cookies, localStorage, or sessionStorage, and does not continue testing in the background.
+    visitor_title: Current network
+    visitor_source_intro: "Sources are tried in order: "
+    visitor_source_between: "; only after failure, "
+    visitor_source_suffix: ". "
+    visitor_source_current: "Used this time: "
+    visitor_sources:
+      ipip: IPIP.NET
+      ipsb: IP.SB
+      cloudflare: Cloudflare node (partial details only)
+    visitor_fields:
+      ip: Public IP / version
+      network: Carrier / network
+      region: Approximate region
+      browser_connection: Browser estimate
+    unavailable: Unavailable
+    metric_placeholder: "—"
+    test_start: Start test
+    stop: Stop
+    test_idle: Not started
+    test_warming: Retrieving current network details and warming up 9 nodes concurrently…
+    test_progress: Received {current}/{total} samples; {complete}/{nodes} nodes complete.
+    test_done: All nodes complete; received {current}/{total} samples.
+    stopped: Test stopped; samples already collected remain in this page.
+    dashboard_title: Node network latency
+    quality_legend_label: P50 and variation thresholds
+    quality_thresholds:
+      - label: P50
+        bands:
+          - quality: excellent
+            label: "≤50 ms"
+          - quality: good
+            label: "≤100 ms"
+          - quality: elevated
+            label: "≤200 ms"
+          - quality: unstable
+            label: ">200 ms"
+      - label: Variation
+        bands:
+          - quality: excellent
+            label: "≤8 ms"
+          - quality: good
+            label: "≤20 ms"
+          - quality: elevated
+            label: "≤40 ms"
+          - quality: unstable
+            label: ">40 ms"
+    core_metrics:
+      p50: P50
+      jitter: Variation
+    diagnostics_title: Show details
+    diagnostics_metrics_title: Live diagnostics
+    diagnostics_node_title: Node source and characteristics
+    diagnostics:
+      grade: Overall reference
+      latest: Latest sample
+      samples: Success/measured
+      p95: P95
+      maximum: Maximum
+      failures: Failures
+      spikes: Spikes
+    node_labels:
+      location: Finest location
+      network: Network type
+      source: Source
+      method: Measurement
+      features: Characteristics
+    providers:
+      vultr:
+        title: What is Vultr?
+        description: Vultr is an international cloud provider launched by Constant in 2014; this page connects to its public Looking Glass.
+        url: https://blogs.vultr.com/announcement-availability-of-NVIDIA-H100
+        link_label: Official overview
+    not_measured: Not measured
+    stats:
+      grade: Real-time traffic reference
+      samples: Successful samples
+      p50: P50
+      p95: P95
+      maximum: Maximum
+      jitter: Adjacent variation
+      failures: Failed requests
+      spikes: Latency spikes
+      longest_bad_streak: Longest abnormal streak
+    grades:
+      excellent: Excellent
+      good: Good
+      elevated: Elevated latency
+      unstable: Unstable
+      unavailable: Insufficient data
+    chart_title: Consecutive latency for 9 nodes
+    chart_description: HTTPS round-trip time for each node's successful samples; gaps represent failed requests. The horizontal axis is each node's own sample number.
+    chart_legend_label: Node legend and latest values
+    ms_value: "{value} ms"
+    count_value: "{value}"
+    sample_value: "{success}/{total}"
+    failure_value: "{failures}/{total} ({rate}%)"
+    spike_value: ">100 ms: {over100}; >200 ms: {over200}; >300 ms: {over300}"
+    browser_rtt_value: "RTT {rtt}"
+    browser_downlink_value: "Downlink {downlink}"
+    browser_connection_unknown: Not provided by this browser
+    request_failed: Request failed in this round
+    all_failed: No successful samples
+    source_link_label: Open source
+    no_script: This checker requires JavaScript. With JavaScript disabled, it sends no request to any node.
+
+nodes:
+  - id: dnspod-anycast
+    title:
+      zh: 全球自动接入 · 腾讯 DNSPod
+      en: Global automatic entry · Tencent DNSPod
+    location:
+      zh: 官方公开北京、上海、广州、中国香港和北美接入集群；本页无法识别实际落点
+      en: Officially listed entry clusters in Beijing, Shanghai, Guangzhou, Hong Kong, and North America; the actual landing point is not visible here
+    network:
+      zh: 公共递归 DNS；BGP Anycast 多运营商接入
+      en: Public recursive DNS; multi-carrier BGP Anycast access
+    source_name: Tencent Cloud DNSPod Public DNS
+    source_url: https://www.dnspod.cn/products/publicdns
+    method:
+      zh: DoH GET；小型 DNS 查询
+      en: DoH GET; small DNS query
+    features:
+      zh: BGP Anycast 自动选路；可能接入大陆、中国香港或北美；响应对浏览器不透明，不能验证 HTTP 状态或实际落点
+      en: BGP Anycast-selected and may enter Mainland China, Hong Kong, or North America; the browser response is opaque, so HTTP status and the actual PoP cannot be verified
+
+  - id: alidns-global
+    title:
+      zh: 全球自动接入 · 阿里公共 DNS
+      en: Global automatic entry · Alibaba Public DNS
+    location:
+      zh: 官方全球公共递归服务；公开多个国内城市及海外节点，本页无法识别实际落点
+      en: Official global public recursive service with published domestic and overseas nodes; the actual landing point is not visible here
+    network:
+      zh: 全球公共递归 DNS；服务端自动调度
+      en: Global public recursive DNS; service-directed entry
+    source_name: Alibaba Public DNS
+    source_url: https://alidns.com/
+    method:
+      zh: DoH GET；小型 DNS 查询
+      en: DoH GET; small DNS query
+    features:
+      zh: 响应对浏览器不透明；可计时和识别传输失败，不能读取 HTTP 状态或实际落点
+      en: Opaque browser response; timing and transport failures are visible, but HTTP status and actual PoP are not
+
+  - id: cloudflare-nearest
+    title:
+      zh: 全球就近 · Cloudflare
+      en: Global nearby · Cloudflare
+    location:
+      zh: Anycast 自动选择；本页无法读取实际接入城市
+      en: Anycast-selected; the actual edge city is not readable here
+    network:
+      zh: Cloudflare 全球边缘网络
+      en: Cloudflare global edge network
+    source_name: Cloudflare Speedtest
+    source_url: https://github.com/cloudflare/speedtest
+    method:
+      zh: 官方零字节下载端点
+      en: Official zero-byte download endpoint
+    features:
+      zh: 可读取成功状态；实际边缘节点、中途运营商和回程线路未知
+      en: Success status is readable; the actual edge, intermediate carriers, and return path are unknown
+
+  - id: vultr-tokyo
+    provider: vultr
+    title:
+      zh: 日本 · 东京 · Vultr
+      en: Japan · Tokyo · Vultr
+    location:
+      zh: 日本东京都会区（NRT）；具体设施不公开
+      en: Tokyo metro, Japan (NRT); exact facility undisclosed
+    network:
+      zh: Vultr 公有云国际公网
+      en: Vultr public-cloud Internet network
+    source_name: Vultr Looking Glass
+    source_url: https://hnd-jp-ping.vultr.com/
+    method:
+      zh: HTTPS HEAD；零响应正文
+      en: HTTPS HEAD; zero response body
+    features:
+      zh: 固定都会区；允许跨域读取状态；途中运营商和回程线路未知
+      en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
+
+  - id: vultr-singapore
+    provider: vultr
+    title:
+      zh: 新加坡 · 新加坡 · Vultr
+      en: Singapore · Singapore · Vultr
+    location:
+      zh: 新加坡（SGP）；具体设施不公开
+      en: Singapore (SGP); exact facility undisclosed
+    network:
+      zh: Vultr 公有云国际公网
+      en: Vultr public-cloud Internet network
+    source_name: Vultr Looking Glass
+    source_url: https://sgp-ping.vultr.com/
+    method:
+      zh: HTTPS HEAD；零响应正文
+      en: HTTPS HEAD; zero response body
+    features:
+      zh: 固定都会区；允许跨域读取状态；途中运营商和回程线路未知
+      en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
+
+  - id: vultr-seoul
+    provider: vultr
+    title:
+      zh: 韩国 · 首尔 · Vultr
+      en: South Korea · Seoul · Vultr
+    location:
+      zh: 韩国首尔都会区（ICN）；具体设施不公开
+      en: Seoul metro, South Korea (ICN); exact facility undisclosed
+    network:
+      zh: Vultr 公有云国际公网
+      en: Vultr public-cloud Internet network
+    source_name: Vultr Looking Glass
+    source_url: https://sel-kor-ping.vultr.com/
+    method:
+      zh: HTTPS HEAD；零响应正文
+      en: HTTPS HEAD; zero response body
+    features:
+      zh: 固定都会区；允许跨域读取状态；途中运营商和回程线路未知
+      en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
+
+  - id: vultr-frankfurt
+    provider: vultr
+    title:
+      zh: 德国 · 法兰克福 · Vultr
+      en: Germany · Frankfurt · Vultr
+    location:
+      zh: 德国法兰克福都会区（FRA）；具体设施不公开
+      en: Frankfurt metro, Germany (FRA); exact facility undisclosed
+    network:
+      zh: Vultr 公有云国际公网
+      en: Vultr public-cloud Internet network
+    source_name: Vultr Looking Glass
+    source_url: https://fra-de-ping.vultr.com/
+    method:
+      zh: HTTPS HEAD；零响应正文
+      en: HTTPS HEAD; zero response body
+    features:
+      zh: 固定都会区；允许跨域读取状态；途中运营商和回程线路未知
+      en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
+
+  - id: vultr-los-angeles
+    provider: vultr
+    title:
+      zh: 美国 · 洛杉矶 · Vultr
+      en: United States · Los Angeles · Vultr
+    location:
+      zh: 美国加州洛杉矶都会区（LAX）；具体设施不公开
+      en: Los Angeles metro, California, US (LAX); exact facility undisclosed
+    network:
+      zh: Vultr 公有云国际公网
+      en: Vultr public-cloud Internet network
+    source_name: Vultr Looking Glass
+    source_url: https://lax-ca-us-ping.vultr.com/
+    method:
+      zh: HTTPS HEAD；零响应正文
+      en: HTTPS HEAD; zero response body
+    features:
+      zh: 固定都会区；允许跨域读取状态；途中运营商和回程线路未知
+      en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown
+
+  - id: vultr-new-jersey
+    provider: vultr
+    title:
+      zh: 美国 · 新泽西 · Vultr
+      en: United States · New Jersey · Vultr
+    location:
+      zh: 美国新泽西／纽约都会区（EWR）；具体设施不公开
+      en: New Jersey / New York metro, US (EWR); exact facility undisclosed
+    network:
+      zh: Vultr 公有云国际公网
+      en: Vultr public-cloud Internet network
+    source_name: Vultr Looking Glass
+    source_url: https://nj-us-ping.vultr.com/
+    method:
+      zh: HTTPS HEAD；零响应正文
+      en: HTTPS HEAD; zero response body
+    features:
+      zh: 固定都会区；允许跨域读取状态；途中运营商和回程线路未知
+      en: Fixed metro; status is CORS-readable; intermediate carriers and return path are unknown

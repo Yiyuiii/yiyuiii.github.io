@@ -157,6 +157,17 @@ groups:
       zh: 实用工具
       en: Utilities
     items:
+      - id: network-latency
+        title:
+          zh: 网络延迟与波动
+          en: Network latency and variation
+        description:
+          zh: 查看当前公网归属，并比较公共 DNS、全球边缘和多个海外固定都会区的 HTTPS 典型延迟与波动。
+          en: Inspect your current public-network attribution and compare typical HTTPS latency and variation across public DNS, a global edge, and fixed overseas metros.
+        keywords:
+          zh: [网络, 延迟, 抖动, 波动, Ping, IP, ASN, Cloudflare, DNSPod, 阿里公共 DNS, Vultr]
+          en: [network, latency, jitter, variation, ping, IP, ASN, Cloudflare, DNSPod, Alibaba Public DNS, Vultr]
+
       - id: apple-gift-card-scanner
         title:
           zh: Apple 礼品码转相机可扫描卡片（外部）
