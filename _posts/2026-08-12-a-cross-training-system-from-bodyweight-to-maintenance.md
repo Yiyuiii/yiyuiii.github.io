@@ -1,5 +1,5 @@
 ---
-title: 'From Bodyweight to Long-Term Maintenance: A Training System for Aesthetics, Singing, Boxing, HEMA, and Skiing'
+title: 'From Bodyweight to Long-Term Maintenance: A Training System for Moderate Muscularity and All-Round Fitness'
 uid: '202608121000'
 author: Yiyu Chen
 date: 2026-08-12 10:00:00 +0800
@@ -19,43 +19,83 @@ thumbnail: /assets/posts/202608121000/cover-cross-training-system-generated-squa
 article_cover:
   alt: A man of ordinary build performs a split squat at home, with a resistance band, adjustable dumbbells, and conceptual equipment for four recreational pursuits arranged around him
   caption: This AI-generated cover was made with OpenAI image_gen. It represents a bodyweight start, compact-equipment progression, and shared training for several hobbies; it is not a photograph, movement instruction, or medical advice, and it is not a factual record.
-excerpt: 'I do not need a conditioning plan for just one sport. I need a system that improves how my body looks, remains economical to maintain when a growth phase ends, and preserves a shared physical base for singing, boxing, historical European martial arts, and skiing. This essay begins from my current state: age twenty-eight, 168 cm, 65 kg, no dedicated equipment, and no scheduled hobby sessions.'
-description: Start with a three-day bodyweight plan, learn setup and progression for every movement, then use twelve weeks of logged bottlenecks to decide which compact equipment is worth buying.
+excerpt: 'I want a moderate amount of clearly defined muscle while improving strength, power, muscular endurance, and cardiorespiratory fitness together. This essay begins from my current state: age twenty-eight, 168 cm, 65 kg, no dedicated equipment, and no scheduled hobby classes. Singing, boxing, HEMA, and skiing serve as future sport-specific constraints rather than four additional programmes.'
+description: Build a maintainable physique and all-round fitness with three strength sessions, two progressive aerobic sessions, and low-fatigue power work, then use twelve-week records to guide progression.
 revisions:
 - date: '2026-08-12'
   note: Built a three-day plan, movement-by-movement instruction, equipment purchase gates, and a twelve-week progression from the author's starting point, then added eight equipment, movement, and voice-practice card groups; researched and written by Codex
 - date: '2026-08-17'
   note: Re-audited every muscle group and all 24 movements; separated hypertrophy-strength, power-landing, motor-control, and isometric-carry intensity metrics and added complete beginner-to-loaded-or-replacement progressions; researched and rewritten by GPT-5.6 Sol
+- date: '2026-08-25'
+  note: Reorganized the goals, weekly schedule, and decision metrics around moderate muscularity and all-round fitness; added progressive aerobic work and the science of sets, repetitions in reserve, and rest; and reduced low-priority accessories in the main schedule; researched and rewritten by GPT-5.6 Sol
 translation_status: current
-source_hash: ea255de915c32086ff72e6390469943a77456f260122bee8266974a153c2b191
+source_hash: 5b5e0581eabbf8f3a4a07b3e20d89e5c6ef4e5e7b6533a79acf4ece45929a84b
 ---
 
-## Starting point, boundaries, and success criteria {#starting-point}
+## Starting point: what kind of body am I building? {#starting-point}
 
-This system begins from a specific state: a twenty-eight-year-old man, 168 cm tall and 65 kg, with no dedicated fitness equipment and no scheduled singing, boxing, historical European martial arts (HEMA), or skiing sessions. Muscle appearance is the first objective. The second is economical maintenance after the growth phase, while retaining strength that can serve those pursuits.
+This system begins from a specific state: a twenty-eight-year-old man, 168 cm tall and 65 kg, with no dedicated fitness equipment and no scheduled singing, boxing, historical European martial arts (HEMA), or skiing classes. The goal is to develop a moderate amount of clearly defined muscle while improving strength, strength relative to body weight, power, local muscular endurance, and cardiorespiratory fitness, and to keep the result economical to maintain after the building phase. The four hobbies test whether this general capacity is useful; their actual techniques still need to be learned in the relevant classes and environments.
 
-The plan assumes no active joint or tendon pain, recent surgery, medical exercise restriction, or exercise-induced chest pain, fainting, or unusual shortness of breath. If any assumption is false, a physician or qualified rehabilitation professional should adapt the plan first. Stop an exercise immediately if it produces sharp pain, numbness, loss of control, or symptoms that worsen from set to set. Ordinary muscular effort and mild next-day soreness are different signals.
+The plan assumes no active joint or tendon pain, recent surgery, medical exercise restriction, exercise-induced chest pressure or pain, near-fainting, breathlessness disproportionate to the effort, or an abnormally fast or clearly irregular heartbeat at low loads. If any assumption is false, a physician or qualified rehabilitation professional should adapt the plan first. Stop training if it produces sharp pain, numbness, loss of control, or symptoms that worsen from set to set. Seek prompt medical care for any warning sign such as unexpectedly severe muscle pain, tea- or cola-coloured urine, marked weakness, or unusual fatigue; do not wait for every symptom to appear together. Ordinary muscular effort, normal training fatigue, and next-day soreness that gradually improves are different from these warning signs.
 
-Four auditable measures decide whether the plan works: load or clean repetitions increase on the same movement; monthly photographs and circumferences of the shoulders, back, hips, legs, and waist move toward the goal; hobby practice is not repeatedly damaged by soreness and fatigue; and at least eighty percent of planned sessions are actually completed. A single workout's pump, one day's body-weight fluctuation, and changes in mirror lighting do not measure hypertrophy.
+Six auditable measures decide whether the plan works: load or clean repetitions increase on the same movement; speed, distance, or landing consistency gradually improves during low-repetition power work; more time or distance can be completed on the same route or machine at a similar perceived effort; monthly photographs and measurements of the shoulders, back, hips, legs, and waist move toward the goal; hobby practice is not repeatedly damaged by soreness and fatigue; and at least eighty percent of planned sessions are actually completed. A single workout's pump, one day's body-weight fluctuation, mirror lighting, and one peak heart-rate reading do not measure long-term progress.
 
-The abdominal muscles do not atrophy because they went a few days without direct work. A short-term “flatter” appearance often comes from changes in pump, muscle glycogen, water, gut contents, and lighting. Actual muscle loss needs a longer period of insufficient stimulus and is affected by total activity, energy, and protein intake. The abs should progress like other muscles; maintenance usually requires markedly less volume than building them did.
+## The six outcomes this plan develops {#training-outcomes}
 
-## Shared muscle priorities across five goals {#priority-map}
+In this article, “hypertrophy” means an increase in skeletal-muscle size. It is a structural change, not the name of a disease and not a capacity that can be performed by itself. More muscle generally increases the potential for strength, but actual performance also depends on neural drive, movement technique, coordination, leverage, and energy supply. The plan therefore records its outcomes separately instead of letting “that felt exhausting” stand in for every objective.
 
-Five goals do not require five unrelated bodies. Boxing, HEMA, and skiing all generate force from the ground, control the trunk in single-leg or staggered positions, and transfer that force to the upper body. The shoulder-to-waist appearance also depends heavily on the deltoids, latissimus dorsi, and upper back. Singing mainly asks the trunk for posture, respiratory coordination, and controlled exhalation. The diaphragm contracts during inhalation, but it should not inherit a biceps-style prescription of isolation work to failure.
+| Outcome | What question does it answer? | Main method in this article | How progress is observed |
+|---|---|---|---|
+| Moderate muscularity and physique | How do muscle definition and a maintainable body structure change? | Progressive resistance, sufficient but recoverable weekly volume, protein, and energy | Photographs under the same conditions, circumferences, body-weight trend, and work-set performance |
+| Strength and strength-to-weight ratio | How much force can you produce, and how difficult a movement can you control relative to your own body weight? | Build a base with stable movements and gradual loading during the first twelve weeks; progress toward lower repetitions and heavier loads only after reliable equipment becomes available | Load, clean repetitions, and performance relative to body weight on the same movement |
+| Power | How quickly can force be produced? | A small amount of fast pushing, jumping, or throwing while attention and movement are fresh | Speed, distance, landing, and consistency from repetition to repetition |
+| Local muscular endurance | How long can a muscle repeat or sustain output? | Moderate-repetition resistance work, isometrics, and sport-specific activity, without a separate no-rest punishment circuit | Clean repetitions, time, or distance at the same load |
+| Cardiorespiratory fitness | Can the whole body sustain energy production and recover between repeated efforts? | Progressive low- to moderate-intensity aerobic work, with a small amount of intervals considered only later | Time, distance, talk test, and perceived effort on the same route or machine |
+| Movement and sport-specific skill | Can force be applied through the right path and at the right time? | Motor-control practice and professional feedback in singing, boxing, HEMA, and skiing | Movement quality, stability, and performance in actual classes |
 
-| Priority and muscle groups | Why they come first | Weekly building target |
+This no-equipment starting programme mainly develops general strength and strength relative to body weight; one-repetition maximum (1RM) testing is not a task for the first twelve weeks. If maximal strength later becomes a separate priority, it will require reliable equipment, appropriate spotting or safety provisions, and a more specialised heavy-load block.
+
+## Shared muscle priorities across all outcomes {#priority-map}
+
+These outcomes do not require six unrelated bodies. Boxing, HEMA, and skiing all generate force from the ground, control the trunk in single-leg or staggered positions, and transfer that force to the upper body. Shoulders, back, hips, and legs shape the physique and form the general strength base. Singing mainly asks the trunk for posture, respiratory coordination, and controlled exhalation. The diaphragm contracts during inhalation, but it should not inherit a biceps-style prescription of isolation work to failure.
+
+| Priority and muscle groups | Why train them first? | Weekly building target |
 |---|---|---|
-| Tier one: lateral and rear deltoids, latissimus dorsi, middle and lower trapezius, and rhomboids | They most directly change shoulder width and the upper-body outline; they also support pulling, scapular control, upper-body force transfer in boxing and fencing, and posture | About 8–12 hard sets for each large region |
-| Tier one: gluteus maximus, quadriceps, and hamstrings | They determine much of hip and thigh size and form the shared base for punching force, HEMA footwork, skiing deceleration, and hip-knee stability | About 8–12 hard sets for each large region |
-| Tier two: pectorals, triceps, and biceps | They complete the front view and pushing-pulling capacity; compound lifts already supply much of their stimulus | About 4–8 hard sets for each large region |
-| Tier two: rectus abdominis, obliques, spinal erectors, serratus anterior, and rotator cuff | They let the trunk resist extension, side-bending, and rotation while the scapula moves stably during punching, fencing, and overhead work | About 4–8 hard sets for loadable large regions; 2–4 separate motor-control sets for small stabilizers |
-| Tier two: gluteus medius, adductors, calves, tibialis anterior, forearms, and grip | They support single-leg stability, lateral movement, ankle control, weapon handling, and carrying; their visual return is smaller but their utility is high | About 2–6 hard sets when load is measurable; evidence-limited accessories may use 0 sets |
-| Conditional tier: neck | It may offer a limited contribution to contact-sport preparation and appearance, but should not be claimed to prevent concussion | Add only 2–4 light isometric sets after recovery is stable |
+| Main regions: deltoids, latissimus dorsi, upper back, gluteus maximus, quadriceps, and hamstrings | Together they determine much of the shoulder, back, hip, and leg outline, pushing and pulling capacity, and lower-body force production; they also progress readily through stable compound movements | Begin each large region at about 6–10 high-quality hard sets; move toward or beyond 10 only when hypertrophy takes priority and recovery remains stable |
+| Supporting regions: pectorals, triceps, and biceps | They complete the front view and pushing-pulling capacity; compound movements already provide part of their stimulus | About 4–8 hard sets per large region, with compound work counted only approximately according to its real contribution |
+| Trunk and scapula: rectus abdominis, obliques, spinal erectors, serratus anterior, and rotator cuff | They let the trunk resist extension, side-bending, and rotation while the scapula moves stably during punching, fencing, and overhead work | About 2–6 hard sets for loadable muscles; record 2–4 motor-control sets separately rather than mixing them in |
+| Conditional accessories: gluteus medius, adductors, calves, tibialis anterior, forearms, and grip | They support single-leg stability, lateral movement, ankle control, weapon handling, and carrying; whether they belong depends on an actual bottleneck | About 0–4 hard sets when load is measurable; evidence-limited accessories with no measurable benefit may use 0 sets |
+| Sport-specific condition: neck | It may offer a limited contribution to contact-sport preparation and appearance, but should not be claimed to prevent concussion | Add 2–4 light isometric sets only after recovery is stable and a real need exists |
 
 ![Front and back muscle locator on a man of ordinary build: red tier 1 covers the shoulders, back, glutes, and thighs; amber tier 2 covers the chest, upper arms, abdomen, and trunk-stabilizer regions; blue tier 3 covers the forearms, outer hips, adductors, calves, and front of the lower legs](/assets/posts/202608121000/muscle-priority-map-language-neutral.webp)
 
-*Figure 1 — Muscle locator. Red 1 marks the first-tier appearance and shared force base; amber 2 marks the chest, arms, trunk, and scapular stabilizers; blue 3 marks smaller-volume regions that still support single-leg control, the ankle, and grip. The neck remains gray as a conditional tier. This AI-generated locator is for orientation only; the prose governs muscle boundaries and training decisions.*
+*Figure 1 — Muscle locator. Red 1 marks the main regions; amber 2 marks the chest, arms, trunk, and scapular stabilizers; blue 3 marks conditional accessories whose inclusion depends on a real bottleneck. The neck remains gray and is considered only after recovery is stable and a genuine sport-specific need exists. This AI-generated locator is for orientation only; the prose governs muscle boundaries and training decisions.*
+
+## How the outcomes fit into one week {#weekly-overview}
+
+| Day | Main task | What it mainly develops |
+|---|---|---|
+| Monday | Low-fatigue power + full-body strength A | Lower-body power, squat, hinge, push, pull, and moderate muscularity |
+| Tuesday | Low- to moderate-intensity aerobic work | The cardiorespiratory base and recovery between repeated efforts |
+| Wednesday | Full-body strength B | Unilateral legs, posterior chain, overhead push, pull, and trunk stability |
+| Thursday | Rest, walking, or easy activity | Recovery, while counting daily movement toward the weekly total |
+| Friday | Low-fatigue power + full-body strength C | Fast upper-body force, a second push-pull exposure, and supplementary hip and leg work |
+| Saturday | Low- to moderate-intensity aerobic work | Gradually extending duration; short intervals may appear occasionally only after the base is established |
+| Sunday | Rest | Begin the next week recovered |
+
+Each of the three strength days retains five or six main movements and adds zero to two accessories only when a real bottleneck appears. The two dedicated aerobic sessions progress from 20–30 minutes each toward 30–45 minutes. Together, they provide only 60–90 minutes: brisk walking, cycling, and other daily activity still count toward the total, and these two sessions alone do not justify claiming that the public-health reference of 150–300 weekly minutes of moderate activity has been reached. Power work comes after the warm-up on strength days, uses few repetitions and ample rest, and ends at the first clear loss of speed or landing quality.
+
+## How to read the tables: sets, repetitions in reserve, and rest {#sets-rir-rest}
+
+Once the movement and load have been selected, **set count** controls accumulated training dose; **repetitions in reserve** (RIR) estimates how many more clean repetitions remained when a set ended; and **between-set rest** affects how much load, repetition count, range of motion, and technique the next set can retain. Movement choice, loading, technique, and progression matter too, so these three variables are not a complete hypertrophy formula.
+
+For muscle growth, the target fibres need to experience sufficient mechanical tension repeatedly through controlled movement. As a moderate- or low-load set approaches failure, maintaining output generally requires greater effort and recruitment of a broader pool of motor units; a heavier load may require high-threshold motor units from earlier repetitions. Research has not established a discrete switch under which “only the final few repetitions count,” so this article does not derive an exact optimum from an imagined stimulus curve.
+
+Multiple sets accumulate a recoverable stimulus into a weekly dose; the body has no switch that turns on only at the third set. Higher weekly volume is more favourable to hypertrophy on average, but returns diminish, and a compound movement's indirect contribution cannot be mechanically counted as one full set for every muscle involved. This article therefore uses two or three sets per movement as an executable starting point and adjusts them from the weekly log.
+
+RIR describes effort, not the load's percentage of one-repetition maximum. Most hypertrophy/strength sets initially stop at about RIR 3 in weeks 1–2; after the movements become familiar, most work sets fall within RIR 1–3. Evidence suggests that training nearer failure is generally more favourable to hypertrophy than stopping very early, but it has not established one optimal RIR for every movement and trainee, and routine training need not reach momentary failure on every set. RIR estimates are themselves imperfect. Logs and occasional calibration on safe movements can improve them without risky testing on free-weight compound lifts.
+
+Rest preserves the quality of later sets. Begin with 2–4 minutes for compound movements and 1–3 minutes for isolation and accessory work. These are practical ranges, not a physiological ceiling beyond which rest somehow stops helping at 90 seconds. If repetitions, range, or technique falls more than planned at the same load, and longer rest improves the next set, the original rest was probably too short. Burning, pump, breathlessness, and next-day soreness are not training-dose meters, so there is no need to shorten rest merely to create those sensations.
 
 A “hard set” applies only to hypertrophy or strength movements that can approach a muscular limit through repeated contractions. It uses clean technique, is genuinely limited by the target muscles, and ends with roughly 1–3 clean repetitions still available. Warm-up sets do not count. A compound movement can cover adjacent muscle groups: a push-up covers both chest and triceps, while a row covers upper back and biceps. These numbers are adjustment ranges, not physiological quotas. A dead bug, landing drill, Y–T–W, or pillow squeeze does not become a hypertrophy set merely because it feels tiring.
 
@@ -74,37 +114,22 @@ The first twelve weeks build movements, reveal bottlenecks, and establish mainta
 
 | Phase | What to do | Condition for moving on |
 |---|---|---|
-| Week 0: establish a baseline | Weigh on three consecutive mornings and average the results; measure waist, shoulders, and hips; take front, side, and back photographs in the same light; choose a version of each movement that leaves about three repetitions in reserve | You can record the version, clean repetitions, and stopping reason for every movement |
-| Weeks 1–2: movement adaptation | Perform only 2 sets of each listed movement; replace jumps with a lateral step and hold; keep about three repetitions in reserve on hypertrophy work and use the appropriate quality stop for all other work; record joint sensations and next-day recovery | All three sessions fit into roughly 60 minutes without technique deteriorating from set to set |
-| Weeks 3–6: accumulation | Use the full listed set counts; progress through the repetition ranges; perform low-repetition power work only while attention and landing quality are good | At least one main movement gains repetitions, difficulty, or load in each of two consecutive weeks |
-| Week 7: reduced-volume audit | Halve the work sets, retain the same movements, and leave about four repetitions in reserve; compare sleep, soreness, willingness to train, and movement performance | Fatigue subsides; if pain or performance still worsens, address the cause before adding volume |
-| Weeks 8–10: solve bottlenecks | Buy equipment only when a bodyweight movement has reached its repetition ceiling, the back lacks reliable pulling resistance, or improvised home loading has become unsafe; introduce only one new variable per week | The new equipment movement can be reproduced stably in two consecutive sessions and remains comparable with the old log |
-| Weeks 11–12: consolidate | Stop changing exercises; in week 12, repeat photographs, circumferences, and same-movement performance; choose whether the next block builds, maintains, or yields volume to actual hobbies | The log can explain which muscle group needs more, the same, or less work |
+| Week 0: establish a baseline | Weigh on three consecutive mornings and average the results; measure waist, shoulders, and hips; take front, side, and back photographs in the same light; record movement versions; briskly walk for 20 easy minutes on a level route and record distance, talk test, and rating of perceived exertion (RPE, 0–10) without maximal testing | You can record movement versions, clean repetitions, stopping reasons, and one repeatable aerobic baseline |
+| Weeks 1–2: learn | Perform only 2 sets of each strength movement; replace jumps with a lateral step and hold; leave about 3 RIR on hypertrophy work; complete two 20–30-minute aerobic sessions per week while retaining the ability to speak in full short sentences | All three strength and two aerobic sessions are completed, movements do not deteriorate from set to set, and no warning symptoms appear |
+| Weeks 3–6: accumulate | In weeks 3–4, add a third set only to the first two main strength movements of each day; if recovery and adherence remain stable, progress toward the tables' target set counts in weeks 5–6; progress through the repetition ranges, perform power work only while attention and movement quality are good, and gradually extend each aerobic session to 30–45 minutes | At least one strength, power, or aerobic record continues to improve without fatigue damaging hobbies or daily life |
+| Week 7: recovery audit | Compare sleep, willingness to train, joint sensations, and performance; if several measures keep falling, halve the relevant strength sets and leave about 4 RIR, while keeping aerobic work easy or shortening it; someone recovering normally need not deload mechanically | The fatigue trend subsides; if pain or performance still worsens, address the cause before adding volume |
+| Weeks 8–10: solve bottlenecks | Keep the weekly structure; buy equipment only when a bodyweight movement has reached its repetition ceiling, the back lacks reliable pulling resistance, or improvised home loading has become unsafe; stabilise aerobic duration before rushing into all-out intervals | A new variable can be reproduced stably in two consecutive sessions while the original records remain comparable |
+| Weeks 11–12: stabilise and retest | Stop changing exercises; in week 12, repeat photographs, circumferences, same-movement performance, and the week-0 route; choose whether the next block builds, maintains, or yields volume to actual hobbies | You can separately explain where physique, strength, power, cardiorespiratory fitness, and maintainability improved and where adjustment is needed |
 
-Hypertrophy and strength work uses double progression. First add clean repetitions at the same variation. When every work set reaches the top of the range in two consecutive sessions and still ends at about RIR 2, add the smallest load. If a bodyweight variation exceeds the prescribed range while remaining far from failure, move to unilateral work, a longer lever, or stable external load; slow tempo cannot hide inadequate loading forever. Power, motor-control, and isometric/carry work follow the separate rules above. Change one variable at a time so the source of progress remains visible.
+Hypertrophy and strength work uses double progression. First add clean repetitions at the same variation. When every work set reaches the top of the range in two consecutive sessions and still ends at about RIR 2, add the smallest load. If a bodyweight variation exceeds the prescribed range while remaining far from failure, move to unilateral work, a longer lever, or stable external load; slow tempo cannot hide inadequate loading forever. Power, motor-control, isometric/carry, and aerobic work follow their own measures. Change one variable at a time so the source of progress remains visible.
 
-### See where each movement family is going first {#progression-ladders}
+### How movements progress {#progression-ladders}
 
-“Advanced” does not mean forcing heavy implements into every movement. Essential hypertrophy and strength families eventually need measurable resistance; power and motor-control work advances through more speed, precision, or leverage. The table gives the route, while each instruction below defines its promotion gate.
+The specific gates by which each movement goes from bodyweight learning to stable loading, a longer lever, replacement, or removal are kept with the movement library below. They are not repeated in another summary table along the main reading path.
 
-| Movement family | Bodyweight entry | Intermediate version | Sustainable high-intensity version |
-|---|---|---|---|
-| Knee-dominant single-leg work | Supported split squat | Full-range split squat, reverse lunge, or step-up | Loaded backpack or dumbbell split squat; Bulgarian variation is optional with stable support |
-| Hip hinge | Unloaded wall-touch lesson | Backpack Romanian deadlift or kickstand version | Adjustable-dumbbell Romanian deadlift; the unloaded lesson is not a work set |
-| Glute hip extension | Two-leg bridge | Single-leg bridge | Measurably loaded bridge or hip thrust |
-| Hamstring knee flexion | Short bridge walkout | Longer-lever walkout | Two-leg, then single-leg sliding leg curl |
-| Calf plantar flexion | Two-leg learning set | Toe-assisted biased single-leg, then supported single-leg raise | Loaded full-range single-leg calf raise; add a loaded bent-knee variation only if calves become a priority |
-| Horizontal push | Wall or high-incline push-up | Floor push-up | Feet-elevated or safely loaded push-up, or substitute a dumbbell press |
-| Horizontal and vertical pull | Light-backpack row | Heavier backpack row or band pulldown | Dumbbell row and pull-up family on verified fixed equipment |
-| Overhead push | Partial pike push-up | Full floor or feet-elevated pike push-up | Substitute a dumbbell overhead press |
-| Shoulder isolation | Bottle lateral raise or reverse fly | Small-increment dumbbell or band | Continued dumbbell or cable progression without swinging |
-| Abdominals and trunk | Dead bug, reverse crunch, bent-knee side plank | Longer lever, straight-leg side plank, Pallof press | Loaded curl, stronger band, or heavy suitcase carry |
-| Adductors | Pillow-squeeze lesson | Repeatable moderate squeeze | Short-lever Copenhagen plank or measurably loaded band adduction |
-| Power and control | Step-and-stick or wall scapular work | Small bound or floor control | Faster or farther while still consistent; move to real hobby skill rather than failure |
+## Three strength sessions: five or six main movements each {#weekly-plan}
 
-## Weekly training schedule {#weekly-plan}
-
-With no specialist sessions currently scheduled, perform full-body days A, B, and C on Monday, Wednesday, and Saturday. The weekdays may shift, but leave at least one day between adjacent sessions. The row order in each table is the exercise order: complete the large movements near the top before smaller muscles. Rest until breathing is largely settled and the next set can retain its form: usually 2–3 minutes for compound movements and 60–90 seconds for smaller work. A listed set is not one universal physiological dose: only hypertrophy/strength rows use RIR to count hard sets; all other rows use their quality rule.
+With no specialist classes currently scheduled, perform full-body days A, B, and C on Monday, Wednesday, and Friday. The weekdays may shift together, but leave at least one day between strength sessions. The row order in each table is the movement order: power work first, main strength work next, and accessories last. Adjust rest using the ranges above and the quality of the next set. A listed set is not one universal physiological dose: only hypertrophy/strength rows use RIR to count hard sets; all other rows use the four intensity rulers' quality rules.
 
 The “how to do it now” column requires no dedicated purchase, but it may use a wall, the floor, the lowest stair, and everyday objects such as a sturdy backpack with intact zips and stitching, sealed water bottles, a towel, or a pillow. Do not use furniture or public equipment that moves, is wet, has sharp edges, or has uncertain load capacity.
 
@@ -112,55 +137,47 @@ The schedule, figures, and instruction use one naming system. `L` means lower bo
 
 ### How to start each session {#session-start}
 
-Begin with 3–5 minutes of brisk walking, marching in place, or easy stairs. Then perform 6 cat-cow repetitions, 6 unloaded hip hinges per side, 6 reverse steps per side, and 8 scapular push-ups. Do one easy warm-up set for the first lower-body movement and the first upper-body movement. A completed warm-up should leave the body warmer and moving more freely, not fatigued.
+Begin with 3–5 minutes of brisk walking, marching in place, or easy stairs. Then perform 6 cat-cow repetitions, 6 unloaded hip hinges per side, 6 reverse steps per side, and 8 scapular push-ups. Do one easy warm-up set for the first lower-body movement and the first upper-body movement. A completed warm-up should leave the body warmer and moving more freely, not fatigued. Perform the day's power movement only if the body feels stable after warming up.
 
-### Day A: shoulders and back, hip hinge, and foundational push {#day-a}
+### Day A: lower-body power, squat, hinge, and basic push-pull {#day-a}
 
-| Movement (identical to instruction heading) | How to do it now | Work sets from week 3 |
+| Movement (identical to instruction heading) | How to do it now | Target work sets during the accumulation phase |
 |---|---|---|
 | [L1 — Stable lateral landing (Figure 2A-1)](#power-and-landing) | Power/landing: step laterally and hold in weeks 1–2; later use a small lateral bound and hold | 3 × 3/side; stop before quality drops |
 | [L2 — Split squat (Figure 2A-2)](#split-squat-family) | Keep both feet in place for the whole set; touch a wall if needed | 3 × 8–15/side |
 | [U3 — One-arm row (Figure 3A-3)](#rowing) | Use a sturdy backpack and grip both straps near the bag | 3 × 10–20/side |
 | [U1 — Push-up (Figure 3A-1)](#push-up-family) | Choose an incline on a stable surface or the basic floor version | 3 × 6–20 |
 | [L3 — Hip hinge (Figure 2A-3)](#hinge-family) | Learn unloaded with a wall touch, then use the backpack as a Romanian-deadlift-style hinge | 3 × 8–15 |
-| [U5 — Lateral raise (Figure 3B-5)](#lateral-raise) | Use two sealed water bottles of equal capacity | 3 × 12–25 |
-| [C1 — Dead bug (Figure 4A-1)](#dead-bug) | Motor control: alternate opposite arm and leg | 2 × 6–10/side; stop before the back loses position |
-| [L7 — Calf raise (Figure 2B-7)](#calf-raise) | Learn with two legs in weeks 1–2; from week 3 use a toe-assisted biased single-leg, supported single-leg, or measurably loaded version | 2 × 8–20/side at RIR 1–3 |
-| [L8 — Tibialis raise (Figure 2B-8)](#tibialis-raise) | Optional motor-control accessory: lean on a wall and lift only the forefeet | 0–2 × 15–30; stop before rocking |
+| [U5 — Lateral raise (Figure 3B-5)](#lateral-raise) | Use two sealed water bottles of equal capacity | 2 × 12–25 |
+| [C1 — Dead bug (Figure 4A-1)](#dead-bug) | Optional motor-control accessory: alternate opposite arm and leg | 0–2 × 6–10/side; stop before the back loses position |
 
 ### Day B: unilateral legs, overhead push, and posterior chain {#day-b}
 
-| Movement (identical to instruction heading) | How to do it now | Work sets from week 3 |
+| Movement (identical to instruction heading) | How to do it now | Target work sets during the accumulation phase |
 |---|---|---|
-| [U1 — Push-up (Figure 3A-1)](#push-up-family) | Power variation: hands stay down and the ascent is as fast as possible | 3 × 3–5; stop before speed drops |
 | [L2 — Split squat (Figure 2A-2)](#split-squat-family) | Use the reverse-lunge variation: step one foot back before each vertical descent | 3 × 8–15/side |
 | [U3 — One-arm row (Figure 3A-3)](#rowing) | Use the sturdy backpack | 3 × 10–20/side |
 | [U2 — Pike push-up (Figure 3A-2)](#pike-push-up) | Raise the hips into an inverted V; elevate the hands if needed | 3 × 6–15 |
 | [L6 — Bridge walkout (Figure 2B-6)](#bridge-walkout) | Begin at the top of a bridge and take small heel steps out and back | 3 × 6–15 |
-| [U7 — Push-up plus (Figure 3B-7)](#push-up-plus) | Motor control: at the straight-arm top, continue pushing the ground away | 2 × 12–20; stop before compensation |
-| [C4 — Pillow adductor squeeze (Figure 4B-5)](#adductor-squeeze) | Entry isometric: lie with bent knees and squeeze a pillow evenly between them | 2 × 20–30 seconds; not a hypertrophy hard set |
 | [C3 — Side plank (Figure 4A-3)](#side-plank-family) | Isometric: begin with bent-knee support | 2 × 20–40 seconds/side; stop before position fails |
+| [L7 — Calf raise (Figure 2B-7)](#calf-raise) or [U7 — Push-up plus (Figure 3B-7)](#push-up-plus) | Optional accessory: choose L7 when the calves have a real loading bottleneck, or U7 when scapular control needs practice; do not automatically add both in the same week | 0–2 sets, stopping according to each movement's own ruler |
 
-### Day C: hips and legs, second push-pull exposure, and forearms {#day-c}
+### Day C: upper-body power, hips and legs, and a second push-pull exposure {#day-c}
 
-| Movement (identical to instruction heading) | How to do it now | Work sets from week 3 |
+| Movement (identical to instruction heading) | How to do it now | Target work sets during the accumulation phase |
 |---|---|---|
-| [L1 — Stable lateral landing (Figure 2A-1)](#power-and-landing) | Power/landing: use a small lateral bound and hold; still use only a step in weeks 1–2 | 3 × 3/side; stop before quality drops |
-| [L4 — Glute bridge (Figure 2A-4)](#hip-extension) | Use the two-leg floor version and pause two seconds at the top | 3 × 10–20 |
+| [U1 — Push-up (Figure 3A-1)](#push-up-family) | Power variation: choose an easy incline or floor version, the hands need not leave the surface, and intend to rise as fast as possible | 3 × 3–5; stop before speed drops |
 | [L5 — Low step-up (Figure 2B-5)](#step-up) | Use only the lowest fixed stair; substitute the basic L2 split squat if none is safe | 3 × 8–15/side |
 | [U3 — One-arm row (Figure 3A-3)](#rowing) | Use the sturdy backpack | 3 × 8–20/side |
 | [U1 — Push-up (Figure 3A-1)](#push-up-family) | Use the close-grip variation: move the hands slightly inward without forming a diamond | 3 × 8–20 |
-| [U5 — Lateral raise (Figure 3B-5)](#lateral-raise) | Use two sealed water bottles of equal capacity | 2 × 12–25 |
-| [U6 — Bent-over reverse fly (Figure 3B-6)](#reverse-fly) | Use bottles substantially lighter than the row load | 2 × 12–25 |
 | [C2 — Reverse crunch (Figure 4A-2)](#reverse-crunch) | Curl the pelvis through a small range without swinging the legs | 2 × 8–15 |
-| [F1 — Wrist extension (Figure 4B-8)](#wrist-extension) | Optional accessory: fix the forearm and raise the back of the hand with a light bottle | 0–2 × 12–25/side at RIR 2–4 |
-| [F2 — Forearm pronation-supination (Figure 4A-4)](#forearm-rotation) | Optional accessory: keep the elbow at the side and rotate a bottle held at its middle | 0–2 × 12–20/side at RIR 2–4 |
+| [U5 — Lateral raise (Figure 3B-5)](#lateral-raise) or [U6 — Bent-over reverse fly (Figure 3B-6)](#reverse-fly) | Optional accessory: choose one according to a lateral- or rear-deltoid bottleneck; do not automatically perform both | 0–2 × 12–25 |
 
 ### The twenty-minute floor for busy days {#minimum-session}
 
-A short day does not invalidate the week. Keep four movements and perform 2–3 rounds: [L2 — Split squat](#split-squat-family) for 8–15 repetitions per side, [U1 — Push-up](#push-up-family) for 6–20, [U3 — One-arm row](#rowing) for 10–20 per side, and [L3 — Hip hinge](#hinge-family) for 8–15. Use the bodyweight, backpack, or incline versions specified in the schedule. Rest as needed; do not turn the movements into a heart-rate circuit. Resume the normal schedule next time and do not repay missed volume.
+A short day does not invalidate the week. After a brief 3–5-minute warm-up, arrange four movements in two pairs: [L2 — Split squat](#split-squat-family) with [U3 — One-arm row](#rowing), then [U1 — Push-up](#push-up-family) with [L3 — Hip hinge](#hinge-family). Perform 2 sets of each at the repetitions used in the main tables. Within a pair, rest about 60–90 seconds after one movement before doing the other, so the same movement usually receives about 2–3 minutes before it appears again. Do not turn the session into a heart-rate circuit. Stop when twenty minutes expires, resume the normal schedule next time, and do not repay missed volume.
 
-### A completely unencumbered travel substitute {#travel-session}
+### A no-equipment travel substitute {#travel-session}
 
 During a short trip, the following table can replace any one A, B, or C session that week. Find level, non-slip ground that does not obstruct other people. If no clean ground is available, remove supine and prone movements rather than loading an ordinary bench of uncertain stability.
 
@@ -171,16 +188,54 @@ During a short trip, the following table can replace any one A, B, or C session 
 | [U1 — Push-up (Figure 3A-1)](#push-up-family) | Basic floor version | 3 × 6–20 |
 | [L3 — Hip hinge (Figure 2A-3)](#hinge-family) | Kickstand single-leg version with rear toes down | 3 × 10–20/side |
 | [U2 — Pike push-up (Figure 3A-2)](#pike-push-up) | Floor version | 2 × 6–15 |
-| [L6 — Bridge walkout (Figure 2B-6)](#bridge-walkout) | Floor version | 3 × 6–15 |
-| [U8 — Prone Y–T–W (Figure 3B-8)](#prone-ytw) | Complete each letter separately | 2 × 8–12 for each letter |
-| [C2 — Reverse crunch (Figure 4A-2)](#reverse-crunch) | Small pelvic curl | 2 × 8–15 |
 | [C3 — Side plank (Figure 4A-3)](#side-plank-family) | Bent-knee or straight-leg version | 2 × 20–40 seconds/side |
-| [L7 — Calf raise (Figure 2B-7)](#calf-raise) | Supported single-leg version | 2 × 12–30/side; beyond the range is only a short-term maintenance option |
-| [L8 — Tibialis raise (Figure 2B-8)](#tibialis-raise) | Optional wall version | 0–2 × 15–30 |
 
-This table has no reliable progressive pulling resistance, and prone Y–T–W work does not replace rows or pulldowns. It can maintain a short trip but should not become a multi-month hypertrophy plan. For travel beyond one week, take an intact long band and compatible anchor or find a fixed pull-up bar whose safety can be established. If neither exists, accept less back training temporarily instead of improvising with tree branches, decorative railings, or unknown furniture.
+This table maintains the training habit through squat, hinge, push, and trunk work but has no reliable progressive pulling resistance, so it is suitable only for short-term maintenance. For travel beyond one week, take an intact long band and compatible anchor or find a fixed pull-up bar whose safety can be established. If neither exists, accept less back training temporarily instead of improvising with tree branches, decorative railings, or unknown furniture, and do not try to compensate by piling on more pushing accessories.
 
-## Movement instruction: lower body and power {#lower-body-guide}
+## How to perform the two cardiorespiratory sessions {#aerobic-sessions}
+
+Perform 20–30 minutes per session in weeks 1–2, then progress toward 30–45 minutes from week 3 onward. Options include brisk walking, cycling, an elliptical, or a rowing machine when technique is familiar and no warning symptoms are present. Spend most of the time at RPE 3–4 out of 10: breathing is clearly deeper than at rest; you can still speak in full short sentences but cannot sing comfortably. Gradually increase the pace for about 5 minutes at the start and slow down for about 5 minutes before finishing. The entry phase uses no all-out sprints and need not recreate the near-maximal sensation of rowing-team training.
+
+The first aerobic progression is to add 5 minutes at the same RPE until the session reaches 30–45 minutes. The second is to cover slightly more distance or produce slightly more machine output in the same time. After at least four stable weeks, and only if desired and free of warning symptoms, part of Saturday may occasionally become three to five short intervals with ample recovery between them. This article does not presume that high-intensity intervals are mandatory.
+
+Strength and aerobic fitness can improve concurrently. They are placed on separate days here mainly to preserve training quality, not because research has established a mandatory number of hours between them. When both must occur on the same day, use the order low-volume power, strength, and aerobic work; when one outcome matters most, perform it during the fresher part of the day. Once boxing, HEMA, or skiing classes return, replace work according to the cardiorespiratory and power load they actually provide, as described below, rather than counting it twice.
+
+Stop and seek assessment for chest pressure or pain, near-fainting, breathlessness disproportionate to the effort, or a clearly irregular rather than merely faster heartbeat during exercise. “My heartbeat feels forceful” alone cannot be judged remotely as normal or abnormal. Gradual intensity reduces avoidable risk, but this plan cannot provide a medical diagnosis.
+
+## How the plan yields when hobbies return {#hobby-return}
+
+Strength, power, and aerobic training prepare general physical capacities. They do not replace feedback for singing, striking and defence in boxing, distance and timing in HEMA, or skiing technique. Once classes begin, record the leg, forearm, power, and cardiorespiratory load they actually create, then remove duplicate training. The same class cannot be counted as “free cardio” while its recovery cost is ignored.
+
+| Actual weekly hobby volume | How the base plan changes | Additional rule |
+|---|---|---|
+| 0 sessions, the current state | Complete A, B, and C plus two progressive aerobic sessions | Use twelve weeks to establish a baseline; do not add pre-emptive “sport-specific conditioning” |
+| 1 boxing, HEMA, or skiing session | Retain three strength sessions if recovery is normal; replace the nearest power drill or one aerobic session according to what the class actually demands rather than automatically stacking it | Place heavy leg training roughly 48 hours before the class when possible; at the first decline in sport-specific performance, reduce the relevant lower-body, forearm, or accessory sets |
+| 2–3 total boxing, HEMA, or skiing sessions | Change to two full-body strength sessions per week and rotate A, B, and C; let the classes provide whatever cardiorespiratory or power load they genuinely contain | Retain a squat or unilateral leg movement, a hinge, a push, and a pull each week; remove accessories first rather than using caffeine to conceal persistent fatigue |
+| Consecutive skiing days or the week before an important event | Retain familiar movements, but halve lower-body work sets and cancel jumps 3–5 days before departure | Arrive with little soreness; do not test limits or “make up” work in the final week |
+| Singing only | Do not automatically reduce the strength or aerobic schedule, and do not count singing as either | Perform formal singing practice before fatigue or separately from strength work; manage vocal fatigue as a voice issue rather than compensating with more abdominal work |
+
+If neck training is genuinely desired, begin once per week with gentle palm-resisted isometrics to the front, back, left, and right: 1 set of 10–20 seconds per direction, 4 sets in total, at roughly thirty to fifty percent perceived effort. Keep the head and neck neutral, do not circle the neck quickly, and do not present the work as concussion protection. Seek professional assessment first with existing neck pain, arm numbness, dizziness, or a concussion history.
+
+## Progression, deloading, diet, and maintenance {#progression}
+
+Actively change at most one major variable per week so the log can explain what produced the change:
+
+1. Increase the smallest load or move to one harder variation only after every hypertrophy/strength work set has reached the repetition ceiling in two consecutive sessions and still ends at about RIR 2.
+2. First add about 5 minutes to an aerobic session at the same RPE. Once it reaches 30–45 minutes, compare distance or machine output. Add a small amount of distance or speed to power work only while every repetition remains consistent.
+3. Add 1–2 weekly hard sets to a main region only when work-set performance, circumference, and photographs have all remained unchanged for four weeks while sleep, protein intake, and adherence are normal. Do not add volume because of one workout's pump or soreness.
+4. If the same movement regresses twice, soreness still clearly disrupts daily life after 72 hours, or hobby quality keeps falling, halve the relevant work sets the following week. Pain and abnormal weakness are not self-diagnosed as an ordinary deload week.
+5. If a strength session exceeds 70 minutes, remove conditional accessories and optional movements first. Do not compress rest on the main work or turn the whole table into a heart-rate circuit.
+6. Reduce L8, F1, F2, or another accessory to 0 sets when four weeks have produced no measurable resistance increase, no better movement consistency, and no solution to a real bottleneck. Removing low-return work is itself a form of progression.
+
+At a body weight of 65 kg, about 100–115 g of protein per day is an easy practical range, equivalent to roughly 1.5–1.8 g/kg; use about 1.6 g/kg if remembering one number. This is a rounded range derived from group research, not a precise upper limit. Three normal protein-containing meals can meet it. Add a small meal only when hunger, training time, or the day's total makes one useful. Body weight cannot dictate an egg count: two whole eggs are merely one convenient breakfast component, while fish, meat, dairy, legumes, and other foods share the day's protein intake.
+
+For the first two weeks, record a seven-day moving average of morning body weight while eating approximately at maintenance. If training and recovery are normal but body weight, circumferences, and main-movement performance all remain unchanged for four to six weeks, and more muscle is genuinely desired, add roughly 100–200 kcal per day. Body weight need not rise quickly; remove that addition if waist size grows clearly faster than strength and target muscles. A sustained, substantial energy deficit impairs lean-mass gain.
+
+During maintenance, retain the main movements' difficulty, proximity to failure, and one comparable aerobic baseline. First reduce each muscle group's building-phase set count to roughly one-third to one-half and distribute it across one or two weekly strength sessions. Maintain that dose when strength, circumference, and cardiorespiratory performance remain stable for four weeks; restore a small amount of the relevant dose if one declines. Maintenance volume is an individual test result, not something dictated by the fear that a few days without training causes loss.
+
+## Movement library: lower body and power {#lower-body-guide}
+
+The following 24 movements form a reference library, not a checklist to complete every week. Begin with the A, B, and C tables; jump to a code only when you need to understand a movement, choose a regression, find a replacement, or address a bottleneck.
 
 {% include movement-plate.liquid title="Figure 2A | Lower-body movements 1–4" hint="Select any card to jump to its identically named instruction." image="/assets/posts/202608121000/lower-body-movement-guide.webp" image_800="/assets/posts/202608121000/lower-body-movement-guide-content-v2-800.webp" href_1="#power-and-landing" figure_1="Figure 2A-1" name_1="L1 — Stable lateral landing" href_2="#split-squat-family" figure_2="Figure 2A-2" name_2="L2 — Split squat" href_3="#hinge-family" figure_3="Figure 2A-3" name_3="L3 — Hip hinge" href_4="#hip-extension" figure_4="Figure 2A-4" name_4="L4 — Glute bridge" %}
 
@@ -264,7 +319,7 @@ The low platform represents a load-rated training step with four non-slip contac
 - **Pass standard:** The ankle moves in line with the foot and the body does not swing to create repetitions. Stop for shin or anterior-ankle pain rather than testing it with more repetitions.
 - **Progression path:** Close-to-wall stance → feet farther forward → more body weight on one side → band dorsiflexion after E1. If 30 repetitions impose no local limit and no measurable resistance or real use exists, removing the movement is better than adding repetitions indefinitely.
 
-## Movement instruction: push, pull, and scapula {#upper-body-guide}
+## Movement library: push, pull, and scapula {#upper-body-guide}
 
 {% include movement-plate.liquid title="Figure 3A | Upper-body movements 1–4" hint="Select any card to jump to its identically named instruction." image="/assets/posts/202608121000/upper-body-movement-guide.webp" image_800="/assets/posts/202608121000/upper-body-movement-guide-content-v2-800.webp" href_1="#push-up-family" figure_1="Figure 3A-1" name_1="U1 — Push-up" href_2="#pike-push-up" figure_2="Figure 3A-2" name_2="U2 — Pike push-up" href_3="#rowing" figure_3="Figure 3A-3" name_3="U3 — One-arm row" href_4="#vertical-pulling" figure_4="Figure 3A-4" name_4="U4 — Band pulldown" %}
 
@@ -272,11 +327,11 @@ Teal marks the start, charcoal the finish, and orange arrows the direction of tr
 
 ### U1 — Push-up (Figure 3A-1) {#push-up-family}
 
-- **Role and boundary:** Regular and close-grip versions train chest, triceps, and anterior deltoid for hypertrophy/strength. The day-B fast-concentric version trains rapid force and cannot use the same hard-set accounting.
+- **Role and boundary:** Regular and close-grip versions train chest, triceps, and anterior deltoid for hypertrophy/strength. The day-C fast-concentric version trains rapid force and cannot use the same hard-set accounting.
 - **Intensity metric:** For regular and close-grip work, record incline height, load, 6–20 repetitions, and RIR 1–3. For fast work use 3–5 repetitions and stop at the first clear loss of ascent speed.
 - **Setup:** Place the hands slightly wider than the shoulders with fingers spread, and hold a controllable line from head to heel. If the floor version is too difficult, use a stable incline surface braced against a wall.
 - **Basic action:** Let the elbows form roughly 30–60 degrees with the trunk, lower the chest toward the floor or surface, and push away. Chest and hips rise together, the lower back does not sag, and the shoulders do not shrug.
-- **Day B fast-concentric variation:** Keep the hand position and contact with the ground, but make the ascent as fast as possible. Perform 3–5 repetitions and stop when speed falls.
+- **Day C fast-concentric variation:** Keep the hand position and contact with the ground, but make the ascent as fast as possible. Perform 3–5 repetitions and stop when speed falls.
 - **Day C close-grip variation:** Move the hands slightly inward while keeping the forearms near vertical at the bottom; a diamond is unnecessary.
 - **Progression path:** Wall or high incline → progressively lower incline → floor → feet elevated or reliably loaded → substitute a dumbbell floor press after E2. Move on after two sessions at 20 with RIR 2; do not place an unstable backpack on the back.
 
@@ -342,7 +397,7 @@ In Figure 3B-7 the elbows remain straight while the upper back moves slightly fa
 - **Pass standard:** Count each letter separately and keep the range small enough that the lower back does not lift the chest. This is scapular-control work and does not replace U3 rows or U4 pulldowns.
 - **Progression path:** Small unloaded range → full controlled range with a two-second pause → incline bench or extremely light load. After 12 stable repetitions for every letter, maintain only as needed; remove it first when reliable pulling returns after travel or sessions run long.
 
-## Movement instruction: trunk, adductors, carries, and forearms {#trunk-guide}
+## Movement library: trunk, adductors, carries, and forearms {#trunk-guide}
 
 {% include movement-plate.liquid title="Figure 4A | Trunk and forearm movements 1–4" hint="Select any card to jump to its identically named instruction." image="/assets/posts/202608121000/core-and-forearm-movement-guide.webp" image_800="/assets/posts/202608121000/core-and-forearm-movement-guide-content-v2-800.webp" href_1="#dead-bug" figure_1="Figure 4A-1" name_1="C1 — Dead bug" href_2="#reverse-crunch" figure_2="Figure 4A-2" name_2="C2 — Reverse crunch" href_3="#side-plank-family" figure_3="Figure 4A-3" name_3="C3 — Side plank" href_4="#forearm-rotation" figure_4="Figure 4A-4" name_4="F2 — Forearm pronation-supination" %}
 
@@ -421,7 +476,9 @@ Figures 4B-6 and 4B-7 begin only after E1 and E2 respectively. The cards explain
 - **Pass standard:** The wrist and elbow do not sting and the whole arm does not swing.
 - **Progression path:** Light bottle → small-increment dumbbell → band or cable. Add the smallest load after two sessions at 25 with RIR 3; reduce to 0 sets when HEMA grip volume rises, sessions run long, or four weeks show no measurable benefit.
 
-## How singing fits the system {#singing}
+## Sport-specific appendix: how singing coordination practice fits {#singing}
+
+When no formal singing practice is underway, skip this entire section; it does not occupy a slot in the base weekly plan. Use the following low-load coordination routine only after singing resumes and a short preparatory sequence is wanted.
 
 Formal singing and strength training both need regular practice, progressive tasks, feedback, and recovery, but their training targets differ. Strength work can quantify muscular stimulus through load, repetitions, and proximity to failure. Singing depends more on coordination among breathing, vocal-fold vibration, resonance, and auditory feedback. The diaphragm works during inhalation, and the abdominal wall and ribcage muscles help regulate exhalation, but making the abdomen sore or using an inspiratory-resistance device does not automatically improve pitch, tone, or register transitions.
 
@@ -447,7 +504,7 @@ Practise for 3–5 minutes in a comfortable middle range. Choose only one of hum
 
 Stop singing if the voice is hoarse or painful, high notes disappear suddenly, or speaking becomes effortful. Persistent or recurring symptoms need assessment by an ear, nose, and throat physician and, when appropriate, a voice-specialist speech-language pathologist. A training plan cannot diagnose vocal-fold problems. Buy a respiratory muscle trainer only when a singing teacher or clinical professional has identified a specific problem, target, and dose.
 
-## Equipment purchase order {#equipment}
+## Appendix: equipment purchase order {#equipment}
 
 A logged bottleneck triggers a purchase: a movement reaches its repetition ceiling in two consecutive sessions and further repetitions have become inefficient; improvised loading is becoming unsafe; or the back lacks a reliable vertical pull. Continue with the current version if none of these occurs.
 
@@ -464,60 +521,32 @@ A logged bottleneck triggers a purchase: a movement reaches its repetition ceili
 
 Do not begin with a neck harness, respiratory muscle trainer, unstable balance board, boxing-branded “specific” gadget, or large multi-gym. Their evidence may not match the goal, or their value cannot yet be judged without a stable training record. Never drop adjustable dumbbells, retire cracked bands, and install and inspect all fixed equipment according to its manufacturer.
 
-## How to adjust when hobbies return {#hobby-return}
-
-Strength training prepares muscles and basic physical capacity. It does not replace feedback in singing, strikes and defence in boxing, distance and timing in HEMA, or skiing technique. Once classes begin, skill quality takes priority over preserving every gym set.
-
-| Actual weekly hobby load | Strength adjustment | Additional rule |
-|---|---|---|
-| 0 sessions, the current state | Complete A, B, and C | Use the twelve weeks to establish a baseline; do not add imagined “sport-specific conditioning” |
-| 1 boxing, HEMA, or skiing session | Keep three days if recovery remains normal; remove jumps from the nearest strength day and place the hard leg session about 48 hours earlier | At the first repeated drop in sport performance, remove 1 set each from lower-body and forearm work that week instead of masking fatigue with caffeine |
-| 2–3 total boxing, HEMA, or skiing sessions | Move to two full-body sessions per week and rotate A, B, and C; use 2–3 sets per movement | Retain one hinge, one single-leg squat, two pushes, and two pulls; remove 1 set from each accessory |
-| Consecutive ski days or the week before an important event | Retain the movements but halve lower-body work sets and remove jumps 3–5 days before departure | Arrive with familiar movements and low soreness; do not test limits in the final week |
-| Singing is the only addition | The strength schedule need not automatically shrink | Put formal singing before strength work or separate it; treat voice fatigue as a voice issue rather than compensating with more abdominal work |
-
-If neck work is genuinely wanted, use only gentle palm-resisted isometrics in the front, back, left, and right directions: 2 sets of 10–20 seconds per direction at roughly thirty to fifty percent perceived effort. Keep the head and neck neutral, avoid fast neck circles, and do not treat this as concussion protection. A history of neck pain, arm numbness, dizziness, or concussion warrants professional assessment first.
-
-## Rules for growth, deloading, and maintenance {#progression}
-
-Use repetitions in reserve (RIR) for hypertrophy/strength work: RIR 2 means roughly two more repetitions could have been performed with the current form. Most building-phase sets of this type stop at RIR 1–3, and routine technical failure is unnecessary. Power work uses speed and landing quality, motor-control work uses leverage and compensation, and isometric/carry work uses tension, time or distance, and position. Those four records should not be compressed into one RIR number.
-
-Make only one weekly adjustment:
-
-1. When the same movement reaches the top of its repetition range in two consecutive sessions with RIR 2 still available, add the smallest load or enter one harder version.
-2. When a tier-one muscle shows no change in performance, circumference, or photographs for three consecutive weeks while sleep, protein, and completion are adequate, first add 1–2 weekly hard sets for that muscle.
-3. When the same movement declines twice, soreness still disrupts daily life after 72 hours, or hobby quality falls, halve the relevant muscle's work sets in the next week. Do not reinterpret pain as an ordinary deload issue.
-4. When a session exceeds 70 minutes, remove conditional-tier and accessory work first. Do not compress rest on large movements or turn the whole session into a no-rest circuit.
-5. When optional accessories such as L8, F1, or F2 produce neither measurable resistance progress, better movement consistency, nor a solved real bottleneck for four weeks, reduce them to 0 sets. Removing a low-return movement is also progression.
-
-At 65 kg, roughly 100–115 g of protein per day is an executable range, spread across three or four meals. Protein powder is unnecessary when food covers it. Spend the first two weeks around estimated maintenance calories while logging a seven-day moving average of morning weight. If training and recovery are normal but weight, circumferences, and main movements all remain unchanged for three weeks, add roughly 100–200 kcal per day. The average need rise only about 0–0.15 kg per week. If waist size rises clearly faster than strength and target muscles, remove those calories first. Sustained large energy deficits impair lean-mass gain and should not accompany a maximal hypertrophy phase.
-
-For maintenance, keep similar movement difficulty and effort while first reducing each muscle's building volume to roughly one-third to one-half, distributed across one or two weekly exposures. Retain that dose when performance and circumference remain stable for four weeks; restore one or two sets when they fall. The maintenance dose is an individual test result, not something determined by a claim that a muscle disappears after a few days.
-
-## Sources and limits of the evidence {#evidence}
+## Appendix: sources and limits of the evidence {#evidence}
 
 This schedule is a personal starting plan inferred from muscle demands shared across several goals. Research has not directly compared this complete A, B, and C combination. Evidence is separated by distance from the question: syntheses and position stands support programme principles; longitudinal movement or muscle studies support limited choices; acute EMG, different populations, and mechanisms show only possible use. Movements without direct evidence are explicitly optional or introductory rather than promoted from biomechanical plausibility to proven long-term effect. The project research dossier contains the full muscle matrix, 24-movement audit, and grading decisions.
 
 | Judgment | Source | How it is used here |
 |---|---|---|
-| Simple, regular resistance training works; major muscle groups should be covered at least twice weekly, roughly 10 sets per muscle per week is a common hypertrophy reference, bodyweight and bands are effective, and failure or complex periodization is not universally required | [ACSM explanation of its 2026 resistance-training guideline](https://acsm.org/resistance-training-guidelines-update-2026/) | Establishes the three-day full-body structure, 8–12-set range, and RIR 1–3 |
-| Many prescriptions outperform no training; higher loads favour maximal strength and multi-set prescriptions favour hypertrophy, without one universal repetition scheme for every outcome | [Network meta-analysis of resistance-training prescriptions](https://pubmed.ncbi.nlm.nih.gov/37414459/) | Requires eventual measurable load for main movements while allowing higher-repetition accessories |
-| Closer proximity to failure may favour hypertrophy, but every set need not reach momentary failure | [Meta-regression of proximity to failure and hypertrophy](https://pubmed.ncbi.nlm.nih.gov/38970765/); [meta-analysis of failure versus non-failure training](https://pubmed.ncbi.nlm.nih.gov/36334240/) | Applies RIR 1–3 only to hypertrophy/strength work and uses quality stops for power and control |
+| Regular resistance training can improve strength, muscle size, power, and several functional outcomes. Heavier loads favour maximal strength, higher weekly volume favours hypertrophy, and low- to moderate-volume training with a fast concentric phase favours power; routine momentary failure is not required | [ACSM 2026 position stand on resistance training](https://pubmed.ncbi.nlm.nih.gov/41843416/) | Prescribes strength, physique, and power separately; treats roughly 10 or more weekly sets as an average condition that favours greater hypertrophy rather than a minimum effective dose |
+| Strength and hypertrophy still increase on average as weekly set volume rises, but with diminishing returns; a compound movement's contribution to non-primary muscles is better understood as fractional sets | [Meta-regression of weekly volume and frequency dose-response](https://pubmed.ncbi.nlm.nih.gov/41343037/); [network meta-analysis of resistance-training prescriptions](https://pubmed.ncbi.nlm.nih.gov/37414459/) | Starts all-round fitness at about 6–10 high-quality sets for the main regions, then adjusts according to recovery and records without mechanically counting every involved muscle |
+| Mechanical tension is an important mechanism of resistance-training-induced skeletal-muscle growth, but a discrete switch under which “only the final repetitions count” has not been established. Training closer to failure tends to favour hypertrophy, although the best stopping point remains uncertain. In one small direct comparison, 1–2 RIR and failure produced similar quadriceps growth, while failure caused more acute fatigue; RIR estimates also vary by person and context | [Review of mechanisms of resistance-training-induced skeletal-muscle growth](https://pubmed.ncbi.nlm.nih.gov/35389932/); [meta-regression of proximity to failure and hypertrophy](https://pubmed.ncbi.nlm.nih.gov/38970765/); [eight-week comparison of 1–2 RIR and failure](https://pubmed.ncbi.nlm.nih.gov/38393985/); [review of repetitions-in-reserve prediction accuracy](https://pubmed.ncbi.nlm.nih.gov/34542869/) | Uses RIR 1–3 as an adjustable work range, calibrated through logs and safe movements rather than presented as an optimum for everyone |
+| Nine available studies suggest that more than 60 seconds of rest may offer a small hypertrophy advantage; no clear additional difference was detected beyond roughly 90 seconds, but heterogeneous evidence cannot establish 90 seconds as a ceiling | [Systematic review and Bayesian meta-analysis of inter-set rest and hypertrophy](https://pubmed.ncbi.nlm.nih.gov/39205815/) | Uses 2–4 minutes for compound movements and 1–3 minutes for isolation and accessories as practical starting points, then adjusts from next-set performance |
+| In recreational trainees, concurrent training can on average improve aerobic fitness while producing strength, power, and hypertrophy outcomes comparable to resistance training alone; evidence in highly trained people is sparse. Public-health references separately require enough total weekly activity | [Umbrella review of concurrent training](https://pubmed.ncbi.nlm.nih.gov/41762427/); [WHO guidelines on physical activity](https://www.who.int/publications/i/item/9789240015128) | Schedules three strength and two progressive aerobic sessions while making clear that two 30–45-minute sessions do not automatically equal 150–300 weekly minutes of moderate activity |
+| Chest discomfort, near-fainting, abnormal breathlessness, or a clearly irregular heartbeat during exercise require stopping and assessment; any one of unexpectedly severe muscle pain, dark urine, marked weakness, or unusual fatigue warrants prompt care | [American Heart Association guidance on developing an activity plan](https://www.heart.org/en/health-topics/cardiac-rehab/getting-physically-active/develop-a-physical-activity-plan-for-you); [CDC guidance on rhabdomyolysis symptoms](https://www.cdc.gov/niosh/rhabdo/signs-symptoms/index.html) | Defines the stopping boundaries at the beginning and in the aerobic section without using a training plan to diagnose past rowing experience |
 | Full range of motion generally favours strength and lower-body hypertrophy; lengthened-position work may add value, but findings remain mixed | [Systematic review of range of motion](https://pubmed.ncbi.nlm.nih.gov/34170576/); [review of lengthened-position training](https://pubmed.ncbi.nlm.nih.gov/41646176/) | Prioritizes controlled full range without treating slow or lengthened partials as a permanent substitute for load |
 | Established adaptations can be retained with markedly lower training doses, although the minimum varies with age, load, and outcome | [Bickel et al. on retaining adaptations after training-dose reduction](https://pubmed.ncbi.nlm.nih.gov/21131862/) | Sets one-third to one-half of building volume as a maintenance starting test rather than a guarantee |
-| Training to momentary failure and retaining repetitions can produce similar hypertrophy | [Comparison of repetitions-in-reserve and failure training](https://pubmed.ncbi.nlm.nih.gov/38393985/) | Avoids routine failure and prioritizes technique and recovery |
-| Protein benefits for resistance trainees tend to plateau near 1.6 g/kg/day, with individual uncertainty | [Systematic review of protein supplementation, muscle mass, and strength](https://pubmed.ncbi.nlm.nih.gov/28698222/) | Produces the practical range of about 100–115 g/day at 65 kg |
+| Average group benefits from protein supplementation flatten near 1.6 g/kg/day, but the estimate has a wide interval and cannot serve as a precise upper limit | [Systematic review of protein supplementation, muscle mass, and strength](https://pubmed.ncbi.nlm.nih.gov/28698222/) | Produces a practical range of about 100–115 g/day at 65 kg and allows it to be completed in three meals |
 | Sustained energy deficiency impairs resistance-training gains in lean mass | [Meta-analysis of energy deficiency and resistance-training adaptation](https://pubmed.ncbi.nlm.nih.gov/34623696/) | Separates aggressive weight loss from the maximal-growth phase |
 | Classical singers adapt thoracoabdominal breathing patterns to phrases; added respiratory-muscle strength work improves some respiratory measures, but voice outcomes are inconsistent | [Study of breathing patterns in singing](https://pmc.ncbi.nlm.nih.gov/articles/PMC4861272/); [study of respiratory muscle strength training in classical singers](https://pubmed.ncbi.nlm.nih.gov/28958873/) | Treats singing as coordination and does not default to a respiratory trainer |
 | Voice fatigue, hoarseness, pain, and effortful speech require reduced use and medical attention when persistent | [Voice-care guidance from the US National Institute on Deafness and Other Communication Disorders](https://www.nidcd.nih.gov/health/taking-care-your-voice) | Defines stop and referral boundaries for voice practice |
-| Teaching plates can expose start, finish, and alignment cues for the reader to check, but one illustration cannot replace movement-by-movement instruction; landing in particular requires control of knee valgus and lower-limb alignment | [ACE Exercise Library](https://www.acefitness.org/resources/everyone/exercise-library/); [NSCA Basics of Strength and Conditioning Manual](https://www.nsca.com/contentassets/de9aebfe7a7340b69217b99bb13862a7/basics_of_strength_and_conditioning_manual.pdf) | Calibrates joint direction, range, and language-neutral numbering in the eight teaching-card groups while leaving the prose as the final execution boundary |
+| Teaching plates can expose start, finish, and alignment cues for the reader to check, but one illustration cannot replace movement-by-movement instruction; landing in particular requires control of knee valgus and lower-limb alignment | [ACE Exercise Library](https://www.acefitness.org/resources/everyone/exercise-library/); [NSCA box step-off landing assessment](https://www.nsca.com/education/articles/kinetic-select/agility-and-quickness-test-box-step-off-landing-assessment/) | Calibrates joint direction, range, and language-neutral numbering in the eight teaching-card groups while leaving the prose as the final execution boundary |
 | In one small longitudinal study, standing calf raises produced more gastrocnemius and whole-calf growth than seated raises while soleus outcomes were similar; young-adult bilateral heel-raise tests often exceed 25 repetitions, although their pace differs from this programme | [Standing-versus-seated calf-raise trial](https://pubmed.ncbi.nlm.nih.gov/38156065/); [bilateral heel-raise repetition reference](https://pmc.ncbi.nlm.nih.gov/articles/PMC5628365/) | Restricts two-leg 15–25 work to familiarization, makes supported single-leg or stable load the main path, and keeps bent-knee work as an optional calf-priority addition |
 | Foot-and-ankle exercise research often omits load and complete dosage, so an exercise name alone cannot establish long-term effect | [Scoping review of foot-and-ankle exercise dosage reporting](https://pubmed.ncbi.nlm.nih.gov/40178827/) | Marks tibialis raises as an evidence-limited optional accessory that must show measurable progress or be removed |
 | Push-ups can train chest and triceps at matched relative effort; push-up-plus variations show strong serratus use in acute tests, which is not long-term hypertrophy evidence | [Eight-week push-up versus bench-press trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC5812864/); [push-up-plus EMG review](https://pubmed.ncbi.nlm.nih.gov/31584855/) | Uses U1 as a progressive main push and U7 as a low-dose motor-control drill |
-| Squats and hip thrusts can both grow the glutes and strength remains task-specific; hamstring adaptation also differs between hip-extension and knee-flexion exercises | [Squat-versus-hip-thrust trial](https://pubmed.ncbi.nlm.nih.gov/37461495/); [comparison of hamstring knee-flexion training](https://pubmed.ncbi.nlm.nih.gov/38857522/) | Combines L2, L3, and L4 for glutes and pairs L3 hinging with the L6 knee-flexion family |
+| Squats and hip thrusts can both grow the glutes and strength remains task-specific; hamstring adaptation also differs between hip-extension and knee-flexion exercises | [Squat-versus-hip-thrust trial](https://pubmed.ncbi.nlm.nih.gov/37461495/); [comparison of hamstring knee-flexion training](https://pubmed.ncbi.nlm.nih.gov/38857522/) | Uses L2, L3, and L5 for glute work in the main programme; retains L4 in the library as a floor-based hip-extension progression; and uses L3 and L6 to cover posterior-chain hip extension and knee flexion respectively |
 | Eight weeks of progressive Copenhagen work increased eccentric hip-adduction strength in male youth footballers; that population and movement cannot prove pillow-squeeze hypertrophy in ordinary adults | [Randomized Copenhagen-adduction trial](https://pubmed.ncbi.nlm.nih.gov/26589483/) | Limits the pillow squeeze to an entry isometric and requires a short-lever Copenhagen or measurable resistance for further strengthening |
 | Core training can increase trunk strength, while transfer to general or sport performance is limited and heterogeneous | [Review of core stability and sport performance](https://pubmed.ncbi.nlm.nih.gov/22784233/); [systematic review of trunk training](https://pubmed.ncbi.nlm.nih.gov/26589515/) | Retains anti-extension, anti-side-bending, and anti-rotation capacity without promising automatic singing or sport-skill gains |
 | Lower-body fatigue can reduce punch force in trained boxers; strength training relates to fencing movement performance; prolonged recreational skiing reduces eccentric quadriceps and hamstring strength | [Boxing lower-body fatigue study](https://pubmed.ncbi.nlm.nih.gov/33858296/); [fencing strength-training study](https://pubmed.ncbi.nlm.nih.gov/24942170/); [post-skiing eccentric-strength study](https://pubmed.ncbi.nlm.nih.gov/27900115/) | Jointly prioritizes hips and legs, single-leg control, posterior chain, and landing-deceleration capacity while avoiding pre-hobby fatigue |
 | Existing evidence relating neck strength to concussion risk remains inconsistent | [Systematic review of neck strength and concussion risk](https://pubmed.ncbi.nlm.nih.gov/41524441/) | Keeps neck work optional and low dose without an injury-prevention promise |
 
-What deserves to remain after twelve weeks is not an immutable spreadsheet, but four rules: let completion rate decide whether the plan is realistic, let clean performance decide progression, let observed bottlenecks decide purchases, and let hobby quality decide when to reduce volume. That is how appearance, maintenance, and utility become one system that can keep running.
+What deserves to remain after twelve weeks is a method of judgment: track physique with photographs and circumferences under the same conditions, strength with comparable loads and clean repetitions, power with speed and consistency, cardiorespiratory fitness with time or distance at the same RPE, and the programme itself with adherence and hobby quality. Movements, set counts, and equipment can all change in response to those records. That is how moderate muscularity and all-round fitness become one long-running system.
