@@ -487,7 +487,7 @@ recognition:
 
 评论仓库、仓库 Node ID、分类、分类 Node ID、严格路径映射和主题名集中在 `_config.yml` 的 `giscus`。当前使用 `Yiyuiii/yiyuiii.github.io` 的 `Announcements` 公告分类；中英文 URL 按 `pathname` 分别形成讨论。页面说明、加载、重试、错误和 Discussions 链接文案只维护 `_data/site_text.yml` 的 `comments` 中英文平行字段；Discussions 链接嵌在“评论公开保存在……”说明句中，不另设一行操作入口。`_includes/bilingual-seo.liquid` 输出正式 canonical backlink，避免本地预览生成的讨论回链到 loopback 地址。
 
-根目录 `giscus.json` 只允许 `https://yiyuiii.github.io` 以及带任意端口的 `localhost` / `127.0.0.1` 预览来源，并固定评论按最早在前排列。扩展来源前必须确认确有站点部署需要；不要添加通配公网来源。仓库侧必须保持 Discussions 开启，并确认 Giscus GitHub App 只授权本仓库。若以后需要用 `Announcements` 发布真正公告，再新建专用的 `Comments` 公告分类、更新 `_config.yml` 的分类名称与 Node ID，并同时更新契约测试。
+根目录 `giscus.json` 只允许正式域名 `https://yiyuiii.top`、切换期保留的 `https://yiyuiii.github.io`，以及带任意端口的 `localhost` / `127.0.0.1` 预览来源，并固定评论按最早在前排列。扩展来源前必须确认确有站点部署需要；不要添加通配公网来源。仓库侧必须保持 Discussions 开启，并确认 Giscus GitHub App 只授权本仓库。若以后需要用 `Announcements` 发布真正公告，再新建专用的 `Comments` 公告分类、更新 `_config.yml` 的分类名称与 Node ID，并同时更新契约测试。
 
 重定向兼容页和 404 不渲染评论。评论脚本必须继续监听 `yiyuiii:themechange`，通过 Giscus 官方 `setConfig` 消息同步明暗主题；明亮和夜晚分别使用 Giscus 官方 `light`、`dark` 主题，官方署名保留在上游组件的原生位置。不要通过自定义 Giscus 主题依赖 iframe 内部 DOM、隐藏或重排官方署名。
 

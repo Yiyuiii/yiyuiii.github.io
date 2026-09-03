@@ -1,3 +1,11 @@
 <footer class="site-footer">
   <p>&copy; {{ site.time | date: '%Y' }} yiyuiii</p>
+  <p class="site-footer__analytics">
+    {{ text.analytics.disclosure }}
+    <a
+      href="https://developers.cloudflare.com/web-analytics/about/"
+      target="_blank"
+      rel="external nofollow noopener noreferrer"
+    >{{ text.analytics.details }}</a>
+  </p>
 </footer>

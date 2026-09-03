@@ -33,7 +33,7 @@ def test_giscus_embedding_is_restricted_to_production_and_local_preview_origins(
     policy = json.loads(text("giscus.json"))
 
     assert policy == {
-        "origins": ["https://yiyuiii.github.io"],
+        "origins": ["https://yiyuiii.top", "https://yiyuiii.github.io"],
         "originsRegex": [r"^http://(localhost|127\.0\.0\.1):[0-9]+$"],
         "defaultCommentOrder": "oldest",
     }

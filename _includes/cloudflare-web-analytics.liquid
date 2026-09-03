@@ -1,0 +1,12 @@
+{% assign cloudflare_analytics = site.analytics.cloudflare %}
+{% unless page.redirect %}
+  {% if cloudflare_analytics.enabled and cloudflare_analytics.hostname and cloudflare_analytics.token %}
+    <script
+      src="{{ '/assets/js/cloudflare-web-analytics.js' | relative_url | bust_file_cache }}"
+      defer
+      data-cloudflare-web-analytics
+      data-cloudflare-hostname="{{ cloudflare_analytics.hostname | escape }}"
+      data-cloudflare-token="{{ cloudflare_analytics.token | escape }}"
+    ></script>
+  {% endif %}
+{% endunless %}

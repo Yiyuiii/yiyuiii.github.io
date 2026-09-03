@@ -9,7 +9,7 @@ keywords: yiyuiii, 随笔, 开源项目, 复杂系统
 lang: zh-CN
 timezone: Asia/Hong_Kong
 icon: favicons/favicon.ico
-url: https://yiyuiii.github.io
+url: https://yiyuiii.top
 baseurl: ''
 last_updated: false
 impressum_path: null
@@ -63,6 +63,10 @@ analytics:
   cronitor: null
   pirsch: null
   openpanel: null
+  cloudflare:
+    enabled: true
+    hostname: yiyuiii.top
+    token: 10a1ef244b7d40a394ed6ce25332ea00
 google_site_verification: null
 bing_site_verification: null
 blog_name: Writing

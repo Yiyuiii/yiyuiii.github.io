@@ -31,6 +31,8 @@ def test_config_selects_the_light_content_first_shell():
     config = yaml.safe_load(text("_config.yml"))
 
     assert config["title"] == "yiyuiii"
+    assert config["url"] == "https://yiyuiii.top"
+    assert text("CNAME").strip() == "yiyuiii.top"
     assert config["lang"] == "zh-CN"
     assert config["timezone"] == "Asia/Hong_Kong"
     assert config["enable_darkmode"] is False
@@ -127,7 +129,11 @@ def test_content_security_policy_names_only_active_runtime_origins():
     assert "object-src 'none'" in policy
     assert "base-uri 'self'" in policy
     assert "form-action 'self'" in policy
-    assert "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://giscus.app" in policy
+    assert (
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net "
+        "https://giscus.app https://static.cloudflareinsights.com"
+    ) in policy
+    assert "https://cloudflareinsights.com" in policy
     assert "img-src 'self' data: https://openaccess-cdn.clevelandart.org" in policy
     assert "frame-src https://giscus.app" in policy
     for origin in {
@@ -143,6 +149,32 @@ def test_content_security_policy_names_only_active_runtime_origins():
     }:
         assert origin in policy
     assert " https:;" not in policy
+
+
+def test_cloudflare_web_analytics_is_host_scoped_and_disclosed():
+    config = yaml.safe_load(text("_config.yml"))["analytics"]["cloudflare"]
+    layout = text("_layouts/default.liquid")
+    include = text("_includes/cloudflare-web-analytics.liquid")
+    loader = text("assets/js/cloudflare-web-analytics.js")
+    footer = text("_includes/footer.liquid")
+
+    assert config == {
+        "enabled": True,
+        "hostname": "yiyuiii.top",
+        "token": "10a1ef244b7d40a394ed6ce25332ea00",
+    }
+    assert "{% include cloudflare-web-analytics.liquid %}" in layout
+    assert "{% unless page.redirect %}" in include
+    assert "data-cloudflare-hostname" in include
+    assert "data-cloudflare-token" in include
+    assert 'currentHostname === expectedHostname' in loader
+    assert 'currentHostname.endsWith(`.${expectedHostname}`)' in loader
+    assert 'document.querySelector("script[data-cf-beacon]")' in loader
+    assert 'beacon.type = "module"' in loader
+    assert 'https://static.cloudflareinsights.com/beacon.min.js' in loader
+    assert "JSON.stringify({ token })" in loader
+    assert "site-footer__analytics" in footer
+    assert "developers.cloudflare.com/web-analytics/about/" in footer
 
 
 def test_toy_styles_are_page_scoped_instead_of_part_of_the_global_bundle():
@@ -200,6 +232,9 @@ def test_site_text_is_parallel_and_contains_approved_navigation():
         "label": "Article sections",
         "close": "Close section navigation",
     }
+    assert data["zh"]["analytics"].keys() == data["en"]["analytics"].keys()
+    assert "Cookie" in data["zh"]["analytics"]["disclosure"]
+    assert "cookies" in data["en"]["analytics"]["disclosure"]
     assert "about_links" not in data["zh"]
     assert "about_links" not in data["en"]
 

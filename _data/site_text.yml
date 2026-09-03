@@ -18,6 +18,9 @@ zh:
   skip_to_content: 跳到正文
   switch_language: 切换为英文
   missing_translation: 这篇内容目前没有中文版本，已回到中文随笔索引。
+  analytics:
+    disclosure: 本站使用 Cloudflare Web Analytics 汇总访问量与页面性能；它不使用 Cookie、本地存储或跨站访客指纹。
+    details: 数据说明
   search:
     open: 搜索
     close: 关闭搜索
@@ -107,6 +110,9 @@ en:
   skip_to_content: Skip to content
   switch_language: Switch to Chinese
   missing_translation: This item has no English version yet. You are viewing the English writing index.
+  analytics:
+    disclosure: This site uses Cloudflare Web Analytics for aggregate traffic and page-performance measurements. It does not use cookies, local storage, or cross-site visitor fingerprinting.
+    details: Data details
   search:
     open: Search
     close: Close search

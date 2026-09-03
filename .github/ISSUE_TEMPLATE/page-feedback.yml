@@ -14,7 +14,7 @@ body:
     attributes:
       label: 页面网址 / Page URL
       description: 请粘贴出现问题页面的完整网址。 / Paste the full URL of the affected page.
-      placeholder: https://yiyuiii.github.io/...
+      placeholder: https://yiyuiii.top/...
     validations:
       required: true
 

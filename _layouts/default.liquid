@@ -41,5 +41,6 @@
     <script src="{{ '/assets/js/page-comments.js' | relative_url | bust_file_cache }}"></script>
     <script src="{{ '/assets/js/sunlight.js' | relative_url | bust_file_cache }}"></script>
     {% if page.home %}<script src="{{ '/assets/js/home-feed.js' | relative_url | bust_file_cache }}"></script>{% endif %}
+    {% include cloudflare-web-analytics.liquid %}
   </body>
 </html>

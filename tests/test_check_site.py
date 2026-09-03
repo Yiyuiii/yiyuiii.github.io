@@ -25,6 +25,11 @@ def page(lang, nav, body, current=None):
             f'<a href="{current}" aria-current="page">',
             1,
         )
+    disclosure = (
+        "本站使用 Cloudflare Web Analytics 汇总访问量与页面性能；它不使用 Cookie。"
+        if lang == "zh"
+        else "This site uses Cloudflare Web Analytics and does not use cookies."
+    )
     return f"""<!doctype html>
 <html lang="{lang}">
   <body>
@@ -34,6 +39,12 @@ def page(lang, nav, body, current=None):
     </span>
     <nav class="site-nav">{nav}</nav>
     <main>{body}</main>
+    <footer class="site-footer"><p class="site-footer__analytics">{disclosure}
+      <a href="https://developers.cloudflare.com/web-analytics/about/">Details</a>
+    </p></footer>
+    <script src="/assets/js/cloudflare-web-analytics.js?v=test" defer
+      data-cloudflare-web-analytics data-cloudflare-hostname="yiyuiii.top"
+      data-cloudflare-token="10a1ef244b7d40a394ed6ce25332ea00"></script>
   </body>
 </html>
 """
@@ -146,6 +157,8 @@ def about_profile(language):
 
 
 def valid_site(root):
+    write(root / "CNAME", "yiyuiii.top\n")
+    write(root / "assets" / "js" / "cloudflare-web-analytics.js", "(()=>{})();")
     zh_nav = (
         '<a href="/">欢迎</a><a href="/writing/">随笔</a>'
         '<a href="/projects/">GitHub</a><a href="/publications/">论文</a>'
@@ -400,6 +413,28 @@ def test_valid_built_site_contract_passes(tmp_path):
     valid_site(tmp_path)
 
     check_site(tmp_path)
+
+
+def test_custom_domain_marker_must_match_the_canonical_hostname(tmp_path):
+    valid_site(tmp_path)
+    write(tmp_path / "CNAME", "wrong.example\n")
+
+    with pytest.raises(SiteCheckError, match="CNAME"):
+        check_site(tmp_path)
+
+
+def test_analytics_loader_cannot_become_an_unconditional_beacon(tmp_path):
+    valid_site(tmp_path)
+    path = route_path(tmp_path, "/")
+    source = path.read_text(encoding="utf-8").replace(
+        "data-cloudflare-web-analytics",
+        'data-cf-beacon=\'{"token":"10a1ef244b7d40a394ed6ce25332ea00"}\'',
+        1,
+    )
+    path.write_text(source, encoding="utf-8")
+
+    with pytest.raises(SiteCheckError, match="host-scoped"):
+        check_site(tmp_path)
 
 
 def test_toy_runtime_must_not_be_part_of_initial_scripts(tmp_path):

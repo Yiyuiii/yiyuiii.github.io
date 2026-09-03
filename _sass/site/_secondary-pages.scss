@@ -348,6 +348,15 @@
   margin: 0;
 }
 
+.site-footer p + p {
+  margin-top: 0.4rem;
+}
+
+.site-footer__analytics {
+  max-width: 54rem;
+  line-height: 1.6;
+}
+
 .not-found-page {
   min-height: 100vh;
 }

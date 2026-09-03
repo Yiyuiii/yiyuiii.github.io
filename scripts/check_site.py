@@ -88,6 +88,10 @@ TOY_LOADER_PATH = "/assets/js/toy-loader.js"
 EXTERNAL_LINK_TIMEOUT_SECONDS = 15
 EXTERNAL_LINK_ATTEMPTS = 2
 HEAD_FALLBACK_STATUS_CODES = frozenset({400, 403, 405, 406, 501})
+CNAME = "yiyuiii.top"
+CLOUDFLARE_ANALYTICS_HOSTNAME = "yiyuiii.top"
+CLOUDFLARE_ANALYTICS_LOADER = "/assets/js/cloudflare-web-analytics.js"
+CLOUDFLARE_ANALYTICS_TOKEN_RE = re.compile(r"[a-f0-9]{32}")
 
 
 def route_path(site: Path, route: str) -> Path:
@@ -135,6 +139,46 @@ def _check_nav(soup: BeautifulSoup, *, route: str, language: str) -> None:
             raise SiteCheckError(
                 f"{route}: navigation must mark exactly the current route"
             )
+
+
+def _check_cloudflare_analytics(
+    soup: BeautifulSoup,
+    *,
+    route: str,
+    language: str,
+) -> None:
+    loaders = soup.select("script[data-cloudflare-web-analytics]")
+    if len(loaders) != 1:
+        raise SiteCheckError(
+            f"{route}: expected exactly one host-scoped Cloudflare analytics loader"
+        )
+
+    loader = loaders[0]
+    source = urlparse(str(loader.get("src", "")))
+    token = str(loader.get("data-cloudflare-token", ""))
+    if (
+        source.path != CLOUDFLARE_ANALYTICS_LOADER
+        or loader.get("data-cloudflare-hostname") != CLOUDFLARE_ANALYTICS_HOSTNAME
+        or not CLOUDFLARE_ANALYTICS_TOKEN_RE.fullmatch(token)
+        or not loader.has_attr("defer")
+    ):
+        raise SiteCheckError(f"{route}: Cloudflare analytics loader is incomplete")
+    if soup.select("script[data-cf-beacon]"):
+        raise SiteCheckError(
+            f"{route}: Cloudflare beacon must be injected only after hostname validation"
+        )
+
+    disclosure = soup.select_one(".site-footer__analytics")
+    expected = "不使用 Cookie" if language == "zh" else "does not use cookies"
+    details = disclosure.select_one("a") if disclosure else None
+    if (
+        disclosure is None
+        or expected not in disclosure.get_text(" ", strip=True)
+        or details is None
+        or details.get("href")
+        != "https://developers.cloudflare.com/web-analytics/about/"
+    ):
+        raise SiteCheckError(f"{route}: analytics privacy disclosure is incomplete")
 
 
 def _check_index_shell(soup: BeautifulSoup, route: str) -> None:
@@ -941,6 +985,9 @@ def check_site(site: Path, *, external_links: bool = False) -> None:
     for route in FORBIDDEN:
         if route_path(site, route).exists():
             errors.append(f"{route}: route must remain unpublished")
+    cname_path = site / "CNAME"
+    if not cname_path.is_file() or cname_path.read_text(encoding="utf-8").strip() != CNAME:
+        errors.append(f"CNAME: expected {CNAME!r}")
     if errors:
         raise SiteCheckError("\n".join(errors))
 
@@ -962,9 +1009,13 @@ def check_site(site: Path, *, external_links: bool = False) -> None:
         "/en/about/",
     )
     for route in zh_routes:
-        _check_nav(_soup(site, route), route=route, language="zh")
+        soup = _soup(site, route)
+        _check_nav(soup, route=route, language="zh")
+        _check_cloudflare_analytics(soup, route=route, language="zh")
     for route in en_routes:
-        _check_nav(_soup(site, route), route=route, language="en")
+        soup = _soup(site, route)
+        _check_nav(soup, route=route, language="en")
+        _check_cloudflare_analytics(soup, route=route, language="en")
     for route in INDEX_ROUTES:
         _check_index_shell(_soup(site, route), route)
 
