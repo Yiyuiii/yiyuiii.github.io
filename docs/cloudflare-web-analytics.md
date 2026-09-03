@@ -4,13 +4,14 @@
 
 本轮用户要求把 `yiyuiii.top` 指向现有 GitHub Pages 站点，并使用已创建的 Cloudflare Web Analytics 站点令牌统计全球访问。
 
-2026-09-03 的只读核对结果如下：
+2026-09-03 的发布与线上复核结果如下：
 
-- GitHub Pages 正式地址仍是 `https://yiyuiii.github.io/`，Pages API 的 `cname` 为空。
-- Cloudflare 是 `yiyuiii.top` 的权威 DNS 托管方；现有根域 A/AAAA 记录已直接使用 GitHub Pages 官方地址，`www` CNAME 已指向 `yiyuiii.github.io`。HTTP 响应来自 GitHub 边缘，但因为 Pages 尚未认领该 Host，目前返回 404；HTTPS 还会先因证书主机名不匹配而被正常客户端拒绝。
-- `_github-pages-challenge-Yiyuiii.yiyuiii.top` 的 TXT 查询返回域名不存在。该查询无法读取 GitHub 账户页面中的待验证状态，但用于持续验证的公开 TXT 确实缺失，因此发布流程必须按“尚未验证”处理。
-- Cloudflare Web Analytics 面板中的站点是 `yiyuiii.top`。Cloudflare 会校验发送数据的页面主机名，因此同一令牌不能直接用于 `yiyuiii.github.io`。
-- 本文对应的代码仍是未发布候选。正式域名、统计数据和重定向状态必须在受保护发布后重新核对。
+- 源提交 `232f4e2` 先由固定预览运行 `33710703821` 完成远端门禁，artifact 中的 `preview-source-sha.txt` 为完整 SHA `232f4e2f3bc1e0273651dcdbf4ece8f0dd7e25be`；生产工作流 `33711324865` 随后重新通过完整门禁并部署。首次功能部署时，`master` 与正式本地 clone 均已快进到该源提交。
+- GitHub Pages API 显示 `status=built`、`cname=yiyuiii.top`、`protected_domain_state=verified`、`https_enforced=true`；已批准证书覆盖 `yiyuiii.top` 与 `www.yiyuiii.top`。
+- Cloudflare 是 `yiyuiii.top` 的权威 DNS 托管方；根域 A/AAAA 记录直接使用 GitHub Pages 官方地址，`www` CNAME 指向 `yiyuiii.github.io`。验证 TXT 已公开解析，必须长期保留。
+- `https://yiyuiii.top/` 返回 200；HTTP 根域、`www` 与旧 `yiyuiii.github.io` 均重定向到根域 HTTPS，抽样路径和查询参数得到保留。
+- 生产浏览器只创建一个 Cloudflare beacon；`beacon.min.js` 返回 200，向 `cloudflareinsights.com/cdn-cgi/rum` 的一次 POST 返回 204。页面没有统计 Cookie 或统计用本地存储，页脚保留中英文披露。
+- Cloudflare Web Analytics 面板中的站点是 `yiyuiii.top`。Cloudflare 会校验发送数据的页面主机名，因此旧 `yiyuiii.github.io` 只负责重定向，不独立发送统计。面板聚合显示仍取决于 Cloudflare 上游处理，不能用一次 204 推断历史数据已经齐全。
 
 ## 代码边界
 
@@ -28,12 +29,14 @@ Cloudflare 的手动安装通过 JavaScript beacon 读取浏览器性能数据�
 
 ## 发布与域名切换顺序
 
+本次已经按下列顺序完成；以后重建、迁移或排障时仍须逐项复核，不能把本次收据当作永久状态。
+
 1. **先完成账户级域名验证，未通过则禁止发布。** 登录 GitHub 后进入个人头像下的 **Settings → Pages**（不是仓库设置），添加 `yiyuiii.top`；把 GitHub 当场生成的精确 TXT 名称和值加入 Cloudflare DNS，等待 `Resolve-DnsName -Type TXT _github-pages-challenge-Yiyuiii.yiyuiii.top` 能读到该值，再回到 GitHub 点击 **Verify**。长期保留 TXT，不得猜测或复用其它账户的挑战值。
 2. 候选必须通过 `python scripts/validate.py --browser` 和人工审阅；未经用户确认，不合入 `master`。
 3. 域名验证完成并获得发布确认后，将同一候选合入 `master`。成功的 GitHub Actions 部署会把 `CNAME`、新 canonical URL、Giscus 来源和统计代码一起送入 `gh-pages`，避免只切域名而让评论或 canonical 暂时失配。
 4. 部署后必须检查 GitHub 仓库的 **Settings → Pages → Custom domain** 或 Pages API，只有其明确显示 `yiyuiii.top` 才能认为认领成功；若仍为空，再显式保存该域名，不能只根据仓库中存在 `CNAME` 宣布完成。
 5. 现有 DNS 已完成用户希望的指向，无需修改：根域四条 A、四条 AAAA 均为 GitHub Pages 官方地址，`www` 是指向 `yiyuiii.github.io` 的 CNAME。DNS 只负责解析，旧地址到新地址的路径保留重定向由 GitHub Pages 在认领自定义域名后处理。不要添加通配符记录。
-6. 当前记录直接返回 GitHub 地址，相当于 Cloudflare 面板中的 **DNS only**；保持该状态，等待 GitHub 完成 DNS 检查、证书签发并允许启用 HTTPS。若以后改为 Cloudflare 代理，应在证书和重定向均验证后再单独评估。
+6. 首次切换时保持记录直接返回 GitHub 地址，相当于 Cloudflare 面板中的 **DNS only**，直到 GitHub 完成 DNS 检查、证书签发并允许启用 HTTPS；本次这些步骤均已完成。若以后改为 Cloudflare 代理，应在证书和重定向均验证后再单独评估。
 7. 完成后逐项验证：
    - `https://yiyuiii.top/` 返回 200，且内容和当前正式部署一致；
    - `https://www.yiyuiii.top/` 重定向到根域；
@@ -43,6 +46,10 @@ Cloudflare 的手动安装通过 JavaScript beacon 读取浏览器性能数据�
    - 阻断 `static.cloudflareinsights.com` 后，导航、搜索、文章、评论按钮和小玩意仍正常。
 
 DNS 与证书变更可能需要最多 24 小时传播。Cloudflare 面向中国大陆的专用 China Network 是企业级附加服务并要求 ICP 相关条件；免费方案对大陆访客只能视为尽力而为，不承诺境内加速或统计上报的完整率。
+
+## 已知非阻断项
+
+2026-09-03 在新域名手动显示评论时，Giscus iframe、零评论状态、编辑器与 GitHub 登录入口均正常出现，说明新来源授权有效。Giscus 的 `client.js` 同时尝试在父页加载 `https://giscus.app/default.css`，该样式被现有 `style-src 'self' 'unsafe-inline'` 拦截；站内 `_sass/site/_comments.scss` 已覆盖 iframe 的关键宽度、显示和边框，因此本次 390 px 实测布局仍正常。这个告警早于本次统计与域名改动，后续若要消除，应作为独立 CSP 维护评估，不能把泛化 `https:` 加回策略。
 
 ## 官方依据
 
