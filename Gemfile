@@ -25,7 +25,7 @@ end
 
 # Theme and active al-folio extensions
 group :al_folio_plugins do
-    gem 'al_folio_core', '= 1.0.11'
+    gem 'al_folio_core', '1.0.15'
     gem 'al_charts', '= 1.0.1'
-    gem 'al_math', '= 1.0.1'
+    gem 'al_math', '1.0.2'
 end
